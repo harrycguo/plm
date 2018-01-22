@@ -1,7 +1,9 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
+// import { IngredientsList } from '../imports/model/IngredientList.js';
 
 import './main.html';
+IngredientsList = new Mongo.Collection('ingredients');
 
 Template.hello.onCreated(function helloOnCreated() {
   // counter starts at 0
