@@ -18,10 +18,20 @@ class Login extends Component {
 
     validate(component.form, {
       rules: {
-        
+        username: {
+          required: true,
+        },
+        password: {
+          required: true,
+        },
       },
       messages: {
-        
+        username: {
+          required: 'Must have username.',
+        },
+        password: {
+          required: 'Must have password.',
+        },
       },
       submitHandler() { component.handleSubmit(); },
     });
@@ -50,8 +60,6 @@ class Login extends Component {
             }
           }
       });
-
-      
   }
 
   render() {
@@ -67,7 +75,7 @@ class Login extends Component {
         <FormGroup>
                 <ControlLabel>Username</ControlLabel>
                 <input
-                type="text"
+                  type="text"
                   name="username"
                   ref={username => (this.username = username)}
                   className="form-control"

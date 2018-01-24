@@ -17,12 +17,45 @@ class CreateUser extends Component {
       componentDidMount() {
         
         const component = this;
+        
         validate(component.form, {
             rules: {
-             
+              firstName: {
+                required: true,
+              },
+              lastName: {
+                required: true,
+              },
+              emailAddress: {
+                required: true,
+                email: true,
+              },
+              username: {
+                required: true,
+              },
+              password: {
+                required: true,
+                minlength: 6,
+              },
             },
             messages: {
-             
+              firstName: {
+                required: 'Input First Name',
+              },
+              lastName: {
+                required: 'Input Last Name',
+              },
+              emailAddress: {
+                required: 'Input Email Address',
+                email: 'Incorrect Email Format',
+              },
+              username: {
+                require: 'Input a Username'
+              },
+              password: {
+                required: 'Need a password here.',
+                minlength: 'Please use at least six characters.',
+              },
             },
             submitHandler() { component.handleSubmit(); },
           });
@@ -111,7 +144,7 @@ class CreateUser extends Component {
               </FormGroup>
 
               <FormGroup>
-                <ControlLabel>Password</ControlLabel>
+                <ControlLabel>Password (min. 6 characters)</ControlLabel>
                 <input
                   type="password"
                   name="password"
