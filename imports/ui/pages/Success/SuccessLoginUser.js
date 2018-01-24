@@ -7,7 +7,8 @@ class SuccessLoginUser extends Component {
   constructor(props) {
     super(props);
     
-    console.log("User = " + Meteor.user());
+    console.log("User = ")
+    console.log(Meteor.user());
     
   }
  
