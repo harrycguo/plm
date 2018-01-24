@@ -35,54 +35,30 @@ class CreateUser extends Component {
        
         const { history } = this.props;
         
-
         if (Meteor.isServer){
          console.log("server side");
          
         } else if (Meteor.isClient){
-          console.log("I'm doing stuff")
+
           Meteor.call('createUserFromAdmin',
-          
-          function(err,result){
-            if(!err){
-               console.log("a new user just got created")
-               history.push('/successCreateUser');
-              }else{
-                console.log("something goes wrong with the following error message " +err.reason )
+            this.emailAddress.value,
+            this.password.value,
+            this.username.value,
+            this.firstName.value,
+            this.lastName.value,
+            function(error,result){
+              if(error){
+                console.log("something goes wrong with the following error message " + error.reason )
+                Bert.alert(error.reason, 'danger');
+              } else {
+                console.log('Successfully Created User')
+                Bert.alert('Created User!', 'success');
+                history.push('/successCreateUser')
               }
-           })
+            }) 
           
         }
-
-        // Accounts.createUser({
-        //   email: this.emailAddress.value,
-        //   password: this.password.value,
-        //   username: this.username.value,
-        //   profile: {
-        //     name: {
-        //       first: this.firstName.value,
-        //       last: this.lastName.value,
-        //       username: this.username.value,
-        //     },
-        //   },
-        // }, (error) => {
-        //   if (error) {
-        //     Bert.alert(error.reason, 'danger');
-        //   } else {
-        //     Bert.alert('Welcome!', 'success');
-        //     history.push('/successCreateUser');
-        //     // const user = Meteor.user()
-        //     // Roles.addUsersToRoles(user, ['user']);
-        //   }
-        // }); 
-
-        
-        
-      }
-
-      
-
-      
+    }
 
     render() {
         return (

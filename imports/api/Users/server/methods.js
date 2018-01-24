@@ -2,9 +2,14 @@ import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 
 Meteor.methods({
-    'createUserFromAdmin':function(emailAdress, password, username, firstName, lastName, username){
+
+    'testMethod':function(){
+      console.log("test method works")
+    },
+
+    'createUserFromAdmin':function(emailAddress, password, username, firstName, lastName){
         
-      Accounts.createUser({
+      const user = Accounts.createUser({
           email: emailAddress,
           password: password,
           username: username,
@@ -12,9 +17,11 @@ Meteor.methods({
             name: {
               first: firstName,
               last: lastName,
-              username: userName,
+              username: username,
             },
           },
         }); 
+
+        Roles.addUsersToRoles(user, ['user']);
     }
   })
