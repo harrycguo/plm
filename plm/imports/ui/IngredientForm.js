@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import VendorForm from './VendorForm.js';
 import DropdownButton from '../../node_modules/react-bootstrap/lib/DropdownButton.js';
 import MenuItem from '../../node_modules/react-bootstrap/lib/MenuItem.js';
+import Button from '../../node_modules/react-bootstrap/lib/Button.js';
  
 // onSubmit={this.handleSubmit.bind(this) -> Add later!
 
@@ -16,11 +17,6 @@ export default class IngredientForm extends Component {
               ref="ingredientName"
               placeholder="Enter ingredient name"
             />
-            <input
-              type="text"
-              ref="ingredientPackaging"
-              placeholder="Enter ingredient packaging quantity"
-            />
             <DropdownButton
 				bsStyle={'primary'}
 				title={'primary'}
@@ -29,22 +25,24 @@ export default class IngredientForm extends Component {
 			>
 				<MenuItem eventKey="1">Sack (50 lbs)</MenuItem>
 				<MenuItem eventKey="2">Pail (50 lbs)</MenuItem>
-				<MenuItem eventKey="3" active>
-					Active Item
-				</MenuItem>
-				<MenuItem divider />
-				<MenuItem eventKey="4">Separated link</MenuItem>
+				<MenuItem eventKey="3">Drum (500 lbs)</MenuItem>
+				<MenuItem eventKey="4">Supersack (2000 lbs)</MenuItem>
+				<MenuItem eventKey="5">Truckload (50000 lbs)</MenuItem>
+				<MenuItem eventKey="6">Railcar (280000 lbs)</MenuItem>
 			</DropdownButton>
-            <input
-              type="text"
-              ref="IngredientTemperatureState"
-              placeholder="Enter ingredient temperature state"
-            />
-            <input
-              type="text"
-              ref="ingredientVendors"
-              placeholder="Enter ingredient name"
-            />
+            <DropdownButton
+				bsStyle={'primary'}
+				title={'primary'}
+				key={2}
+				id={`dropdown-basic-${2}`}
+			>
+				<MenuItem eventKey="1">frozen</MenuItem>
+				<MenuItem eventKey="2">refrigerated</MenuItem>
+				<MenuItem eventKey="3">room temperature</MenuItem>
+			</DropdownButton>
+			<Button bsStyle="primary" bsSize="default">
+				Submit
+			</Button>
       </form>
       <VendorForm />
       </div>
