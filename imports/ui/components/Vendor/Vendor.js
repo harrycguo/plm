@@ -7,14 +7,11 @@ import { Link } from 'react-router-dom'
 class Vendor extends Component {
   constructor(props) {
     super(props);
+    this.deleteThisVendor = this.deleteThisVendor.bind(this);
   }
 
   deleteThisVendor() {
     Meteor.call('vendors.remove', this.props.vendor._id);
-  }
-
-  editThisVendor() {
-    window.location = '/editVendor/' + this.props.vendor._id;
   }
 
   render() {
@@ -28,11 +25,17 @@ class Vendor extends Component {
         <p> Contact: {this.props.vendor.contact}</p>
         <p> Freight Code Carrier: {this.props.vendor.FCC}</p>
 
-        <button className="edit" onClick={this.editThisVendor.bind(this)}>
-        Edit Vendor
-        </button>
-
-        <Link to='/editVendor'>Edit Vendor</Link>
+        <Link to={{
+          pathname: '/editVendor/'+this.props.vendor._id, 
+          state: {
+            name: this.props.vendor.vendor,
+            contact: this.props.vendor.contact,
+            FCC: this.props.vendor.FCC}
+          }}>
+            <button>
+            Edit Vendor
+            </button>
+          </Link>
       </li>
       
     );

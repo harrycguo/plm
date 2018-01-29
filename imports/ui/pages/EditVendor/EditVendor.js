@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component , PropTypes } from 'react';
 import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
@@ -14,17 +14,12 @@ class EditVendor extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
         
         console.log("User = ")
-        console.log(Meteor.user());
-        console.log(this.props.match.params.vendorID);
-        console.log(this.props.vendors)
-
-        let test = Vendors.find({"_id":"jdKuxgNpqgndGkfJW"}).fetch()
-        
+        console.log(Meteor.user()); 
+                    
       }
 
-      componentDidMount() {
-        
-        const component = this;
+      componentDidMount() {    
+        const component = this; 
         
         validate(component.form, {
             rules: {
@@ -52,8 +47,8 @@ class EditVendor extends Component {
             },
             submitHandler() { component.handleSubmit(); },
           });
-
-
+        
+    
       }
    
     handleSubmit() {
@@ -65,7 +60,8 @@ class EditVendor extends Component {
          
         } else if (Meteor.isClient){
 
-          Meteor.call('vendors.insert',
+          Meteor.call('vendors.edit',
+          this.props.match.params.vendorID,
             this.name.value,
             this.contact.value,
             this.FCC.value,
@@ -74,16 +70,19 @@ class EditVendor extends Component {
                 console.log("something goes wrong with the following error message " + error.reason )
                 Bert.alert(error.reason, 'danger');
               } else {
-                console.log('Successfully Added Vendor')
-                Bert.alert('Added Vendor!', 'success');
+                console.log('Successfully Edited Vendor')
+                Bert.alert('Edited Vendor!', 'success');
                 history.push('/vendorManagement')
               }
             }) 
-          
+        
         }
     }
 
     render() {
+        let user = Vendors.find({"_id" : this.props.match.params.vendorID}).fetch()
+        
+       
         return (
             
             <div className="container">
@@ -91,8 +90,6 @@ class EditVendor extends Component {
                     <h1>Edit Vendor</h1>
                 </header>
 
-             
-          
                 <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
             
                 <FormGroup>
@@ -101,7 +98,7 @@ class EditVendor extends Component {
                         type="text"
                         name="name"
                         ref={name => (this.name = name)}
-                        
+                        defaultValue={this.props.location.state.name}
                         className="form-control"
                     />
                 </FormGroup>
@@ -112,6 +109,7 @@ class EditVendor extends Component {
                         type="phoneUS"
                         name="contact"
                         ref={contact => (this.contact = contact)}
+                        defaultValue={this.props.location.state.contact}
                         className="form-control"
                     />
                 </FormGroup>
@@ -122,22 +120,24 @@ class EditVendor extends Component {
                   type="text"
                   name="FCC"
                   ref={FCC => (this.FCC = FCC)}
+                  defaultValue={this.props.location.state.FCC}
                   className="form-control"
                 />
               </FormGroup>
 
   
-              <Button type="submit" bsStyle="success">Add Vendor</Button>
+              <Button type="submit" bsStyle="success">Submit</Button>
 
             </form>
             </div>
         );
+ 
     }
+
 }
 
 export default withTracker(() => {
-    console.log("subscribing")
-    Meteor.subscribe('vendors');
+    const subscription = Meteor.subscribe('vendors');
       return {
         vendors: Vendors.find({}).fetch(),
       };

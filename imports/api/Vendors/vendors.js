@@ -17,9 +17,9 @@ Meteor.methods({
       
       Vendors.insert({
         vendor: name,
-        createdAt: new Date(),
         contact: contact,
         FCC: FCC,
+        createdAt: new Date(),
       });
     },
 
@@ -27,16 +27,13 @@ Meteor.methods({
       Vendors.remove(vendorID);
     },
     
-    'tasks.setChecked'(taskId, setChecked) {
-      check(taskId, String);
-      check(setChecked, Boolean);
-   
-      Tasks.update(taskId, { $set: { checked: setChecked } });
+    'vendors.edit'(id, name, contact, FCC) {
+      Vendors.update({_id: id}, { $set: { vendor: name, contact: contact,
+        FCC: FCC}})
     },
   });
 
 if (Meteor.isServer) {
-  console.log('publishing vendos');
   Meteor.publish('vendors', function() {
     return Vendors.find();
   });
