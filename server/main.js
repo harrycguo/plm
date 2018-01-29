@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import '../imports/startup/server'
+import '../imports/startup/server';
+import '../imports/api/Vendors/vendors.js';
 // import { IngredientsList } from '../imports/model/IngredientList.js';
 
 
@@ -65,8 +66,4 @@ Meteor.methods({
 //Make data visible to all subscribers on the client side
 Meteor.publish('ingredients', function() {
   return IngredientsList.find()
-});
-
-Meteor.startup(() => {
-  // code to run on server at startup
 });
