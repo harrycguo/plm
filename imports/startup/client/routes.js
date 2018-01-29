@@ -14,6 +14,7 @@ import SuccessCreateUser from '../../ui/pages/Success/SuccessCreateUser.js';
 import SuccessLoginAdmin from '../../ui/pages/Success/SuccessLoginAdmin';
 import SuccessLoginUser from '../../ui/pages/Success/SuccessLoginUser';
 import Table from '../../ui/table/Table.js';
+import IngredientForm from '/../../ui/IngredientForm.js'
  
 export const renderRoutes = () => (
   <Router>
@@ -29,7 +30,6 @@ export const renderRoutes = () => (
     <Route path="/successLoginAdmin" component={SuccessLoginAdmin}/>
     <Route path="/successLoginUser" component={Table}/>
     <Route path="/table" component={Table}/>
-
   </div>
 </Router>
 );

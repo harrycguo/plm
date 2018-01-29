@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 
-const IngredientsList = new Mongo.Collection('ingredients');
+IngredientsList = new Mongo.Collection('ingredients');
 //IngredientsList.remove({}) // remove every ingredient from the collection
 
 // //Array for any of our schemas we define
