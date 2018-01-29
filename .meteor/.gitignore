@@ -1,7 +1,13 @@
 local
 # ignore meteor stuff
 .meteor
+.meteor/packages
 
 # packages
-.package-lock.json
-.package.json
+package-lock.json
+package.json
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?

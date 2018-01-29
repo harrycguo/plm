@@ -17,7 +17,7 @@ class SuccessLoginAdmin extends Component {
     return (
       <div className="container">
         <header>
-          <h1>Admin: Successfully logged in!</h1>
+          <h1>Admin Home Page</h1>
         </header>
         <li><Link to='/createUser'>Create New User</Link></li>
         <li><Link to='/vendorManagement'>Vendor Management</Link></li>
