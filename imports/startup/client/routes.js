@@ -13,9 +13,10 @@ import VendorManagement from '../../ui/pages/VendorManagement/VendorManagement.j
 import SuccessCreateUser from '../../ui/pages/Success/SuccessCreateUser.js';
 import SuccessLoginAdmin from '../../ui/pages/Success/SuccessLoginAdmin';
 import SuccessLoginUser from '../../ui/pages/Success/SuccessLoginUser';
+import IngredientForm from '../../ui/forms/IngredientForm.js'
 import Table from '../../ui/table/Table.js';
-import IngredientForm from '/../../ui/IngredientForm.js'
- 
+
+
 export const renderRoutes = () => (
   <Router>
   <div>

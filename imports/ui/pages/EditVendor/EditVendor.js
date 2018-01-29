@@ -136,9 +136,9 @@ class EditVendor extends Component {
 }
 
 export default withTracker(() => {
-    console.log("subscribing")
-    Meteor.subscribe('vendors');
-      return {
-        vendors: Vendors.find({}).fetch(),
-      };
-    })(EditVendor);
+  console.log("subscribing")
+  Meteor.subscribe('vendors');
+  return {
+    vendors: Vendors.find({}).fetch(),
+    };
+})(EditVendor);

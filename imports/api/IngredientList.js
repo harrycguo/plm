@@ -19,3 +19,10 @@ Schemas.Ingredient = new SimpleSchema({
 IngredientsList.attachSchema(Schemas.Ingredient);
 
 export default IngredientsList;
+
+if(Meteor.isServer) {
+	console.log('publishing ings')
+	Meteor.publish('ingredients', function() {
+		return IngredientsList.find();
+	})
+}
