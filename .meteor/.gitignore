@@ -1,1 +1,7 @@
 local
+# ignore meteor stuff
+.meteor
+
+# packages
+.package-lock.json
+.package.json
