@@ -48,7 +48,7 @@ class Table extends Component {
 
 	render() {
 		return (
-			<ingTable>
+			<div>
 			<Link to='/addingredient'>Add Ingredient</Link>
 		   	<ReactTable
 		    data={this.renderRows()}
@@ -80,7 +80,7 @@ class Table extends Component {
                 	</div>
                 );
 		    }}
-		  /></ingTable>);
+		  /></div>);
 
 	}
 }

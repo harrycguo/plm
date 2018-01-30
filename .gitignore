@@ -1,0 +1,13 @@
+# Git ignore file
+
+# ignore meteor stuff
+.meteor/packages
+
+# packages
+# package-lock.json
+# package.json
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?

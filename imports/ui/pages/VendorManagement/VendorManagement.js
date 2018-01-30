@@ -27,11 +27,11 @@ class VendorManagement extends Component {
         <header>
           <h1>Vendor Management Page</h1>
         </header>
+        <li><Link to='/adminHomepage'>Admin Home</Link></li>
+        <hr></hr>
         <li><Link to='/addVendor'>Add Vendor</Link></li>
-
         <h2>List of Vendors</h2>
         <hr></hr>
-       
 
         <ul>
           {this.renderVendors()}
@@ -44,7 +44,7 @@ class VendorManagement extends Component {
 
 export default withTracker(() => {
   Meteor.subscribe('vendors');
-    return {
+  return {
       vendors: Vendors.find({}).fetch(),
-    };
-  })(VendorManagement);
+  };
+})(VendorManagement);
