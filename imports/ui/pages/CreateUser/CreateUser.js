@@ -86,7 +86,7 @@ class CreateUser extends Component {
               } else {
                 console.log('Successfully Created User')
                 Bert.alert('Created User!', 'success');
-                history.push('/successLoginAdmin')
+                history.push('/adminHomepage')
               }
             }) 
           

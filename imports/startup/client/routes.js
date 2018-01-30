@@ -12,9 +12,11 @@ import EditVendor from '../../ui/pages/EditVendor/EditVendor.js';
 import EditCapacity from '../../ui/pages/EditCapacity/EditCapacity.js'
 import VendorManagement from '../../ui/pages/VendorManagement/VendorManagement.js'
 import SuccessCreateUser from '../../ui/pages/Success/SuccessCreateUser.js';
-import SuccessLoginAdmin from '../../ui/pages/Success/SuccessLoginAdmin';
-import SuccessLoginUser from '../../ui/pages/Success/SuccessLoginUser';
+import SuccessLoginAdmin from '../../ui/pages/Success/SuccessLoginAdmin.js';
+import SuccessLoginUser from '../../ui/pages/Success/SuccessLoginUser.js';
 import Table from '../../ui/table/Table.js';
+import BulkImport from '../../ui/pages/BulkImport/BulkImport.js';
+import AdminHomepage from '../../ui/pages/AdminHomepage/AdminHomepage.js'
  
 export const renderRoutes = () => (
   <Router>
@@ -22,14 +24,16 @@ export const renderRoutes = () => (
     <Route exact={true} path="/" component={Index}/>
     <Route path="/login" component={Login}/>
     <Route path="/logout" component={Logout}/>
+    <Route path="/adminHomepage" component={AdminHomepage}/>
     <Route path="/createUser" component={CreateUser}/>
-    <Route path ="/vendorManagement" component={VendorManagement}/>
+    <Route path="/vendorManagement" component={VendorManagement}/>
     <Route path="/addVendor" component={AddVendor}/>
     <Route path="/editVendor/:vendorID" component={EditVendor}/>
     <Route path="/editCapacity/:capacityID" component={EditCapacity}/>
     <Route path="/successCreateUser" component={SuccessCreateUser}/>
     <Route path="/successLoginAdmin" component={SuccessLoginAdmin}/>
     <Route path="/successLoginUser" component={Table}/>
+    <Route path="/bulkImport" component={BulkImport}/>
     <Route path="/table" component={Table}/>
 
   </div>

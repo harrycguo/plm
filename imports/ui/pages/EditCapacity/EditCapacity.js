@@ -26,21 +26,16 @@ class EditCapacity extends Component {
               capacity: {
                 required: true,
                 number: true,
-                
               },
-              
             },
             messages: {
               capacity: {
                 required: 'Input New Capacity',
                 number: 'Must be number',
               },
-              
             },
             submitHandler() { component.handleSubmit(); },
           });
-        
-    
       }
    
     handleSubmit() {
@@ -52,18 +47,17 @@ class EditCapacity extends Component {
          
         } else if (Meteor.isClient){
 
-          Meteor.call('sc.edit',
+          Meteor.call('sc.editCapacity',
             this.props.match.params.capacityID,
-            this.props.location.state.type,
+
             Number(this.capacity.value),
             function(error,result){
               if(error){
                 console.log("something goes wrong with the following error message " + error.reason )
                 Bert.alert(error.reason, 'danger');
               } else {
-                console.log('Successfully Edited Capacity')
                 Bert.alert('Edited Capacity!', 'success');
-                history.push('/successLoginAdmin')
+                history.push('/adminHomepage')
               }
             }) 
         

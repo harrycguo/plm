@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import StorageCapacityWrapper from '../../components/StorageCapacityWrapper/StorageCapacityWrapper.js'
  
 // App component - represents the whole app
-class SuccessLoginAdmin extends Component {
+class AdminHomepage extends Component {
   constructor(props) {
     super(props);
     
@@ -33,4 +33,4 @@ class SuccessLoginAdmin extends Component {
   }
 }
 
-export default SuccessLoginAdmin;
+export default AdminHomepage;

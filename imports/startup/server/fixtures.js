@@ -25,7 +25,8 @@ if (StorageCapacities.find({type: "Freezer"}).count() === 0){
   StorageCapacities.insert(
     {
       type: "Freezer",
-      capacity: Number(1000)
+      capacity: Number(100000),
+      used: Number(0)
     })
 }
 
@@ -33,7 +34,8 @@ if (StorageCapacities.find({type: "Refrigerator"}).count() === 0){
   StorageCapacities.insert(
     {
       type: "Refrigerator",
-      capacity: Number(1000)
+      capacity: Number(100000),
+      used: Number(0)
     })
 }
 
@@ -41,7 +43,8 @@ if (StorageCapacities.find({type: "Warehouse"}).count() === 0){
   StorageCapacities.insert(
     {
       type: "Warehouse",
-      capacity: Number(1000)
+      capacity: Number(100000),
+      used: Number(0)
     })
 }
 
