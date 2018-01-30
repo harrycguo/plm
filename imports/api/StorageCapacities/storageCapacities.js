@@ -5,37 +5,43 @@ import { Roles } from 'meteor/alanning:roles';
  
 export const StorageCapacities = new Mongo.Collection('storageCapacities');
 
-
 Meteor.methods({
-    'vendors.insert'(name, contact, FCC) {
-      
-   
-      // Make sure the user is logged in before inserting a task
+    'sc.insert'(type, capacity) {
+    
       if (! this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
         throw new Meteor.Error('not-authorized');
       }
       
       StorageCapacities.insert({
-        vendor: name,
-        contact: contact,
-        FCC: FCC,
-        createdAt: new Date(),
+        type: name,
+        capacity: Number(capacity),
       });
     },
 
-    'vendors.remove'(vendorID) {
-      StorageCapacities.remove(vendorID);
+    'sc.remove'(scID) {
+      if (! this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+        throw new Meteor.Error('not-authorized');
+      }
+      StorageCapacities.remove(scID);
     },
     
-    'vendors.edit'(id, name, contact, FCC) {
-      StorageCapacities.update({_id: id}, { $set: { vendor: name, contact: contact,
-        FCC: FCC}})
+    'sc.edit'(scID, type, capacity) {
+      if (! this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+        throw new Meteor.Error('not-authorized');
+      }
+      check(capacity, Number)
+
+      StorageCapacities.update({_id: scID}, 
+        { $set: 
+        { type: type, 
+        capacity: Number(capacity),
+        }})
     },
   });
 
 if (Meteor.isServer) {
-  Meteor.publish('vendors', function() {
-    return Vendors.find();
+  Meteor.publish('capacities', function() {
+    return StorageCapacities.find();
   });
 }
 

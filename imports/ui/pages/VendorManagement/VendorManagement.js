@@ -26,11 +26,11 @@ class VendorManagement extends Component {
         <header>
           <h1>Vendor Management Page</h1>
         </header>
+        <li><Link to='/successLoginAdmin'>Admin Home</Link></li>
+        <hr></hr>
         <li><Link to='/addVendor'>Add Vendor</Link></li>
-
         <h2>List of Vendors</h2>
         <hr></hr>
-       
 
         <ul>
           {this.renderVendors()}

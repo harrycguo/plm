@@ -80,9 +80,7 @@ class EditVendor extends Component {
     }
 
     render() {
-        let user = Vendors.find({"_id" : this.props.match.params.vendorID}).fetch()
-        
-       
+
         return (
             
             <div className="container">

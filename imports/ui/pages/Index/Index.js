@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
  
 // App component - represents the whole app
 class Index extends Component {
@@ -22,6 +22,7 @@ class Index extends Component {
         <footer>
           <p>Dope veggies bro</p>
           </footer>
+          
       </div>
     );
   }
