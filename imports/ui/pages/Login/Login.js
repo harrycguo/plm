@@ -51,7 +51,7 @@ class Login extends Component {
 
             //admin login
             if (Roles.userIsInRole(user, ['admin'])) {
-              history.push('/successLoginAdmin');
+              history.push('/adminHomepage');
             } 
             
             //user login

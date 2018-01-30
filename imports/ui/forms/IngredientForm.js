@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import VendorForm from './VendorForm.js';
+import { Link } from 'react-router-dom'
+import { Bert } from 'meteor/themeteorchef:bert';
 // import { Vendors } from '../Vendors/vendors.js';
 import convertPackageString from '../../utils/convertPackageString.js'
 
@@ -16,7 +18,8 @@ export default class IngredientForm extends Component {
 	    const quantity = ReactDOM.findDOMNode(this.refs.ingredientQuantity).value.trim() * convertPackageString(packaging);
 
 	    //Have to implement vendor selection
-	    Meteor.call("addIngredient",text,packaging,temperatureState,[],quantity);
+	    Meteor.call("addIngredient",text,parseInt(packaging),temperatureState,[],quantity);
+	    Bert.alert("Ingredient added!")
   	}
   render() {
     return (
@@ -46,6 +49,7 @@ export default class IngredientForm extends Component {
               placeholder="How many packages"
             />
 			<input type="submit" value="Submit"/>
+			<Link to='/table'>Return to Table</Link>
       </form>
       </div>
     );

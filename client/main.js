@@ -12,6 +12,9 @@ import '../imports/api/Vendors/vendors.js';
 // Meteor.subscribe('ingredients');
 
 Meteor.startup(() => {
+  render(renderRoutes(), document.getElementById('render-target'));
+  // render(<Table />, document.getElementById('render-target'));
   // render(renderRoutes(), document.getElementById('render-target'));
-  render(<IngredientForm />, document.getElementById('render-target'));
+  // render(<IngredientForm />, document.getElementById('render-target'));
+
 });

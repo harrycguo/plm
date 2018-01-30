@@ -8,35 +8,37 @@ export const Vendors = new Mongo.Collection('vendors');
 
 Meteor.methods({
     'vendors.insert'(name, contact, FCC) {
-      
-   
+    
       // Make sure the user is logged in before inserting a task
       if (! this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
-        throw new Meteor.Error('not-authorized');
+        throw new Meteor.Error('not-authorized', 'not-authorized');
       }
       
       Vendors.insert({
         vendor: name,
-        createdAt: new Date(),
         contact: contact,
         FCC: FCC,
+        createdAt: new Date(),
       });
     },
 
     'vendors.remove'(vendorID) {
+      if (! this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+        throw new Meteor.Error('not-authorized', 'not-authorized');
+      }
       Vendors.remove(vendorID);
     },
     
-    'tasks.setChecked'(taskId, setChecked) {
-      check(taskId, String);
-      check(setChecked, Boolean);
-   
-      Tasks.update(taskId, { $set: { checked: setChecked } });
+    'vendors.edit'(id, name, contact, FCC) {
+      if (! this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+        throw new Meteor.Error('not-authorized', 'not-authorized');
+      }
+      Vendors.update({_id: id}, { $set: { vendor: name, contact: contact,
+        FCC: FCC}})
     },
   });
 
 if (Meteor.isServer) {
-  console.log('publishing vendos');
   Meteor.publish('vendors', function() {
     return Vendors.find();
   });
