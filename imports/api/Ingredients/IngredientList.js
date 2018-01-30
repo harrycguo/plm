@@ -16,9 +16,9 @@ var Schemas = {};
 //Specifies ingredient field type constraints
 Schemas.Ingredient = new SimpleSchema({
   name: {type: String},
-  package: {type: Number},
+  package: {type: String},
   temperatureState: {type: String},
-  vendors: {type: [Object], minCount: 1}, //An ingredient needs at least one vendor that sells it
+  vendors: {type: [Object]}, //minCount: 1} //An ingredient needs at least one vendor that sells it
   quantity: {type: Number}
   // quantity: {type: Number}
 });
