@@ -23,6 +23,7 @@ class SuccessLoginAdmin extends Component {
         <li><Link to='/table'>Manage Inventory</Link></li>
         <li><Link to='/createUser'>Create New User</Link></li>
         <li><Link to='/vendorManagement'>Vendor Management</Link></li>
+        <li><Link to='/table'>View Ingredients</Link></li>
         <li><Link to='/bulkImport'>Bulk Import</Link></li>
         <li><Link to='/logout'>Logout</Link></li>
         

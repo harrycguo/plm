@@ -12,8 +12,9 @@ import EditVendor from '../../ui/pages/EditVendor/EditVendor.js';
 import EditCapacity from '../../ui/pages/EditCapacity/EditCapacity.js'
 import VendorManagement from '../../ui/pages/VendorManagement/VendorManagement.js'
 import SuccessCreateUser from '../../ui/pages/Success/SuccessCreateUser.js';
-import SuccessLoginAdmin from '../../ui/pages/Success/SuccessLoginAdmin.js';
-import SuccessLoginUser from '../../ui/pages/Success/SuccessLoginUser.js';
+import SuccessLoginAdmin from '../../ui/pages/Success/SuccessLoginAdmin';
+import SuccessLoginUser from '../../ui/pages/Success/SuccessLoginUser';
+import IngredientForm from '../../ui/forms/IngredientForm.js'
 import Table from '../../ui/table/Table.js';
 import BulkImport from '../../ui/pages/BulkImport/BulkImport.js';
 import AdminHomepage from '../../ui/pages/AdminHomepage/AdminHomepage.js'
@@ -35,7 +36,7 @@ export const renderRoutes = () => (
     <Route path="/successLoginUser" component={Table}/>
     <Route path="/bulkImport" component={BulkImport}/>
     <Route path="/table" component={Table}/>
-
+    <Route path="/addingredient" component={IngredientForm}/>
   </div>
 </Router>
 );

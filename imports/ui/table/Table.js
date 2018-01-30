@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import { button } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import TableRow from './TableRow.js';
-import RowElement from './RowElement.js';
-import HeaderElement from './HeaderElement.js';
-import TableData from './TableData.js'
-import { IngredientsList } from '../../api/IngredientList.js';
+import IngredientsApi from '../../api/Ingredients/IngredientsApi.js';
+import IngredientsList from '../../api/Ingredients/IngredientList.js';
+import IngredientForm from '../forms/IngredientForm.js';
+import TableData from './TableData.js';
+import ReactTable from 'react-table';
+import { Link } from 'react-router-dom';
 
 class Table extends Component {
 	
@@ -13,10 +15,7 @@ class Table extends Component {
 		this.props.ingredients.forEach(function(ing) {
 			ingredientsList.push(TableData.convertToFrontend(ing, IngredientsList))
 		});
-
-		return ingredientsList.map(element => (
-			<TableRow key={element._id} element={element}/>
-		));
+		return ingredientsList
 	}
 	
 	renderHeader() {
@@ -24,23 +23,65 @@ class Table extends Component {
 			<HeaderElement key={element._id} element={element}/>
 		));
 	}
+	edit() {
+		console.log("edit pressed")
+		console.log(this.row._original.fullIng)
+	}
+	
+	remove() {
+		console.log("remove pressed")
+		console.log(this.row._original.fullIng)
+		Meteor.call('removeIngredient', this.row._original.fullIng._id)
+	}
+
+	// VendArray.push({_id: 0, name: "Atlantic", cost: "$5.00"});
+	// VendArray.push({_id: 1, name: "Alliant", cost: "$4.00"})
+
+	renderVendorRows(row) {
+		return row.original.vendors.map(vendor => (
+			<tr key={vendor.name}>
+				<td>{vendor.name}</td>
+				<td>{vendor.cost}</td>
+			</tr>
+		));
+	}
 
 	render() {
 		return (
-			<div className="container"> 
-				<header>
-					<h1>Ingredient Table</h1>
-				</header>
-				<table>
-					<tbody>
-						<tr>
-							{this.renderHeader()}
-						</tr>
-						{this.renderRows()}
-					</tbody> 
-				</table>
-			</div>
-		);
+			<div>
+			<Link to='/addingredient'>Add Ingredient</Link>
+		   	<ReactTable
+		    data={this.renderRows()}
+		    filterable
+		    defaultFilterMethod={ (filter, row) => 
+		    	String(row[filter.id]).includes(filter.value)
+			}
+		    columns={TableData.HeaderValues}
+		    SubComponent={row => {
+		    	return (
+		    		<div style={{ padding: "5px" }}>
+		    			<table>
+		    			<tbody>
+		    				<tr>
+		    					<th>Vendor</th>
+		    					<th>Price</th>
+		    				</tr>
+		    				{this.renderVendorRows(row)}
+		    			</tbody>
+		    			</table>
+
+		    			<button
+		    			onClick={this.edit.bind(row)}
+		    			title= "Edit"
+		    			>Edit </button>
+		    			<button
+		    			onClick={this.remove.bind(row)}
+		    			>Remove </button>
+                	</div>
+                );
+		    }}
+		  /></div>);
+
 	}
 }
 
