@@ -1,4 +1,3 @@
-import Meteor from 'meteor/meteor'
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { withTracker } from 'meteor/react-meteor-data';
@@ -44,7 +43,7 @@ class VendorManagement extends Component {
 
 export default withTracker(() => {
   Meteor.subscribe('vendors');
-  return {
+    return {
       vendors: Vendors.find({}).fetch(),
-  };
-})(VendorManagement);
+    };
+  })(VendorManagement);
