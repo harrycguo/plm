@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { button } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
-import IngredientsApi from '../../api/IngredientsApi.js';
-import IngredientsList from '../../api/IngredientList.js';
-import TableData from './TableData.js'
-import ReactTable from 'react-table'
+import IngredientsApi from '../../api/Ingredients/IngredientsApi.js';
+import IngredientsList from '../../api/Ingredients/IngredientList.js';
+import IngredientForm from '../forms/IngredientForm.js';
+import TableData from './TableData.js';
+import ReactTable from 'react-table';
 
 class Table extends Component {
 	
@@ -25,6 +26,7 @@ class Table extends Component {
 		console.log("edit pressed")
 		console.log(this.row._original.fullIng)
 	}
+	
 	remove() {
 		console.log("remove pressed")
 		console.log(this.row._original.fullIng)

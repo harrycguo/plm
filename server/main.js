@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import '../imports/api/Vendors/vendors.js';
-import IngredientsList from '../imports/api/IngredientList.js';
-import '../imports/api/IngredientsApi.js';
+import IngredientsList from '../imports/api/Ingredients/IngredientList.js';
+import '../imports/api/Ingredients/IngredientsApi.js';
 import '../imports/startup/server';
 
 

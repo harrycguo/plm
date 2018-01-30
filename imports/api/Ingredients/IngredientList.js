@@ -1,5 +1,12 @@
 import { Mongo } from 'meteor/mongo';
 
+  // return (
+  //           <div>
+  //                <IngredientForm ingredientId={this.row._original.fullIng._id}/>
+  //           </div>
+  //       );
+
+
 IngredientsList = new Mongo.Collection('ingredients');
 //IngredientsList.remove({}) // remove every ingredient from the collection
 
@@ -11,7 +18,8 @@ Schemas.Ingredient = new SimpleSchema({
   name: {type: String},
   package: {type: Number},
   temperatureState: {type: String},
-  vendors: {type: [Object]}
+  vendors: {type: [Object], minCount: 1}, //An ingredient needs at least one vendor that sells it
+  quantity: {type: Number}
   // quantity: {type: Number}
 });
 

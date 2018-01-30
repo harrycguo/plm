@@ -59,7 +59,7 @@ export function convertToFrontend(ingredient, ingredientsList) {
 			name: ingredient.name, 
 			temp: ingredient.temperatureState, 
 			pkg: ingredient.package, 
-			qty: ingredient.package, 
+			qty: ingredient.quantity, 
 			vendors: VendArray,
 			fullIng: ingredient
 	}

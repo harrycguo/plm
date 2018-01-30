@@ -11,9 +11,10 @@ export default class IngredientForm extends Component {
 	    const text = ReactDOM.findDOMNode(this.refs.ingredientName).value.trim();
 	    const temperatureState = ReactDOM.findDOMNode(this.refs.temperatureState).value.trim();
 	    const packaging = ReactDOM.findDOMNode(this.refs.packaging).value.trim();
+	    const quantity = ReactDOM.findDOMNode(this.refs.ingredientQuantity).value.trim();
 
 	    //Have to implement vendor selection
-	    Meteor.call("addIngredient",text,parseInt(packaging),temperatureState,[]);
+	    Meteor.call("addIngredient",text,parseInt(packaging),temperatureState,[],quantity);
   	}
   render() {
     return (
@@ -37,6 +38,11 @@ export default class IngredientForm extends Component {
 			   <option value = "Room Temperature">Room Temperature</option>
 			   <option value = "Refrigerated">Refrigerated</option>
 			</select>
+			<input
+              type="text"
+              ref="ingredientQuantity"
+              placeholder="Enter quantity"
+            />
 			<input type="submit" value="Submit"/>
       </form>
       <VendorForm />

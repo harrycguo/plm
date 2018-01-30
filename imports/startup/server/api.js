@@ -1,4 +1,4 @@
 import '../../api/Users/server/methods.js';
 import '../../api/Vendors/vendors.js';
-import '../../api/IngredientList.js'
-import '../../api/IngredientsApi.js'
+import '../../api/Ingredients/IngredientList.js'
+import '../../api/Ingredients/IngredientsApi.js'

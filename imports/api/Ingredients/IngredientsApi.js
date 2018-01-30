@@ -1,14 +1,16 @@
 import { Meteor } from 'meteor/meteor';
+import { check } from 'meteor/check'
 
 //IngredientsList API
 Meteor.methods({
-    'addIngredient': function(ingredientName,ingredientPackage,ingredientTemperatureState,ingredientVendors){
+    'addIngredient': function(ingredientName,ingredientPackage,ingredientTemperatureState,ingredientVendors,ingredientQuantity){
     	// if (Roles.userIsInRole( Meteor.userId(),'admin')) {
     		IngredientsList.insert({
             	name: ingredientName,
             	package: ingredientPackage,
             	temperatureState: ingredientTemperatureState,
-            	vendors: ingredientVendors
+            	vendors: ingredientVendors,
+                quantity: ingredientQuantity
         	});
     	// }
     },
@@ -21,33 +23,41 @@ Meteor.methods({
     	// }
     },
     'editName': function(selectedIngredient,newName) {
-    	if (Roles.userIsInRole( Meteor.userId(),'admin')) {
-    		//check(selectedIngredient, String);
+    	// if (Roles.userIsInRole( Meteor.userId(),'admin')) {
+    		check(selectedIngredient, String);
     		//Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
-    		//check(newName,String);
+    		check(newName,String);
     		IngredientsList.update({ _id: selectedIngredient},{$set : {name: newName}});
-    	}
+    	
     },
     'editPackage': function(selectedIngredient,newPackage) {
-    	if (Roles.userIsInRole( Meteor.userId(),'admin')) {
-    		check(selectedIngredient, Number);
+    	// if (Roles.userIsInRole( Meteor.userId(),'admin')) {
+    		check(selectedIngredient, String);
     		//Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
-    		check(newPackage,String);
-    		IngredientsList.update({ _id: selectedIngredient},{$set : {name: newPackage}});
-    	}
+    		check(newPackage,Number);
+    		IngredientsList.update({ _id: selectedIngredient},{$set : {package: newPackage}});
+    	
     },
     'editTemperatureState': function(selectedIngredient,newTemperatureState) {
-    	if (Roles.userIsInRole( Meteor.userId(),'admin')) {
+    	// if (Roles.userIsInRole( Meteor.userId(),'admin')) {
     		check(selectedIngredient, String);
     		//Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
     		check(newTemperatureState,String);
-    		IngredientsList.update({ _id: selectedIngredient},{$set : {name: newTemperatureState}});
-    	}
+    		IngredientsList.update({ _id: selectedIngredient},{$set : {temperatureState: newTemperatureState}});
+    	
     },
     'editVendors': function(selectedIngredient,newVendors) {
-    	if (Roles.userIsInRole( Meteor.userId(),'admin')) {
+    	// if (Roles.userIsInRole( Meteor.userId(),'admin')) {
     		check(newVendors,String);
-    		IngredientsList.update({ _id: selectedIngredient},{$set : {name: newVendors}});
-    	}
+    		IngredientsList.update({ _id: selectedIngredient},{$set : {vendors: newVendors}});
+    	
+    },
+    'editQuantity': function(selectedIngredient,newQuantity) {
+        // if (Roles.userIsInRole( Meteor.userId(),'admin')) {
+            check(selectedIngredient, String);
+            //Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
+            check(newQuantity,Number);
+            IngredientsList.update({ _id: selectedIngredient},{$set : {quantity: newQuantity}});
+        
     }
 });
