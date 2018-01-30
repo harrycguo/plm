@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import VendorForm from './VendorForm.js';
+import { Link } from 'react-router-dom'
+import { Bert } from 'meteor/themeteorchef:bert';
 
 // Task component - represents a single todo item
 export default class IngredientForm extends Component {
@@ -15,6 +17,7 @@ export default class IngredientForm extends Component {
 
 	    //Have to implement vendor selection
 	    Meteor.call("addIngredient",text,parseInt(packaging),temperatureState,[],quantity);
+	    Bert.alert("Ingredient added!")
   	}
   render() {
     return (
@@ -44,6 +47,7 @@ export default class IngredientForm extends Component {
               placeholder="Enter quantity"
             />
 			<input type="submit" value="Submit"/>
+			<Link to='/table'>Return to Table</Link>
       </form>
       <VendorForm />
       </div>

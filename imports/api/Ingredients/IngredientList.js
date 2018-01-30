@@ -18,7 +18,7 @@ Schemas.Ingredient = new SimpleSchema({
   name: {type: String},
   package: {type: Number},
   temperatureState: {type: String},
-  vendors: {type: [Object], minCount: 1}, //An ingredient needs at least one vendor that sells it
+  vendors: {type: [Object]}, //An ingredient needs at least one vendor that sells it
   quantity: {type: Number}
   // quantity: {type: Number}
 });

@@ -31,6 +31,7 @@ export const renderRoutes = () => (
     <Route path="/successLoginAdmin" component={SuccessLoginAdmin}/>
     <Route path="/successLoginUser" component={Table}/>
     <Route path="/table" component={Table}/>
+    <Route path="/addingredient" component={IngredientForm}/>
   </div>
 </Router>
 );

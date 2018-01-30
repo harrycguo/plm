@@ -6,6 +6,7 @@ import IngredientsList from '../../api/Ingredients/IngredientList.js';
 import IngredientForm from '../forms/IngredientForm.js';
 import TableData from './TableData.js';
 import ReactTable from 'react-table';
+import { Link } from 'react-router-dom';
 
 class Table extends Component {
 	
@@ -46,7 +47,10 @@ class Table extends Component {
 	}
 
 	render() {
-		return (<ReactTable
+		return (
+			<ingTable>
+			<Link to='/addingredient'>Add Ingredient</Link>
+		   	<ReactTable
 		    data={this.renderRows()}
 		    filterable
 		    defaultFilterMethod={ (filter, row) => 
@@ -76,7 +80,8 @@ class Table extends Component {
                 	</div>
                 );
 		    }}
-		  />);
+		  /></ingTable>);
+
 	}
 }
 

@@ -11,6 +11,6 @@ import 'react-table/react-table.css'
 // Meteor.subscribe('ingredients');
 
 Meteor.startup(() => {
-  // render(renderRoutes(), document.getElementById('render-target'));
-  render(<Table />, document.getElementById('render-target'));
+  render(renderRoutes(), document.getElementById('render-target'));
+  // render(<Table />, document.getElementById('render-target'));
 });
