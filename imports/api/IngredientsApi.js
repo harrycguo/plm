@@ -14,7 +14,7 @@ Meteor.methods({
     },
     'removeIngredient': function(selectedIngredient) {
     	// if (Roles.userIsInRole( Meteor.userId(),'admin')) {
-    		check(selectedIngredient, String);//Ensure the argument is a string
+    		// check(selectedIngredient, String);//Ensure the argument is a string
     		var currentUserId = Meteor.userId;
     		//Add a check for admin. If not, don't allow deletion.
     		IngredientsList.remove({_id: selectedIngredient});
@@ -22,9 +22,9 @@ Meteor.methods({
     },
     'editName': function(selectedIngredient,newName) {
     	if (Roles.userIsInRole( Meteor.userId(),'admin')) {
-    		check(selectedIngredient, String);
+    		//check(selectedIngredient, String);
     		//Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
-    		check(newName,String);
+    		//check(newName,String);
     		IngredientsList.update({ _id: selectedIngredient},{$set : {name: newName}});
     	}
     },
