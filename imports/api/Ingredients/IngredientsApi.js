@@ -34,7 +34,7 @@ Meteor.methods({
     	// if (Roles.userIsInRole( Meteor.userId(),'admin')) {
     		check(selectedIngredient, String);
     		//Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
-    		check(newPackage,Number);
+    		check(newPackage,String);
     		IngredientsList.update({ _id: selectedIngredient},{$set : {package: newPackage}});
     	
     },

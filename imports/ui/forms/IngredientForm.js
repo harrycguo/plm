@@ -3,6 +3,8 @@ import ReactDOM from 'react-dom';
 import VendorForm from './VendorForm.js';
 import { Link } from 'react-router-dom'
 import { Bert } from 'meteor/themeteorchef:bert';
+// import { Vendors } from '../Vendors/vendors.js';
+import convertPackageString from '../../utils/convertPackageString.js'
 
 // Task component - represents a single todo item
 export default class IngredientForm extends Component {
@@ -13,7 +15,7 @@ export default class IngredientForm extends Component {
 	    const text = ReactDOM.findDOMNode(this.refs.ingredientName).value.trim();
 	    const temperatureState = ReactDOM.findDOMNode(this.refs.temperatureState).value.trim();
 	    const packaging = ReactDOM.findDOMNode(this.refs.packaging).value.trim();
-	    const quantity = ReactDOM.findDOMNode(this.refs.ingredientQuantity).value.trim();
+	    const quantity = ReactDOM.findDOMNode(this.refs.ingredientQuantity).value.trim() * convertPackageString(packaging);
 
 	    //Have to implement vendor selection
 	    Meteor.call("addIngredient",text,parseInt(packaging),temperatureState,[],quantity);
@@ -29,12 +31,12 @@ export default class IngredientForm extends Component {
               placeholder="Enter ingredient name"
             />
 			<select id = "selPackaging" ref="packaging">
-			   <option value = "50">Sack (50 lbs)</option>
-			   <option value = "50">Pail (50 lbs)</option>
-			   <option value = "500">Drum (500 lbs)</option>
-			   <option value = "2000">Supersack (2000 lbs)</option>
-			   <option value = "50000">Truckload (50000)</option>
-			   <option value = "280000">Railcar (280000)</option>
+			   <option value = "Sack">Sack (50 lbs)</option>
+			   <option value = "Pail">Pail (50 lbs)</option>
+			   <option value = "Drum">Drum (500 lbs)</option>
+			   <option value = "Supersack">Supersack (2000 lbs)</option>
+			   <option value = "Truckload">Truckload (50000)</option>
+			   <option value = "Railcar">Railcar (280000)</option>
 			</select>
 			<select id = "selTemperatureState" ref="temperatureState">
 			   <option value = "Frozen">Frozen</option>
@@ -44,12 +46,11 @@ export default class IngredientForm extends Component {
 			<input
               type="text"
               ref="ingredientQuantity"
-              placeholder="Enter quantity"
+              placeholder="How many packages"
             />
 			<input type="submit" value="Submit"/>
 			<Link to='/table'>Return to Table</Link>
       </form>
-      <VendorForm />
       </div>
     );
   }
