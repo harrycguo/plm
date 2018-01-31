@@ -1,12 +1,5 @@
 import { Mongo } from 'meteor/mongo';
 
-  // return (
-  //           <div>
-  //                <IngredientForm ingredientId={this.row._original.fullIng._id}/>
-  //           </div>
-  //       );
-
-
 IngredientsList = new Mongo.Collection('ingredients');
 //IngredientsList.remove({}) // remove every ingredient from the collection
 
@@ -19,13 +12,21 @@ Schemas.Ingredient = new SimpleSchema({
   package: {type: String},
   temperatureState: {type: String},
   vendors: {type: [Object]}, //minCount: 1} //An ingredient needs at least one vendor that sells it
-  quantity: {type: Number}
+  numPackages: {type: Number, min: 1},
+  quantity: {type: Number, min: 1}
   // quantity: {type: Number}
 });
 
 //Attach a schema to the collection for automatic validation on insert/update operations
 IngredientsList.attachSchema(Schemas.Ingredient);
 
+// var cursor = IngredientsList.find();
+// cursor.observeChanges({
+//     changed: function(new, old) {
+//        // This code runs when a new object "object" was added to collection.
+
+//     }
+// });
 export default IngredientsList;
 
 if(Meteor.isServer) {

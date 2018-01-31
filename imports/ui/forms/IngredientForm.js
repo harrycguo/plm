@@ -1,25 +1,56 @@
-import React, { Component } from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import VendorForm from './VendorForm.js';
+import { withTracker } from 'meteor/react-meteor-data';
 import { Link } from 'react-router-dom'
 import { Bert } from 'meteor/themeteorchef:bert';
-// import { Vendors } from '../Vendors/vendors.js';
-import convertPackageString from '../../utils/convertPackageString.js'
+import { Vendors } from '../../api/Vendors/vendors.js';
+import convertPackageString from '../../utils/conversions.js';
+import { createContainer } from 'meteor/react-meteor-data'
+// import isInt from '../../utils/checks.js';
 
 // Task component - represents a single todo item
-export default class IngredientForm extends Component {
+export class IngredientForm extends Component {
+	constructor(props) {
+		super(props);
+	}
+
 	handleSubmit(event) {
 	    event.preventDefault();
-	 
+
 	    // Find the text field via the React ref
 	    const text = ReactDOM.findDOMNode(this.refs.ingredientName).value.trim();
 	    const temperatureState = ReactDOM.findDOMNode(this.refs.temperatureState).value.trim();
 	    const packaging = ReactDOM.findDOMNode(this.refs.packaging).value.trim();
-	    const quantity = ReactDOM.findDOMNode(this.refs.ingredientQuantity).value.trim() * convertPackageString(packaging);
+	    const numPackages = ReactDOM.findDOMNode(this.refs.ingredientQuantity).value.trim();
+	    const quantity = numPackages * convertPackageString(packaging); //in Lbs
+	    const vendorId = ReactDOM.findDOMNode(this.refs.vendors).value.trim();
+
+		var vendor;
+		for(var i = 0; i < this.props.vendors.length; i++) {
+   		 if (this.props.vendors[i]._id == vendorId) {
+      	  vendor = this.props.vendors[i];
+      	  break;
+    	 }
+		}
 
 	    //Have to implement vendor selection
-	    Meteor.call("addIngredient",text,parseInt(packaging),temperatureState,[],quantity);
-	    Bert.alert("Ingredient added!")
+	    Meteor.call("addIngredient",text,packaging,temperatureState,[vendor],numPackages,quantity, 
+	    	(error) => {
+	    		if (error) {
+	    			Bert.alert(error.reason,'danger');
+	    		}
+	    		else {
+	    			Bert.alert('Ingredient added','success');
+	    		}
+	    });
+  	}
+  	renderOptions() {
+  		let items = [];
+  		for (i = 0; i < this.props.vendors.length; i++) {
+  			items.push(<option key={i} value={this.props.vendors[i]._id}>{this.props.vendors[i].vendor}</option>);
+  		}
+  		return items;
   	}
   render() {
     return (
@@ -48,6 +79,10 @@ export default class IngredientForm extends Component {
               ref="ingredientQuantity"
               placeholder="How many packages"
             />
+            <select id = "selVendor" ref="vendors">
+            	<option value = "null">---</option>
+            	{ this.renderOptions() }
+			</select>
 			<input type="submit" value="Submit"/>
 			<Link to='/table'>Return to Table</Link>
       </form>
@@ -55,3 +90,10 @@ export default class IngredientForm extends Component {
     );
   }
 }
+
+export default withTracker(() => {
+  Meteor.subscribe('vendors');
+  return {
+      vendors: Vendors.find({}).fetch(),
+  };
+})(IngredientForm);
