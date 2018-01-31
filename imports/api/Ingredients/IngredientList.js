@@ -1,12 +1,5 @@
 import { Mongo } from 'meteor/mongo';
 
-  // return (
-  //           <div>
-  //                <IngredientForm ingredientId={this.row._original.fullIng._id}/>
-  //           </div>
-  //       );
-
-
 IngredientsList = new Mongo.Collection('ingredients');
 //IngredientsList.remove({}) // remove every ingredient from the collection
 
@@ -31,7 +24,7 @@ IngredientsList.attachSchema(Schemas.Ingredient);
 // cursor.observeChanges({
 //     changed: function(new, old) {
 //        // This code runs when a new object "object" was added to collection.
-       
+
 //     }
 // });
 export default IngredientsList;

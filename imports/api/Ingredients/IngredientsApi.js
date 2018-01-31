@@ -7,13 +7,14 @@ const temperatureStates = ["frozen","refrigerated","room temperature"];
 
 //IngredientsList API
 Meteor.methods({
-    'addIngredient': function(ingredientName,ingredientPackage,ingredientTemperatureState,ingredientVendors,ingredientQuantity){
+    'addIngredient': function(ingredientName,ingredientPackage,ingredientTemperatureState,ingredientVendors,ingredientNumPackages,ingredientQuantity){
     	// if (Roles.userIsInRole( Meteor.userId(),'admin')) {
     		IngredientsList.insert({
             	name: ingredientName,
             	package: ingredientPackage,
             	temperatureState: ingredientTemperatureState,
             	vendors: ingredientVendors,
+                numPackages: ingredientNumPackages,
                 quantity: ingredientQuantity
         	});
     	// }

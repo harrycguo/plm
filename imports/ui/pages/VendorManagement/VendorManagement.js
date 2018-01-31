@@ -1,4 +1,4 @@
-import Meteor from 'meteor/meteor'
+import { Meteor } from 'meteor/meteor'
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 import { withTracker } from 'meteor/react-meteor-data';
