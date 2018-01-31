@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Button, FormGroup, ControlLabel } from 'react-bootstrap';
 import validate from '../../../modules/validate';
+import Papa from 'papaparse'
 
 // App component - represents the whole app
 class BulkImport extends Component {
@@ -10,6 +11,7 @@ class BulkImport extends Component {
         console.log("User = ")
         console.log(Meteor.user());
         this.uploadFile = this.uploadFile.bind(this);
+        let file
     }
 
     componentDidMount() {
@@ -34,12 +36,26 @@ class BulkImport extends Component {
       }
     
       handleSubmit() {
-        
+        console.log(file)
       }
 
       uploadFile(event){
-        let file = event.target.files[0];
-        console.log(event.target.files);
+        file = event.target.files[0];
+        console.log(file);
+        let data
+        
+        Papa.parse(file, {
+          dynamicTyping: true,
+          complete: function(results) {
+            data = results;
+            console.log(data)
+          }
+        });
+
+      
+
+    
+        
         
         // if (file) {
         //   let data = new FormData();
