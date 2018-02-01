@@ -90,6 +90,8 @@ body {
     border: none;
     position: relative;
   }
+
+  tr, th, td { padding: 5px; } 
    
   li {
     position: relative;
