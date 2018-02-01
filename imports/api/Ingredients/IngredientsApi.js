@@ -15,7 +15,7 @@ Meteor.methods({
 
         var vendorInfoArr = [{
             vendor: ingVendor,
-            price: ingPrice
+            price: Number(ingPrice)
         }];
 
 		IngredientsList.insert({
@@ -23,21 +23,23 @@ Meteor.methods({
         	package: ingPackage.toLowerCase(),
         	temperatureState: ingTemperatureState.toLowerCase(),
         	vendorInfo: vendorInfoArr,
-            numPackages: ingNumPackages,
-            quantity: convertPackageString(ingPackage) * ingNumPackages
+            numPackages: Number(ingNumPackages),
+            quantity: Number(convertPackageString(ingPackage) * ingNumPackages)
             // prices: priceTuples
         });
     },
     //This method will check to see if the ingredient already exists. If not, then call addIngredient.
     'addToExistingIngredient': function(ingName,ingPackage,ingTemperatureState,ingVendor,ingNumPackages,ingPrice){
         var existingIng = IngredientsList.findOne({name: ingName});
+        console.log(existingIng)
+
         //If ingredient exists, update it instead of adding a new database entry
-        if(existingIng.length != 0) {
-            IngredientsList.update({ _id: existingIng._id }, {$inc : {numPackages: ingNumPackages}});
+        if(existingIng !== undefined) {
+            IngredientsList.update({ _id: existingIng._id }, {$inc : {numPackages: Number(ingNumPackages)}});
             if(!containsVendor(ingVendor,existingIng.vendorInfo)) {
                 existingIng.vendorInfo.push({
                     vendor: ingVendor,
-                    price: ingPrice
+                    price: Number(ingPrice)
                 });
                 IngredientsList.update({ _id: existingIng._id }, {
                     $set : {vendorInfo: existingIng.vendorInfo}});
@@ -87,7 +89,7 @@ Meteor.methods({
         // if (Roles.userIsInRole( Meteor.userId(),'admin')) {
         if (isInt(newNumPackages)) {
             check(newNumPackages,Number);
-            IngredientsList.update({ _id: selectedIngredient},{$set : {numPackages: newNumPackages}});
+            IngredientsList.update({ _id: selectedIngredient},{$set : {numPackages: Number(newNumPackages)}});
         }        
         else throw new Meteor.Error('Invalid number of packages','Number of packages must be an integer');
     },
@@ -110,7 +112,7 @@ Meteor.methods({
                 {
                     $set : 
                     {
-                        "vendorInfo.$.price" : newPrice 
+                        "vendorInfo.$.price" : Number(newPrice) 
                     }
                 });
             }

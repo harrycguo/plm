@@ -59,8 +59,6 @@ class CreateUser extends Component {
             },
             submitHandler() { component.handleSubmit(); },
           });
-
-
       }
    
    
