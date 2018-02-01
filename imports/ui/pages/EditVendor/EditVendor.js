@@ -64,6 +64,7 @@ class EditVendor extends Component {
           this.props.match.params.vendorID,
             this.name.value,
             this.contact.value,
+            this.props.location.state.FCC,
             this.FCC.value,
             function(error,result){
               if(error){

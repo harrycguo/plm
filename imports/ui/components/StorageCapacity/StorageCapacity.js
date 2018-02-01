@@ -11,6 +11,27 @@ class StorageCapacity extends Component {
     }
  
     render() {
+
+    let user = Meteor.user();
+    let button = null;
+
+    if (Roles.userIsInRole(user, ['admin'])) {
+      button = <Col><Link to={{
+        pathname: '/editCapacity/'+this.props.sc._id, 
+        state: {
+          type: this.props.sc.type,
+          capacity: this.props.sc.capacity,
+          }
+        }}>
+          <button>
+          Edit Capacity
+          </button>
+        </Link></Col>;
+    } else {
+      button = <Col></Col>;
+    }
+
+
       return (     
         <div className="container">
       
@@ -18,17 +39,10 @@ class StorageCapacity extends Component {
             <Col><b>Location:</b> {this.props.sc.type}</Col>
             <Col><b>Total Capacity:</b> {this.props.sc.capacity} lbs</Col>
             <Col><b>Capacity Used:</b> {this.props.sc.used} </Col>
-            <Col><Link to={{
-          pathname: '/editCapacity/'+this.props.sc._id, 
-          state: {
-            type: this.props.sc.type,
-            capacity: this.props.sc.capacity,
-            }
-          }}>
-            <button>
-            Edit Capacity
-            </button>
-          </Link></Col>
+            {button}
+
+
+            
         </Row>
           
         </div>

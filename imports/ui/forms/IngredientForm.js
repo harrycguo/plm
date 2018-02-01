@@ -15,7 +15,9 @@ import {selectStyle,inputStyle} from './Styles.js';
 export class IngredientForm extends Component {
 	constructor(props) {
 		super(props);
+		this.handleSubmit = this.handleSubmit.bind(this);
 	}
+
 
 	handleSubmit(event) {
 	    event.preventDefault();
@@ -67,7 +69,17 @@ export class IngredientForm extends Component {
   		return items;
   	}
   render() {
+	let user = Meteor.user();
+	let returnLink = null;
+	
+	if (Roles.userIsInRole(user, ['admin'])) {
+		returnLink = <Link to='/adminViewInventory'>Return to Table</Link>
+	  } else {
+		returnLink = <Link to='/userViewInventory'>Return to Table</Link>
+	  }
+
     return (
+
       <div>
       <form className="new-ingredient" onSubmit={this.handleSubmit.bind(this)}>
             <input
@@ -106,7 +118,8 @@ export class IngredientForm extends Component {
               style={inputStyle}
             />
 			<input type="submit" value="Submit"/>
-			<Link to='/userViewInventory'>Return to Table</Link>
+			{returnLink}
+			
       </form>
       </div>
     );

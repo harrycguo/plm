@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Table from '../../table/Table.js'
-import StorageCapacityWrapperNonEdit from '../../components/StorageCapacityWrapper/StorageCapacityWrapperNonEdit.js'
+import StorageCapacityWrapper from '../../components/StorageCapacityWrapper/StorageCapacityWrapper.js'
  
 // App component - represents the whole app
 class UserViewInventory extends Component {
@@ -22,7 +22,7 @@ class UserViewInventory extends Component {
         </header>
         <li><Link to='/userHomepage'>User Home</Link></li>
         <li><Link to='/addingredient'>Order Ingredient</Link></li>
-        <StorageCapacityWrapperNonEdit/>
+        <StorageCapacityWrapper/>
         <Table/>
 
       </div>

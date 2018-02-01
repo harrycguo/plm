@@ -25,8 +25,6 @@ class AdminHomepage extends Component {
         <li><Link to='/vendorManagement'>Vendor Management</Link></li>
         <li><Link to='/bulkImport'>Bulk Import</Link></li>
         <li><Link to='/logout'>Logout</Link></li>
-        
-      <StorageCapacityWrapper/>
 
       </div>
     );
