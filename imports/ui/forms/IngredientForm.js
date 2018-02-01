@@ -28,12 +28,15 @@ export class IngredientForm extends Component {
 	    const packaging = ReactDOM.findDOMNode(this.refs.packaging).value.trim();
 	    const numPackages = ReactDOM.findDOMNode(this.refs.ingredientQuantity).value.trim();
 	    const vendorId = ReactDOM.findDOMNode(this.refs.vendors).value.trim();
-	    const priceVal = ReactDOM.findDOMNode(this.refs.ingredientPrice).value.trim();
+	    const price = parseInt(ReactDOM.findDOMNode(this.refs.ingredientPrice).value.trim());
 
+	    // console.log(priceVal);
     	// var priceObj;
 		if (vendorId == "null") {
 			Bert.alert('Please specify a vendor!','danger');
-			vendor = null;
+		}
+		else if (!price) {
+			Bert.alert('Please specify a price!','danger');
 		}
 		else {
 			for(var i = 0; i < this.props.vendors.length; i++) {
@@ -43,14 +46,20 @@ export class IngredientForm extends Component {
 		      	  break;
 		    	 }
 			}
-			var vendorArr = [vendor];
-			var priceArr = [priceVal];
+			// var vendorArr = [vendor];
+			// var priceArr = [priceVal];
 
-			console.log(vendorArr);
+			// console.log(vendorArr);
 			// console.log(priceObj);
 
 		    //Have to implement vendor selection
-		    Meteor.call("addIngredient",name,packaging,temperatureState,vendorArr,numPackages,priceArr,  
+		    Meteor.call("addIngredient",
+		    	name,
+		    	packaging,
+		    	temperatureState,
+		    	vendor,
+		    	numPackages,
+		    	price,  
 		    	(error) => {
 		    		if (error) {
 		    			Bert.alert(error.reason,'danger');
@@ -108,7 +117,6 @@ export class IngredientForm extends Component {
               style={inputStyle}
             />
             <select id = "selVendor" ref="vendors">
-            	<option value = "null">---</option>
             	{ this.renderOptions() }
 			</select>
 			<input

@@ -4,51 +4,43 @@ import { Vendors } from '../Vendors/vendors.js';
 import convertPackageString from '../../utils/conversions.js';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { isInt } from '../../utils/checks.js';
+import { containsVendor , indexOfVendorWithId } from '../../utils/checks.js';
 
 // Meteor.subscribe('vendors');
 
 //IngredientsList API
 Meteor.methods({
-    'addIngredient': function(ingName,ingPackage,ingTemperatureState,ingVendors,ingNumPackages,ingPrices){
+    'addIngredient': function(ingName,ingPackage,ingTemperatureState,ingVendor,ingNumPackages,ingPrice){
     	// if (Roles.userIsInRole( Meteor.userId(),'admin')) {
 
-        var priceTuples = [];
-        for (i = 0; i < ingPrices.length; i++) {
-            priceTuples.push({
-                vendorId: ingVendors[i]._id,
-                vendorPrice: ingPrices[i]
-            });
-        }
+        var vendorInfoArr = [{
+            vendor: ingVendor,
+            price: ingPrice
+        }];
 
 		IngredientsList.insert({
         	name: ingName,
         	package: ingPackage.toLowerCase(),
         	temperatureState: ingTemperatureState.toLowerCase(),
-        	vendors: ingVendors,
+        	vendorInfo: vendorInfoArr,
             numPackages: ingNumPackages,
-            quantity: convertPackageString(ingPackage) * ingNumPackages,
-            prices: priceTuples
+            quantity: convertPackageString(ingPackage) * ingNumPackages
+            // prices: priceTuples
         });
     },
     //This method will check to see if the ingredient already exists. If not, then call addIngredient.
     'addToExistingIngredient': function(ingName,ingPackage,ingTemperatureState,ingVendor,ingNumPackages,ingPrice){
         var existingIng = IngredientsList.findOne({name: ingName});
         //If ingredient exists, update it instead of adding a new database entry
-        console.log(existingIng.vendors);
-        if(existingIng.length != 0 & isInt(ingNumPackages)) {
-            existingIng.vendors.push(ingVendor);
-            existingIng.prices.push({
-                vendorId: ingVendor._id,
-                vendorPrice: ingPrice
-            });
+        if(existingIng.length != 0) {
             IngredientsList.update({ _id: existingIng._id }, {$inc : {numPackages: ingNumPackages}});
-            if(!existingIng.vendors.includes(ingVendor)) {
-                // existingIng.vendors.push(ingVendor);
-                // console.log(existingIng.vendors);
+            if(!containsVendor(ingVendor,existingIng.vendorInfo)) {
+                existingIng.vendorInfo.push({
+                    vendor: ingVendor,
+                    price: ingPrice
+                });
                 IngredientsList.update({ _id: existingIng._id }, {
-                    $set : {vendors: existingIng.vendors}});
-                IngredientsList.update({ _id: existingIng._id }, {
-                    $set : {prices: existingIng.prices}});
+                    $set : {vendorInfo: existingIng.vendorInfo}});
             }
         }
         else {
@@ -97,35 +89,31 @@ Meteor.methods({
             check(newNumPackages,Number);
             IngredientsList.update({ _id: selectedIngredient},{$set : {numPackages: newNumPackages}});
         }        
-        //Else throw error
+        else throw new Meteor.Error('Invalid number of packages','Number of packages must be an integer');
     },
     'editPrice': function(selectedIngredient,vendorId,newPrice) {
         // if (Roles.userIsInRole( Meteor.userId(),'admin')) {
         var ingredient = IngredientsList.find({ _id: selectedIngredient}).fetch();
-        var ingPrices = ingredient[0].prices;
-        check(vendorId,String);
+        var vendorInfo = ingredient[0].vendorInfo;
+        check(vendorInfo,Array);
         check(newPrice,Number);
-        for (i = 0; i < ingPrices.length; i++) {
-            if (ingPrices[i].vendorId == vendorId) {
-                // prices[i] = newPrice;
-                IngredientsList.update({ _id: selectedIngredient , 
-                    prices : {$elemMatch : {vendorId : ingPrices[i].vendorId}}},{
-                        $set : {"prices.$.vendorPrice" : newPrice }});
+
+        //Perhaps I should return an error if the ingredient price cannot be changed because the vendor
+        //specified doesn't exist.
+
+        for (i = 0; i < vendorInfo.length; i++) {
+            if (vendorInfo[i].vendor._id == vendorId) {
+                IngredientsList.update({ 
+                    _id: selectedIngredient , 
+                    "vendorInfo.vendor._id" : vendorId 
+                },
+                {
+                    $set : 
+                    {
+                        "vendorInfo.$.price" : newPrice 
+                    }
+                });
             }
         }
     }
-      //   'addVendor': function(selectedIngredient,newVendor) {
-  //    // if (Roles.userIsInRole( Meteor.userId(),'admin')) {
-
-        // check(newVendor,Object);
-        // IngredientsList.update({ _id: selectedIngredient},{$set : {vendors: newVendor}});
-        
-  //   },
-  //   'removeVendor': function(selectedIngredient,newVendor) {
-  //       // if (Roles.userIsInRole( Meteor.userId(),'admin')) {
-
-  //       check(newVendor,Object);
-  //       IngredientsList.update({ _id: selectedIngredient},{$set : {vendors: newVendor}});
-        
-  //   },
 });

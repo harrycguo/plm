@@ -112,17 +112,11 @@ export const HeaderValues = [
 
 export function convertToFrontend(ingredient, ingredientsList) {
 	VendArray = new Array()
-	ingredient.vendors.forEach(function(vendor){
-		if(vendor != null && vendor._id != null) {
-			var price = -1;
-			ingredient.prices.forEach(function(priceElement) {
-				if(priceElement.vendorId == vendor._id) {
-					price = priceElement.vendorPrice;
-				}
-			})
-			if(price != -1) {
-				VendArray.push({_id: vendor._id, name: vendor.vendor, cost: price});
-			}
+	ingredient.vendorInfo.forEach(function(info){
+		var vendor = info.vendor;
+		console.log(vendor);
+		if(vendor != null && vendor._id != null && info.price != -1) {
+			VendArray.push({_id: vendor._id, name: vendor.vendor, cost: info.price});
 		}
 	});
 	
