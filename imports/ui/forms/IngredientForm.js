@@ -84,7 +84,7 @@ export class IngredientForm extends Component {
             	{ this.renderOptions() }
 			</select>
 			<input type="submit" value="Submit"/>
-			<Link to='/table'>Return to Table</Link>
+			<Link to='/userViewInventory'>Return to Table</Link>
       </form>
       </div>
     );

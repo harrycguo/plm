@@ -20,7 +20,7 @@ class AdminHomepage extends Component {
         <header>
           <h1>Admin Home Page</h1>
         </header>
-        <li><Link to='/table'>Manage Inventory</Link></li>
+        <li><Link to='/adminViewInventory'>Manage Inventory</Link></li>
         <li><Link to='/createUser'>Create New User</Link></li>
         <li><Link to='/vendorManagement'>Vendor Management</Link></li>
         <li><Link to='/bulkImport'>Bulk Import</Link></li>

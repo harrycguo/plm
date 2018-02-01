@@ -18,6 +18,10 @@ import IngredientForm from '../../ui/forms/IngredientForm.js'
 import Table from '../../ui/table/Table.js';
 import BulkImport from '../../ui/pages/BulkImport/BulkImport.js';
 import AdminHomepage from '../../ui/pages/AdminHomepage/AdminHomepage.js'
+import UserHomepage from '../../ui/pages/UserHomepage/UserHomepage.js'
+import UserViewInventory from '../../ui/pages/UserViewInventory/UserViewInventory.js'
+import AdminViewInventory from '../../ui/pages/AdminViewInventory/AdminViewInventory.js'
+import AddIngredient from '../../ui/pages/AddIngredient/AddIngredient.js'
  
 export const renderRoutes = () => (
   <Router>
@@ -26,6 +30,7 @@ export const renderRoutes = () => (
     <Route path="/login" component={Login}/>
     <Route path="/logout" component={Logout}/>
     <Route path="/adminHomepage" component={AdminHomepage}/>
+    <Route path="/userHomepage" component={UserHomepage}/>
     <Route path="/createUser" component={CreateUser}/>
     <Route path="/vendorManagement" component={VendorManagement}/>
     <Route path="/addVendor" component={AddVendor}/>
@@ -36,7 +41,9 @@ export const renderRoutes = () => (
     <Route path="/successLoginUser" component={Table}/>
     <Route path="/bulkImport" component={BulkImport}/>
     <Route path="/table" component={Table}/>
-    <Route path="/addingredient" component={IngredientForm}/>
+    <Route path="/addingredient" component={AddIngredient}/>
+    <Route path="/userViewInventory" component={UserViewInventory}/>
+    <Route path="/adminViewInventory" component={AdminViewInventory}/>
   </div>
 </Router>
 );

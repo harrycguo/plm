@@ -56,7 +56,7 @@ class Login extends Component {
             
             //user login
             else {
-              history.push('/successLoginUser');
+              history.push('/userHomepage');
             }
           }
       });

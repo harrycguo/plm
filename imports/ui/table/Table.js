@@ -49,7 +49,7 @@ class Table extends Component {
 	render() {
 		return (
 			<div>
-			<Link to='/addingredient'>Add Ingredient</Link>
+			<li><Link to='/addingredient'>Add Ingredient</Link></li>
 		   	<ReactTable
 		    data={this.renderRows()}
 		    filterable
