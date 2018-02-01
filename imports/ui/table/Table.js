@@ -6,6 +6,7 @@ import IngredientsList from '../../api/Ingredients/IngredientList.js';
 import IngredientForm from '../forms/IngredientForm.js';
 import TableData from './TableData.js';
 import ReactTable from 'react-table';
+import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 
 class Table extends Component {
@@ -24,26 +25,114 @@ class Table extends Component {
 		));
 	}
 	edit() {
-		console.log("edit pressed")
-		console.log(this.row._original.fullIng)
+		TableData.toggleEditable()
+		this.forceUpdate()
 	}
 	
 	remove() {
-		console.log("remove pressed")
-		console.log(this.row._original.fullIng)
 		Meteor.call('removeIngredient', this.row._original.fullIng._id)
 	}
 
 	// VendArray.push({_id: 0, name: "Atlantic", cost: "$5.00"});
 	// VendArray.push({_id: 1, name: "Alliant", cost: "$4.00"})
-
+	deleteVendor(){
+		console.log("deleting")
+		console.log(this)
+	}
+	
 	renderVendorRows(row) {
+		if(TableData.editModeOn) {
+			return row.original.vendors.map(vendor => (
+				<tr key={vendor.name}>
+					<td>{vendor.name}</td>
+					<td>{vendor.cost}</td>
+					<td>
+					<button
+						onClick={this.deleteVendor.bind(vendor)}
+						title= "Remove Vendor"
+						>Delete</button>
+					</td>
+				</tr>
+			));
+		}
+		this.state = { value: '' };
+		var qty = undefined
+		var recentVendor = undefined
 		return row.original.vendors.map(vendor => (
 			<tr key={vendor.name}>
 				<td>{vendor.name}</td>
 				<td>{vendor.cost}</td>
+				<td><input type="text" onChange={ e=> {
+					qty = e.target.value;
+					recentVendor = vendor;
+				}}/></td>
+				<td>
+				<button
+					onClick={e => {
+						if(recentVendor === vendor) {
+							console.log(qty)
+							console.log(row.original.fullIng)
+							console.log(vendor)
+							console.log(this.refs)
+						}
+						
+					}}
+					title= "Remove Vendor"
+				>
+					Order Packages
+				</button>
+				</td>
 			</tr>
 		));
+	}
+
+	editVendors() {
+		if(TableData.editModeOn) {
+			return (
+				<div> Hello Add Vendor Field </div>
+			);
+		}
+		return null
+	}
+
+	renderIngredientUse(row) {
+		if(!TableData.editModeOn) {
+			return (
+				<div><span>Num lbs to use</span>
+				<button
+					onClick={this.addToCart.bind(row.original.fullIng)}
+					title= "Add To Cart"
+				>
+					Add To Cart
+				</button>
+				</div>
+
+			)
+		}
+		return null
+	}
+
+	addToCart() {
+		console.log("Add Ing to cart: ")
+		console.log(this._id)
+	}
+
+	renderButtons(_this, row) {
+		if(Meteor.user().username === "admin") {
+			return (<div>
+				<button
+				onClick={this.edit.bind(_this)}
+				title= "Edit"
+				>Toggle Edit Mode</button>
+				<button
+				onClick={this.remove.bind(row)}
+				>Remove Ingredient</button> 
+				</div>
+			)
+		}else {
+			return null
+		}
+
 	}
 
 	render() {
@@ -60,7 +149,7 @@ class Table extends Component {
 		    SubComponent={row => {
 		    	return (
 		    		<div style={{ padding: "5px" }}>
-		    			<table>
+		    			<table >
 		    			<tbody>
 		    				<tr>
 		    					<th>Vendor</th>
@@ -69,14 +158,9 @@ class Table extends Component {
 		    				{this.renderVendorRows(row)}
 		    			</tbody>
 		    			</table>
-
-		    			<button
-		    			onClick={this.edit.bind(row)}
-		    			title= "Edit"
-		    			>Edit </button>
-		    			<button
-		    			onClick={this.remove.bind(row)}
-		    			>Remove </button>
+						{this.editVendors()}
+						{this.renderIngredientUse(row)}
+		    			{this.renderButtons(this, row)}
                 	</div>
                 );
 		    }}
@@ -84,6 +168,7 @@ class Table extends Component {
 
 	}
 }
+
 
 export default withTracker(() => {
 	Meteor.subscribe('ingredients')

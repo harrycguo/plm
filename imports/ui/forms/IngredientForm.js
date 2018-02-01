@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { Bert } from 'meteor/themeteorchef:bert';
 import { Vendors } from '../../api/Vendors/vendors.js';
 import convertPackageString from '../../utils/conversions.js';
-import { createContainer } from 'meteor/react-meteor-data'
+import { createContainer } from 'meteor/react-meteor-data';
 // import isInt from '../../utils/checks.js';
 
 // Task component - represents a single todo item
