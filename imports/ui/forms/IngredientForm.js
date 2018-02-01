@@ -94,7 +94,7 @@ export class IngredientForm extends Component {
 				break;
 			}
 		}
-		
+
 		//Have to implement vendor selection
 		Meteor.call("addToExistingIngredient",
 			name,
@@ -183,6 +183,7 @@ export class IngredientForm extends Component {
 
 							name="ingredientQuantity"
 							placeholder="# of Packages"
+							className="form-control"
 						/></p>
 					</FormGroup>
 					<FormGroup>
@@ -202,6 +203,7 @@ export class IngredientForm extends Component {
 							placeholder="Enter price"
 							name="ingredientPrice"
 							onChange={this.setTwoNumberDecimal()}
+							className="form-control"
 						/></p>
 					</FormGroup>
 
