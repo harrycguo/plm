@@ -33,13 +33,18 @@ Schemas.Ingredient = new SimpleSchema({
   },
   quantity: {
     type: Number, 
-    min: 1
+    min: 50
   },
   prices: {
     type: [Object],
     minCount: 1,
     blackbox: true
   }
+  // venderInfo: {
+  //   type: [Object],
+  //   minCount: 1,
+  //   blackbox: true
+  // }
 });
 
 //Attach a schema to the collection for automatic validation on insert/update operations

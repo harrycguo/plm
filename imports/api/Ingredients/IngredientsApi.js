@@ -35,7 +35,7 @@ Meteor.methods({
         var existingIng = IngredientsList.findOne({name: ingName});
         //If ingredient exists, update it instead of adding a new database entry
         console.log(existingIng.vendors);
-        if(existingIng.length != 0 & isInt(ingNumPackages)) {
+        if(existingIng.length != 0) {
             existingIng.vendors.push(ingVendor);
             existingIng.prices.push({
                 vendorId: ingVendor._id,
@@ -128,4 +128,12 @@ Meteor.methods({
   //       IngredientsList.update({ _id: selectedIngredient},{$set : {vendors: newVendor}});
         
   //   },
+      // 'editVendor': function(selectedIngredient,vendor,newVendor) {
+    //     // if (Roles.userIsInRole( Meteor.userId(),'admin')) {
+    //     if (isInt(newNumPackages)) {
+    //         check(newNumPackages,Number);
+    //         IngredientsList.update({ _id: selectedIngredient},{$set : {numPackages: newNumPackages}});
+    //     }        
+    //     //Else throw error
+    // },
 });
