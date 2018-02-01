@@ -6,7 +6,9 @@ import { Link } from 'react-router-dom'
 import { Bert } from 'meteor/themeteorchef:bert';
 import { Vendors } from '../../api/Vendors/vendors.js';
 import convertPackageString from '../../utils/conversions.js';
-import { createContainer } from 'meteor/react-meteor-data';
+import { isExistingIngredient } from '../../utils/checks.js';
+import { createContainer } from 'meteor/react-meteor-data'
+import {selectStyle,inputStyle} from './Styles.js';
 // import isInt from '../../utils/checks.js';
 
 // Task component - represents a single todo item
@@ -19,31 +21,43 @@ export class IngredientForm extends Component {
 	    event.preventDefault();
 
 	    // Find the text field via the React ref
-	    const text = ReactDOM.findDOMNode(this.refs.ingredientName).value.trim();
+	    const name = ReactDOM.findDOMNode(this.refs.ingredientName).value.trim();
 	    const temperatureState = ReactDOM.findDOMNode(this.refs.temperatureState).value.trim();
 	    const packaging = ReactDOM.findDOMNode(this.refs.packaging).value.trim();
 	    const numPackages = ReactDOM.findDOMNode(this.refs.ingredientQuantity).value.trim();
-	    const quantity = numPackages * convertPackageString(packaging); //in Lbs
 	    const vendorId = ReactDOM.findDOMNode(this.refs.vendors).value.trim();
+	    const priceVal = ReactDOM.findDOMNode(this.refs.ingredientPrice).value.trim();
 
-		var vendor;
-		for(var i = 0; i < this.props.vendors.length; i++) {
-   		 if (this.props.vendors[i]._id == vendorId) {
-      	  vendor = this.props.vendors[i];
-      	  break;
-    	 }
+    	// var priceObj;
+		if (vendorId == "null") {
+			Bert.alert('Please specify a vendor!','danger');
+			vendor = null;
 		}
+		else {
+			for(var i = 0; i < this.props.vendors.length; i++) {
+		   		 if (this.props.vendors[i]._id == vendorId) {
+		      	  vendor = this.props.vendors[i];
+		      	  // priceObj = {vendorId: vendor._id, vendorPrice: priceVal};
+		      	  break;
+		    	 }
+			}
+			var vendorArr = [vendor];
+			var priceArr = [priceVal];
 
-	    //Have to implement vendor selection
-	    Meteor.call("addIngredient",text,packaging,temperatureState,[vendor],numPackages,quantity, 
-	    	(error) => {
-	    		if (error) {
-	    			Bert.alert(error.reason,'danger');
-	    		}
-	    		else {
-	    			Bert.alert('Ingredient added','success');
-	    		}
-	    });
+			console.log(vendorArr);
+			// console.log(priceObj);
+
+		    //Have to implement vendor selection
+		    Meteor.call("addIngredient",name,packaging,temperatureState,vendorArr,numPackages,priceArr,  
+		    	(error) => {
+		    		if (error) {
+		    			Bert.alert(error.reason,'danger');
+		    		}
+		    		else {
+		    			Bert.alert('Ingredient added','success');
+		    		}
+		    });
+		}
   	}
   	renderOptions() {
   		let items = [];
@@ -60,8 +74,9 @@ export class IngredientForm extends Component {
               type="text"
               ref="ingredientName"
               placeholder="Enter ingredient name"
+              style={inputStyle}
             />
-			<select id = "selPackaging" ref="packaging">
+			<select style={selectStyle} id = "selPackaging" ref="packaging">
 			   <option value = "Sack">Sack (50 lbs)</option>
 			   <option value = "Pail">Pail (50 lbs)</option>
 			   <option value = "Drum">Drum (500 lbs)</option>
@@ -69,7 +84,7 @@ export class IngredientForm extends Component {
 			   <option value = "Truckload">Truckload (50000)</option>
 			   <option value = "Railcar">Railcar (280000)</option>
 			</select>
-			<select id = "selTemperatureState" ref="temperatureState">
+			<select style={selectStyle} id = "selTemperatureState" ref="temperatureState">
 			   <option value = "Frozen">Frozen</option>
 			   <option value = "Room Temperature">Room Temperature</option>
 			   <option value = "Refrigerated">Refrigerated</option>
@@ -78,11 +93,18 @@ export class IngredientForm extends Component {
               type="text"
               ref="ingredientQuantity"
               placeholder="How many packages"
+              style={inputStyle}
             />
             <select id = "selVendor" ref="vendors">
             	<option value = "null">---</option>
             	{ this.renderOptions() }
 			</select>
+			<input
+              type="text"
+              ref="ingredientPrice"
+              placeholder="Enter price"
+              style={inputStyle}
+            />
 			<input type="submit" value="Submit"/>
 			<Link to='/table'>Return to Table</Link>
       </form>

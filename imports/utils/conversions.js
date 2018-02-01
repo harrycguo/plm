@@ -2,21 +2,21 @@ import { Mongo } from 'meteor/mongo';
 
 export default function convertPackageString(package) {
   var packageAsNum;
-  switch (package) {
-	  case 'Sack':
-	  case 'Pail':
+  switch (package.toLowerCase()) {
+	  case 'sack':
+	  case 'pail':
 	  	packageAsNum = 50;
 	  	break;
-	  case 'Drum':
+	  case 'drum':
 	    packageAsNum = 500;
 	    break;
-	  case 'Supersack':
+	  case 'supersack':
 	    packageAsNum = 2000;
 	    break;
-	  case 'Truckload':
+	  case 'truckload':
 	    packageAsNum = 500000;
 	    break;
-	  case 'Railcar':
+	  case 'railcar':
 	    packageAsNum = 280000;
 	    break;
 	  default:

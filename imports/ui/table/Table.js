@@ -11,6 +11,12 @@ import { Link } from 'react-router-dom';
 
 class Table extends Component {
 	
+	////////////////////////////////////////////////
+	///											 ///
+	/// Basic Renders							 ///
+	///											 ///
+	////////////////////////////////////////////////
+	
 	renderRows() {
 		var ingredientsList = new Array()
 		this.props.ingredients.forEach(function(ing) {
@@ -24,6 +30,13 @@ class Table extends Component {
 			<HeaderElement key={element._id} element={element}/>
 		));
 	}
+
+	////////////////////////////////////////////////
+	///											 ///
+	/// Standard Admin Button Renders			 ///
+	///											 ///
+	////////////////////////////////////////////////
+
 	edit() {
 		TableData.toggleEditable()
 		this.forceUpdate()
@@ -32,16 +45,35 @@ class Table extends Component {
 	remove() {
 		Meteor.call('removeIngredient', this.row._original.fullIng._id)
 	}
+	
+	renderButtons(_this, row) {
+		if(TableData.canEdit) {
+			return (<div>
+				
+				<button
+				onClick={this.remove.bind(row)}
+				>Remove Ingredient</button> 
+				</div>
+			)
+		}else {
+			return null
+		}
 
-	// VendArray.push({_id: 0, name: "Atlantic", cost: "$5.00"});
-	// VendArray.push({_id: 1, name: "Alliant", cost: "$4.00"})
+	}
+
+	////////////////////////////////////////////////
+	///											 ///
+	/// Vendor Related Rendors 					 ///
+	///											 ///
+	////////////////////////////////////////////////
+	
 	deleteVendor(){
 		console.log("deleting")
 		console.log(this)
 	}
 	
 	renderVendorRows(row) {
-		if(TableData.editModeOn) {
+		if(TableData.canEdit) {
 			return row.original.vendors.map(vendor => (
 				<tr key={vendor.name}>
 					<td>{vendor.name}</td>
@@ -86,17 +118,50 @@ class Table extends Component {
 		));
 	}
 
-	editVendors() {
-		if(TableData.editModeOn) {
+	addVendors() {
+		if(TableData.canEdit) {
+			var price = undefined
+			var vendor = undefined
 			return (
-				<div> Hello Add Vendor Field </div>
+				<tr>
+					<td>
+						<select
+							onChange={ e=> {
+								vendor = e.target.value
+							}}>
+							<option value={293}>make this a component</option>
+							<option value={1}> comp2 </option>
+						</select>
+					</td>
+					<td>
+						<input type="text" placeholder="Price" onChange= {e=> {
+							//do shit
+							price = e.target.value;
+						}}/>
+					</td>
+					<td>
+						<button
+							onClick={e => {
+								console.log(vendor)
+								console.log(price)
+							}}
+							title= "Add Vendor"
+						>Add Vendor</button>
+					</td>
+				</tr>
 			);
 		}
 		return null
 	}
 
+	////////////////////////////////////////////////
+	///											 ///
+	/// Ingredient Useage and Cart Renders		 ///
+	///											 ///
+	////////////////////////////////////////////////
+	
 	renderIngredientUse(row) {
-		if(!TableData.editModeOn) {
+		if(!TableData.canEdit) {
 			return (
 				<div><span>Num lbs to use</span>
 				<button
@@ -116,34 +181,26 @@ class Table extends Component {
 		console.log("Add Ing to cart: ")
 		console.log(this._id)
 	}
-
-	renderButtons(_this, row) {
-		if(Meteor.user().username === "admin") {
-			return (<div>
-				<button
-				onClick={this.edit.bind(_this)}
-				title= "Edit"
-				>Toggle Edit Mode</button>
-				<button
-				onClick={this.remove.bind(row)}
-				>Remove Ingredient</button> 
-				</div>
-			)
-		}else {
-			return null
-		}
-
-	}
-
+	
+	////////////////////////////////////////////////
+	///											 ///
+	/// Render me daddy							 ///
+	///											 ///
+	////////////////////////////////////////////////
+	
 	render() {
 		return (
 			<div>
 			<Link to='/addingredient'>Add Ingredient</Link>
+			<button
+				onClick={this.edit.bind(this)}
+				title= "Edit"
+				>Toggle Edit Mode</button>
 		   	<ReactTable
 		    data={this.renderRows()}
 		    filterable
 		    defaultFilterMethod={ (filter, row) => 
-		    	String(row[filter.id]).includes(filter.value)
+		    	String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase())
 			}
 		    columns={TableData.HeaderValues}
 		    SubComponent={row => {
@@ -156,9 +213,9 @@ class Table extends Component {
 		    					<th>Price</th>
 		    				</tr>
 		    				{this.renderVendorRows(row)}
+							{this.addVendors()}
 		    			</tbody>
 		    			</table>
-						{this.editVendors()}
 						{this.renderIngredientUse(row)}
 		    			{this.renderButtons(this, row)}
                 	</div>

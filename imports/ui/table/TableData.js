@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
-export var editModeOn = false;
+export var canEdit = false;
 
 export function toggleEditable() {
-	editModeOn = !editModeOn;
+	canEdit = !canEdit;
 }
 
 function renderEditable(cellInfo) {
-	if(editModeOn) {
+	if(canEdit) {
 		return(<div style = {{ backgroudnColor: "#fafafa" }}
 			contentEditable
 			suppressContentEditableWarning
@@ -15,7 +15,11 @@ function renderEditable(cellInfo) {
 				if(cellInfo.column.id === 'name'){
 					Meteor.call('editName', cellInfo.original.fullIng._id, e.target.innerHTML)
 				} else if (cellInfo.column.id === 'amt') {
-					// Meteor.call('')
+					var entry = parseInt(e.target.innerHTML)
+					if(entry >= 0) {
+						Meteor.call('editNumPackages', cellInfo.original.fullIng._id, entry)
+					}
+					e.target.innerHTML = cellInfo.original.amt
 				}
 			}}
 			dangerouslySetInnerHTML={{
@@ -32,7 +36,7 @@ function renderEditable(cellInfo) {
 }
 
 function renderEditableDropdown(cellInfo) {
-	if(editModeOn) {
+	if(canEdit) {
 		if(cellInfo.column.id === 'temp') {
 			//Drop down menu with the three options
 			return(
@@ -44,9 +48,9 @@ function renderEditableDropdown(cellInfo) {
 				Meteor.call('editTemperatureState', cellInfo.original.fullIng._id, e.target.value)
 			}}
 			>
-			   <option value = "Frozen">Frozen</option>
-			   <option value = "Room Temperature">Room Temperature</option>
-			   <option value = "Refrigerated">Refrigerated</option>
+			   <option value = "frozen">Frozen</option>
+			   <option value = "room temperature">Room Temperature</option>
+			   <option value = "refrigerated">Refrigerated</option>
 			</select>);			
 		} else if(cellInfo.column.id === 'pkg') {
 			// Same as above but with packaging options
@@ -54,24 +58,26 @@ function renderEditableDropdown(cellInfo) {
 			<select 
 			id = "selPackaging" 
 			ref="packaging"
-			value = {cellInfo.original.pkg}
+			value = {cellInfo.original.pkg.toLowerCase()}
 			onChange={ e=> {
 				Meteor.call('editPackage', cellInfo.original.fullIng._id, e.target.value)
 			}}
 			>
-			   <option value = "Sack">Sack (50 lbs)</option>
-			   <option value = "Pail">Pail (50 lbs)</option>
-			   <option value = "Drum">Drum (500 lbs)</option>
-			   <option value = "Supersack">Supersack (2000 lbs)</option>
-			   <option value = "Truckload">Truckload (50000)</option>
-			   <option value = "Railcar">Railcar (280000)</option>
+			   <option value = "sack">Sack (50 lbs)</option>
+			   <option value = "pail">Pail (50 lbs)</option>
+			   <option value = "drum">Drum (500 lbs)</option>
+			   <option value = "supersack">Supersack (2000 lbs)</option>
+			   <option value = "truckload">Truckload (50000)</option>
+			   <option value = "railcar">Railcar (280000)</option>
 			</select>);
 		}
 		
 	} else {
 		return(<div style = {{ backgroudnColor: "#fafafa" }}
 			dangerouslySetInnerHTML={{
-				__html: cellInfo.value
+				__html: cellInfo.value.replace(/\w\S*/g, function(txt){ 
+					// https://stackoverflow.com/questions/4878756/how-to-capitalize-first-letter-of-each-word-like-a-2-word-city
+					return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(); })
 			}}
 		/>);
 	}
@@ -106,12 +112,20 @@ export const HeaderValues = [
 
 export function convertToFrontend(ingredient, ingredientsList) {
 	VendArray = new Array()
-	// ingredient.vendors.forEach(function(vendor){
-
-	// });
+	ingredient.vendors.forEach(function(vendor){
+		if(vendor != null && vendor._id != null) {
+			var price = -1;
+			ingredient.prices.forEach(function(priceElement) {
+				if(priceElement.vendorId == vendor._id) {
+					price = priceElement.vendorPrice;
+				}
+			})
+			if(price != -1) {
+				VendArray.push({_id: vendor._id, name: vendor.vendor, cost: price});
+			}
+		}
+	});
 	
-	VendArray.push({_id: 0, name: "Atlantic", cost: "$5.00"});
-	VendArray.push({_id: 1, name: "Alliant", cost: "$4.00"});
 	// console.log(ingredient)
 	return {
 			name: ingredient.name, 
