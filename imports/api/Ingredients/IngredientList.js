@@ -1,54 +1,12 @@
 import { Mongo } from 'meteor/mongo';
 import convertPackageString from '../../utils/conversions.js';
+import { IngredientSchema } from './Schemas.js';
 
 IngredientsList = new Mongo.Collection('ingredients');
-//IngredientsList.remove({}) // remove every ingredient from the collection
-
-//Array for any of our schemas we define
-var Schemas = {};
-
-//Specifies ingredient field type constraints
-Schemas.Ingredient = new SimpleSchema({
-  name: {
-    type: String,
-    unique: true //ensures only one database entry for each ingredient name
-  },
-  package: {
-    type: String,
-    allowedValues: ["sack","pail","drum","supersack","truckload","railcar"]
-  },
-  temperatureState: {
-    type: String,
-    allowedValues: ["frozen","refrigerated","room temperature"]
-  },
-  vendors: {
-    type: [Object], 
-    minCount: 1,
-    blackbox: true //You need this so that the data isn't autocleaned out by the schema 
-                   // or you can register the object schema manually.
-  },
-  numPackages: {
-    type: Number, 
-    min: 1
-  },
-  quantity: {
-    type: Number, 
-    min: 50
-  },
-  prices: {
-    type: [Object],
-    minCount: 1,
-    blackbox: true
-  }
-  // venderInfo: {
-  //   type: [Object],
-  //   minCount: 1,
-  //   blackbox: true
-  // }
-});
+// IngredientsList.remove({}); // remove every ingredient from the collection
 
 //Attach a schema to the collection for automatic validation on insert/update operations
-IngredientsList.attachSchema(Schemas.Ingredient);
+IngredientsList.attachSchema(IngredientSchema);
 
 //The below code listens for changes to an ingredient and updates the quantity for that ingredient appropriately
 var cursor = IngredientsList.find();

@@ -14,7 +14,7 @@ export default function convertPackageString(package) {
 	    packageAsNum = 2000;
 	    break;
 	  case 'truckload':
-	    packageAsNum = 500000;
+	    packageAsNum = 50000;
 	    break;
 	  case 'railcar':
 	    packageAsNum = 280000;
