@@ -56,7 +56,6 @@ const handle = cursor.observeChanges({
     'changed': function(id, ingredient) {
        // This code runs when a new object "object" was added to collection.
        var ing = IngredientsList.find({ _id: id}).fetch();
-       console.log(ing);
        var newQty = convertPackageString(ing[0].package) * ing[0].numPackages;
        IngredientsList.update({ _id : id}, { $set : { quantity : newQty}});
     }

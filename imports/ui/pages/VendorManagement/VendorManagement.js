@@ -44,7 +44,7 @@ class VendorManagement extends Component {
 
 export default withTracker(() => {
   Meteor.subscribe('vendors');
-  return {
+    return {
       vendors: Vendors.find({}).fetch(),
-  };
-})(VendorManagement);
+    };
+  })(VendorManagement);
