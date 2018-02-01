@@ -11,6 +11,9 @@ import '../imports/api/Vendors/vendors.js';
 
 // Meteor.subscribe('ingredients');
 
+// 'createUserFromAdmin':function(emailAddress, password, username, firstName, lastName)
+// Meteor.call('createUserFromAdmin','sadsad','rocko','admin','chad','coviel');
+
 Meteor.startup(() => {
   render(renderRoutes(), document.getElementById('render-target'));
   // render(<Table />, document.getElementById('render-target'));
