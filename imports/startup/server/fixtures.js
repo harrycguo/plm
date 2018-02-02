@@ -21,28 +21,31 @@ if ( Meteor.users.find({username: 'admin'}).count() === 0 ) {
 }
 
 //Create default Storage Capacities
-if (StorageCapacities.find({type: "Freezer"}).count() === 0){
+if (StorageCapacities.find({name: "Freezer"}).count() === 0){
   StorageCapacities.insert(
     {
-      type: "Freezer",
+      name: "Freezer",
+      type: "frozen",
       capacity: Number(100000),
       used: Number(0)
     })
 }
 
-if (StorageCapacities.find({type: "Refrigerator"}).count() === 0){
+if (StorageCapacities.find({name: "Refrigerator"}).count() === 0){
   StorageCapacities.insert(
     {
-      type: "Refrigerator",
+      name: "Refrigerator",
+      type: "refrigerated",
       capacity: Number(100000),
       used: Number(0)
     })
 }
 
-if (StorageCapacities.find({type: "Warehouse"}).count() === 0){
+if (StorageCapacities.find({name: "Warehouse"}).count() === 0){
   StorageCapacities.insert(
     {
-      type: "Warehouse",
+      name: "Warehouse",
+      type: "room temperature",
       capacity: Number(100000),
       used: Number(0)
     })

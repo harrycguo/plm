@@ -19,7 +19,7 @@ class StorageCapacity extends Component {
       button = <Col><Link to={{
         pathname: '/editCapacity/'+this.props.sc._id, 
         state: {
-          type: this.props.sc.type,
+          name: this.props.sc.name,
           capacity: this.props.sc.capacity,
           }
         }}>
@@ -36,9 +36,9 @@ class StorageCapacity extends Component {
         <div className="container">
       
         <Row>
-            <Col><b>Location:</b> {this.props.sc.type}</Col>
+            <Col><b>Location:</b> {this.props.sc.name}</Col>
             <Col><b>Total Capacity:</b> {this.props.sc.capacity} lbs</Col>
-            <Col><b>Capacity Used:</b> {this.props.sc.used} </Col>
+            <Col><b>Capacity Used:</b> {this.props.sc.used} lbs</Col>
             {button}
 
 

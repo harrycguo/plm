@@ -17,7 +17,7 @@ function renderEditable(cellInfo) {
 				} else if (cellInfo.column.id === 'amt') {
 					var entry = parseInt(e.target.innerHTML)
 					if(entry >= 0) {
-						Meteor.call('editNumPackages', cellInfo.original.fullIng._id, entry)
+						//Meteor.call('editNumPackages', cellInfo.original.fullIng._id, entry)
 					}
 					e.target.innerHTML = cellInfo.original.amt
 				}
@@ -49,8 +49,8 @@ function renderEditableDropdown(cellInfo) {
 			}}
 			>
 			   <option value = "frozen">Frozen</option>
-			   <option value = "room temperature">Room Temperature</option>
 			   <option value = "refrigerated">Refrigerated</option>
+			   <option value = "room temperature">Room Temperature</option>
 			</select>);			
 		} else if(cellInfo.column.id === 'pkg') {
 			// Same as above but with packaging options

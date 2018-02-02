@@ -36,7 +36,7 @@ export class IngredientForm extends Component {
 				temperatureState: {
 					required: true,
 				},
-				ingredientQuantity: {
+				numPackages: {
 					required: true,
 					number: true,
 				},
@@ -59,7 +59,7 @@ export class IngredientForm extends Component {
 					required: 'Specify Temperature State',
 					number: 'Must be a number',
 				},
-				ingredientQuantity: {
+				numPackages: {
 					required: 'Specify Quantity',
 				},
 				vendor: {
@@ -81,10 +81,22 @@ export class IngredientForm extends Component {
 		let name = this.ingredientName.value
 		let packaging = this.packaging.value
 		let temperatureState = this.temperatureState.value
-		let ingredientQuantity = this.ingredientQuantity.value
+		let numPackages = this.numPackages.value
 		let vendorId = this.vendor.value
 		let ingredientPrice = this.ingredientPrice.value
 		const { history } = this.props.hist;
+
+		//map packaging to values
+		var packagingMap = new Map();
+		packagingMap.set('Sack', 50);
+		packagingMap.set('Pail', 50);
+		packagingMap.set('Drum', 500);
+		packagingMap.set('Supersack', 2000);
+		packagingMap.set('Truckload', 50000);
+		packagingMap.set('Railcar', 280000);
+
+		let ingredientQuantity = Number(packagingMap.get(packaging)) * Number(numPackages)
+
 
 		for (var i = 0; i < this.props.vendors.length; i++) {
 			if (this.props.vendors[i]._id == vendorId) {
@@ -110,9 +122,9 @@ export class IngredientForm extends Component {
 		Meteor.call("addToExistingIngredient",
 			name,
 			packaging,
+			ingredientQuantity,
 			temperatureState,
 			vendor,
-			ingredientQuantity,
 			ingredientPrice,
 			function(error,result){
 				if (error) {
@@ -173,8 +185,8 @@ export class IngredientForm extends Component {
 							<option value="Pail">Pail (50 lbs)</option>
 							<option value="Drum">Drum (500 lbs)</option>
 							<option value="Supersack">Supersack (2000 lbs)</option>
-							<option value="Truckload">Truckload (50000)</option>
-							<option value="Railcar">Railcar (280000)</option>
+							<option value="Truckload">Truckload (50000 lbs)</option>
+							<option value="Railcar">Railcar (280000 lbs)</option>
 						</select></p>
 					</FormGroup>
 					<FormGroup>
@@ -183,18 +195,18 @@ export class IngredientForm extends Component {
 							ref={temperatureState => (this.temperatureState = temperatureState)}
 
 							name="temperatureState">
-							<option value="Frozen">Frozen</option>
-							<option value="Room Temperature">Room Temperature</option>
-							<option value="Refrigerated">Refrigerated</option>
+							<option value="frozen">Frozen</option>
+							<option value="refrigerated">Refrigerated</option>
+							<option value="room temperature">Room Temperature</option>
 						</select></p>
 					</FormGroup>
 					<FormGroup>
-						<ControlLabel>Ingredient Quantity</ControlLabel>
+						<ControlLabel>Number Of Packages</ControlLabel>
 						<p><input
-							type="number" step="any"
-							ref={ingredientQuantity => (this.ingredientQuantity = ingredientQuantity)}
+							type="number"
+							ref={numPackages=> (this.numPackages = numPackages)}
 
-							name="ingredientQuantity"
+							name="numPackages"
 							placeholder="# of Packages"
 							className="form-control"
 						/></p>

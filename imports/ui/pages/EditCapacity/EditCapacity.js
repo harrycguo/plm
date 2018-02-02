@@ -56,7 +56,7 @@ class EditCapacity extends Component {
                 Bert.alert(error.reason, 'danger');
               } else {
                 Bert.alert('Edited Capacity!', 'success');
-                history.push('/adminHomepage')
+                history.push('/adminViewInventory')
               }
             }) 
         
@@ -74,7 +74,7 @@ class EditCapacity extends Component {
 
                 <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
             
-                <h2> Editing {this.props.location.state.type} </h2>
+                <h2> Editing {this.props.location.state.name} </h2>
 
                 <FormGroup>
                     <ControlLabel>Capacity</ControlLabel>

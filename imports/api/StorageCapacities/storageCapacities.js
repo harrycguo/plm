@@ -45,7 +45,7 @@ Meteor.methods({
         }})
     },
 
-    //can be used to both add and remove capacity
+    //can be used to both add and remove used capacity
     'sc.editUsed'(scID, used) {
       if (! this.userId) {
         throw new Meteor.Error('not-authorized', 'User Not Logged In');
@@ -55,7 +55,7 @@ Meteor.methods({
       check(used, Number)
       let current = StorageCapacities.findOne({_id: scID})
       if (used > current.capacity) {
-        throw new Meteor.Error('Exceeding Capacity', 'Exceeding Capacity');
+        throw new Meteor.Error('Exceeding Capacity', 'Exceeding Capacity For ' + current.name);
       }
       
       StorageCapacities.update({_id: scID}, 
@@ -63,7 +63,6 @@ Meteor.methods({
         { used: Number(used),
         }})
     },
-
 
   });
 
