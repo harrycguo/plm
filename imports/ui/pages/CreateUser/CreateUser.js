@@ -79,10 +79,8 @@ class CreateUser extends Component {
             this.lastName.value,
             function(error,result){
               if(error){
-                console.log("something goes wrong with the following error message " + error.reason )
                 Bert.alert(error.reason, 'danger');
               } else {
-                console.log('Successfully Created User')
                 Bert.alert('Created User!', 'success');
                 history.push('/adminHomepage')
               }

@@ -49,7 +49,6 @@ class EditCapacity extends Component {
 
           Meteor.call('sc.editCapacity',
             this.props.match.params.capacityID,
-
             Number(this.capacity.value),
             function(error,result){
               if(error){

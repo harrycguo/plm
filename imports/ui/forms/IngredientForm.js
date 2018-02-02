@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import VendorForm from './VendorForm.js';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Link } from 'react-router-dom'
+import { Link , BrowserRouter} from 'react-router-dom'
 import { Bert } from 'meteor/themeteorchef:bert';
 import { Vendors } from '../../api/Vendors/vendors.js';
 import convertPackageString from '../../utils/conversions.js';
@@ -78,14 +78,13 @@ export class IngredientForm extends Component {
 	handleSubmit() {
 
 		// Find the text field via the React ref
-		//const name = ReactDOM.findDOMNode(this.refs.ingredientName).value.trim();
 		let name = this.ingredientName.value
 		let packaging = this.packaging.value
 		let temperatureState = this.temperatureState.value
 		let ingredientQuantity = this.ingredientQuantity.value
 		let vendorId = this.vendor.value
 		let ingredientPrice = this.ingredientPrice.value
-
+		const { history } = this.props.hist;
 
 		for (var i = 0; i < this.props.vendors.length; i++) {
 			if (this.props.vendors[i]._id == vendorId) {
@@ -95,7 +94,19 @@ export class IngredientForm extends Component {
 			}
 		}
 
+		let user = Meteor.user();
+		let returnLink = null;
+		
+		if (Roles.userIsInRole(user, ['admin'])) {
+			returnLink = '/adminViewInventory'
+		} else {
+			returnLink = '/userViewInventory'
+		}
+
 		//Have to implement vendor selection
+		if (Meteor.isServer){
+			console.log("server side");
+		 } else if (Meteor.isClient){
 		Meteor.call("addToExistingIngredient",
 			name,
 			packaging,
@@ -103,14 +114,16 @@ export class IngredientForm extends Component {
 			vendor,
 			ingredientQuantity,
 			ingredientPrice,
-			(error) => {
+			function(error,result){
 				if (error) {
 					Bert.alert(error.reason, 'danger');
 				}
 				else {
 					Bert.alert('Ingredient added', 'success');
+					history.push(returnLink)
 				}
 			});
+		 }
 
 	}
 

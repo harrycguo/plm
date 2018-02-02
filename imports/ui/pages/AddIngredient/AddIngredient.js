@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link , BrowserRouter} from 'react-router-dom';
 import IngredientForm from '../../forms/IngredientForm.js'
  
-// App component - represents the whole app
 class AddIngredient extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +16,7 @@ class AddIngredient extends Component {
           <h1>Add Ingredient</h1>
         </header>
         
-        <IngredientForm/>
+        <IngredientForm hist = {this.props}/>
           
       </div>
     );

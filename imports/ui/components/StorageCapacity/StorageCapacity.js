@@ -23,9 +23,9 @@ class StorageCapacity extends Component {
           capacity: this.props.sc.capacity,
           }
         }}>
-          <button>
+          <Button>
           Edit Capacity
-          </button>
+          </Button>
         </Link></Col>;
     } else {
       button = <Col></Col>;
