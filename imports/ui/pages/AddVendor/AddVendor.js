@@ -116,6 +116,8 @@ class AddVendor extends Component {
 
   
               <Button type="submit" bsStyle="success">Add Vendor</Button>
+              <p></p>
+					    <p><Link to='/vendorManagement'>Return to Vendor Management</Link></p>
 
             </form>
             </div>

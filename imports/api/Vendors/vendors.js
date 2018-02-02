@@ -14,14 +14,14 @@ Meteor.methods({
         throw new Meteor.Error('not-authorized', 'not-authorized');
       }
 
-      if (Vendors.find({FCC: FCC}).count() > 0) {
+      if (Vendors.find({FCC: FCC.toUpperCase()}).count() > 0) {
         throw new Meteor.Error('vendor already in system', 'Vendor Already In System');
       }
       
       Vendors.insert({
         vendor: name,
         contact: contact,
-        FCC: FCC,
+        FCC: FCC.toUpperCase(),
         createdAt: new Date(),
       });
     },
@@ -41,12 +41,15 @@ Meteor.methods({
       console.log('yee')
       console.log(Vendors.find({_id: id}))
 
-      if (Vendors.find({FCC: FCC}).count() > 0 && !(oldFCC == FCC)) {
+      if (Vendors.find({FCC: FCC.toUpperCase()}).count() > 0 && !(oldFCC.toUpperCase() == FCC.toUpperCase())) {
         throw new Meteor.Error('vendor already in system', 'Vendor Already In System');
       }
 
-      Vendors.update({_id: id}, { $set: { vendor: name, contact: contact,
-        FCC: FCC}})
+      Vendors.update({_id: id}, { $set: { 
+        vendor: name, 
+        contact: contact,
+        FCC: FCC.toUpperCase()
+      }})
     },
   });
 

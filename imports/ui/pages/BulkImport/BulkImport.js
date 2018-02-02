@@ -46,6 +46,7 @@ class BulkImport extends Component {
         
         Papa.parse(file, {
           dynamicTyping: true,
+          header: true,
           complete: function(results) {
             data = results;
             console.log(data)
