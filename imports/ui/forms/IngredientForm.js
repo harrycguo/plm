@@ -19,6 +19,10 @@ export class IngredientForm extends Component {
 	constructor(props) {
 		super(props);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.calculateCapacity = this.calculateCapacity.bind(this);
+		this.state = {
+			totalCap: Number(0)
+		};
 	}
 
 	componentDidMount() {
@@ -148,7 +152,14 @@ export class IngredientForm extends Component {
 	}
 
 	setTwoNumberDecimal(event) {
-    this.value = parseFloat(this.value).toFixed(2);
+    	this.value = parseFloat(this.value).toFixed(2);
+	}
+
+	calculateCapacity(event) {
+		console.log(this.numPackages)
+		this.setState({
+			totalCap: Number(10)
+		});
 	}
 
 	render() {
@@ -205,12 +216,13 @@ export class IngredientForm extends Component {
 						<p><input
 							type="number"
 							ref={numPackages=> (this.numPackages = numPackages)}
-
 							name="numPackages"
 							placeholder="# of Packages"
 							className="form-control"
+						
 						/></p>
 					</FormGroup>
+			
 					<FormGroup>
 						<ControlLabel>Select Vendor</ControlLabel>
 						<p><select id="selVendor"
@@ -219,7 +231,9 @@ export class IngredientForm extends Component {
 							name="vendor">
 							{this.renderOptions()}
 						</select></p>
+						
 					</FormGroup>
+					
 					<FormGroup>
 						<ControlLabel>Ingredient Price</ControlLabel>
 						<p><input
