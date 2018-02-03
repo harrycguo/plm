@@ -13,11 +13,25 @@ function renderEditable(cellInfo) {
 			suppressContentEditableWarning
 			onBlur = { e => {
 				if(cellInfo.column.id === 'name'){
-					Meteor.call('editName', cellInfo.original.fullIng._id, e.target.innerHTML)
+					Meteor.call('editName', 
+						cellInfo.original.fullIng._id, 
+						e.target.innerHTML,  
+						function(error,result){
+                   			if(error){
+                        		console.log("something goes wrong with the following error message " + error.reason )
+               	  				Bert.alert(error.reason, 'danger');
+                  			}
+						});
 				} else if (cellInfo.column.id === 'amt') {
 					var entry = parseInt(e.target.innerHTML)
 					if(entry >= 0) {
-						//Meteor.call('editNumPackages', cellInfo.original.fullIng._id, entry)
+						Meteor.call('editQuantity', cellInfo.original.fullIng._id, entry,
+							function(error,result){
+                   			if(error){
+                        		console.log("something goes wrong with the following error message " + error.reason )
+               	  				Bert.alert(error.reason, 'danger');
+                  			}
+						});
 					}
 					e.target.innerHTML = cellInfo.original.amt
 				}
@@ -45,7 +59,15 @@ function renderEditableDropdown(cellInfo) {
 			id = "selTemperatureState" 
 			ref="temperatureState" 
 			onChange={ e=> {
-				Meteor.call('editTemperatureState', cellInfo.original.fullIng._id, e.target.value)
+				Meteor.call('editTemperatureState', 
+					cellInfo.original.fullIng._id, 
+					e.target.value,
+					function(error,result){
+                   		if(error){
+                        	console.log("something goes wrong with the following error message " + error.reason )
+               	  			Bert.alert(error.reason, 'danger');
+                  		}
+					});
 			}}
 			>
 			   <option value = "frozen">Frozen</option>
@@ -60,7 +82,16 @@ function renderEditableDropdown(cellInfo) {
 			ref="packaging"
 			value = {cellInfo.original.pkg.toLowerCase()}
 			onChange={ e=> {
-				Meteor.call('editPackage', cellInfo.original.fullIng._id, e.target.value)
+				Meteor.call('editPackage', 
+					cellInfo.original.fullIng._id, 
+					e.target.value,
+					function(error,result){
+                   		if(error){
+                       		console.log("something goes wrong with the following error message " + error.reason )
+               	  			Bert.alert(error.reason, 'danger');
+                  		}
+					}
+				);
 			}}
 			>
 			   <option value = "sack">Sack (50 lbs)</option>
@@ -69,7 +100,8 @@ function renderEditableDropdown(cellInfo) {
 			   <option value = "supersack">Supersack (2000 lbs)</option>
 			   <option value = "truckload">Truckload (50000)</option>
 			   <option value = "railcar">Railcar (280000)</option>
-			</select>);
+			</select>
+			);
 		}
 		
 	} else {
@@ -98,15 +130,11 @@ export const HeaderValues = [
 		Header: 'Packaging',
 		accessor: 'pkg',
 		Cell: renderEditableDropdown
-	}, 
-	{
-		Header: 'Amount',
-		accessor: 'amt',
-		Cell: renderEditable
 	},
 	{
 		Header: 'Quantity (lbs)',
 		accessor: 'qty',
+		Cell: renderEditable
 	}, 
 ];
 
