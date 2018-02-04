@@ -233,5 +233,12 @@ Meteor.methods({
                     });
             }
         }
+    },
+    'addVendor': function(selectedIngredient, vendor, price) {
+        var newVendor = {
+            vendor: vendor,
+            price: price
+        };
+        IngredientsList.update({ id : selectedIngredient}, {$push : {vendorInfo : newVendor}});
     }
 });
