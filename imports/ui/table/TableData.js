@@ -8,7 +8,7 @@ export function toggleEditable() {
 
 function renderEditable(cellInfo) {
 	if(canEdit) {
-		return(<div style = {{ backgroundColor: "#fafafa" }}
+		return(<div style = {{ backgroundColor: "#ffffff" }}
 			contentEditable
 			suppressContentEditableWarning
 			onBlur = { e => {
@@ -46,7 +46,7 @@ function renderEditable(cellInfo) {
 			}}
 		/>);
 	} else {
-		return(<div style = {{ backgroundColor: "#fafafa" }}
+		return(<div style = {{ backgroundColor: "#ffffff" }}
 			dangerouslySetInnerHTML={{
 				__html: cellInfo.value
 			}}
@@ -111,7 +111,7 @@ function renderEditableDropdown(cellInfo) {
 		}
 		
 	} else {
-		return(<div style = {{ backgroundColor: "#fafafa" }}
+		return(<div style = {{ backgroundColor: "#ffffff" }}
 			dangerouslySetInnerHTML={{
 				__html: cellInfo.value.replace(/\w\S*/g, function(txt){ 
 					// https://stackoverflow.com/questions/4878756/how-to-capitalize-first-letter-of-each-word-like-a-2-word-city
