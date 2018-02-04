@@ -132,6 +132,7 @@ export class IngredientForm extends Component {
 			returnLink = '/userViewInventory'
 		}
 
+		console.log(vendor);
 		//Have to implement vendor selection
 		if (Meteor.isServer){
 			console.log("server side");

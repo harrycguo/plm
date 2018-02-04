@@ -73,8 +73,7 @@ class Table extends Component {
 		console.log(this)
 		Meteor.call('removeVendor',
 			row.original.fullIng,
-			vendor._id,
-			Number(qty),
+			vendor,
 			function(error,result){
                 if(error){
                    	console.log("something goes wrong with the following error message " + error.reason )
