@@ -71,6 +71,17 @@ class Table extends Component {
 	deleteVendor(){
 		console.log("deleting")
 		console.log(this)
+		Meteor.call('removeVendor',
+			row.original.fullIng,
+			vendor._id,
+			Number(qty),
+			function(error,result){
+                if(error){
+                   	console.log("something goes wrong with the following error message " + error.reason )
+               	  	Bert.alert(error.reason, 'danger');
+                }
+			}
+		);
 	}
 	
 	renderVendorRows(row) {
@@ -81,7 +92,18 @@ class Table extends Component {
 					<td>{vendor.cost}</td>
 					<td>
 					<button
-						onClick={this.deleteVendor.bind(vendor)}
+						onClick={e=> {
+							Meteor.call('removeVendor',
+								row.original.fullIng,
+								vendor,
+								function(error,result){
+					                if(error){
+					                   	console.log("something goes wrong with the following error message " + error.reason )
+					               	  	Bert.alert(error.reason, 'danger');
+					                }
+								}
+							);
+						}}
 						title= "Remove Vendor"
 						>Delete</button>
 					</td>

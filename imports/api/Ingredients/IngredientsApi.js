@@ -280,6 +280,6 @@ Meteor.methods({
         IngredientsList.update({ id : selectedIngredient}, {$push : {vendorInfo : newVendor}});
     },
     'removeVendor': function(selectedIngredient, vendor) {
-        IngredientsList.update({ id : selectedIngredient, "vendorInfo.vendor._id" : vendor._id} , {$pull : "vendorInfo.$"});
+        IngredientsList.update({ id : selectedIngredient, "vendorInfo.vendor._id" : vendor._id} , {$pull : {"vendorInfo.$"}});
     }
 });
