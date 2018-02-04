@@ -15,7 +15,7 @@ Meteor.methods({
       }
 
       if (Vendors.find({FCC: FCC.toUpperCase()}).count() > 0) {
-        throw new Meteor.Error('vendor already in system', 'Vendor Already In System');
+        throw new Meteor.Error('vendor already in system', 'Vendor Freight Code Already In System');
       }
       
       Vendors.insert({
@@ -42,7 +42,7 @@ Meteor.methods({
       console.log(Vendors.find({_id: id}))
 
       if (Vendors.find({FCC: FCC.toUpperCase()}).count() > 0 && !(oldFCC.toUpperCase() == FCC.toUpperCase())) {
-        throw new Meteor.Error('vendor already in system', 'Vendor Already In System');
+        throw new Meteor.Error('vendor already in system', 'Vendor Freight Code Already In System');
       }
 
       Vendors.update({_id: id}, { $set: { 

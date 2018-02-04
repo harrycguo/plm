@@ -21,7 +21,7 @@ Meteor.methods({
         console.log(ingPackage)
 
         //Check to see if capacity won't be exceeded
-        if ( !(ingPackage.toLowerCase() == 'truckload' || ingPackage.toLowerCase() == 'railcar')) {
+        if (!(ingPackage.toLowerCase() == 'truckload' || ingPackage.toLowerCase() == 'railcar')) {
             let container = StorageCapacities.findOne({ type: ingTemperatureState });
             let newUsed = Number(container.used) + Number(ingQuantity)
             Meteor.call('sc.editUsed', container._id, Number(newUsed));
@@ -54,11 +54,11 @@ Meteor.methods({
         if (existingIng !== undefined) {
 
             if (existingIng.temperatureState != ingTemperatureState.toLowerCase()) {
-                throw new Meteor.Error('incorrect temperature state', 'Incorrect Temperature State Selected, Should be ' + existingIng.temperatureState );
+                throw new Meteor.Error('incorrect temperature state', 'Incorrect Temperature State Selected, Should be ' + existingIng.temperatureState);
             }
 
             if (existingIng.package != ingPackage.toLowerCase()) {
-                throw new Meteor.Error('incorrect temperature state', 'Incorrect Packaging Selected, Should be ' + existingIng.package );
+                throw new Meteor.Error('incorrect temperature state', 'Incorrect Packaging Selected, Should be ' + existingIng.package);
             }
 
             //Check quantity
@@ -124,18 +124,29 @@ Meteor.methods({
         //if it is going from truckload or railcar to something else, we have to make sure enough room in storage
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
         let container = StorageCapacities.findOne({ type: existingIng.temperatureState });
-        if ( (existingIng.package == 'truckload' || existingIng.package == 'railcar') && 
-            !(newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar')){
 
+        //truck or rail to physical, put in inventory
+        if ((existingIng.package == 'truckload' || existingIng.package == 'railcar') &&
+            !(newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar')) {
+            console.log("this one")
             let newUsed = Number(container.used) + Number(existingIng.quantity)
             Meteor.call('sc.editUsed', container._id, Number(newUsed));
         } 
-
-        //if going from sack to truck, take out of inventory
-        if ( newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar' ){
+        
+        // truck to rail or vice versa, no change
+        else if ((existingIng.package == 'truckload' || existingIng.package == 'railcar') &&
+            (newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar')) {
+            console.log('those ones')
+        }
+        
+        //going to truckload, take out of inventory
+        else if (newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar') {
+            console.log("this other one")
             let newUsed = Number(container.used) - Number(existingIng.quantity)
             Meteor.call('sc.editUsed', container._id, Number(newUsed));
         }
+
+
 
         check(selectedIngredient, String);
         //Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
