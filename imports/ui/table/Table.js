@@ -8,6 +8,7 @@ import TableData from './TableData.js';
 import ReactTable from 'react-table';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
+import { Button } from 'react-bootstrap';
 
 class Table extends Component {
 	
@@ -191,11 +192,12 @@ class Table extends Component {
 	render() {
 		return (
 			<div>
-			<Link to='/addingredient'>Add Ingredient</Link>
-			<button
+			
+			<Button
 				onClick={this.edit.bind(this)}
 				title= "Edit"
-				>Toggle Edit Mode</button>
+				>Toggle Edit Mode</Button>
+				<p></p>
 		   	<ReactTable
 		    data={this.renderRows()}
 		    filterable
