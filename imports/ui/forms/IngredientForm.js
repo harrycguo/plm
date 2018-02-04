@@ -52,12 +52,12 @@ export class IngredientForm extends Component {
 					required: true,
 					number: true,
 				},
-				vendor: {
-					required: true,
-				},
+				// vendor: {
+				// 	required: true,
+				// },
 				ingredientPrice: {
-					required: true,
-					number: true,
+					number: true
+					// required: true
 				}
 			},
 			messages: {
@@ -74,11 +74,11 @@ export class IngredientForm extends Component {
 				numPackages: {
 					required: 'Specify Quantity',
 				},
-				vendor: {
-					required: 'Specify Vendor',
-				},
+				// vendor: {
+				// 	required: 'Specify Vendor',
+				// },
 				ingredientPrice: {
-					required: 'Specify Price',
+					// required: 'Specify Price',
 					number: 'Must be a decimal'
 				}
 			},
@@ -119,6 +119,9 @@ export class IngredientForm extends Component {
 				break;
 			}
 		}
+		 if (vendorId == "null") {
+		 	vendor = {};
+		 }
 
 		let user = Meteor.user();
 		let returnLink = null;

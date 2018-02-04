@@ -20,8 +20,8 @@ export class VendorSelect extends Component {
       var vendorArr = Vendors.find().fetch();
       console.log(vendorArr)
       // console.log(this.props)
-      for (i = 0; i < Vendors.find().fetch().length; i++) {
-        items.push(<option key={i} value={vendorArr[i]._id}>{vendorArr[i].vendor}</option>);
+      for (i = 1; i < Vendors.find().fetch().length + 1; i++) {
+        items.push(<option key={i} value={vendorArr[i-1]._id}>{vendorArr[i-1].vendor}</option>);
       }
       return items;
   }
@@ -30,6 +30,7 @@ export class VendorSelect extends Component {
         <select
          ref={vendor => (this.vendor = vendor)}
          name="vendor">
+         <option key={0} value="null">(no vendor)</option>
          {this.renderOptions()}
         </select>
     );

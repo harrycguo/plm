@@ -18,6 +18,16 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
+        console.log(ingPrice);
+        console.log(Object.keys(ingVendor).length === 0 && ingVendor.constructor === Object);
+        if (Object.keys(ingVendor).length === 0 && ingVendor.constructor === Object & ingPrice) {
+            throw new Meteor.Error('Vendor required for price','Specify vendor or remove price');
+        } 
+
+        if (Object.keys(ingVendor).length > 0 & !ingPrice) {
+            throw new Meteor.Error('Price required for vendor','Specify price or remove vendor');
+        }
+
         console.log(ingPackage)
 
         //Check to see if capacity won't be exceeded
@@ -27,11 +37,14 @@ Meteor.methods({
             Meteor.call('sc.editUsed', container._id, Number(newUsed));
         }
 
-        let vendorInfoArr = [{
-            vendor: ingVendor,
-            price: Number(ingPrice)
-        }];
-
+        var vendorInfoArr = [];
+        if (ingPrice & Object.keys(ingVendor).length > 0) {
+            vendorInfoArr = [{
+                vendor: ingVendor,
+                price: Number(ingPrice)
+            }];
+        }
+        
         IngredientsList.insert({
             name: ingName,
             package: ingPackage.toLowerCase(),
@@ -255,24 +268,18 @@ Meteor.methods({
             ingredient.temperatureState,
             ingredient.vendorInfo,
         )
-// name
-// :
-// "Apples"
-// package
-// :
-// "sack"
-// quantity
-// :
-// 150
-// temperatureState
-// :
-// "refrigerated"
-// vendorInfo
-// :
-// [{…}]
-// _id
-// :
-
-
+    },
+    'addVendor': function(selectedIngredient, vendor, price) {
+        if(containsVendor(vendor,IngredientsList.findOne({ id : selectedIngredient}).fetch().vendorInfo)) {
+            throw new Meteor.Error('Already has vendor','this ingredient is already associated with this vendor');
+        }
+        var newVendor = {
+            vendor: vendor,
+            price: price
+        };
+        IngredientsList.update({ id : selectedIngredient}, {$push : {vendorInfo : newVendor}});
+    },
+    'removeVendor': function(selectedIngredient, vendor) {
+        IngredientsList.update({ id : selectedIngredient, "vendorInfo.vendor._id" : vendor._id} , {$pull : "vendorInfo.$"});
     }
 });
