@@ -62,6 +62,7 @@ class EditVendor extends Component {
 
           Meteor.call('vendors.edit',
           this.props.match.params.vendorID,
+            this.props.location.state.name,
             this.name.value,
             this.contact.value,
             this.props.location.state.FCC,

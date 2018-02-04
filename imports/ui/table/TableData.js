@@ -8,7 +8,7 @@ export function toggleEditable() {
 
 function renderEditable(cellInfo) {
 	if(canEdit) {
-		return(<div style = {{ backgroudnColor: "#fafafa" }}
+		return(<div style = {{ backgroundColor: "#ffffff" }}
 			contentEditable
 			suppressContentEditableWarning
 			onBlur = { e => {
@@ -22,6 +22,7 @@ function renderEditable(cellInfo) {
                	  				Bert.alert(error.reason, 'danger');
                   			}
 						});
+						e.target.innerHTML = cellInfo.original.name
 				} else if (cellInfo.column.id === 'qty') {
 					var entry = parseInt(e.target.innerHTML)
 					if(entry >= 0) {
@@ -30,10 +31,14 @@ function renderEditable(cellInfo) {
                    			if(error){
                         		console.log("something goes wrong with the following error message " + error.reason )
                	  				Bert.alert(error.reason, 'danger');
+								console.log('problema')
                   			}
 						});
+					} else {
+						Bert.alert('Must be greater than or equal to zero', 'danger');
 					}
 					e.target.innerHTML = cellInfo.original.qty
+
 				}
 			}}
 			dangerouslySetInnerHTML={{
@@ -41,7 +46,7 @@ function renderEditable(cellInfo) {
 			}}
 		/>);
 	} else {
-		return(<div style = {{ backgroudnColor: "#fafafa" }}
+		return(<div style = {{ backgroundColor: "#ffffff" }}
 			dangerouslySetInnerHTML={{
 				__html: cellInfo.value
 			}}
@@ -106,7 +111,7 @@ function renderEditableDropdown(cellInfo) {
 		}
 		
 	} else {
-		return(<div style = {{ backgroudnColor: "#fafafa" }}
+		return(<div style = {{ backgroundColor: "#ffffff" }}
 			dangerouslySetInnerHTML={{
 				__html: cellInfo.value.replace(/\w\S*/g, function(txt){ 
 					// https://stackoverflow.com/questions/4878756/how-to-capitalize-first-letter-of-each-word-like-a-2-word-city

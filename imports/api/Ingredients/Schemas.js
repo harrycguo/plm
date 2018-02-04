@@ -23,8 +23,7 @@ IngredientSchema = new SimpleSchema({
                    // or you can register the object schema manually.
   },
   quantity: {
-    type: Number, 
-    min: 50
+    type: Number
   }
   // prices: {
   //   type: [Object],

@@ -27,7 +27,7 @@ Meteor.methods({
             Meteor.call('sc.editUsed', container._id, Number(newUsed));
         }
 
-        var vendorInfoArr = [{
+        let vendorInfoArr = [{
             vendor: ingVendor,
             price: Number(ingPrice)
         }];
@@ -47,7 +47,7 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
-        var existingIng = IngredientsList.findOne({ name: ingName });
+        let existingIng = IngredientsList.findOne({ name: ingName });
         console.log(existingIng)
 
         //If ingredient exists, update it instead of adding a new database entry
@@ -111,6 +111,15 @@ Meteor.methods({
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
+
+        let existingIng = IngredientsList.findOne({ name: newName });
+        
+        if (existingIng !== undefined) {
+            throw new Meteor.Error('ingredient name already exists', 'Ingredient Name Already Exists');
+        }
+        
+
+
         check(selectedIngredient, String);
         //Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
         check(newName, String);
@@ -171,6 +180,7 @@ Meteor.methods({
         check(selectedIngredient, String);
         //Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
         check(newQuantity, Number);
+
         IngredientsList.update({ _id: selectedIngredient }, { $set: { quantity: Number(newQuantity) } });
     },
     'editTemperatureState': function (selectedIngredient, newTemperatureState) {
