@@ -33,7 +33,7 @@ function renderEditable(cellInfo) {
                   			}
 						});
 					}
-					e.target.innerHTML = cellInfo.original.amt
+					e.target.innerHTML = cellInfo.original.qty
 				}
 			}}
 			dangerouslySetInnerHTML={{

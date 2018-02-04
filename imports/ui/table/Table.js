@@ -106,8 +106,19 @@ class Table extends Component {
 							console.log(row.original.fullIng)
 							console.log(vendor)
 							console.log(this.refs)
+							Meteor.call('orderIngredient',
+								row.original.fullIng,
+								vendor._id,
+								Number(qty),
+								function(error,result){
+                   					if(error){
+                        				console.log("something goes wrong with the following error message " + error.reason )
+               	  						Bert.alert(error.reason, 'danger');
+                  					}
+								}
+							);
 						}
-						
+
 					}}
 					title= "Remove Vendor"
 				>
