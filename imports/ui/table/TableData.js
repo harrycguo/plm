@@ -82,6 +82,7 @@ function renderEditableDropdown(cellInfo) {
 			ref="packaging"
 			value = {cellInfo.original.pkg.toLowerCase()}
 			onChange={ e=> {
+				console.log(e.target.value)
 				Meteor.call('editPackage', 
 					cellInfo.original.fullIng._id, 
 					e.target.value,

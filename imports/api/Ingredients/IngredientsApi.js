@@ -144,17 +144,20 @@ Meteor.methods({
             console.log("this other one")
             let newUsed = Number(container.used) - Number(existingIng.quantity)
             Meteor.call('sc.editUsed', container._id, Number(newUsed));
+            console.log("edit used check")
         }
 
 
 
         check(selectedIngredient, String);
+        console.log("Selected ingredient ok")
         //Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
         check(newPackage, String);
+        console.log("New package okay")
         IngredientsList.update({ _id: selectedIngredient }, { $set: { package: newPackage.toLowerCase() } });
+        console.log("Done changing package")
     },
     'editQuantity': function (selectedIngredient, newQuantity) {
-
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
@@ -169,7 +172,9 @@ Meteor.methods({
 
         check(selectedIngredient, String);
         //Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
+        console.log("Trying to check quantity num")
         check(newQuantity, Number);
+        cnosole.log("After check")
         IngredientsList.update({ _id: selectedIngredient }, { $set: { quantity: Number(newQuantity) } });
     },
     'editTemperatureState': function (selectedIngredient, newTemperatureState) {
