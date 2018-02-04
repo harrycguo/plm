@@ -270,6 +270,7 @@ Meteor.methods({
     },
     'addVendor': function(selectedIngredient, vendor, price) {
         console.log(containsVendor(vendor,IngredientsList.find({ id : selectedIngredient}).fetch()[0].vendorInfo));
+        console.log(IngredientsList.find({ id : selectedIngredient}).fetch()[0].vendorInfo);
         if(containsVendor(vendor,IngredientsList.find({ id : selectedIngredient}).fetch()[0].vendorInfo)) {
             throw new Meteor.Error('Already has vendor','this ingredient is already associated with this vendor');
         }
@@ -283,5 +284,6 @@ Meteor.methods({
         console.log(vendor._id);
         console.log(selectedIngredient._id);
         IngredientsList.update({ id : selectedIngredient._id} , {$pull : { vendorInfo : { "vendor._id" : vendor._id}}});
+        // IngredientsList.update({ id : selectedIngredient, "vendorInfo.vendor._id" : vendor._id} , {$pull : "vendorInfo.$"});
     }
 });

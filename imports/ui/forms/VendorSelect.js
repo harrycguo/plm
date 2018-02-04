@@ -10,6 +10,8 @@ import { createContainer } from 'meteor/react-meteor-data'
       // </select>
 
 // Vendor select component
+// 
+var selected = undefined;
 export class VendorSelect extends Component {
   constructor(props) {
     super(props);
@@ -25,11 +27,16 @@ export class VendorSelect extends Component {
       }
       return items;
   }
+  optionChanged(){
+    selected=this
+    return this
+  }
   render() {
     return (
         <select
          ref={vendor => (this.vendor = vendor)}
-         name="vendor">
+         name="vendor"
+         onChange={this.optionChanged.bind(this)}>
          <option key={0} value="null">(no vendor)</option>
          {this.renderOptions()}
         </select>
