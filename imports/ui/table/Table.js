@@ -9,6 +9,7 @@ import ReactTable from 'react-table';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import AddVendor from './AddVendor.js';
 
 class Table extends Component {
 	
@@ -18,6 +19,10 @@ class Table extends Component {
 	///											 ///
 	////////////////////////////////////////////////
 	
+	constructor(props) {
+		super(props);
+	}
+
 	renderRows() {
 		var ingredientsList = new Array()
 		this.props.ingredients.forEach(function(ing) {
@@ -128,11 +133,9 @@ class Table extends Component {
 							console.log(qty)
 							console.log(row.original.fullIng)
 							console.log(vendor)
-							console.log(this.refs)
 							Meteor.call('orderIngredient',
 								row.original.fullIng,
-								vendor._id,
-								Number(qty),
+								vendor,
 								function(error,result){
                    					if(error){
                         				console.log("something goes wrong with the following error message " + error.reason )
@@ -150,42 +153,6 @@ class Table extends Component {
 				</td>
 			</tr>
 		));
-	}
-
-	addVendors() {
-		if(TableData.canEdit) {
-			var price = undefined
-			var vendor = undefined
-			return (
-				<tr>
-					<td>
-						<select
-							onChange={ e=> {
-								vendor = e.target.value
-							}}>
-							<option value={293}>make this a component</option>
-							<option value={1}> comp2 </option>
-						</select>
-					</td>
-					<td>
-						<input type="text" placeholder="Price" onChange= {e=> {
-							//do shit
-							price = e.target.value;
-						}}/>
-					</td>
-					<td>
-						<button
-							onClick={e => {
-								console.log(vendor)
-								console.log(price)
-							}}
-							title= "Add Vendor"
-						>Add Vendor</button>
-					</td>
-				</tr>
-			);
-		}
-		return null
 	}
 
 	////////////////////////////////////////////////
@@ -241,14 +208,14 @@ class Table extends Component {
 		    SubComponent={row => {
 		    	return (
 		    		<div style={{ padding: "5px" }}>
-		    			<table >
+		    			<table>
 		    			<tbody>
 		    				<tr>
 		    					<th>Vendor</th>
 		    					<th>Price</th>
 		    				</tr>
 		    				{this.renderVendorRows(row)}
-							{this.addVendors()}
+		    				<AddVendor ing={row.original.fullIng}/>
 		    			</tbody>
 		    			</table>
 						{this.renderIngredientUse(row)}
