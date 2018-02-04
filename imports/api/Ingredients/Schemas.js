@@ -18,7 +18,6 @@ IngredientSchema = new SimpleSchema({
   },
   vendorInfo: {
     type: [Object], 
-    minCount: 1,
     blackbox: true //You need this so that the data isn't autocleaned out by the schema 
                    // or you can register the object schema manually.
   },
