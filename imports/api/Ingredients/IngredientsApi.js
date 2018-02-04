@@ -185,8 +185,9 @@ Meteor.methods({
             let newContainer = StorageCapacities.findOne({ type: newTemperatureState.toLowerCase() });
             let oldUsed = Number(oldContainer.used) - Number(existingIng.quantity);
             let newUsed = Number(newContainer.used) + Number(existingIng.quantity);
-            Meteor.call('sc.editUsed', oldContainer._id, Number(oldUsed));
             Meteor.call('sc.editUsed', newContainer._id, Number(newUsed));
+            Meteor.call('sc.editUsed', oldContainer._id, Number(oldUsed));
+            
         }
 
         check(selectedIngredient, String);
