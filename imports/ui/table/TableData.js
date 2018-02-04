@@ -22,10 +22,11 @@ function renderEditable(cellInfo) {
                	  				Bert.alert(error.reason, 'danger');
                   			}
 						});
-				} else if (cellInfo.column.id === 'amt') {
+				} else if (cellInfo.column.id === 'qty') {
 					var entry = parseInt(e.target.innerHTML)
 					if(entry >= 0) {
-						Meteor.call('editQuantity', cellInfo.original.fullIng._id, entry,
+						
+						Meteor.call('editQuantity', cellInfo.original.fullIng._id, Number(entry),
 							function(error,result){
                    			if(error){
                         		console.log("something goes wrong with the following error message " + error.reason )

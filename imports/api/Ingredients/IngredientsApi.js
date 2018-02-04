@@ -146,12 +146,12 @@ Meteor.methods({
             Meteor.call('sc.editUsed', container._id, Number(newUsed));
         }
 
-
-
         check(selectedIngredient, String);
         //Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
         check(newPackage, String);
+        console.log('here111')
         IngredientsList.update({ _id: selectedIngredient }, { $set: { package: newPackage.toLowerCase() } });
+        console.log('here222')
     },
     'editQuantity': function (selectedIngredient, newQuantity) {
 
