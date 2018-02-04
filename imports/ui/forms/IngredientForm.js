@@ -11,8 +11,16 @@ import { createContainer } from 'meteor/react-meteor-data'
 import { selectStyle, inputStyle } from './Styles.js';
 import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import validate from '../../modules/validate.js';
+import { VendorSelect } from './VendorSelect.js';
 
 // import isInt from '../../utils/checks.js';
+
+						// select id="selVendor"
+						// 	ref={vendor => (this.vendor = vendor)}
+
+						// 	name="vendor">
+						// 	{this.renderOptions()}
+						// </select>
 
 // Task component - represents a single todo item
 export class IngredientForm extends Component {
@@ -81,12 +89,14 @@ export class IngredientForm extends Component {
 
 	handleSubmit() {
 
+		console.log(this.refs.vendorSel);
+
 		// Find the text field via the React ref
 		let name = this.ingredientName.value
 		let packaging = this.packaging.value
 		let temperatureState = this.temperatureState.value
 		let numPackages = this.numPackages.value
-		let vendorId = this.vendor.value
+		let vendorId = this.refs.vendorSel.vendor.value
 		let ingredientPrice = this.ingredientPrice.value
 		const { history } = this.props.hist;
 
@@ -225,12 +235,9 @@ export class IngredientForm extends Component {
 			
 					<FormGroup>
 						<ControlLabel>Select Vendor</ControlLabel>
-						<p><select id="selVendor"
-							ref={vendor => (this.vendor = vendor)}
-
-							name="vendor">
-							{this.renderOptions()}
-						</select></p>
+						<p>
+						<VendorSelect ref="vendorSel"/>
+						</p>
 						
 					</FormGroup>
 					

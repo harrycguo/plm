@@ -5,28 +5,33 @@ import { Link } from 'react-router-dom'
 import { Vendors } from '../../api/Vendors/vendors.js';
 import { createContainer } from 'meteor/react-meteor-data'
 
+      // <select id = "selVendor" ref="vendors">
+      //         { this.renderOptions() }
+      // </select>
+
 // Vendor select component
 export class VendorSelect extends Component {
   constructor(props) {
     super(props);
   }
 
-  getVendorId() {
-    return ReactDOM.findDOMNode(this.refs.vendorSel.refs.vendors).value.trim();
-  }
-
   renderOptions() {
       let items = [];
-      for (i = 0; i < this.props.vendors.length; i++) {
-        items.push(<option key={i} value={this.props.vendors[i]._id}>{this.props.vendors[i].vendor}</option>);
+      var vendorArr = Vendors.find().fetch();
+      console.log(vendorArr)
+      // console.log(this.props)
+      for (i = 0; i < Vendors.find().fetch().length; i++) {
+        items.push(<option key={i} value={vendorArr[i]._id}>{vendorArr[i].vendor}</option>);
       }
       return items;
   }
   render() {
     return (
-      <select id = "selVendor" ref="vendors">
-              { this.renderOptions() }
-      </select>
+        <select
+         ref={vendor => (this.vendor = vendor)}
+         name="vendor">
+         {this.renderOptions()}
+        </select>
     );
   }
 }
@@ -34,6 +39,6 @@ export class VendorSelect extends Component {
 export default withTracker(() => {
   Meteor.subscribe('vendors');
   return {
-      vendors: Vendors.find({}).fetch(),
+      vendors: Vendors.find({}).fetch()
   };
 })(VendorSelect);
