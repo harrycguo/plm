@@ -18,8 +18,6 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
-        console.log(ingPrice);
-        console.log(Object.keys(ingVendor).length === 0 && ingVendor.constructor === Object);
         if (Object.keys(ingVendor).length === 0 && ingVendor.constructor === Object & ingPrice) {
             throw new Meteor.Error('Vendor required for price','Specify vendor or remove price');
         } 
@@ -258,6 +256,6 @@ Meteor.methods({
         IngredientsList.update({ id : selectedIngredient}, {$push : {vendorInfo : newVendor}});
     },
     'removeVendor': function(selectedIngredient, vendor) {
-        IngredientsList.update({ id : selectedIngredient, "vendorInfo.vendor._id" : vendor._id} , {$pull : "vendorInfo.$"});
+        IngredientsList.update({ id : selectedIngredient, "vendorInfo.vendor._id" : vendor._id} , {$pull : {"vendorInfo.$" : });
     }
 });
