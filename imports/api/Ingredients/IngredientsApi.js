@@ -190,9 +190,8 @@ Meteor.methods({
 
         check(selectedIngredient, String);
         //Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
-        console.log("Trying to check quantity num")
         check(newQuantity, Number);
-        
+
         IngredientsList.update({ _id: selectedIngredient }, { $set: { quantity: Number(newQuantity) } });
     },
     'editTemperatureState': function (selectedIngredient, newTemperatureState) {
@@ -245,6 +244,29 @@ Meteor.methods({
             }
         }
     },
+    'orderIngredient': function (ingredient, vendorId, numPackages) {
+        // var ingredient = IngredientsList.find({ _id: selectedIngredient }).fetch();
+        check(numPackages, Number);
+
+        var packagingMap = new Map();
+        packagingMap.set('sack', 50);
+        packagingMap.set('pail', 50);
+        packagingMap.set('drum', 500);
+        packagingMap.set('supersack', 2000);
+        packagingMap.set('truckload', 50000);
+        packagingMap.set('railcar', 280000);
+
+        let ingredientQuantity = Number(packagingMap.get(ingredient.package)) * Number(numPackages)
+
+        // TODO: Throw down a call to the sales table
+        Meteor.call('addToExistingIngredient', 
+            ingredient.name,
+            ingredient.package,
+            ingredientQuantity,
+            ingredient.temperatureState,
+            ingredient.vendorInfo,
+        )
+    },
     'addVendor': function(selectedIngredient, vendor, price) {
         if(containsVendor(vendor,IngredientsList.findOne({ id : selectedIngredient}).fetch().vendorInfo)) {
             throw new Meteor.Error('Already has vendor','this ingredient is already associated with this vendor');
@@ -256,6 +278,6 @@ Meteor.methods({
         IngredientsList.update({ id : selectedIngredient}, {$push : {vendorInfo : newVendor}});
     },
     'removeVendor': function(selectedIngredient, vendor) {
-        IngredientsList.update({ id : selectedIngredient, "vendorInfo.vendor._id" : vendor._id} , {$pull : {"vendorInfo.$" : });
+        IngredientsList.update({ id : selectedIngredient, "vendorInfo.vendor._id" : vendor._id} , {$pull : {"vendorInfo.$"}});
     }
 });

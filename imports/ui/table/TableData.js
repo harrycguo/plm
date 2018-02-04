@@ -38,7 +38,7 @@ function renderEditable(cellInfo) {
 						Bert.alert('Must be greater than or equal to zero', 'danger');
 					}
 					e.target.innerHTML = cellInfo.original.qty
-					
+
 				}
 			}}
 			dangerouslySetInnerHTML={{
