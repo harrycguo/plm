@@ -25,7 +25,6 @@ function renderEditable(cellInfo) {
 				} else if (cellInfo.column.id === 'qty') {
 					var entry = parseInt(e.target.innerHTML)
 					if(entry >= 0) {
-						
 						Meteor.call('editQuantity', cellInfo.original.fullIng._id, Number(entry),
 							function(error,result){
                    			if(error){
@@ -83,6 +82,7 @@ function renderEditableDropdown(cellInfo) {
 			ref="packaging"
 			value = {cellInfo.original.pkg.toLowerCase()}
 			onChange={ e=> {
+				console.log(e.target.value)
 				Meteor.call('editPackage', 
 					cellInfo.original.fullIng._id, 
 					e.target.value,
