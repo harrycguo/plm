@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Vendors } from '../Vendors/vendors.js';
 import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
-import convertPackageString from '../../utils/conversions.js';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { isInt } from '../../utils/checks.js';
 import { containsVendor, indexOfVendorWithId } from '../../utils/checks.js';

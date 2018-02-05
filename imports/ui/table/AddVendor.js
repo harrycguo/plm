@@ -4,7 +4,6 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Link , BrowserRouter} from 'react-router-dom'
 import { Bert } from 'meteor/themeteorchef:bert';
 import { Vendors } from '../../api/Vendors/vendors.js';
-import convertPackageString from '../../utils/conversions.js';
 import { isExistingIngredient } from '../../utils/checks.js';
 import { createContainer } from 'meteor/react-meteor-data'
 import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';

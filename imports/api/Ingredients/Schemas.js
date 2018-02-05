@@ -1,6 +1,4 @@
 import { Mongo } from 'meteor/mongo';
-import convertPackageString from '../../utils/conversions.js';
-
 
 //Schema for ingredient vendor info
 // VendorInfoSchema = new SimpleSchema({
