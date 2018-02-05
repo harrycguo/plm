@@ -267,16 +267,11 @@ Meteor.methods({
         )
     },
     'addVendor': function(selectedIngredient, vendorId, price) {
-        // console.log(containsVendor(vendor,IngredientsList.find({ id : selectedIngredient._id}).fetch()[0].vendorInfo));
-        // var ObjectId = require('mongodb').ObjectId
-        console.log(vendorId);
         if (vendorId === "null" || !price) {
             throw new Meteor.Error("Missing fields","Vendor and/or price unspecified");
         }
         var ing = IngredientsList.findOne({ _id : selectedIngredient._id });
         var vendor = Vendors.findOne({ _id : vendorId}); 
-        console.log(vendor);
-        console.log(containsVendor(vendor,ing.vendorInfo));
         if(containsVendor(vendor,ing.vendorInfo)) {
             throw new Meteor.Error('Already has vendor','this vendor is already associated with this ingredient');
         }
@@ -287,9 +282,6 @@ Meteor.methods({
         IngredientsList.update({ _id : selectedIngredient._id}, {$push : {vendorInfo : newVendor}});
     },
     'removeVendor': function(selectedIngredient, vendor) {
-        console.log(vendor._id);
-        console.log(selectedIngredient._id);
         IngredientsList.update({ _id : selectedIngredient._id} , {$pull : { vendorInfo : { "vendor._id" : vendor._id}}});
-        // IngredientsList.update({ id : selectedIngredient, "vendorInfo.vendor._id" : vendor._id} , {$pull : "vendorInfo.$"});
     }
 });
