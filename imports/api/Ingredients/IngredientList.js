@@ -29,6 +29,10 @@ const handle = cursor.observeChanges({
        console.log(ven);
        console.log("vendor id: "+id);
        IngredientsList.update({ "vendorInfo.vendor._id" : id}, { $set : { "vendorInfo.$.vendor" : ven}}, { multi: true });
+    },
+    'removed': function(id) {
+       console.log('removing: '+id);
+       IngredientsList.update({ }, {$pull : { "vendorInfo.vendor._id" : id}} , {multi : true})
     }
 });
 

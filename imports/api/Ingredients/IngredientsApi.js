@@ -16,15 +16,15 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
-        if (Object.keys(ingVendor).length === 0 && ingVendor.constructor === Object & ingPrice) {
+        if (Object.keys(ingVendor).length === 0 && ingVendor.constructor === Object && ingPrice) {
             throw new Meteor.Error('Vendor required for price','Specify vendor or remove price');
         } 
 
-        if (Object.keys(ingVendor).length > 0 & !ingPrice) {
+        if (Object.keys(ingVendor).length > 0 && !ingPrice) {
             throw new Meteor.Error('Price required for vendor','Specify price or remove vendor');
         }
 
-        console.log(ingPackage)
+        console.log(ingVendor);
 
         //Check to see if capacity won't be exceeded
         if (!(ingPackage.toLowerCase() == 'truckload' || ingPackage.toLowerCase() == 'railcar')) {
@@ -34,7 +34,9 @@ Meteor.methods({
         }
 
         var vendorInfoArr = [];
-        if (ingPrice & Object.keys(ingVendor).length > 0) {
+        console.log(Object.keys(ingVendor).length > 0);
+        console.log(ingPrice);
+        if (ingPrice && Object.keys(ingVendor).length > 0) {
             vendorInfoArr = [{
                 vendor: ingVendor,
                 price: Number(ingPrice)
