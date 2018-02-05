@@ -15,12 +15,12 @@ Meteor.methods({
       }
 
       //Vendor name must be unique
-      if (Vendors.find({vendor: name}).count() > 0){
+      if (Vendors.find({vendor: name.trim()}).count() > 0){
         throw new Meteor.Error('vendor already in system', 'Vendor Name Must Be Unique');
       }
 
       //Vendor FCC must be unique
-      if (Vendors.find({FCC: FCC.toUpperCase()}).count() > 0) {
+      if (Vendors.find({FCC: FCC.toUpperCase().trim()}).count() > 0) {
         throw new Meteor.Error('vendor already in system', 'Vendor Freight Code Already In System');
       }
 
@@ -48,13 +48,13 @@ Meteor.methods({
       console.log(Vendors.find({_id: id}))
 
       //Vendor names must be unique
-      if (Vendors.find({vendor: name}).count() > 0 && !(oldName == name)) {
+      if (Vendors.find({vendor: name.trim()}).count() > 0 && !(oldName == name)) {
         throw new Meteor.Error('vendor already in system', 'Vendor Name Must Be Unique');
       }
 
       
       //Vendors FCC must be unique
-      if (Vendors.find({FCC: FCC.toUpperCase()}).count() > 0 && !(oldFCC.toUpperCase() == FCC.toUpperCase())) {
+      if (Vendors.find({FCC: FCC.toUpperCase().trim()}).count() > 0 && !(oldFCC.toUpperCase() == FCC.toUpperCase())) {
         throw new Meteor.Error('vendor already in system', 'Vendor Freight Code Already In System');
       }
 
