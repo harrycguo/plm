@@ -184,7 +184,7 @@ class Table extends Component {
 	
 	////////////////////////////////////////////////
 	///											 ///
-	/// Render me daddy							 ///
+	/// Render me daddy, ok baby I got you		 ///
 	///											 ///
 	////////////////////////////////////////////////
 	

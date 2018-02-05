@@ -7,8 +7,6 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import { isInt } from '../../utils/checks.js';
 import { containsVendor, indexOfVendorWithId } from '../../utils/checks.js';
 
-//Meteor.subscribe('capacities');
-
 //IngredientsList API
 Meteor.methods({
     'addIngredient': function (ingName, ingPackage, ingQuantity, ingTemperatureState, ingVendor, ingPrice) {
@@ -268,22 +266,30 @@ Meteor.methods({
             ingredient.vendorInfo,
         )
     },
-    'addVendor': function(selectedIngredient, vendor, price) {
-        console.log(containsVendor(vendor,IngredientsList.find({ id : selectedIngredient}).fetch()[0].vendorInfo));
-        console.log(IngredientsList.find({ id : selectedIngredient}).fetch()[0].vendorInfo);
-        if(containsVendor(vendor,IngredientsList.find({ id : selectedIngredient}).fetch()[0].vendorInfo)) {
-            throw new Meteor.Error('Already has vendor','this ingredient is already associated with this vendor');
+    'addVendor': function(selectedIngredient, vendorId, price) {
+        // console.log(containsVendor(vendor,IngredientsList.find({ id : selectedIngredient._id}).fetch()[0].vendorInfo));
+        // var ObjectId = require('mongodb').ObjectId
+        console.log(vendorId);
+        if (vendorId === "null" || !price) {
+            throw new Meteor.Error("Missing fields","Vendor and/or price unspecified");
+        }
+        var ing = IngredientsList.findOne({ _id : selectedIngredient._id });
+        var vendor = Vendors.findOne({ _id : vendorId}); 
+        console.log(vendor);
+        console.log(containsVendor(vendor,ing.vendorInfo));
+        if(containsVendor(vendor,ing.vendorInfo)) {
+            throw new Meteor.Error('Already has vendor','this vendor is already associated with this ingredient');
         }
         var newVendor = {
             vendor: vendor,
             price: price
         };
-        IngredientsList.update({ id : selectedIngredient}, {$push : {vendorInfo : newVendor}});
+        IngredientsList.update({ _id : selectedIngredient._id}, {$push : {vendorInfo : newVendor}});
     },
     'removeVendor': function(selectedIngredient, vendor) {
         console.log(vendor._id);
         console.log(selectedIngredient._id);
-        IngredientsList.update({ id : selectedIngredient._id} , {$pull : { vendorInfo : { "vendor._id" : vendor._id}}});
+        IngredientsList.update({ _id : selectedIngredient._id} , {$pull : { vendorInfo : { "vendor._id" : vendor._id}}});
         // IngredientsList.update({ id : selectedIngredient, "vendorInfo.vendor._id" : vendor._id} , {$pull : "vendorInfo.$"});
     }
 });

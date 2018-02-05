@@ -39,8 +39,10 @@ export class AddVendor extends Component {
 					<button
 						onClick={e => {
 							console.log(this)
+							console.log(this.props.ing)
+							console.log(this.refs.vendorSel.vendor.value)
 							Meteor.call('addVendor',
-								this.props.ing.fullIng,
+								this.props.ing,
 								this.refs.vendorSel.vendor.value,
 								Number(this.refs.price.value),
 								function(error,result){
