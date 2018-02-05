@@ -135,6 +135,7 @@ class Table extends Component {
 							Meteor.call('orderIngredient',
 								row.original.fullIng,
 								vendor,
+								Number(qty),
 								function(error,result){
                    					if(error){
                         				console.log("something goes wrong with the following error message " + error.reason )
@@ -184,21 +185,12 @@ class Table extends Component {
 	
 	////////////////////////////////////////////////
 	///											 ///
-	/// Render me daddy, ok baby I got you		 ///
+	/// Render 									 ///
 	///											 ///
 	////////////////////////////////////////////////
-	
-	render() {
-		return (
-			<div>
-			
-			<Button
-				onClick={this.edit.bind(this)}
-				title= "Edit"
-				>Toggle Edit Mode</Button>
-				<p></p>
-		   	<ReactTable
-		    data={this.renderRows()}
+	renderTable(_this) {
+		return ( <ReactTable
+		    data={_this.renderRows()}
 		    filterable
 		    defaultFilterMethod={ (filter, row) => 
 		    	String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase())
@@ -213,19 +205,46 @@ class Table extends Component {
 		    					<th>Vendor</th>
 		    					<th>Price</th>
 		    				</tr>
-		    				{this.renderVendorRows(row)}
-		    				<AddVendor ing={row.original.fullIng}/>
+		    				{_this.renderVendorRows(row)}
+		    				<AddVendor ing={row.original.fullIng} edit={TableData.canEdit}/>
 		    			</tbody>
 		    			</table>
-						{this.renderIngredientUse(row)}
-		    			{this.renderButtons(this, row)}
+						{_this.renderIngredientUse(row)}
+		    			{_this.renderButtons(_this, row)}
                 	</div>
                 );
 		    }}
-		  /></div>);
+		  />
+		);
+	}
+	render() {
+		console.log(Meteor.user())
+		if (!Meteor.user() || !Roles.userIsInRole(Meteor.user()._id, 'admin')) {
+			if(TableData.canEdit) {
+				TableData.toggleEditable()
+				this.forceUpdate()
+			}
+			return (
+			<div>
+			{this.renderTable(this)}
+		   	</div>
+			);
+		}
+		return (
+			<div>
+			<Button
+				onClick={this.edit.bind(this)}
+				title= "Edit"
+				>Toggle Edit Mode</Button>
+				<p></p>
+			{this.renderTable(this)}
+		   	</div>
+		);
 
 	}
+	
 }
+
 
 
 export default withTracker(() => {

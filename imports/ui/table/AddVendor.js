@@ -26,38 +26,43 @@ export class AddVendor extends Component {
 	}
 
 	render() {
-		return (
-			<tr>
-				<td>
-					<VendorSelect ref="vendorSel"/>
-				</td>
-				<td>
-					<input type="text" placeholder="Price" onChange= {e=> {
-					}} ref="price"/>
-				</td>
-				<td>
-					<button
-						onClick={e => {
-							console.log(this)
-							console.log(this.props.ing)
-							console.log(this.refs.vendorSel.vendor.value)
-							Meteor.call('addVendor',
-								this.props.ing,
-								this.refs.vendorSel.vendor.value,
-								Number(this.refs.price.value),
-								function(error,result){
-                   					if(error){
-                        				console.log("something goes wrong with the following error message " + error.reason )
-               	  						Bert.alert(error.reason, 'danger');
-                  					}
-								}
-							);
-						}}
-						title= "Add Vendor"
-					>Add Vendor</button>
-				</td>
-			</tr>
-		);
+		if(this.props.edit) {
+			return (
+				<tr>
+					<td>
+						<VendorSelect ref="vendorSel"/>
+					</td>
+					<td>
+						<input type="text" placeholder="Price" onChange= {e=> {
+						}} ref="price"/>
+					</td>
+					<td>
+						<button
+							onClick={e => {
+								console.log(this)
+								console.log(this.props.ing)
+								console.log(this.refs.vendorSel.vendor.value)
+								Meteor.call('addVendor',
+									this.props.ing,
+									this.refs.vendorSel.vendor.value,
+									Number(this.refs.price.value),
+									function(error,result){
+	                   					if(error){
+	                        				console.log("something goes wrong with the following error message " + error.reason )
+	               	  						Bert.alert(error.reason, 'danger');
+	                  					}
+									}
+								);
+							}}
+							title= "Add Vendor"
+						>Add Vendor</button>
+					</td>
+				</tr>
+			);
+		}
+		else {
+			return null
+		}
 	}
 }
 
