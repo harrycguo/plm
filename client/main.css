@@ -1,8 +1,8 @@
-/*CSS declarations go here
+/*CSS declarations go here*/
 body {
     font-family: sans-serif;
     background-color: white;
-    background-image: linear-gradient(to bottom, #315481, #918e82 100%);
+    /*background-image: linear-gradient(to bottom, #315481, #918e82 100%);*/
     background-attachment: fixed;
    
     position: absolute;
@@ -138,4 +138,4 @@ body {
     .new-task input {
       padding-bottom: 5px;
     }
-  }*/
+  }
