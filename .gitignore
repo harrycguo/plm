@@ -2,7 +2,7 @@
 
 # ignore meteor stuff
 .meteor/packages
-
+.deploy/
 # packages
 # package-lock.json
 # package.json
