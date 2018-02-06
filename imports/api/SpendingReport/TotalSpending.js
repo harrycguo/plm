@@ -1,9 +1,7 @@
-//Total spending
 import { Mongo } from 'meteor/mongo';
-import { IngredientSchema } from './Schemas.js';
 import { Vendors } from '../Vendors/vendors.js';
 import { SpendingSchema } from '../Ingredients/Schemas.js';
-import Report from './Report.js';
+import Report from './SpendingReport.js';
 
 if (Meteor.isClient) {
 	Meteor.subscribe('report');
@@ -18,7 +16,7 @@ var cursor = Report.find();
 const handle = cursor.observeChanges({
     'changed': function(id, report) {
        // This code runs when a new object "object" was added to collection.
-       if (Report.find().fetch().length === 0) {
+       if (TotalSpending.find().fetch().length === 0) {
        	  TotalSpending.insert({
        	  	productionTotal: 0,
        	  	total: 0

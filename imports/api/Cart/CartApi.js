@@ -45,7 +45,7 @@ Meteor.methods({
             Meteor.call('editQuantity',ingCartInfo.ingredient._id,Number(diff));
             Meteor.call('logProductionInReport',ingCartInfo.ingredient,Number(ingCartInfo.amount));
         });
-        Carts.update({ user : Meteor.userId}, {$set : {ingredients : []}});
+        Carts.update({ user : Meteor.userId()}, {$set : {ingredients : []}});
         console.log("finished");
     }
 });

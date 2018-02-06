@@ -22,7 +22,7 @@ class IngredientCart extends Component {
 	}
 
 	renderTransactionItems() {
-		var frontEndCart = Array()
+		var frontEndReport = Array()
 		var keyCount = 0;
 		this.props.carts.forEach(function(ingredients) {
 			ingredients.ingredients.forEach(function(ing) {
@@ -33,7 +33,7 @@ class IngredientCart extends Component {
 				console.log(ing)
 			})
 		});
-		return frontEndCart.map(ingredient => (
+		return frontEndReport.map(ingredient => (
 			<tr key={ingredient.key}>
 				<td>{ingredient.fullIng.ingredient.name}</td>
 				<td>{ingredient.amt}</td>
