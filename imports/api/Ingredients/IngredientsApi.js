@@ -52,7 +52,8 @@ Meteor.methods({
             package: ingPackage.toLowerCase(),
             temperatureState: ingTemperatureState.toLowerCase(),
             vendorInfo: vendorInfoArr,
-            quantity: Number(ingQuantity)
+            quantity: Number(ingQuantity),
+            price: Number(0)
             // prices: priceTuples
         });
     },
@@ -248,7 +249,7 @@ Meteor.methods({
             }
         }
     },
-    'orderIngredient': function (ingredient, vendorId, numPackages) {
+    'orderIngredient': function (ingredient, vendor, numPackages) {
         // var ingredient = IngredientsList.find({ _id: selectedIngredient }).fetch();
         check(numPackages, Number);
 
@@ -261,6 +262,12 @@ Meteor.methods({
         packagingMap.set('railcar', 280000);
 
         let ingredientQuantity = Number(packagingMap.get(ingredient.package)) * Number(numPackages)
+        console.log("\t"+vendor)
+        console.log("\t"+vendor.cost+" "+ingredientQuantity +" "+ingredient.price +" "+ ingredient.quantity)
+        let newPrice = Number((vendor.cost * ingredientQuantity + ingredient.price * ingredient.quantity) / (ingredientQuantity +ingredient.quantity))
+
+        console.log("\t"+newPrice)
+        IngredientsList.update({ _id: ingredient._id}, {$set: {price: Number(newPrice)}});
 
         // TODO: Throw down a call to the sales table
         Meteor.call('addToExistingIngredient', 
@@ -270,6 +277,8 @@ Meteor.methods({
             ingredient.temperatureState,
             ingredient.vendorInfo,
         )
+
+        Meteor.call('logOrderInReport', ingredient, ingredientQuantity, vendor.cost)
     },
     'addVendor': function(selectedIngredient, vendorId, price) {
         if (vendorId === "null" || !price) {
