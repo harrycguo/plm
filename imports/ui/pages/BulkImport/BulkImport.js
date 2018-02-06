@@ -299,7 +299,7 @@ class BulkImport extends Component {
         <header>
           <h1>Bulk Import</h1>
         </header>
-        <li><Link to='/adminHomepage'>Admin Home</Link></li>
+        <li><Link to='/adminViewInventory'>Manage Inventory</Link></li>
         <hr></hr>
         <b>Upload File Below</b>
 

@@ -181,9 +181,9 @@ Meteor.methods({
         console.log("Done changing package")
     },
     'editQuantity': function (selectedIngredient, newQuantity) {
-        if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
-            throw new Meteor.Error('not-authorized', 'not-authorized');
-        }
+        // if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+        //     throw new Meteor.Error('not-authorized', 'not-authorized');
+        // }
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 

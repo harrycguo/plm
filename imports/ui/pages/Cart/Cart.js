@@ -54,13 +54,29 @@ class IngredientCart extends Component {
 	}
 
 	checkoutButton() {
+
+		const {history} = this.props
+
+		let user = Meteor.user();
+		let returnLink = null;
+		
+		if (Roles.userIsInRole(user, ['admin'])) {
+			returnLink = '/adminViewInventory'
+		} else {
+			returnLink = '/userViewInventory'
+		}
+
 		return (<button
 				onClick={e => {
 					Meteor.call('checkoutIngredients', function(error, result) {
 						if(error){
                    			console.log("something goes wrong with the following error message " + error.reason )
                	  			Bert.alert(error.reason, 'danger');
-                		}
+                		} else {
+							Bert.alert('Successfully Checked Out!', 'success');
+							history.push(returnLink)
+							
+							}
 					});
 				}}
 				title="Checkout"
@@ -70,7 +86,12 @@ class IngredientCart extends Component {
 
 	render() {
 		return (
-			<div style={{ padding: "5px" }}>
+			<div className="container" style={{ padding: "5px" }}>
+
+			<header>
+          		<h1>Cart</h1>
+        	</header>
+
 				{this.linkBack()}
 		    	<table>
 		    		<tbody>
