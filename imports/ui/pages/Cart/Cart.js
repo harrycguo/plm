@@ -7,25 +7,42 @@ import Carts from '../../../api/Cart/Cart.js';
 class IngredientCart extends Component {
 	
 	remove() {
-		console.log(this)
+		console.log(this.fullIng)
+		Meteor.call('removeIngredientFromCart', this.fullIng.ingredient,
+			function(error, result){
+				if(error){
+                   	console.log("something goes wrong with the following error message " + error.reason )
+               	  	Bert.alert(error.reason, 'danger');
+                }
+			}
+		);
 	}
 
 	renderCartItems() {
-		// 	return this.props.carts.ingredients.map(ingredient => (
-		// 		<tr>
-		// 			<td>ingredient.ingredient</td>
-		// 			<td>ingredient.amount</td>
-		// 			<td><button
-		// 				onClick={this.remove.bind(this)}
-		// 				title= "Edit"
-		// 				>Remove From Cart</button>
-		// 			</td>
-		// 	</tr>
-		// 	));
-		// }
-		console.log(this.props)
-		console.log(Carts)
-		return null
+		var frontEndCart = Array()
+		var keyCount = 0;
+		this.props.carts.forEach(function(ingredients) {
+			ingredients.ingredients.forEach(function(ing) {
+				frontEndCart.push(
+					{key: keyCount, fullIng: ing, amt: ing.amount}
+				)
+				keyCount++;
+				console.log(ing)
+			})
+		});
+		return frontEndCart.map(ingredient => (
+			<tr key={ingredient.key}>
+				<td>{ingredient.fullIng.ingredient.name}</td>
+				<td>{ingredient.amt}</td>
+				<td>
+					<button
+					onClick={this.remove.bind(ingredient)}
+					title= "Edit">
+						Remove From Cart
+					</button>
+				</td>
+			</tr>
+		))
 	}
 
 	render() {
@@ -49,6 +66,6 @@ class IngredientCart extends Component {
 export default withTracker(() => {
 	Meteor.subscribe('carts')
 	return {
-		carts: Carts.find({"user._id" : Meteor.userId()}).fetch()
+		carts: Carts.find({"user" : Meteor.userId()}).fetch()
 	};
 })(IngredientCart);

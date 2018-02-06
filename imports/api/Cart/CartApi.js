@@ -10,7 +10,7 @@ Meteor.methods({
 		});
 	},
     'addIngredientToCart': function(selectedIngredient, amount) {
-    	var cart = Carts.find({ "user": Meteor.userId(), "ingredient._id" : selectedIngredient._id}).fetch();
+    	var cart = Carts.find({ "user": Meteor.userId(), "ingredients.ingredient._id" : selectedIngredient._id}).fetch();
     	if (cart.length === 0)
     		Carts.update({ "user" : Meteor.userId()},{$push : { ingredients : {
     			ingredient : selectedIngredient,
