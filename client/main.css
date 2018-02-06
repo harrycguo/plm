@@ -17,6 +17,13 @@ body {
     font-size: 14px;
   }
    
+  .td {
+    padding: 5px!important;
+  }
+
+  .th! {
+    padding: 5px!important;
+  }
   .container {
     max-width: 1200px;
     margin: 0 auto;

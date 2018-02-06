@@ -74,8 +74,6 @@ class Table extends Component {
 	////////////////////////////////////////////////
 	
 	deleteVendor(){
-		console.log("deleting")
-		console.log(this)
 		Meteor.call('removeVendor',
 			row.original.fullIng,
 			vendor,
@@ -129,9 +127,6 @@ class Table extends Component {
 				<button
 					onClick={e => {
 						if(recentVendor === vendor) {
-							console.log(qty)
-							console.log(row.original.fullIng)
-							console.log(vendor)
 							Meteor.call('orderIngredient',
 								row.original.fullIng,
 								vendor,
@@ -163,10 +158,16 @@ class Table extends Component {
 	
 	renderIngredientUse(row) {
 		if(!TableData.canEdit) {
+			var qty = undefined;
 			return (
-				<div><span>Num lbs to use</span>
+				<div>
+				<input type="text" onChange={ e=> {
+					qty = e.target.value;
+				}}/>
 				<button
-					onClick={this.addToCart.bind(row.original.fullIng)}
+					onClick={e=> {
+						console.log("Add " + qty + " of " + row.original.fullIng.name) 
+					}}
 					title= "Add To Cart"
 				>
 					Add To Cart
@@ -218,7 +219,6 @@ class Table extends Component {
 		);
 	}
 	render() {
-		console.log(Meteor.user())
 		if (!Meteor.user() || !Roles.userIsInRole(Meteor.user()._id, 'admin')) {
 			if(TableData.canEdit) {
 				TableData.toggleEditable()
@@ -226,12 +226,14 @@ class Table extends Component {
 			}
 			return (
 			<div>
+			<li><Link to='/cart'>Go To Cart</Link></li>
 			{this.renderTable(this)}
 		   	</div>
 			);
 		}
 		return (
 			<div>
+			<li><Link to='/cart'>Go To Cart</Link></li>
 			<Button
 				onClick={this.edit.bind(this)}
 				title= "Edit"
@@ -244,8 +246,6 @@ class Table extends Component {
 	}
 	
 }
-
-
 
 export default withTracker(() => {
 	Meteor.subscribe('ingredients')

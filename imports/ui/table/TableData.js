@@ -31,7 +31,6 @@ function renderEditable(cellInfo) {
                    			if(error){
                         		console.log("something goes wrong with the following error message " + error.reason )
                	  				Bert.alert(error.reason, 'danger');
-								console.log('problema')
                   			}
 						});
 					} else {
@@ -87,7 +86,6 @@ function renderEditableDropdown(cellInfo) {
 			ref="packaging"
 			value = {cellInfo.original.pkg.toLowerCase()}
 			onChange={ e=> {
-				console.log(e.target.value)
 				Meteor.call('editPackage', 
 					cellInfo.original.fullIng._id, 
 					e.target.value,
@@ -148,13 +146,11 @@ export function convertToFrontend(ingredient, ingredientsList) {
 	VendArray = new Array()
 	ingredient.vendorInfo.forEach(function(info){
 		var vendor = info.vendor;
-		console.log(vendor);
 		if(vendor != null && vendor._id != null && info.price != -1) {
 			VendArray.push({_id: vendor._id, name: vendor.vendor, cost: info.price});
 		}
 	});
 	
-	// console.log(ingredient)
 	return {
 			name: ingredient.name, 
 			temp: ingredient.temperatureState, 
