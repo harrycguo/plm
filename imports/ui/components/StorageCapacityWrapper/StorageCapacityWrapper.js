@@ -27,7 +27,7 @@ class StorageCapacityWrapper extends Component {
   }
   
   export default withTracker(() => {
-    const subscription = Meteor.subscribe('capacities');
+    const subscription = Meteor.subscribe('storageCapacities');
       return {
         sc: StorageCapacities.find({}).fetch(),
       };

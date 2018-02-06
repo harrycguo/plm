@@ -17,8 +17,9 @@ class BulkImport extends Component {
     this.uploadFile = this.uploadFile.bind(this);
     this.checkFileForErrors = this.checkFileForErrors.bind(this);
     this.arraysEqual = this.arraysEqual.bind(this)
-    var data;
+    var data = undefined;
     var isCSV;
+    var file = undefined
     this.state = {
       errorMessage: ""
     }
@@ -65,9 +66,10 @@ class BulkImport extends Component {
     // if File is not valid
     else if (!this.checkFileForErrors(data).valid) {
       Bert.alert('File Format is Incorrect', 'danger');
-
+      
       let errors = this.checkFileForErrors(data).errors
       let message = ""
+      console.log(errors)
       for (let i = 0; i < errors.length; i++){
         message += errors[i].toString() + "\n"
       }
@@ -135,6 +137,10 @@ class BulkImport extends Component {
         console.log(data)
       }
     });
+
+    console.log('storage capacities wtf')
+
+
   }
 
   checkFileForErrors(dataFile) {
@@ -162,6 +168,11 @@ class BulkImport extends Component {
       scMapUsed.set(this.props.sc[i].type, Number(this.props.sc[i].used))
       scMapTotal.set(this.props.sc[i].type, Number(this.props.sc[i].capacity))
     }
+
+    
+
+    console.log(scMapUsed)
+    console.log(scMapTotal)
 
     //Create array of ingredients
     let ingMap = new Map();
@@ -261,6 +272,9 @@ class BulkImport extends Component {
         errors.push("Exceeded capacity with this bulk import in the " + temperatures[i] + " storage facility")
       }
     }
+
+    console.log(scMapUsed)
+    console.log(scMapTotal)
 
     // return 
     return {
