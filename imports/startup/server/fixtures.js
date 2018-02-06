@@ -1,5 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { StorageCapacities } from '../../api/StorageCapacities/storageCapacities.js'
+import Carts from '../../api/Cart/Cart.js';
+
+// Meteor.subscribe('carts');
 
 //Create default admin
 if ( Meteor.users.find({username: 'admin'}).count() === 0 ) {
@@ -50,6 +53,10 @@ if (StorageCapacities.find({name: "Warehouse"}).count() === 0){
       used: Number(0)
     })
 }
+
+// if (Carts.find({"user._id" : Meteor.userId()}).fetch().length === 0) {
+//   Meteor.call('createUserCart');
+// }
 
 
 

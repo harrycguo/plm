@@ -11,7 +11,7 @@ IngredientsList.attachSchema(IngredientSchema);
 //Update vendors for each ingredient when a vendor is edited
 var cursor = Vendors.find();
 const handle = cursor.observeChanges({
-  'changed': function(id, vendors) {
+    'changed': function(id, vendors) {
        // This code runs when a new object "object" was added to collection.
        var ven = Vendors.find({ _id: id}).fetch()[0];
        console.log(ven);

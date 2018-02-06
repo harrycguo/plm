@@ -87,7 +87,6 @@ export class IngredientForm extends Component {
 
 
 	handleSubmit() {
-
 		console.log(this.refs.vendorSel);
 
 		// Find the text field via the React ref

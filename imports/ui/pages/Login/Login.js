@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
 import validate from '../../../modules/validate';
+import Carts from '../../../api/Cart/Cart.js';
 
 class Login extends Component {
   constructor(props) {
@@ -45,15 +46,20 @@ class Login extends Component {
           if (error) {
             Bert.alert(error.reason, 'danger');
           } else {
+
             Bert.alert('Welcome!', 'success');
             //determine route based on role
             let user = Meteor.user();
+
+            //Creates a cart for user if they don't already have one
+            if (Carts.find({"user._id" : Meteor.userId()}).fetch().length === 0) {
+              Meteor.call('createUserCart');
+            }
 
             //admin login
             if (Roles.userIsInRole(user, ['admin'])) {
               history.push('/adminHomepage');
             } 
-            
             //user login
             else {
               history.push('/userHomepage');

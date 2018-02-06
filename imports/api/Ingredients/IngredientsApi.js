@@ -54,6 +54,8 @@ Meteor.methods({
     },
     //This method will check to see if the ingredient already exists. If not, then call addIngredient.
     'addToExistingIngredient': function (ingName, ingPackage, ingQuantity, ingTemperatureState, ingVendor, ingPrice) {
+        console.log(IngredientsList.find({_id : "jlskfhskjdfsjdfbsmdfbsdmfjhsfdjh"}).fetch());
+
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
