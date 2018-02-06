@@ -33,6 +33,10 @@ IngredientSchema = new SimpleSchema({
   },
   quantity: {
     type: Number
+  },
+  price: {
+    type: Number,
+    decimal: true
   }
 });
 
@@ -59,4 +63,27 @@ CartSchema = new SimpleSchema({
 	}
 })
 
-export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema };
+ReportSchema = new SimpleSchema({
+  createdAt: {
+    type: String
+  },
+  ingredient_name: {
+    type: String,
+    blackbox: true,
+    unique: false
+  },
+  quantity: {
+    type: Number
+  },
+  price: {
+    type: Number,
+    decimal: true
+  },
+  type: {
+    type: String,
+    allowedValues: ["Ordered","In Production"]
+
+  }
+})
+
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema };
