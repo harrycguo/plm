@@ -49,7 +49,7 @@ CartIngredientSchema = new SimpleSchema({
 // //Cart schema. Each user has their own mini database of ingredients.
 CartSchema = new SimpleSchema({
 	user: {
-		type: Object,
+		type: String,
 		unique: true,
 		blackbox: true
 	},

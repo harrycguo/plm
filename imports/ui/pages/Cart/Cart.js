@@ -11,21 +11,21 @@ class IngredientCart extends Component {
 	}
 
 	renderCartItems() {
-		if(Carts.map) {
-			return Carts.map(cart => (
-				<tr>
-					<td>cart</td>
-					<td>cart</td>
-					<td><button
-						onClick={this.remove.bind(this)}
-						title= "Edit"
-						>Remove From Cart</button>
-					</td>
-			</tr>
-			));
-		} else {
-			return null
-		}
+		// 	return this.props.carts.ingredients.map(ingredient => (
+		// 		<tr>
+		// 			<td>ingredient.ingredient</td>
+		// 			<td>ingredient.amount</td>
+		// 			<td><button
+		// 				onClick={this.remove.bind(this)}
+		// 				title= "Edit"
+		// 				>Remove From Cart</button>
+		// 			</td>
+		// 	</tr>
+		// 	));
+		// }
+		console.log(this.props)
+		console.log(Carts)
+		return null
 	}
 
 	render() {
@@ -49,6 +49,6 @@ class IngredientCart extends Component {
 export default withTracker(() => {
 	Meteor.subscribe('carts')
 	return {
-		carts: Carts.find({}).fetch()
+		carts: Carts.find({"user._id" : Meteor.userId()}).fetch()
 	};
 })(IngredientCart);
