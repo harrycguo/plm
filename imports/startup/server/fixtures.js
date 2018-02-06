@@ -54,9 +54,5 @@ if (StorageCapacities.find({name: "Warehouse"}).count() === 0){
     })
 }
 
-// if (Carts.find({"user._id" : Meteor.userId()}).fetch().length === 0) {
-//   Meteor.call('createUserCart');
-// }
-
 
 
