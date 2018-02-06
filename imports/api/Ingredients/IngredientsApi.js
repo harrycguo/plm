@@ -6,6 +6,10 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import { isInt } from '../../utils/checks.js';
 import { containsVendor, indexOfVendorWithId } from '../../utils/checks.js';
 
+if (Meteor.isClient) {
+    Meteor.subscribe('storageCapacities');
+}
+
 //IngredientsList API suh
 Meteor.methods({
     'addIngredient': function (ingName, ingPackage, ingQuantity, ingTemperatureState, ingVendor, ingPrice) {
