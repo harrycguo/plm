@@ -82,7 +82,9 @@ class Table extends Component {
                 if(error){
                    	console.log("something goes wrong with the following error message " + error.reason )
                	  	Bert.alert(error.reason, 'danger');
-                }
+                } else {
+					Bert.alert('Successfully Removed Vendor', 'success');
+					}
 			}
 		);
 	}
@@ -136,7 +138,9 @@ class Table extends Component {
                    					if(error){
                         				console.log("something goes wrong with the following error message " + error.reason )
                	  						Bert.alert(error.reason, 'danger');
-                  					}
+                  					} else {
+										Bert.alert('Successfully Ordered Package', 'success');
+										}
 								}
 							);
 						}
