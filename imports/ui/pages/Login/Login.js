@@ -6,6 +6,10 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import validate from '../../../modules/validate';
 import Carts from '../../../api/Cart/Cart.js';
 
+if (Meteor.isClient){
+  Meteor.subscribe('carts')
+}
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -52,7 +56,7 @@ class Login extends Component {
             let user = Meteor.user();
 
             //Creates a cart for user if they don't already have one
-            if (Carts.find({"user._id" : Meteor.userId()}).fetch().length === 0) { 
+            if (Carts.find({user : Meteor.userId()}).fetch().length === 0) { 
               Meteor.call('createUserCart');
             }
 
