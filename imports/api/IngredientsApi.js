@@ -7,7 +7,7 @@ Meteor.methods({
     		IngredientsList.insert({
             	name: ingredientName,
             	package: ingredientPackage,
-         l   	temperatureState: ingredientTemperatureState,
+            	temperatureState: ingredientTemperatureState,
             	vendors: ingredientVendors
         	});
     	// }
