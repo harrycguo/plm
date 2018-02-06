@@ -20,6 +20,7 @@ Meteor.methods({
     	else throw new Meteor.Error("Ingredient already in cart","Ingredient already in cart");
     },
     'removeIngredientFromCart': function(selectedIngredient) {
-    	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { "ingredient._id" : selectedIngredient}}});
+        console.log(selectedIngredient)
+    	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { "ingredient._id" : selectedIngredient._id}}});
     }
 });

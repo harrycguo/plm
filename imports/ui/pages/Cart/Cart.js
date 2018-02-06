@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { button } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import Carts from '../../../api/Cart/Cart.js';
-
+import { Link } from 'react-router-dom';
 
 class IngredientCart extends Component {
 	
@@ -45,19 +45,44 @@ class IngredientCart extends Component {
 		))
 	}
 
+	linkBack() {
+		if (!Meteor.user() || !Roles.userIsInRole(Meteor.user()._id, 'admin')) {
+			return (<li><Link to='/userViewInventory'>Return to Inventory</Link></li>)
+		} else {
+			return (<li><Link to='/adminViewInventory'>Return to Inventory</Link></li>)
+		}
+	}
+
+	checkoutButton() {
+		return (<button
+				onClick={e => {
+					Meteor.call('checkoutIngredients', function(error, result) {
+						if(error){
+                   			console.log("something goes wrong with the following error message " + error.reason )
+               	  			Bert.alert(error.reason, 'danger');
+                		}
+					});
+				}}
+				title="Checkout"
+				>Checkout Cart</button>
+		);
+	}
+
 	render() {
 		return (
 			<div style={{ padding: "5px" }}>
-		    		<table>
-		    			<tbody>
-		    				<tr>
-		    					<th>Ingredient</th>
-		    					<th>Amount</th>
-		    					<th>Remove</th>
-		    				</tr>
-		    				{this.renderCartItems()}
-		    			</tbody>
-		    		</table>
+				{this.linkBack()}
+		    	<table>
+		    		<tbody>
+		    			<tr>
+		    				<th>Ingredient</th>
+		    				<th>Amount</th>
+		    				<th>Remove</th>
+						</tr>
+	    				{this.renderCartItems()}
+	    			</tbody>
+	       		</table>
+	       		{this.checkoutButton()}
 			</div>
 		)
 	}
