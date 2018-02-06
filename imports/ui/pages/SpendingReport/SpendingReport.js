@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { button } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import Report from '../../../api/SpendingReport/SpendingReport.js';
+import ReportSumsComp from '../../components/SpendingReport/ReportSumsComp.js';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 
@@ -70,10 +71,11 @@ class SpendingReport extends Component {
 		});
 		return reportRows;
 	}
+
 	render() {
 		return (
 			<div className="container" style={{ padding: "5px" }}>
-
+			<ReportSumsComp />
 			<header>
           		<h1>Spending Report</h1>
         	</header>
@@ -89,7 +91,6 @@ class SpendingReport extends Component {
 			</div>
 		)
 	}
-
 
 }
 

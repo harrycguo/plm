@@ -6,3 +6,4 @@ import '../../api/Cart/Cart.js';
 import '../../api/Cart/CartApi.js';
 import '../../api/SpendingReport/SpendingReport.js';
 import '../../api/SpendingReport/SpendingReportApi.js';
+import '../../api/SpendingReport/TotalSpending.js';
