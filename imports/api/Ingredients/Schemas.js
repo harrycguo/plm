@@ -39,25 +39,26 @@ IngredientSchema = new SimpleSchema({
 });
 
 //Schema for individual ingredient entries in the cart
-// CartIngredientSchema = new SimpleSchema({
-// 	ingredient: {
-// 		type: IngredientSchema
-// 	},
-// 	quantity: {
-// 		type: Number
-// 	}
-// })
+CartIngredientSchema = new SimpleSchema({
+	ingredient: {
+		type: IngredientSchema
+	},
+	quantity: {
+		type: Number
+	}
+})
 
 // //Cart schema. Each user has their own mini database of ingredients.
-// CartSchema = new SimpleSchema({
-// 	user: {
-// 		type: Object,
-// 		unique: true,
-// 		blackbox: true
-// 	},
-// 	ingredients: {
-// 		type: [CartIngredientSchema]
-// 	}
-// })
+CartSchema = new SimpleSchema({
+	user: {
+		type: Object,
+		unique: true,
+		blackbox: true
+	},
+	ingredients: {
+		type: [Object],
+		blackbox: true
+	}
+})
 
-export { IngredientSchema, CartSchema };
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema };
