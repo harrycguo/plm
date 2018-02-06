@@ -22,6 +22,7 @@ class AdminViewInventory extends Component {
         </header>
         <li><Link to='/adminHomepage'>Admin Home</Link></li>
         <li><Link to='/addingredient'>Add Ingredient</Link></li>
+        <li><Link to='/bulkImport'>Bulk Import</Link></li>
         <StorageCapacityWrapper/>
         <Table/>
 

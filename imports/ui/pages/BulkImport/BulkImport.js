@@ -112,7 +112,7 @@ class BulkImport extends Component {
           });
       }
       Bert.alert("Successfully Bulk Imported", 'success');
-      history.push('/adminHomepage')
+      history.push('/adminViewInventory')
     }
   }
 

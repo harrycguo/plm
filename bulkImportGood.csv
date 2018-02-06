@@ -1,0 +1,4 @@
+﻿INGREDIENT,PACKAGE,AMOUNT (LBS),PRICE PER PACKAGE,VENDOR FREIGHT CODE,TEMPERATURE
+apples,sack,400,5.08,HT101,frozen
+rice,drum,5000,17.98,HT101,room temperature
+cotton candy,railcar,30000,11.44,FL99,refrigerated
