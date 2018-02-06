@@ -172,7 +172,9 @@ class Table extends Component {
 								if(error){
                         				console.log("something goes wrong with the following error message " + error.reason )
                	  						Bert.alert(error.reason, 'danger');
-                  				}
+                  				} else {
+										Bert.alert('Successfully added ' + qty + ' lbs to Cart!', 'success')
+								}
 							}
 						);
 					}}
