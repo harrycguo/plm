@@ -233,6 +233,7 @@ class Table extends Component {
 			return (
 			<div>
 			<li><Link to='/cart'>Go To Cart</Link></li>
+			<li><Link to='/report'>Go To Spending Report</Link></li>
 			{this.renderTable(this)}
 		   	</div>
 			);
@@ -240,6 +241,7 @@ class Table extends Component {
 		return (
 			<div>
 			<li><Link to='/cart'>Go To Cart</Link></li>
+			<li><Link to='/report'>Go To Spending Report</Link></li>
 			<Button
 				onClick={this.edit.bind(this)}
 				title= "Edit"

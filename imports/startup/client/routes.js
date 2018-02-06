@@ -23,6 +23,7 @@ import UserViewInventory from '../../ui/pages/UserViewInventory/UserViewInventor
 import AdminViewInventory from '../../ui/pages/AdminViewInventory/AdminViewInventory.js';
 import AddIngredient from '../../ui/pages/AddIngredient/AddIngredient.js';
 import IngredientCart from '../../ui/pages/Cart/Cart.js';
+import SpendingReport from '../../ui/pages/SpendingReport/SpendingReport.js';
  
 export const renderRoutes = () => (
   <Router>
@@ -46,6 +47,7 @@ export const renderRoutes = () => (
     <Route path="/userViewInventory" component={UserViewInventory}/>
     <Route path="/adminViewInventory" component={AdminViewInventory}/>
     <Route path="/cart" component={IngredientCart}/>
+    <Route path="/report" component={SpendingReport}/>
   </div>
 </Router>
 );
