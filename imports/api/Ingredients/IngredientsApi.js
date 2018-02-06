@@ -16,7 +16,7 @@ Meteor.methods({
     'addIngredient': function (ingName, ingPackage, ingQuantity, ingTemperatureState, ingVendor, ingPrice) {
 
         //Check to see if user is authorized
-        if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+        if (!this.userId) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
@@ -62,7 +62,7 @@ Meteor.methods({
     'addToExistingIngredient': function (ingName, ingPackage, ingQuantity, ingTemperatureState, ingVendor, ingPrice) {
         console.log(IngredientsList.find({_id : "jlskfhskjdfsjdfbsmdfbsdmfjhsfdjh"}).fetch());
 
-        if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+        if (!this.userId) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
