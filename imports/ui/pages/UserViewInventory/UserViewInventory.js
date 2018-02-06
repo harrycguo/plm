@@ -21,7 +21,6 @@ class UserViewInventory extends Component {
           <h1>Inventory</h1>
         </header>
         <li><Link to='/userHomepage'>User Home</Link></li>
-        <li><Link to='/addingredient'>Order Ingredient</Link></li>
         <StorageCapacityWrapper/>
         <Table/>
 

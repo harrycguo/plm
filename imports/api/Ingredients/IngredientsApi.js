@@ -44,7 +44,7 @@ Meteor.methods({
         console.log(vendorInfoArr);
         
         IngredientsList.insert({
-            name: ingName,
+            name: ingName.trim(),
             package: ingPackage.toLowerCase(),
             temperatureState: ingTemperatureState.toLowerCase(),
             vendorInfo: vendorInfoArr,
@@ -60,7 +60,7 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
-        let existingIng = IngredientsList.findOne({ name: ingName });
+        let existingIng = IngredientsList.findOne({ name: ingName.trim() });
         console.log(existingIng)
 
         //If ingredient exists, update it instead of adding a new database entry
@@ -94,7 +94,7 @@ Meteor.methods({
         }
         else {
             Meteor.call('addIngredient',
-                ingName,
+                ingName.trim(),
                 ingPackage,
                 ingQuantity,
                 ingTemperatureState,
@@ -125,18 +125,16 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
-        let existingIng = IngredientsList.findOne({ name: newName });
+        let existingIng = IngredientsList.findOne({ name: newName.trim() });
         
         if (existingIng !== undefined) {
             throw new Meteor.Error('ingredient name already exists', 'Ingredient Name Already Exists');
         }
-        
-
-
+    
         check(selectedIngredient, String);
         //Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
         check(newName, String);
-        IngredientsList.update({ _id: selectedIngredient }, { $set: { name: newName } });
+        IngredientsList.update({ _id: selectedIngredient }, { $set: { name: newName.trim() } });
     },
     'editPackage': function (selectedIngredient, newPackage) {
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {

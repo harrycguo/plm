@@ -26,9 +26,8 @@ export class IngredientForm extends Component {
 	constructor(props) {
 		super(props);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		this.calculateCapacity = this.calculateCapacity.bind(this);
 		this.state = {
-			totalCap: Number(0)
+			usedCap: Number(0)
 		};
 	}
 
@@ -99,7 +98,7 @@ export class IngredientForm extends Component {
 		const { history } = this.props.hist;
 
 		//map packaging to values
-		var packagingMap = new Map();
+		let packagingMap = new Map();
 		packagingMap.set('Sack', 50);
 		packagingMap.set('Pail', 50);
 		packagingMap.set('Drum', 500);
@@ -108,7 +107,6 @@ export class IngredientForm extends Component {
 		packagingMap.set('Railcar', 280000);
 
 		let ingredientQuantity = Number(packagingMap.get(packaging)) * Number(numPackages)
-
 
 		for (var i = 0; i < this.props.vendors.length; i++) {
 			if (this.props.vendors[i]._id == vendorId) {
@@ -155,6 +153,25 @@ export class IngredientForm extends Component {
 
 	}
 
+	setTwoNumberDecimal(event) {
+    	this.value = parseFloat(this.value).toFixed(2);
+	}
+
+	calculateCapacityUsed = () => {
+		let packagingMap = new Map();
+		packagingMap.set('Sack', 50);
+		packagingMap.set('Pail', 50);
+		packagingMap.set('Drum', 500);
+		packagingMap.set('Supersack', 2000);
+		packagingMap.set('Truckload', 50000);
+		packagingMap.set('Railcar', 280000);
+
+		let packaging = this.packaging.value
+		let numPackages = this.numPackages.value
+		let ingredientQuantity = Number(packagingMap.get(packaging)) * Number(numPackages)
+		this.setState({usedCap: ingredientQuantity})
+	}
+
 	renderOptions() {
 		let items = [];
 		for (i = 0; i < this.props.vendors.length; i++) {
@@ -163,15 +180,13 @@ export class IngredientForm extends Component {
 		return items;
 	}
 
-	setTwoNumberDecimal(event) {
-    	this.value = parseFloat(this.value).toFixed(2);
-	}
-
-	calculateCapacity(event) {
-		console.log(this.numPackages)
-		this.setState({
-			totalCap: Number(10)
-		});
+	renderUsedCapacity(){
+		return  (
+			<div>
+			<b>Total Amount (lbs):</b>
+			  <p>{this.state.usedCap}</p>
+			</div>
+		  )
 	}
 
 	render() {
@@ -202,14 +217,15 @@ export class IngredientForm extends Component {
 						<ControlLabel>Packaging</ControlLabel>
 						<p><select id="selPackaging"
 							ref={packaging => (this.packaging = packaging)}
-
-							name="packaging">
+							name="packaging"
+							onChange={this.calculateCapacityUsed}>
 							<option value="Sack">Sack (50 lbs)</option>
 							<option value="Pail">Pail (50 lbs)</option>
 							<option value="Drum">Drum (500 lbs)</option>
 							<option value="Supersack">Supersack (2000 lbs)</option>
 							<option value="Truckload">Truckload (50000 lbs)</option>
 							<option value="Railcar">Railcar (280000 lbs)</option>
+
 						</select></p>
 					</FormGroup>
 					<FormGroup>
@@ -228,12 +244,15 @@ export class IngredientForm extends Component {
 						<p><input
 							type="number"
 							ref={numPackages=> (this.numPackages = numPackages)}
+							onChange={this.calculateCapacityUsed}
 							name="numPackages"
 							placeholder="# of Packages"
 							className="form-control"
-						
+							defaultValue={0}
 						/></p>
 					</FormGroup>
+
+					{this.renderUsedCapacity()}
 			
 					<FormGroup>
 						<ControlLabel>Select Vendor</ControlLabel>
