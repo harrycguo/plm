@@ -1,8 +1,11 @@
 import { Mongo } from 'meteor/mongo';
 import Carts from './Cart.js';
 import IngredientsList from '../Ingredients/IngredientList.js';
+import '../Ingredients/IngredientsApi.js';
 
-// Meteor.subscribe('ingredients');
+if(Meteor.isClient) {
+    Meteor.subscribe('ingredients');
+}
 
 //Cart api
 Meteor.methods({
@@ -37,9 +40,9 @@ Meteor.methods({
         var diff;
         console.log(ings);
         ings.forEach(function(ingCartInfo){
-            console.log(IngredientsList.find().fetch())
+            console.log(ingCartInfo.ingredient._id)
             diff = ingCartInfo.ingredient.quantity - ingCartInfo.amount;
-            IngredientsList.update({ _id : ingCartInfo.ingredient._id},{quantity : diff});
+            Meteor.call('editQuantity',ingCartInfo.ingredient._id,Number(diff));
         });
         Carts.update({ user : Meteor.userId}, {ingredients : []});
         console.log("finished");
