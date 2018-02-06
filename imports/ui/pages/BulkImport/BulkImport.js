@@ -49,18 +49,20 @@ class BulkImport extends Component {
   handleSubmit() {
 
     const { history } = this.props;
+    
 
     // If there is no file
     if (typeof data == 'undefined') {
       Bert.alert('Need To Submit A CSV File', 'danger');
       this.setState({ errorMessage: "No File Submitted" })
-
+      data = undefined;
     }
 
     // if file is not a CSV
     else if (!isCSV) {
       Bert.alert('File must be CSV', 'danger');
       this.setState({ errorMessage: "File must be CSV" })
+      data = undefined;
     }
 
     // if File is not valid
@@ -69,18 +71,17 @@ class BulkImport extends Component {
       
       let errors = this.checkFileForErrors(data).errors
       let message = ""
-      console.log(errors)
       for (let i = 0; i < errors.length; i++){
         message += errors[i].toString() + "\n"
       }
       this.setState({ errorMessage: message})
+      data = undefined;
     }
 
     // Success!!
     else {
 
       let dataFile = data;
-
       for (let i = 0; i < dataFile.data.length; i++) {
 
         let currIngName = dataFile.data[i]["INGREDIENT"].toLowerCase();
@@ -138,8 +139,6 @@ class BulkImport extends Component {
       }
     });
 
-    console.log('storage capacities wtf')
-
 
   }
 
@@ -168,11 +167,6 @@ class BulkImport extends Component {
       scMapUsed.set(this.props.sc[i].type, Number(this.props.sc[i].used))
       scMapTotal.set(this.props.sc[i].type, Number(this.props.sc[i].capacity))
     }
-
-    
-
-    console.log(scMapUsed)
-    console.log(scMapTotal)
 
     //Create array of ingredients
     let ingMap = new Map();
@@ -272,9 +266,6 @@ class BulkImport extends Component {
         errors.push("Exceeded capacity with this bulk import in the " + temperatures[i] + " storage facility")
       }
     }
-
-    console.log(scMapUsed)
-    console.log(scMapTotal)
 
     // return 
     return {
