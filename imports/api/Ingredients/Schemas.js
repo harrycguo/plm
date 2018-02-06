@@ -86,4 +86,9 @@ ReportSchema = new SimpleSchema({
   }
 })
 
-export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema };
+SpendingSchema = new SimpleSchema({
+	productionTotal: {type: Number},
+	total: {type: Number}
+})
+
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema };
