@@ -6,9 +6,7 @@ import { Link } from 'react-router-dom';
 class UserHomepage extends Component {
   constructor(props) {
     super(props);
-    
-    console.log("User = ")
-    console.log(Meteor.user());
+  
     
   }
  
