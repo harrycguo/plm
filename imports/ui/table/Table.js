@@ -10,6 +10,7 @@ import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import AddVendor from './AddVendor.js';
+import CartApi from '../../api/Cart/CartApi.js';
 
 class Table extends Component {
 	
@@ -166,7 +167,14 @@ class Table extends Component {
 				}}/>
 				<button
 					onClick={e=> {
-						console.log("Add " + qty + " of " + row.original.fullIng.name) 
+						Meteor.call('addIngredientToCart',row.original.fullIng, qty, 
+							function(error,result){
+								if(error){
+                        				console.log("something goes wrong with the following error message " + error.reason )
+               	  						Bert.alert(error.reason, 'danger');
+                  				}
+							}
+						);
 					}}
 					title= "Add To Cart"
 				>
@@ -179,11 +187,6 @@ class Table extends Component {
 		return null
 	}
 
-	addToCart() {
-		console.log("Add Ing to cart: ")
-		console.log(this._id)
-	}
-	
 	////////////////////////////////////////////////
 	///											 ///
 	/// Render 									 ///
