@@ -96,6 +96,7 @@ class CreateUser extends Component {
                 <header>
                     <h1>Create User</h1>
                 </header>
+                <li><Link to='/adminHomepage'>Admin Home</Link></li>
           
                 <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
             
