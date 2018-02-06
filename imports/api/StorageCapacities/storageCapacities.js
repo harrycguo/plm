@@ -67,7 +67,7 @@ Meteor.methods({
   });
 
 if (Meteor.isServer) {
-  Meteor.publish('capacities', function() {
+  Meteor.publish('storageCapacities', function() {
     return StorageCapacities.find();
   });
 }

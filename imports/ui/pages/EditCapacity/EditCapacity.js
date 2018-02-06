@@ -99,7 +99,7 @@ class EditCapacity extends Component {
 }
 
 export default withTracker(() => {
-    const subscription = Meteor.subscribe('capacities');
+    const subscription = Meteor.subscribe('storageCapacities');
       return {
         capacities: StorageCapacities.find({}).fetch(),
       };
