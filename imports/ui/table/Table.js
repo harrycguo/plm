@@ -74,8 +74,6 @@ class Table extends Component {
 	////////////////////////////////////////////////
 	
 	deleteVendor(){
-		console.log("deleting")
-		console.log(this)
 		Meteor.call('removeVendor',
 			row.original.fullIng,
 			vendor,
@@ -129,12 +127,10 @@ class Table extends Component {
 				<button
 					onClick={e => {
 						if(recentVendor === vendor) {
-							console.log(qty)
-							console.log(row.original.fullIng)
-							console.log(vendor)
 							Meteor.call('orderIngredient',
 								row.original.fullIng,
 								vendor,
+								Number(qty),
 								function(error,result){
                    					if(error){
                         				console.log("something goes wrong with the following error message " + error.reason )
@@ -162,10 +158,16 @@ class Table extends Component {
 	
 	renderIngredientUse(row) {
 		if(!TableData.canEdit) {
+			var qty = undefined;
 			return (
-				<div><span>Num lbs to use</span>
+				<div>
+				<input type="text" onChange={ e=> {
+					qty = e.target.value;
+				}}/>
 				<button
-					onClick={this.addToCart.bind(row.original.fullIng)}
+					onClick={e=> {
+						console.log("Add " + qty + " of " + row.original.fullIng.name) 
+					}}
 					title= "Add To Cart"
 				>
 					Add To Cart
@@ -184,21 +186,12 @@ class Table extends Component {
 	
 	////////////////////////////////////////////////
 	///											 ///
-	/// Render me daddy, ok baby I got you		 ///
+	/// Render 									 ///
 	///											 ///
 	////////////////////////////////////////////////
-	
-	render() {
-		return (
-			<div>
-			
-			<Button
-				onClick={this.edit.bind(this)}
-				title= "Edit"
-				>Toggle Edit Mode</Button>
-				<p></p>
-		   	<ReactTable
-		    data={this.renderRows()}
+	renderTable(_this) {
+		return ( <ReactTable
+		    data={_this.renderRows()}
 		    filterable
 		    defaultFilterMethod={ (filter, row) => 
 		    	String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase())
@@ -213,20 +206,46 @@ class Table extends Component {
 		    					<th>Vendor</th>
 		    					<th>Price</th>
 		    				</tr>
-		    				{this.renderVendorRows(row)}
-		    				<AddVendor ing={row.original.fullIng}/>
+		    				{_this.renderVendorRows(row)}
+		    				<AddVendor ing={row.original.fullIng} edit={TableData.canEdit}/>
 		    			</tbody>
 		    			</table>
-						{this.renderIngredientUse(row)}
-		    			{this.renderButtons(this, row)}
+						{_this.renderIngredientUse(row)}
+		    			{_this.renderButtons(_this, row)}
                 	</div>
                 );
 		    }}
-		  /></div>);
+		  />
+		);
+	}
+	render() {
+		if (!Meteor.user() || !Roles.userIsInRole(Meteor.user()._id, 'admin')) {
+			if(TableData.canEdit) {
+				TableData.toggleEditable()
+				this.forceUpdate()
+			}
+			return (
+			<div>
+			<li><Link to='/cart'>Go To Cart</Link></li>
+			{this.renderTable(this)}
+		   	</div>
+			);
+		}
+		return (
+			<div>
+			<li><Link to='/cart'>Go To Cart</Link></li>
+			<Button
+				onClick={this.edit.bind(this)}
+				title= "Edit"
+				>Toggle Edit Mode</Button>
+				<p></p>
+			{this.renderTable(this)}
+		   	</div>
+		);
 
 	}
+	
 }
-
 
 export default withTracker(() => {
 	Meteor.subscribe('ingredients')

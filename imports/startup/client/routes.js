@@ -17,11 +17,12 @@ import SuccessLoginUser from '../../ui/pages/Success/SuccessLoginUser';
 import IngredientForm from '../../ui/forms/IngredientForm.js'
 import Table from '../../ui/table/Table.js';
 import BulkImport from '../../ui/pages/BulkImport/BulkImport.js';
-import AdminHomepage from '../../ui/pages/AdminHomepage/AdminHomepage.js'
-import UserHomepage from '../../ui/pages/UserHomepage/UserHomepage.js'
-import UserViewInventory from '../../ui/pages/UserViewInventory/UserViewInventory.js'
-import AdminViewInventory from '../../ui/pages/AdminViewInventory/AdminViewInventory.js'
-import AddIngredient from '../../ui/pages/AddIngredient/AddIngredient.js'
+import AdminHomepage from '../../ui/pages/AdminHomepage/AdminHomepage.js';
+import UserHomepage from '../../ui/pages/UserHomepage/UserHomepage.js';
+import UserViewInventory from '../../ui/pages/UserViewInventory/UserViewInventory.js';
+import AdminViewInventory from '../../ui/pages/AdminViewInventory/AdminViewInventory.js';
+import AddIngredient from '../../ui/pages/AddIngredient/AddIngredient.js';
+import IngredientCart from '../../ui/pages/Cart/Cart.js';
  
 export const renderRoutes = () => (
   <Router>
@@ -44,6 +45,7 @@ export const renderRoutes = () => (
     <Route path="/addingredient" component={AddIngredient}/>
     <Route path="/userViewInventory" component={UserViewInventory}/>
     <Route path="/adminViewInventory" component={AdminViewInventory}/>
+    <Route path="/cart" component={IngredientCart}/>
   </div>
 </Router>
 );
