@@ -9,7 +9,7 @@ Meteor.methods({
 		});
 	},
     'addIngredientToCart': function(selectedIngredient, amount) {
-    	var cart = Carts.find({ user: Meteor.userId(), "ingredients.ingredient._id" : selectedIngredient._id}).fetch();
+    	let cart = Carts.find({ user: Meteor.userId(), "ingredients.ingredient._id" : selectedIngredient._id}).fetch();
         let ingQty = selectedIngredient.quantity;
         console.log(cart.length === 0);
         if ((ingQty - amount) < 0) {
@@ -27,6 +27,14 @@ Meteor.methods({
     	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { "ingredient._id" : selectedIngredient._id}}});
     },
     'checkoutIngredients': function() {
-
+        let cart = Carts.find({ user : Meteor.userId()}).fetch()[0];
+        let ings = cart.ingredients;
+        //This is where the magic happens
+        var diff;
+        ings.forEach(function(ingCartInfo){
+            diff = ingCartInfo.ingredient.quantity - ingInfo.amount;
+            IngredientsList.update({ _id : ingCartInfo.ing._id},{quantity : diff});
+        });
+        Carts.update({ user : Meteor.userId}, {ingredients : []});
     }
 });
