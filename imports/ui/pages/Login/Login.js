@@ -53,6 +53,7 @@ class Login extends Component {
 
             //Creates a cart for user if they don't already have one
             if (Carts.find({"user._id" : Meteor.userId()}).fetch().length === 0) {
+              
               Meteor.call('createUserCart');
             }
 
