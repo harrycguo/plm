@@ -11,7 +11,9 @@ class Vendor extends Component {
   }
 
   deleteThisVendor() {
-    Meteor.call('vendors.remove', this.props.vendor._id);
+    if(confirm('Delete the Vendor?')) {
+      Meteor.call('vendors.remove', this.props.vendor._id)
+    };
   }
 
   render() {
