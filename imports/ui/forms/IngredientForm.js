@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
 import VendorForm from './VendorForm.js';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Link , BrowserRouter} from 'react-router-dom'
+import { Link, BrowserRouter } from 'react-router-dom'
 import { Bert } from 'meteor/themeteorchef:bert';
 import { Vendors } from '../../api/Vendors/vendors.js';
 import { isExistingIngredient } from '../../utils/checks.js';
@@ -14,12 +14,12 @@ import { VendorSelect } from './VendorSelect.js';
 
 // import isInt from '../../utils/checks.js';
 
-						// select id="selVendor"
-						// 	ref={vendor => (this.vendor = vendor)}
+// select id="selVendor"
+// 	ref={vendor => (this.vendor = vendor)}
 
-						// 	name="vendor">
-						// 	{this.renderOptions()}
-						// </select>
+// 	name="vendor">
+// 	{this.renderOptions()}
+// </select>
 
 // Task component - represents a single todo item
 export class IngredientForm extends Component {
@@ -27,7 +27,9 @@ export class IngredientForm extends Component {
 		super(props);
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.state = {
-			usedCap: Number(0)
+			usedCap: Number(0),
+			showCustomField: false,
+			totalNumNativeUnits: Number(0)
 		};
 	}
 
@@ -86,27 +88,31 @@ export class IngredientForm extends Component {
 
 
 	handleSubmit() {
-		console.log(this.refs.vendorSel);
 
 		// Find the text field via the React ref
 		let name = this.ingredientName.value
 		let packaging = this.packaging.value
 		let temperatureState = this.temperatureState.value
 		let numPackages = this.numPackages.value
+		let numNativeUnitsPerPackage = this.numNativeUnits.value
+		let nativeUnit = this.nativeUnit.value == 'custom' ? this.customNativeUnit.value : this.nativeUnit.value
 		let vendorId = this.refs.vendorSel.vendor.value
 		let ingredientPrice = this.ingredientPrice.value
 		const { history } = this.props.hist;
 
+		//Calculate total number of native units
+		let totalNumNativeUnits = Number(numPackages) * Number(numNativeUnitsPerPackage)
+
 		//map packaging to values
 		let packagingMap = new Map();
-		packagingMap.set('Sack', 50);
-		packagingMap.set('Pail', 50);
-		packagingMap.set('Drum', 500);
-		packagingMap.set('Supersack', 2000);
-		packagingMap.set('Truckload', 50000);
-		packagingMap.set('Railcar', 280000);
+		packagingMap.set('Sack', 0.5);
+		packagingMap.set('Pail', 1.5);
+		packagingMap.set('Drum', 3);
+		packagingMap.set('Supersack', 6);
+		packagingMap.set('Truckload', 0);
+		packagingMap.set('Railcar', 0);
 
-		let ingredientQuantity = Number(packagingMap.get(packaging)) * Number(numPackages)
+		let ingredientStorage = Number(packagingMap.get(packaging)) * Number(numPackages)
 
 		for (var i = 0; i < this.props.vendors.length; i++) {
 			if (this.props.vendors[i]._id == vendorId) {
@@ -115,61 +121,71 @@ export class IngredientForm extends Component {
 				break;
 			}
 		}
-		 if (vendorId == "null") {
-		 	vendor = {};
-		 }
+		if (vendorId == "null") {
+			vendor = {};
+		}
 
 		let user = Meteor.user();
 		let returnLink = null;
-		
+
 		if (Roles.userIsInRole(user, ['admin'])) {
 			returnLink = '/adminViewInventory'
 		} else {
 			returnLink = '/userViewInventory'
 		}
 
-		console.log(vendor);
 		//Have to implement vendor selection
-		if (Meteor.isServer){
+		if (Meteor.isServer) {
 			console.log("server side");
-		 } else if (Meteor.isClient){
-		Meteor.call("addToExistingIngredient",
-			name,
-			packaging,
-			ingredientQuantity,
-			temperatureState,
-			vendor,
-			ingredientPrice,
-			function(error,result){
-				if (error) {
-					Bert.alert(error.reason, 'danger');
-				}
-				else {
-					Bert.alert('Ingredient added', 'success');
-					history.push(returnLink)
-				}
-			});
-		 }
+		} else if (Meteor.isClient) {
+			Meteor.call("addToExistingIngredient",
+				name,
+				packaging,
+				ingredientStorage,
+				temperatureState,
+				vendor,
+				ingredientPrice,
+				function (error, result) {
+					if (error) {
+						Bert.alert(error.reason, 'danger');
+					}
+					else {
+						Bert.alert('Ingredient added', 'success');
+						history.push(returnLink)
+					}
+				});
+		}
 
 	}
 
 	setTwoNumberDecimal(event) {
-    	this.value = parseFloat(this.value).toFixed(2);
+		this.value = parseFloat(this.value).toFixed(2);
 	}
 
 	calculateCapacityUsed = () => {
 		let packagingMap = new Map();
-		packagingMap.set('Sack', 50);
-		packagingMap.set('Pail', 50);
-		packagingMap.set('Drum', 500);
-		packagingMap.set('Supersack', 2000);
-		packagingMap.set('Truckload', 50000);
-		packagingMap.set('Railcar', 280000);
+		packagingMap.set('Sack', 0.5);
+		packagingMap.set('Pail', 1.5);
+		packagingMap.set('Drum', 3);
+		packagingMap.set('Supersack', 6);
+		packagingMap.set('Truckload', 0);
+		packagingMap.set('Railcar', 0);
 
 		let packaging = this.packaging.value
 		let numPackages = this.numPackages.value
-		let ingredientQuantity = Number(packagingMap.get(packaging)) * Number(numPackages)
-		this.setState({usedCap: ingredientQuantity})
+		let ingredientStorage = Number(packagingMap.get(packaging)) * Number(numPackages)
+		this.setState({ 
+			usedCap: ingredientStorage,
+			totalNumNativeUnits: Number(this.numPackages.value) * Number(this.numNativeUnits.value)
+		})
+		
+	}
+
+	renderCustomFieldTrigger = () => {
+		let nativeUnit = this.nativeUnit.value
+		if (nativeUnit == 'custom') {
+			this.setState({ showCustomField: true })
+		}
 	}
 
 	renderOptions() {
@@ -180,13 +196,34 @@ export class IngredientForm extends Component {
 		return items;
 	}
 
-	renderUsedCapacity(){
-		return  (
+	renderUsedCapacity() {
+		return (
 			<div>
-			<b>Total Amount (lbs):</b>
-			  <p>{this.state.usedCap}</p>
+				<b>Total Storage Used (Sq. Ft.):</b>
+				<p>{this.state.usedCap}</p>
 			</div>
-		  )
+		)
+	}
+
+	renderTotalNumNativeUnits() {
+		return (
+			<div>
+				<b>Total Number of Native Units:</b>
+				<p>{this.state.totalNumNativeUnits}</p>
+			</div>
+		)
+	}
+
+	renderCustomField() {
+		return this.state.showCustomField ? (
+			<p><input
+							type="text"
+							ref={customNativeUnit => (this.customNativeUnit = customNativeUnit)}
+							name="customNativeUnit"
+							placeholder="Native Unit"
+							className="form-control"
+						/></p>
+		) : null
 	}
 
 	render() {
@@ -219,20 +256,18 @@ export class IngredientForm extends Component {
 							ref={packaging => (this.packaging = packaging)}
 							name="packaging"
 							onChange={this.calculateCapacityUsed}>
-							<option value="Sack">Sack (50 lbs)</option>
-							<option value="Pail">Pail (50 lbs)</option>
-							<option value="Drum">Drum (500 lbs)</option>
-							<option value="Supersack">Supersack (2000 lbs)</option>
-							<option value="Truckload">Truckload (50000 lbs)</option>
-							<option value="Railcar">Railcar (280000 lbs)</option>
-
+							<option value="Sack">Sack (0.5 Sq. Ft.)</option>
+							<option value="Pail">Pail (1.5 Sq. Ft.)</option>
+							<option value="Drum">Drum (3 Sq. Ft.)</option>
+							<option value="Supersack">Supersack (6 Sq. Ft.)</option>
+							<option value="Truckload">Truckload (0 Sq. Ft.)</option>
+							<option value="Railcar">Railcar (0 Sq. Ft.)</option>
 						</select></p>
 					</FormGroup>
 					<FormGroup>
 						<ControlLabel>Temperature State</ControlLabel>
 						<p><select id="selTemperatureState"
 							ref={temperatureState => (this.temperatureState = temperatureState)}
-
 							name="temperatureState">
 							<option value="frozen">Frozen</option>
 							<option value="refrigerated">Refrigerated</option>
@@ -243,25 +278,54 @@ export class IngredientForm extends Component {
 						<ControlLabel>Number Of Packages</ControlLabel>
 						<p><input
 							type="number"
-							ref={numPackages=> (this.numPackages = numPackages)}
+							ref={numPackages => (this.numPackages = numPackages)}
 							onChange={this.calculateCapacityUsed}
 							name="numPackages"
 							placeholder="# of Packages"
 							className="form-control"
-							defaultValue={0}
 						/></p>
 					</FormGroup>
 
 					{this.renderUsedCapacity()}
-			
+
+					<FormGroup>
+						<ControlLabel>Number Of Native Units Per Package</ControlLabel>
+						<p><input
+							type="text"
+							ref={numNativeUnits => (this.numNativeUnits = numNativeUnits)}
+							onChange={this.calculateCapacityUsed}
+							name="numNativeUnits"
+							placeholder="# of Native Units Per Package"
+							className="form-control"
+						/></p>
+					</FormGroup>
+
+					{this.renderTotalNumNativeUnits()}
+
+					<FormGroup>
+						<ControlLabel>Native Unit</ControlLabel>
+						<p><select
+							ref={nativeUnit => (this.nativeUnit = nativeUnit)}
+							name="nativeUnit"
+							placeholder="# of Native Units Per Package"
+							onChange={this.renderCustomFieldTrigger}
+							className="form-control">
+							<option value="Pounds">Pounds</option>
+							<option value="Gallons">Gallons</option>
+							<option value="custom">Custom...</option>
+						</select></p>
+					</FormGroup>
+
+					{this.renderCustomField()}
+
 					<FormGroup>
 						<ControlLabel>Select Vendor</ControlLabel>
 						<p>
-						<VendorSelect ref="vendorSel"/>
+							<VendorSelect ref="vendorSel" />
 						</p>
-						
+
 					</FormGroup>
-					
+
 					<FormGroup>
 						<ControlLabel>Ingredient Price</ControlLabel>
 						<p><input

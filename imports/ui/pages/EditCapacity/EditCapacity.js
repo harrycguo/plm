@@ -74,6 +74,7 @@ class EditCapacity extends Component {
 
                 <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
             
+                <li><Link to='/adminViewInventory'>Manage Inventory</Link></li>
                 <h2> Editing {this.props.location.state.name} </h2>
 
                 <FormGroup>
@@ -85,7 +86,7 @@ class EditCapacity extends Component {
                         defaultValue={this.props.location.state.capacity}
                         className="form-control"
                     />
-                    lbs
+                    Sq. Ft.
                 </FormGroup>
 
               <Button type="submit" bsStyle="success">Submit</Button>
