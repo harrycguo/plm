@@ -100,8 +100,6 @@ export class IngredientForm extends Component {
 		let ingredientPrice = this.ingredientPrice.value
 		const { history } = this.props.hist;
 
-		console.log(nativeUnit)
-		console.log(numNativeUnits)
 		//map packaging to values
 		let packagingMap = new Map();
 		packagingMap.set('Sack', 0.5);
