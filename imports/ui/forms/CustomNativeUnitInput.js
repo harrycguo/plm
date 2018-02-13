@@ -1,13 +1,6 @@
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import VendorForm from './VendorForm.js';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Link, BrowserRouter } from 'react-router-dom'
-import { Bert } from 'meteor/themeteorchef:bert';
-import { Vendors } from '../../api/Vendors/vendors.js';
-import { isExistingIngredient } from '../../utils/checks.js';
-import { createContainer } from 'meteor/react-meteor-data'
-import { selectStyle, inputStyle } from './Styles.js';
 import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import validate from '../../modules/validate.js';
 
@@ -18,6 +11,25 @@ export class CustomNativeUnitsInput extends Component {
 			showCustomField: false,
 		};
     }
+
+    componentDidMount() {
+
+		const component = this;
+
+		validate(component.form, {
+			rules: {
+				nativeUnit: {
+					required: true,
+				},
+			},
+			messages: {
+				nativeUnit: {
+					required: 'Specify A Native Unit',
+				},
+			},
+			submitHandler() { component.handleSubmit(); },
+		});
+	}
 
     renderCustomFieldTrigger = () => {
 		let nativeUnit = this.nativeUnit.value
