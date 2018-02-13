@@ -74,6 +74,7 @@ class EditCapacity extends Component {
 
                 <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
             
+                <li><Link to='/adminViewInventory'>Manage Inventory</Link></li>
                 <h2> Editing {this.props.location.state.name} </h2>
 
                 <FormGroup>

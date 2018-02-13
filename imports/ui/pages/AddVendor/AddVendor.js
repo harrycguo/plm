@@ -96,8 +96,9 @@ class AddVendor extends Component {
 
                 <FormGroup>
                     <ControlLabel>Contact Info</ControlLabel>
-                    <input
-                        type="phoneUS"
+                    <textarea
+                        type="text"
+                        rows="3"
                         name="contact"
                         ref={contact => (this.contact = contact)}
                         className="form-control"

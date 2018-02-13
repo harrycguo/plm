@@ -105,8 +105,9 @@ class EditVendor extends Component {
 
                 <FormGroup>
                     <ControlLabel>Contact Info</ControlLabel>
-                    <input
-                        type="phoneUS"
+                    <textarea
+                        type="text"
+                        rows="3"
                         name="contact"
                         ref={contact => (this.contact = contact)}
                         defaultValue={this.props.location.state.contact}
