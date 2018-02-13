@@ -8,7 +8,7 @@ Meteor.methods({
       console.log("test method works")
     },
 
-    'createUserFromAdmin':function(emailAddress, password, username, firstName, lastName){
+    'createUserFromAdmin':function(emailAddress, password, username, firstName, lastName, permissionLevel){
         
       // Make sure the user is logged in before inserting a task
       if (! this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
@@ -28,6 +28,6 @@ Meteor.methods({
           },
         }); 
 
-        Roles.addUsersToRoles(user, ['user']);
+        Roles.addUsersToRoles(user, [permissionLevel]);
     }
   })

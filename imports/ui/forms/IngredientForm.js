@@ -94,11 +94,14 @@ export class IngredientForm extends Component {
 		let packaging = this.packaging.value
 		let temperatureState = this.temperatureState.value
 		let numPackages = this.numPackages.value
-		let numNativeUnits = this.numNativeUnits.value
+		let numNativeUnitsPerPackage = this.numNativeUnits.value
 		let nativeUnit = this.nativeUnit.value == 'custom' ? this.customNativeUnit.value : this.nativeUnit.value
 		let vendorId = this.refs.vendorSel.vendor.value
 		let ingredientPrice = this.ingredientPrice.value
 		const { history } = this.props.hist;
+
+		//Calculate total number of native units
+		let totalNumNativeUnits = Number(numPackages) * Number(numNativeUnitsPerPackage)
 
 		//map packaging to values
 		let packagingMap = new Map();

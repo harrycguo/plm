@@ -139,6 +139,14 @@ body {
   .toggle-private {
     margin-left: 5px;
   }
+
+  .navbar-header {
+    background-color: #F16E10;
+  }
+
+  .navbar-default .navbar-nav > li > a {
+    color: red;
+  }
    
   @media (max-width: 600px) {
     li {

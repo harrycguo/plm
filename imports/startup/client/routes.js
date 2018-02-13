@@ -24,6 +24,7 @@ import AdminViewInventory from '../../ui/pages/AdminViewInventory/AdminViewInven
 import AddIngredient from '../../ui/pages/AddIngredient/AddIngredient.js';
 import IngredientCart from '../../ui/pages/Cart/Cart.js';
 import SpendingReport from '../../ui/pages/SpendingReport/SpendingReport.js';
+import UserManagement from '../../ui/pages/UserManagement/UserManagement';
  
 export const renderRoutes = () => (
   <Router>
@@ -33,6 +34,7 @@ export const renderRoutes = () => (
     <Route path="/logout" component={Logout}/>
     <Route path="/adminHomepage" component={AdminHomepage}/>
     <Route path="/userHomepage" component={UserHomepage}/>
+    <Route path="/userManagement" component={UserManagement}/>
     <Route path="/createUser" component={CreateUser}/>
     <Route path="/vendorManagement" component={VendorManagement}/>
     <Route path="/addVendor" component={AddVendor}/>
