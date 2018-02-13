@@ -33,7 +33,8 @@ Meteor.methods({
     'removeIngredientFromCart': function(selectedIngredient) {
     	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { "ingredient._id" : selectedIngredient._id}}});
     },
-    'checkoutIngredients': function() {
+    'editCart': function()
+    'checkoutIngredients': function() { //Allow adding to inentory instead of just remove
         let cart = Carts.find({ user : Meteor.userId()}).fetch()[0];
         let ings = cart.ingredients;
         //This is where the magic happens

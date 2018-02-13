@@ -252,6 +252,8 @@ Meteor.methods({
     },
     'orderIngredient': function (ingredient, vendor, numPackages) {
         // var ingredient = IngredientsList.find({ _id: selectedIngredient }).fetch();
+
+        //WILL BE DONE IN THE CART NOW!
         check(numPackages, Number);
 
         var packagingMap = new Map();
