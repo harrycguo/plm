@@ -86,7 +86,7 @@ class EditCapacity extends Component {
                         defaultValue={this.props.location.state.capacity}
                         className="form-control"
                     />
-                    lbs
+                    Sq. Ft.
                 </FormGroup>
 
               <Button type="submit" bsStyle="success">Submit</Button>

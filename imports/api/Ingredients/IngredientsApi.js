@@ -12,7 +12,7 @@ if (Meteor.isClient) {
 
 //IngredientsList API suh
 Meteor.methods({
-    'addIngredient': function (ingName, ingPackage, ingQuantity, ingTemperatureState, ingVendor, ingPrice) {
+    'addIngredient': function (ingName, ingPackage, ingStorage, ingTemperatureState, ingVendor, ingPrice) {
 
         //Check to see if user is authorized
         if (!this.userId) {
@@ -32,7 +32,7 @@ Meteor.methods({
         //Check to see if capacity won't be exceeded
         if (!(ingPackage.toLowerCase() == 'truckload' || ingPackage.toLowerCase() == 'railcar')) {
             let container = StorageCapacities.findOne({ type: ingTemperatureState });
-            let newUsed = Number(container.used) + Number(ingQuantity)
+            let newUsed = Number(container.used) + Number(ingStorage)
             Meteor.call('sc.editUsed', container._id, Number(newUsed));
         }
 
@@ -52,13 +52,13 @@ Meteor.methods({
             package: ingPackage.toLowerCase(),
             temperatureState: ingTemperatureState.toLowerCase(),
             vendorInfo: vendorInfoArr,
-            quantity: Number(ingQuantity),
+            quantity: Number(ingStorage),
             price: Number(0)
             // prices: priceTuples
         });
     },
     //This method will check to see if the ingredient already exists. If not, then call addIngredient.
-    'addToExistingIngredient': function (ingName, ingPackage, ingQuantity, ingTemperatureState, ingVendor, ingPrice) {
+    'addToExistingIngredient': function (ingName, ingPackage, ingStorage, ingTemperatureState, ingVendor, ingPrice) {
         console.log(IngredientsList.find({_id : "jlskfhskjdfsjdfbsmdfbsdmfjhsfdjh"}).fetch());
 
         if (!this.userId) {
@@ -82,11 +82,11 @@ Meteor.methods({
             //Check quantity
             if (!(ingPackage.toLowerCase() == 'truckload' || ingPackage.toLowerCase() == 'railcar')) {
                 let container = StorageCapacities.findOne({ type: ingTemperatureState });
-                let newUsed = Number(container.used) + Number(ingQuantity)
+                let newUsed = Number(container.used) + Number(ingStorage)
                 Meteor.call('sc.editUsed', container._id, Number(newUsed));
             }
 
-            IngredientsList.update({ _id: existingIng._id }, { $inc: { quantity: Number(ingQuantity) } });
+            IngredientsList.update({ _id: existingIng._id }, { $inc: { quantity: Number(ingStorage) } });
             if (!containsVendor(ingVendor, existingIng.vendorInfo)) {
                 existingIng.vendorInfo.push({
                     vendor: ingVendor,
@@ -101,7 +101,7 @@ Meteor.methods({
             Meteor.call('addIngredient',
                 ingName.trim(),
                 ingPackage,
-                ingQuantity,
+                ingStorage,
                 ingTemperatureState,
                 ingVendor,
                 ingPrice
@@ -254,12 +254,12 @@ Meteor.methods({
         check(numPackages, Number);
 
         var packagingMap = new Map();
-        packagingMap.set('sack', 50);
-        packagingMap.set('pail', 50);
-        packagingMap.set('drum', 500);
-        packagingMap.set('supersack', 2000);
-        packagingMap.set('truckload', 50000);
-        packagingMap.set('railcar', 280000);
+        packagingMap.set('sack', 0.5);
+        packagingMap.set('pail', 1);
+        packagingMap.set('drum', 3);
+        packagingMap.set('supersack', 16);
+        packagingMap.set('truckload', 0);
+        packagingMap.set('railcar', 0);
 
         let ingredientQuantity = Number(packagingMap.get(ingredient.package)) * Number(numPackages)
         console.log("\t"+vendor)
