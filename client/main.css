@@ -21,15 +21,16 @@ body {
     padding: 5px!important;
   }
 
-  .th! {
-    padding: 5px!important;
-  }
   .container {
     max-width: 1200px;
     margin: 0 auto;
     min-height: 100%;
     background: white;
     padding: 20px 15px 15px 15px;
+  }
+
+  .containerNone {
+    padding: 0px 0px 0px 0px;
   }
 
   .verticalList {
@@ -64,7 +65,7 @@ body {
   }
    
   h1 {
-    font-size: 1.5em;
+    font-size: 2em;
     margin: 0;
     margin-bottom: 10px;
     display: inline-block;
@@ -111,7 +112,7 @@ body {
   li {
     position: relative;
     list-style: none;
-    padding: 15px;
+    padding: 10px;
     border-bottom: #eee solid 1px;
   }
    
@@ -140,12 +141,10 @@ body {
     margin-left: 5px;
   }
 
-  .navbar-header {
-    background-color: #F16E10;
-  }
-
-  .navbar-default .navbar-nav > li > a {
-    color: red;
+  .navbar-default{
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
   }
    
   @media (max-width: 600px) {

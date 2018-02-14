@@ -5,7 +5,6 @@ import { Roles } from 'meteor/alanning:roles';
  
 export const Vendors = new Mongo.Collection('vendors');
 
-
 Meteor.methods({
     'vendors.insert'(name, contact, FCC) {
     

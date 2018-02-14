@@ -1,43 +1,82 @@
 import React, { Component } from 'react';
+import { withTracker } from 'meteor/react-meteor-data';
 import { Link } from 'react-router-dom';
 import { Navbar, NavItem, Nav } from 'react-bootstrap';
+import UserManagementNavBar from '../../components/UserManagementNavBar/UserManagementNavBar.js'
+import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
+import filterFactory, { selectFilter } from 'react-bootstrap-table2-filter';
+import ReactTable from 'react-table';
+import { Button } from 'react-bootstrap';
+import UserManagementData from './UserManagementData.js'
+import { Accounts } from 'meteor/accounts-base';
+import { Users } from '../../../api/Users/users.js'
 
 // App component - represents the whole app
 class UserManagement extends Component {
     constructor(props) {
         super(props);
-        console.log("User = ")
-        console.log(Meteor.user());
+    }
+
+    edit() {
+		UserManagementData.toggleEditable()
+		this.forceUpdate()
+	}
+
+    renderUserTable() {
+
+        let users = this.props.users
+        let data = new Array();
+
+        for (let i = 0; i < users.length; i++){
+            data.push({
+                username: users[i].username,
+                permissionLevel: users[i].roles[0],
+                permissionLevelDisplay: UserManagementData.rolesMap.get(users[i].roles[0]),
+                fullUser: users[i]
+            })
+        }
+        
+        return (
+            <ReactTable
+                data={data}
+                columns={UserManagementData.HeaderValues}
+                noDataText="Loading..." 
+            />
+        )
     }
 
     render() {
+
+        let buttonText = UserManagementData.canEdit ? "Finished Editing" : "Edit User Permissions"
+
         return (
             <div className="container">
                 <header>
                     <h1>User Management</h1>
                 </header>
-                <div>
-                <Navbar className="redFont">
-                    <Navbar.Header className='redFont' >
-                        <Navbar.Brand className='redFont'>
-                        <a href="#home">React-Bootstrap</a>
-                        </Navbar.Brand>
-                    </Navbar.Header>
-                    <NavItem eventKey={1} href="#">
-                            Link
-                            </NavItem>
-                    </Navbar>
-  
-                    </div>
-                <ul>
-                    <li><Link to='/login'>Login</Link></li>
-                </ul>
+                <UserManagementNavBar/>
+                <Button
+				onClick={this.edit.bind(this)}
+				title= "Edit"
+				>{buttonText}</Button>
+                <p></p>
+                {this.renderUserTable()}
             </div>
         );
     }
 }
 
-export default UserManagement;
+export default withTracker(() => {
+	Meteor.subscribe('users')
+	return {
+		users: Meteor.users.find({}).fetch()
+	};
+})(UserManagement);
+
+
+
+
+
 
 
 

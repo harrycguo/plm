@@ -20,7 +20,7 @@ if ( Meteor.users.find({username: 'admin'}).count() === 0 ) {
     },
   });
 
-  Roles.addUsersToRoles(admin, ['admin', 'manager', 'user']);
+  Roles.addUsersToRoles(admin, ['admin']);
 }
 
 //Create default Storage Capacities
