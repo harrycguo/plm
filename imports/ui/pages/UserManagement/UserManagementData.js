@@ -81,7 +81,7 @@ export const HeaderValues = [{
       <input
         type="text"
         onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
+        style={{ width: '100%', height: '100%'}}
         value={filter ? filter.value : ''}
         placeholder="Filter by Username"
       />
@@ -102,7 +102,7 @@ export const HeaderValues = [{
     Filter: ({ filter, onChange }) =>
       <select
         onChange={event => onChange(event.target.value)}
-        style={{ width: '100%' }}
+        style={{ width: '100%', height: '100%'}}
         value={filter ? filter.value : 'all'}
       >
         <option value="all">All</option>
