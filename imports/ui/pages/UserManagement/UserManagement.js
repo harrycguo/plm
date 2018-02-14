@@ -3,8 +3,6 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Link } from 'react-router-dom';
 import { Navbar, NavItem, Nav } from 'react-bootstrap';
 import UserManagementNavBar from '../../components/UserManagementNavBar/UserManagementNavBar.js'
-import 'react-bootstrap-table-next/dist/react-bootstrap-table2.min.css';
-import filterFactory, { selectFilter } from 'react-bootstrap-table2-filter';
 import ReactTable from 'react-table';
 import { Button } from 'react-bootstrap';
 import UserManagementData from './UserManagementData.js'
@@ -24,7 +22,7 @@ class UserManagement extends Component {
 
     renderUserTable() {
 
-        let users = this.props.users
+        let users = Meteor.users.find({}).fetch()
         let data = new Array();
 
         for (let i = 0; i < users.length; i++){
@@ -55,6 +53,7 @@ class UserManagement extends Component {
                     <h1>User Management</h1>
                 </header>
                 <UserManagementNavBar/>
+                <p></p>
                 <Button
 				onClick={this.edit.bind(this)}
 				title= "Edit"

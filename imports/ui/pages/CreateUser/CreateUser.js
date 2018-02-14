@@ -5,6 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
 import validate from '../../../modules/validate';
 import { Accounts } from 'meteor/accounts-base'
+import UserManagementNavBar from '../../components/UserManagementNavBar/UserManagementNavBar.js'
 
 class CreateUser extends Component {
   constructor(props) {
@@ -89,7 +90,7 @@ class CreateUser extends Component {
             Bert.alert(error.reason, 'danger');
           } else {
             Bert.alert('Created User!', 'success');
-            history.push('/adminHomepage')
+            history.push('/userManagement')
           }
         })
     }
@@ -102,7 +103,7 @@ class CreateUser extends Component {
         <header>
           <h1>Create User</h1>
         </header>
-        <li><Link to='/adminHomepage'>Admin Home</Link></li>
+        <UserManagementNavBar/>
 
         <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
 

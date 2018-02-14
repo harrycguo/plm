@@ -5,6 +5,7 @@ import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
 import validate from '../../../modules/validate';
 import { Accounts } from 'meteor/accounts-base'
+import VendorManagementNavBar from '../../components/VendorManagementNavBar/VendorManagementNavBar.js'
 
 class AddVendor extends Component {
     constructor(props) {
@@ -81,6 +82,9 @@ class AddVendor extends Component {
                 <header>
                     <h1>Add Vendor</h1>
                 </header>
+
+                <VendorManagementNavBar/>
+                <p></p>
           
                 <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
             

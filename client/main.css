@@ -51,12 +51,17 @@ body {
   .topContainer{
     display: flex;
     flex-direction: row;
-    padding: 5px 5px 5px 5px;
+    padding: 10px 10px 10px 10px;
+    border: 2px solid	#f0f0f5;
   }
 
   .side-container{
     display: flex;
     flex-direction: row;
+    padding: 5px 5px 5px 5px;
+  }
+
+  .container-nav{
     padding: 5px 5px 5px 5px;
   }
    

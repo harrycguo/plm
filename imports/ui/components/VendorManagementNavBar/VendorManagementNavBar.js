@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Navbar, NavItem, Nav } from 'react-bootstrap';
 
 // App component - represents the whole app
-class UserManagementNavBar extends Component {
+class VendorManagementNavBar extends Component {
     constructor(props) {
         super(props);
     }
@@ -19,20 +19,20 @@ class UserManagementNavBar extends Component {
                             </Link>
                 <Link
                     className="container-nav"
-                    to="/userManagement">
-                    User Management
+                    to="/vendorManagement">
+                    Vendor Management
                             </Link>
                 <Link
                     className="container-nav"
-                    to="/createUser">
-                    Create User
+                    to="/addVendor">
+                    Add Vendor
                             </Link>
             </div>
         );
     }
 }
 
-export default UserManagementNavBar;
+export default VendorManagementNavBar;
 
 
 
