@@ -22,6 +22,9 @@ Meteor.methods({
         if ((ingQty - amount) < 0) {
             throw new Meteor.Error("Can't add more to cart than is in inventory","Can't add more to cart than is in inventory");
         }
+        else if (ingQty <= 0) {
+            throw new Meteor.Error("Amount must be greater than zero","Amount must be greater than zero");
+        }
     	else if (cart.length === 0) {
             Carts.update({ user : Meteor.userId()},{$push : { ingredients : {
                 ingredient : selectedIngredient,
@@ -33,7 +36,12 @@ Meteor.methods({
     'removeIngredientFromCart': function(selectedIngredient) {
     	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { "ingredient._id" : selectedIngredient._id}}});
     },
-    'editCart': function()
+    'changeQuantity': function(){
+        //TODO: Implement
+    },
+    'changeVendor': function() {
+        //TODO: Implement
+    },
     'checkoutIngredients': function() { //Allow adding to inentory instead of just remove
         let cart = Carts.find({ user : Meteor.userId()}).fetch()[0];
         let ings = cart.ingredients;

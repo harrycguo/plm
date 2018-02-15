@@ -37,6 +37,13 @@ IngredientSchema = new SimpleSchema({
   price: {
     type: Number,
     decimal: true
+  },
+  nativeInfo: {
+    type: Object
+  },
+  formulaInfo: {
+    type: [Object],
+    blackbox: true
   }
 });
 

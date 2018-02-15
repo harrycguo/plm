@@ -8,24 +8,30 @@ import { containsVendor, indexOfVendorWithId } from '../../utils/checks.js';
 import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
 
 if (Meteor.isClient) {
-    Meteor.subscribe('storageCapacities');
+    Meteor.subscribe('storageCapacities'); 
 }
 
 //IngredientsList API suh
 Meteor.methods({
-    'addIngredient': function (ingName, ingPackage, ingStorage, ingTemperatureState, ingVendor, ingPrice) {
+    'addIngredient': function (ingName, ingPackage, ingQuantity, ingTemperatureState, ingVendor, ingPrice) {
 
         //Check to see if user is authorized
         if (!this.userId) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
-        if (Object.keys(ingVendor).length === 0 && ingVendor.constructor === Object && ingPrice) {
+        if (!ingVendor && ingPrice) {
             throw new Meteor.Error('Vendor required for price','Specify vendor or remove price');
         } 
 
-        if (Object.keys(ingVendor).length > 0 && !ingPrice) {
+        if (ingVendor && !ingPrice) {
             throw new Meteor.Error('Price required for vendor','Specify price or remove vendor');
+        }
+
+        //Check if vendor exists
+        var obj = Vendors.findOne({ _id : ingVendor});
+        if (Object.keys(obj).length === 0 && obj.constructor === Object) {
+            throw new Meteor.Error("Vendor does not exist","Vendor does not exist");
         }
 
         console.log(ingVendor);
@@ -33,34 +39,34 @@ Meteor.methods({
         //Check to see if capacity won't be exceeded
         if (!(ingPackage.toLowerCase() == 'truckload' || ingPackage.toLowerCase() == 'railcar')) {
             let container = StorageCapacities.findOne({ type: ingTemperatureState });
-            let newUsed = Number(container.used) + Number(ingStorage)
+            let newUsed = Number(container.used) + Number(ingQuantity)
             Meteor.call('sc.editUsed', container._id, Number(newUsed));
         }
 
         var vendorInfoArr = [];
-        console.log(Object.keys(ingVendor).length > 0);
-        console.log(ingPrice);
-        if (ingPrice && Object.keys(ingVendor).length > 0) {
+        // console.log(Object.keys(ingVendor).length > 0);
+        // console.log(ingPrice);
+        if (ingPrice && ingVendor) {
             vendorInfoArr = [{
                 vendor: ingVendor,
                 price: Number(ingPrice)
             }];
         }
-        console.log(vendorInfoArr);
+        // console.log(vendorInfoArr);
         
         IngredientsList.insert({
             name: ingName.trim(),
             package: ingPackage.toLowerCase(),
             temperatureState: ingTemperatureState.toLowerCase(),
             vendorInfo: vendorInfoArr,
-            quantity: Number(ingStorage),
+            quantity: Number(ingQuantity),
             price: Number(0)
             // prices: priceTuples
         });
     },
     //This method will check to see if the ingredient already exists. If not, then call addIngredient.
-    'addToExistingIngredient': function (ingName, ingPackage, ingStorage, ingTemperatureState, ingVendor, ingPrice) {
-        console.log(IngredientsList.find({_id : "jlskfhskjdfsjdfbsmdfbsdmfjhsfdjh"}).fetch());
+    'addToExistingIngredient': function (ingName, ingPackage, ingQuantity, ingTemperatureState, ingVendor, ingPrice) {
+        // console.log(IngredientsList.find({_id : "jlskfhskjdfsjdfbsmdfbsdmfjhsfdjh"}).fetch());
 
         if (!this.userId) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
@@ -83,11 +89,11 @@ Meteor.methods({
             //Check quantity
             if (!(ingPackage.toLowerCase() == 'truckload' || ingPackage.toLowerCase() == 'railcar')) {
                 let container = StorageCapacities.findOne({ type: ingTemperatureState });
-                let newUsed = Number(container.used) + Number(ingStorage)
+                let newUsed = Number(container.used) + Number(ingQuantity)
                 Meteor.call('sc.editUsed', container._id, Number(newUsed));
             }
 
-            IngredientsList.update({ _id: existingIng._id }, { $inc: { quantity: Number(ingStorage) } });
+            IngredientsList.update({ _id: existingIng._id }, { $inc: { quantity: Number(ingQuantity) } });
             if (!containsVendor(ingVendor, existingIng.vendorInfo)) {
                 existingIng.vendorInfo.push({
                     vendor: ingVendor,
@@ -102,7 +108,7 @@ Meteor.methods({
             Meteor.call('addIngredient',
                 ingName.trim(),
                 ingPackage,
-                ingStorage,
+                ingQuantity,
                 ingTemperatureState,
                 ingVendor,
                 ingPrice
@@ -114,7 +120,12 @@ Meteor.methods({
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
+
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
+
+        if (existingIng.formulaInfo.length > 0) {
+            throw new Meteor.Error('Ingredient used in a formula','Ingredient used in a formula');
+        }
 
         if (!(existingIng.package == 'truckload' || existingIng.package == 'railcar')) {
 
@@ -236,10 +247,10 @@ Meteor.methods({
         //specified doesn't exist.
 
         for (i = 0; i < vendorInfo.length; i++) {
-            if (vendorInfo[i].vendor._id == vendorId) {
+            if (vendorInfo[i].vendor == vendorId) {
                 IngredientsList.update({
                     _id: selectedIngredient,
-                    "vendorInfo.vendor._id": vendorId
+                    "vendorInfo._id": vendorId
                 },
                     {
                         $set:
@@ -257,12 +268,12 @@ Meteor.methods({
         check(numPackages, Number);
 
         var packagingMap = new Map();
-        packagingMap.set('sack', 0.5);
-        packagingMap.set('pail', 1);
-        packagingMap.set('drum', 3);
-        packagingMap.set('supersack', 16);
-        packagingMap.set('truckload', 0);
-        packagingMap.set('railcar', 0);
+        packagingMap.set('sack', 50);
+        packagingMap.set('pail', 50);
+        packagingMap.set('drum', 500);
+        packagingMap.set('supersack', 2000);
+        packagingMap.set('truckload', 50000);
+        packagingMap.set('railcar', 280000);
 
         let ingredientQuantity = Number(packagingMap.get(ingredient.package)) * Number(numPackages)
         console.log("\t"+vendor)
@@ -283,6 +294,9 @@ Meteor.methods({
 
         Meteor.call('logOrderInReport', ingredient, ingredientQuantity, vendor.cost)
     },
+    'editNativeUnits': function(){
+        //TODO: Implement this...
+    }
     'addVendor': function(selectedIngredient, vendorId, price) {
         if (vendorId === "null" || !price) {
             throw new Meteor.Error("Missing fields","Vendor and/or price unspecified");

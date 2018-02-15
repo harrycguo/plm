@@ -14,13 +14,13 @@ export function isInt(value) {
 
 //Checks if the vendor is already listed in the vendorInfo field of the specified ingredient
 export function containsVendor(vendor,vendorArr) {
-	var ven = Vendors.findOne({vendor: vendor.vendor});
+	var ven = Vendors.findOne({vendor: vendor});
 	console.log(ven);
 	if (!ven)
 		return false;
 	for (i = 0; i < vendorArr.length; i++) {
-		console.log(JSON.stringify(vendorArr[i].vendor) == JSON.stringify(ven));
-		if (JSON.stringify(vendorArr[i].vendor) == JSON.stringify(ven))
+		console.log(vendor == ven);
+		if (vendor == ven)
 			return true;
 	}
 	return false;
