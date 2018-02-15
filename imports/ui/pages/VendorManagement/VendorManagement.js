@@ -5,6 +5,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Vendors } from '../../../api/Vendors/vendors.js'
 import Vendor from '../../components/Vendor/Vendor.js'
 import { Table } from 'react-bootstrap'
+import VendorManagementNavBar from '../../components/VendorManagementNavBar/VendorManagementNavBar.js'
  
 // App component - represents the whole app
 class VendorManagement extends Component {
@@ -27,9 +28,11 @@ class VendorManagement extends Component {
         <header>
           <h1>Vendor Management Page</h1>
         </header>
-        <li><Link to='/adminHomepage'>Admin Home</Link></li>
-        <hr></hr>
-        <li><Link to='/addVendor'>Add Vendor</Link></li>
+        
+        <VendorManagementNavBar/>
+        <p></p>
+
+
         <h2>List of Vendors</h2>
         <hr></hr>
 

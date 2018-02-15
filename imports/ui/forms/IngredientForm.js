@@ -11,15 +11,7 @@ import { selectStyle, inputStyle } from './Styles.js';
 import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import validate from '../../modules/validate.js';
 import { VendorSelect } from './VendorSelect.js';
-
-// import isInt from '../../utils/checks.js';
-
-// select id="selVendor"
-// 	ref={vendor => (this.vendor = vendor)}
-
-// 	name="vendor">
-// 	{this.renderOptions()}
-// </select>
+import CustomNativeUnitInput from './CustomNativeUnitInput.js'
 
 // Task component - represents a single todo item
 export class IngredientForm extends Component {
@@ -28,7 +20,6 @@ export class IngredientForm extends Component {
 		this.handleSubmit = this.handleSubmit.bind(this);
 		this.state = {
 			usedCap: Number(0),
-			showCustomField: false,
 			totalNumNativeUnits: Number(0)
 		};
 	}
@@ -52,13 +43,12 @@ export class IngredientForm extends Component {
 					required: true,
 					number: true,
 				},
-				// vendor: {
-				// 	required: true,
-				// },
 				ingredientPrice: {
 					number: true
-					// required: true
-				}
+				},
+				numNativeUnits: {
+					number: true,
+				},
 			},
 			messages: {
 				ingredientName: {
@@ -74,13 +64,12 @@ export class IngredientForm extends Component {
 				numPackages: {
 					required: 'Specify Quantity',
 				},
-				// vendor: {
-				// 	required: 'Specify Vendor',
-				// },
 				ingredientPrice: {
-					// required: 'Specify Price',
 					number: 'Must be a decimal'
-				}
+				},
+				numNativeUnits: {
+					number: 'Must be an integer',
+				},
 			},
 			submitHandler() { component.handleSubmit(); },
 		});
@@ -95,7 +84,7 @@ export class IngredientForm extends Component {
 		let temperatureState = this.temperatureState.value
 		let numPackages = this.numPackages.value
 		let numNativeUnitsPerPackage = this.numNativeUnits.value
-		let nativeUnit = this.nativeUnit.value == 'custom' ? this.customNativeUnit.value : this.nativeUnit.value
+		let nativeUnit = this.customNativeUnitInput.nativeUnit.value == 'custom' ? this.customNativeUnitInput.customNativeUnit.value : this.customNativeUnitInput.nativeUnit.value
 		let vendorId = this.refs.vendorSel.vendor.value
 		let ingredientPrice = this.ingredientPrice.value
 		const { history } = this.props.hist;
@@ -174,18 +163,11 @@ export class IngredientForm extends Component {
 		let packaging = this.packaging.value
 		let numPackages = this.numPackages.value
 		let ingredientStorage = Number(packagingMap.get(packaging)) * Number(numPackages)
-		this.setState({ 
+		this.setState({
 			usedCap: ingredientStorage,
 			totalNumNativeUnits: Number(this.numPackages.value) * Number(this.numNativeUnits.value)
 		})
-		
-	}
 
-	renderCustomFieldTrigger = () => {
-		let nativeUnit = this.nativeUnit.value
-		if (nativeUnit == 'custom') {
-			this.setState({ showCustomField: true })
-		}
 	}
 
 	renderOptions() {
@@ -212,18 +194,6 @@ export class IngredientForm extends Component {
 				<p>{this.state.totalNumNativeUnits}</p>
 			</div>
 		)
-	}
-
-	renderCustomField() {
-		return this.state.showCustomField ? (
-			<p><input
-							type="text"
-							ref={customNativeUnit => (this.customNativeUnit = customNativeUnit)}
-							name="customNativeUnit"
-							placeholder="Native Unit"
-							className="form-control"
-						/></p>
-		) : null
 	}
 
 	render() {
@@ -278,6 +248,7 @@ export class IngredientForm extends Component {
 						<ControlLabel>Number Of Packages</ControlLabel>
 						<p><input
 							type="number"
+							step="1"
 							ref={numPackages => (this.numPackages = numPackages)}
 							onChange={this.calculateCapacityUsed}
 							name="numPackages"
@@ -291,7 +262,8 @@ export class IngredientForm extends Component {
 					<FormGroup>
 						<ControlLabel>Number Of Native Units Per Package</ControlLabel>
 						<p><input
-							type="text"
+							type="number"
+							step="1"
 							ref={numNativeUnits => (this.numNativeUnits = numNativeUnits)}
 							onChange={this.calculateCapacityUsed}
 							name="numNativeUnits"
@@ -302,21 +274,7 @@ export class IngredientForm extends Component {
 
 					{this.renderTotalNumNativeUnits()}
 
-					<FormGroup>
-						<ControlLabel>Native Unit</ControlLabel>
-						<p><select
-							ref={nativeUnit => (this.nativeUnit = nativeUnit)}
-							name="nativeUnit"
-							placeholder="# of Native Units Per Package"
-							onChange={this.renderCustomFieldTrigger}
-							className="form-control">
-							<option value="Pounds">Pounds</option>
-							<option value="Gallons">Gallons</option>
-							<option value="custom">Custom...</option>
-						</select></p>
-					</FormGroup>
-
-					{this.renderCustomField()}
+					<CustomNativeUnitInput ref={customNativeUnitInput => (this.customNativeUnitInput = customNativeUnitInput)}/>
 
 					<FormGroup>
 						<ControlLabel>Select Vendor</ControlLabel>
