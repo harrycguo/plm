@@ -1,10 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Vendors } from '../Vendors/vendors.js';
-import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
+// import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { isInt } from '../../utils/checks.js';
 import { containsVendor, indexOfVendorWithId } from '../../utils/checks.js';
+import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
 
 if (Meteor.isClient) {
     Meteor.subscribe('storageCapacities');
@@ -251,6 +252,8 @@ Meteor.methods({
     },
     'orderIngredient': function (ingredient, vendor, numPackages) {
         // var ingredient = IngredientsList.find({ _id: selectedIngredient }).fetch();
+
+        //WILL BE DONE IN THE CART NOW!
         check(numPackages, Number);
 
         var packagingMap = new Map();

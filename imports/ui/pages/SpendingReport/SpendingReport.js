@@ -7,6 +7,33 @@ import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 
 
+// <<<<<<< HEAD
+// 	renderTransactionItems() {
+// 		var frontEndReport = Array()
+// 		var keyCount = 0;
+// 		this.props.carts.forEach(function(ingredients) {
+// 			ingredients.ingredients.forEach(function(ing) {
+// 				frontEndCart.push(
+// 					{key: keyCount, fullIng: ing, amt: ing.amount}
+// 				)
+// 				keyCount++;
+// 				console.log(ing)
+// 			})
+// 		});
+// 		return frontEndReport.map(ingredient => (
+// 			<tr key={ingredient.key}>
+// 				<td>{ingredient.fullIng.ingredient.name}</td>
+// 				<td>{ingredient.amt}</td>
+// 				<td>
+// 					<button
+// 					onClick={this.remove.bind(ingredient)}
+// 					title= "Edit">
+// 						Remove From Cart
+// 					</button>
+// 				</td>
+// 			</tr>
+// 		))
+// =======
 class SpendingReport extends Component {
 	convertFromTimestamp(time) {
 		// Method courtesy of StackOverflow user Aelios (https://stackoverflow.com/questions/12409299/how-to-get-current-formatted-date-dd-mm-yyyy-in-javascript-and-append-it-to-an-i)
@@ -23,6 +50,7 @@ class SpendingReport extends Component {
 		} 
 		var today = dd+'/'+mm+'/'+yyyy;
 		return today;
+// >>>>>>> 050004ae2355448de59ced748bf72559b6015b2b
 	}
 
 	linkBack() {
