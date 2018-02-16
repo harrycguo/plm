@@ -11,7 +11,9 @@ class Vendor extends Component {
   }
 
   deleteThisVendor() {
-    Meteor.call('vendors.remove', this.props.vendor._id);
+    if(confirm('Delete the Vendor?')) {
+      Meteor.call('vendors.remove', this.props.vendor._id)
+    };
   }
 
   render() {
@@ -21,9 +23,9 @@ class Vendor extends Component {
           &times;
         Delete Vendor</button>
 
-        <p> Name: {this.props.vendor.vendor}</p>
-        <p> Contact: {this.props.vendor.contact}</p>
-        <p> Freight Code Carrier: {this.props.vendor.FCC}</p>
+        <p> <b>Name:</b> {this.props.vendor.vendor}</p>
+        <p> <b>Contact Info:</b> {this.props.vendor.contact}</p>
+        <p> <b>Freight Code Carrier:</b> {this.props.vendor.FCC}</p>
 
         <Link to={{
           pathname: '/editVendor/'+this.props.vendor._id, 
@@ -37,7 +39,6 @@ class Vendor extends Component {
             </button>
           </Link>
       </li>
-      
     );
   }
 }
