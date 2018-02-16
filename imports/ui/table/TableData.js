@@ -8,42 +8,70 @@ export function toggleEditable() {
 
 function renderEditable(cellInfo) {
 	if(canEdit) {
-		return(<div style = {{ backgroundColor: "#ffffff" }}
-			contentEditable
-			suppressContentEditableWarning
-			onBlur = { e => {
-				if(cellInfo.column.id === 'name'){
-					Meteor.call('editName', 
-						cellInfo.original.fullIng._id, 
-						e.target.innerHTML,  
-						function(error,result){
-                   			if(error){
-                        		console.log("something goes wrong with the following error message " + error.reason )
-               	  				Bert.alert(error.reason, 'danger');
-                  			}
-						});
-						e.target.innerHTML = cellInfo.original.name
-				} else if (cellInfo.column.id === 'qty') {
-					var entry = parseInt(e.target.innerHTML)
-					if(entry >= 0) {
-						Meteor.call('editQuantity', cellInfo.original.fullIng._id, Number(entry),
+		return(<input 
+			type="text" 
+			defaultValue={cellInfo.value}
+			onBlur = {e => {
+				e.persist()
+				if(cellInfo.column.id === 'name'){	
+					var message = "Edit Name\nFrom "
+					message = message.concat(cellInfo.original.name).concat(" to ").concat(e.target.value);
+					if(confirm(message)) {
+						Meteor.call('editName', 
+							cellInfo.original.fullIng._id, 
+							e.target.value,  
 							function(error,result){
-                   			if(error){
-                        		console.log("something goes wrong with the following error message " + error.reason )
-               	  				Bert.alert(error.reason, 'danger');
-                  			}
-						});
+	                   			if(error){
+	                        		console.log("something goes wrong with the following error message " + error.reason )
+	               	  				Bert.alert(error.reason, 'danger');
+									e.target.value = cellInfo.original.name;
+								}
+							});
 					} else {
-						Bert.alert('Must be greater than or equal to zero', 'danger');
+						e.target.value = cellInfo.original.name;
 					}
-					e.target.innerHTML = cellInfo.original.qty
-
+				} else if (cellInfo.column.id === 'qty') {
+					var message = "Edit Quantity\nFrom "
+					message = message.concat(cellInfo.original.qty).concat(" to ").concat(e.target.value);
+					if(confirm(message)) {
+						var entry = parseInt(e.target.value)
+						if(entry >= 0) {
+							Meteor.call('editQuantity', cellInfo.original.fullIng._id, Number(entry),
+								function(error,result){
+	                   			if(error){
+	                        		console.log("something goes wrong with the following error message " + error.reason )
+	               	  				Bert.alert(error.reason, 'danger');
+	                  			}
+							});
+						} else {
+							Bert.alert('Must be greater than or equal to zero', 'danger');
+							e.target.value = cellInfo.original.qty;
+						}
+					} else {
+						e.target.value = cellInfo.original.qty;
+					}
+				} else if (cellInfo.column.id === 'unit') {
+					var message = "Edit Native Units\nFrom "
+					message = message.concat(cellInfo.original.units).concat(" to ").concat(e.target.value);
+					if(confirm(message)) {
+	// 					Meteor.call('editNativeUnits', 
+	// 						cellInfo.original.fullIng._id, 
+	// 						e.target.value,  
+	// 						function(error,result){
+	//                    			if(error){
+	//                         		console.log("something goes wrong with the following error message " + error.reason )
+	//                	  				Bert.alert(error.reason, 'danger');
+	// 								e.target.value = cellInfo.original.units;
+	// 							}
+	// 						}
+	// 					);
+					} else {
+						// e.target.value = cellInfo.original.units;
+					}
 				}
 			}}
-			dangerouslySetInnerHTML={{
-				__html: cellInfo.value
-			}}
-		/>);
+			/>); 
+
 	} else {
 		return(<div style = {{ backgroundColor: "#ffffff" }}
 			dangerouslySetInnerHTML={{
@@ -63,15 +91,20 @@ function renderEditableDropdown(cellInfo) {
 			id = "selTemperatureState" 
 			ref="temperatureState" 
 			onChange={ e=> {
-				Meteor.call('editTemperatureState', 
-					cellInfo.original.fullIng._id, 
-					e.target.value,
-					function(error,result){
-                   		if(error){
-                        	console.log("something goes wrong with the following error message " + error.reason )
-               	  			Bert.alert(error.reason, 'danger');
-                  		}
-					});
+				var message = "Edit Temperature State\nFrom "
+				message = message.concat(cellInfo.original.temp).concat(" to ").concat(e.target.value);
+				if(confirm(message)) {
+					Meteor.call('editTemperatureState', 
+						cellInfo.original.fullIng._id, 
+						e.target.value,
+						function(error,result){
+	                   		if(error){
+	                        	console.log("something goes wrong with the following error message " + error.reason )
+	               	  			Bert.alert(error.reason, 'danger');
+	                  		}
+						}
+					);
+				}
 			}}
 			>
 			   <option value = "frozen">Frozen</option>
@@ -86,16 +119,20 @@ function renderEditableDropdown(cellInfo) {
 			ref="packaging"
 			value = {cellInfo.original.pkg.toLowerCase()}
 			onChange={ e=> {
-				Meteor.call('editPackage', 
-					cellInfo.original.fullIng._id, 
-					e.target.value,
-					function(error,result){
-                   		if(error){
-                       		console.log("something goes wrong with the following error message " + error.reason )
-               	  			Bert.alert(error.reason, 'danger');
-                  		}
-					}
-				);
+				var message = "Edit Packaging\nFrom "
+				message = message.concat(cellInfo.original.pkg).concat(" to ").concat(e.target.value);
+				if(confirm(message)) {
+					Meteor.call('editPackage', 
+						cellInfo.original.fullIng._id, 
+						e.target.value,
+						function(error,result){
+	                   		if(error){
+	                       		console.log("something goes wrong with the following error message " + error.reason )
+	               	  			Bert.alert(error.reason, 'danger');
+	                  		}
+						}
+					);
+				}
 			}}
 			>
 			   <option value = "sack">Sack (50 lbs)</option>
@@ -123,22 +160,104 @@ export const HeaderValues = [
 	{
 		Header: 'Name',
 		accessor: 'name',
-		Cell: renderEditable
+		Cell: renderEditable,
+		Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by name"
+	      />
 	}, 
 	{
 		Header: 'Temperature State',
 		accessor: 'temp',
-		Cell: renderEditableDropdown
+		Cell: renderEditableDropdown,
+		filterMethod: (filter, row) => {
+			if(filter.value === 'all') {
+				return true;
+			}
+			else {
+				return row[filter.id]===filter.value;
+			}
+		},
+		Filter: ({ filter, onChange }) =>
+	      <select
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : 'all'}
+	      >
+	        <option value="all">All</option>
+	        <option value="frozen">Frozen</option>
+	        <option value="refrigerated">Refrigerated</option>
+	        <option value="room temperature">Room Temperature</option>
+	      </select>,
 	}, 
 	{
 		Header: 'Packaging',
 		accessor: 'pkg',
-		Cell: renderEditableDropdown
+		Cell: renderEditableDropdown,
+		filterMethod: (filter, row) => {
+			if(filter.value === 'all') {
+				return true;
+			}
+			else {
+				return row[filter.id]===filter.value;
+			}
+		},
+		Filter: ({ filter, onChange }) =>
+	      <select
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : 'all'}
+	      >
+	        <option value="all">All</option>
+	        <option value="sack">Sack</option>
+	        <option value="pail">Pail</option>
+	        <option value="drum">Drum</option>
+	        <option value="supersack">Supersack</option>
+	        <option value="truckload">Truckload</option>
+	        <option value="railcar">Railcar</option>
+	      </select>,
 	},
 	{
-		Header: 'Quantity (lbs)',
+		Header: 'Native Units',
+		accessor: 'unit',
+		Cell: renderEditable,
+		Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by units"
+	      />
+	}, 
+	{
+		Header: 'Quantity',
 		accessor: 'qty',
-		Cell: renderEditable
+		Cell: renderEditable,
+		Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by quantity"
+	      />
+	},
+	{
+		Header: 'Number of Packages',
+		accessor: 'numpkg',
+		Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by number of packs"
+	      />
 	}, 
 ];
 
