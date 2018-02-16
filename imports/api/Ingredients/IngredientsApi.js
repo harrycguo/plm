@@ -13,7 +13,7 @@ if (Meteor.isClient) {
 
 //IngredientsList API suh
 Meteor.methods({
-    'addIngredient': function (ingName, ingPackage, ingQuantity, ingTemperatureState, ingVendor, ingPrice) {
+    'addIngredient': function (ingName, ingPackage, ingQuantity, ingTemperatureState, ingVendor, ingPrice, ingFormulas, ingNativeInfo) {
 
         //Check to see if user is authorized
         if (!this.userId) {
@@ -34,6 +34,10 @@ Meteor.methods({
             throw new Meteor.Error("Vendor does not exist","Vendor does not exist");
         }
 
+        if (ingFormulas > 0) {
+            check()
+        }
+
         console.log(ingVendor);
 
         //Check to see if capacity won't be exceeded
@@ -44,15 +48,12 @@ Meteor.methods({
         }
 
         var vendorInfoArr = [];
-        // console.log(Object.keys(ingVendor).length > 0);
-        // console.log(ingPrice);
         if (ingPrice && ingVendor) {
             vendorInfoArr = [{
                 vendor: ingVendor,
                 price: Number(ingPrice)
             }];
         }
-        // console.log(vendorInfoArr);
         
         IngredientsList.insert({
             name: ingName.trim(),
@@ -60,8 +61,8 @@ Meteor.methods({
             temperatureState: ingTemperatureState.toLowerCase(),
             vendorInfo: vendorInfoArr,
             quantity: Number(ingQuantity),
-            price: Number(0)
-            // prices: priceTuples
+            nativeInfo: ingNativeInfo,
+            formulaInfo: ingFormulas
         });
     },
     //This method will check to see if the ingredient already exists. If not, then call addIngredient.
@@ -197,6 +198,10 @@ Meteor.methods({
         //     throw new Meteor.Error('not-authorized', 'not-authorized');
         // }
 
+        if (!isInt(newQuantity)) {
+            throw new Meteor.Error('Quantity must be an integer','Quantity must be an integer');
+        }
+
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
         if (!(existingIng.package == 'truckload' || existingIng.package == 'railcar')) {
@@ -296,7 +301,7 @@ Meteor.methods({
     },
     'editNativeUnits': function(){
         //TODO: Implement this...
-    }
+    },
     'addVendor': function(selectedIngredient, vendorId, price) {
         if (vendorId === "null" || !price) {
             throw new Meteor.Error("Missing fields","Vendor and/or price unspecified");

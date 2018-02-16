@@ -34,10 +34,10 @@ IngredientSchema = new SimpleSchema({
   quantity: {
     type: Number
   },
-  price: {
-    type: Number,
-    decimal: true
-  },
+  // price: {
+  //   type: Number,
+  //   decimal: true
+  // },
   nativeInfo: {
     type: Object
   },
