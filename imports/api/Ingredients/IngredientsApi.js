@@ -1,10 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Vendors } from '../Vendors/vendors.js';
-// import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
 import { Bert } from 'meteor/themeteorchef:bert';
-import { isInt } from '../../utils/checks.js';
-import { containsVendor, indexOfVendorWithId } from '../../utils/checks.js';
+import { containsVendor, indexOfVendorWithId, isInt, checkUndefined, checkIngExists, checkGreaterThanZero } from '../../utils/checks.js';
 import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
 
 if (Meteor.isClient) {
@@ -31,14 +29,18 @@ Meteor.methods({
         //Check if vendor exists
         var obj = Vendors.findOne({ _id : ingVendor});
         if (Object.keys(obj).length === 0 && obj.constructor === Object) {
-            throw new Meteor.Error("Vendor does not exist","Vendor does not exist");
+            throw new Meteor.Error('Vendor does not exist','Vendor does not exist');
         }
 
-        if (ingFormulas > 0) {
-            check()
+        if (Object.keys(obj).length === 0 && obj.constructor === Object) {
+            throw new Meteor.Error('Ingredient native info must be provided','Ingredient native info must be provided');
+        }
+        else {
+            check(ingNativeInfo.name,String);
+            check(ingNativeInfo.perPackageQty,Number);
         }
 
-        console.log(ingVendor);
+        // console.log(ingVendor);
 
         //Check to see if capacity won't be exceeded
         if (!(ingPackage.toLowerCase() == 'truckload' || ingPackage.toLowerCase() == 'railcar')) {
@@ -299,8 +301,21 @@ Meteor.methods({
 
         Meteor.call('logOrderInReport', ingredient, ingredientQuantity, vendor.cost)
     },
-    'editNativeUnits': function(){
+    'editNativeUnitName': function(selectedIngredient, newName){
         //TODO: Implement this...
+        ing = IngredientsList.findOne({ _id : selectedIngredient});
+        if (ing !== undefined) {
+            IngredientsList.update({ _id : selectedIngredient},{$set : {name : newName}});
+        }
+        else {
+            throw new Meteor.Error('Ingredient not found','Ingredient not found');
+        }
+    },
+    'editNativeQtyPerPackage': function(selectedIngredient, newQty) {
+        ing = IngredientsList.findOne({ _id : selectedIngredient});
+        checkGreaterThanZero(newQty, 'native units per package');
+        checkIngExists(selectedIngredient);
+        IngredientsList.update({ _id : selectedIngredient},{$set : {name : newName}});
     },
     'addVendor': function(selectedIngredient, vendorId, price) {
         if (vendorId === "null" || !price) {
@@ -308,6 +323,7 @@ Meteor.methods({
         }
         var ing = IngredientsList.findOne({ _id : selectedIngredient._id });
         var vendor = Vendors.findOne({ _id : vendorId}); 
+        checkUndefined(vendor,'vendor');
         if(containsVendor(vendor,ing.vendorInfo)) {
             throw new Meteor.Error('Already has vendor','this vendor is already associated with this ingredient');
         }
