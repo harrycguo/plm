@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
+import CustomNativeUnitsInput from '../forms/CustomNativeUnitInput.js'
 
 export var canEdit = false;
+var nativeUnitSwitch = false;
 
 export function toggleEditable() {
 	canEdit = !canEdit;
@@ -50,25 +52,7 @@ function renderEditable(cellInfo) {
 					} else {
 						e.target.value = cellInfo.original.qty;
 					}
-				} else if (cellInfo.column.id === 'unit') {
-					var message = "Edit Native Units\nFrom "
-					message = message.concat(cellInfo.original.units).concat(" to ").concat(e.target.value);
-					if(confirm(message)) {
-	// 					Meteor.call('editNativeUnits', 
-	// 						cellInfo.original.fullIng._id, 
-	// 						e.target.value,  
-	// 						function(error,result){
-	//                    			if(error){
-	//                         		console.log("something goes wrong with the following error message " + error.reason )
-	//                	  				Bert.alert(error.reason, 'danger');
-	// 								e.target.value = cellInfo.original.units;
-	// 							}
-	// 						}
-	// 					);
-					} else {
-						// e.target.value = cellInfo.original.units;
-					}
-				}
+				} 
 			}}
 			/>); 
 
@@ -79,6 +63,84 @@ function renderEditable(cellInfo) {
 			}}
 		/>);
 	}
+}
+
+function renderCustomField() {
+	return (
+		<input
+				type="text"
+				ref={customNativeUnit => (this.customNativeUnit = customNativeUnit)}
+				name="customNativeUnit"
+				placeholder="Native Unit"
+			/>
+	)
+}
+
+function renderEditableUnits(cellInfo) {
+	if(canEdit) {
+		return (
+			<span>
+				<select
+					ref={nativeUnit => (this.nativeUnit = nativeUnit)}
+					name="nativeUnit"
+					placeholder="# of Native Units Per Package"
+					onChange={ e => {
+						console.log(e.target.value)
+						if(e.target.value == "custom") {
+							nativeUnitSwitch = true
+						} else {
+							
+						}
+					}}
+				>
+					<option value="Pounds">Pounds</option>
+					<option value="Gallons">Gallons</option>
+					<option value="custom">Custom...</option>
+				</select>
+				{renderCustomField()}
+			</span>
+		)
+	}
+	// 	if (cellInfo.column.id === 'unit') {
+	// 		var message = "Edit Native Units\nFrom "
+	// 		message = message.concat(cellInfo.original.units).concat(" to ").concat(e.target.value);
+	// 		if(confirm(message)) {
+	// 			Meteor.call('editNativeUnits', 
+	// 				cellInfo.original.fullIng._id, 
+	// 				e.target.value,  
+	// 				function(error,result){
+	//                 			if(error){
+	//                              console.log("something goes wrong with the following error message " + error.reason )
+	//           	  				Bert.alert(error.reason, 'danger');
+	// 							e.target.value = cellInfo.original.units;
+	// 						}
+	// 					}
+	// 				);
+	// 		} else {
+	// 			// e.target.value = cellInfo.original.units;
+	// 		}
+	// 	}
+}
+
+function editNativeUnits(currUnits, newUnits) {
+	var message = "Edit Native Units\nFrom "
+	message = message.concat(currUnits).concat(" to ").concat(newUnits);
+	if(confirm(message)) {
+		var success = false
+// 		Meteor.call('editNativeUnits', 
+// 			cellInfo.original.fullIng._id, 
+// 			newUnits,  
+// 			function(error,result){
+//                 if(error){
+//                     console.log("something goes wrong with the following error message " + error.reason )
+//           	  		Bert.alert(error.reason, 'danger');
+// 				}else {
+// 					success = true
+// 				}
+// 			});
+
+	}
+	return success;
 }
 
 function renderEditableDropdown(cellInfo) {
@@ -224,7 +286,7 @@ export const HeaderValues = [
 	{
 		Header: 'Native Units',
 		accessor: 'unit',
-		Cell: renderEditable,
+		Cell: renderEditableUnits,
 		Filter: ({ filter, onChange }) =>
 	      <input
 	        type="text"
@@ -266,7 +328,7 @@ export function convertToFrontend(ingredient, ingredientsList) {
 	ingredient.vendorInfo.forEach(function(info){
 		var vendor = info.vendor;
 		if(vendor != null && vendor._id != null && info.price != -1) {
-			VendArray.push({_id: vendor._id, name: vendor.vendor, cost: info.price});
+			VendArray.push({_id: vendor._id, name: vendor.vendor, price: info.price});
 		}
 	});
 	

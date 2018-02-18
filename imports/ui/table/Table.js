@@ -10,6 +10,7 @@ import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import AddVendor from './AddVendor.js';
+import EditVendor from './EditVendor.js';
 import CartApi from '../../api/Cart/CartApi.js';
 
 class Table extends Component {
@@ -88,32 +89,39 @@ class Table extends Component {
 			}
 		);
 	}
-	
-	renderVendorRows(row) {
-		if(TableData.canEdit) {
-			return row.original.vendors.map(vendor => (
-				<tr key={vendor.name}>
-					<td>{vendor.name}</td>
-					<td>{vendor.cost}</td>
-					<td>
+
+	renderEditableVendorRows(row) {
+		return row.original.vendors.map(vendor => (
+			<tr key = {vendor.name}>
+				<EditVendor key={vendor.name} ing={row.original.fullIng} vendor={vendor} edit={TableData.canEdit}/>
+				<td> 
 					<button
 						onClick={e=> {
-							Meteor.call('removeVendor',
-								row.original.fullIng,
-								vendor,
-								function(error,result){
-					                if(error){
-					                   	console.log("something goes wrong with the following error message " + error.reason )
-					               	  	Bert.alert(error.reason, 'danger');
-					                }
-								}
-							);
+							var message = "Delete the vendor: "
+							message = message.concat(vendor.name).concat(" from this ingredient?")
+							if(confirm(message=message)) {
+								Meteor.call('removeVendor',
+									row.original.fullIng,
+									vendor,
+									function(error,result){
+						                if(error){
+						                   	console.log("something goes wrong with the following error message " + error.reason )
+						               	  	Bert.alert(error.reason, 'danger');
+						                }
+									}
+								);
+							}
 						}}
 						title= "Remove Vendor"
-						>Delete</button>
-					</td>
-				</tr>
-			));
+					>Delete Vendor</button>
+				</td>
+			</tr>
+		));
+	}
+	
+	renderVendorRows(row, _this) {
+		if(TableData.canEdit) {
+			return _this.renderEditableVendorRows(row)
 		}
 		this.state = { value: '' };
 		var qty = undefined
@@ -131,25 +139,23 @@ class Table extends Component {
 					onClick={e => {
 						if(recentVendor === vendor) {
 							console.log(vendor)
-							Meteor.call('orderIngredient',
-								row.original.fullIng,
-								vendor,
-								Number(qty),
+							Meteor.call('addIngredientToCart',
+								row.original.fullIng, 
+								qty, 
 								function(error,result){
-                   					if(error){
-                        				console.log("something goes wrong with the following error message " + error.reason )
-               	  						Bert.alert(error.reason, 'danger');
-                  					} else {
-										Bert.alert('Successfully Ordered Package', 'success');
-										}
+									if(error){
+	                        				console.log("something goes wrong with the following error message " + error.reason )
+	               	  						Bert.alert(error.reason, 'danger');
+	                  				} else {
+											Bert.alert('Successfully added ' + qty + ' lbs to Cart!', 'success')
+									}
 								}
 							);
 						}
 
 					}}
-					title= "Remove Vendor"
 				>
-					Order Packages
+					Add Packages To Cart
 				</button>
 				</td>
 			</tr>
@@ -163,34 +169,6 @@ class Table extends Component {
 	////////////////////////////////////////////////
 	
 	renderIngredientUse(row) {
-		if(!TableData.canEdit) {
-			var qty = undefined;
-			return (
-				<div>
-				<input type="text" onChange={ e=> {
-					qty = e.target.value;
-				}}/>
-				<button
-					onClick={e=> {
-						Meteor.call('addIngredientToCart',row.original.fullIng, qty, 
-							function(error,result){
-								if(error){
-                        				console.log("something goes wrong with the following error message " + error.reason )
-               	  						Bert.alert(error.reason, 'danger');
-                  				} else {
-										Bert.alert('Successfully added ' + qty + ' lbs to Cart!', 'success')
-								}
-							}
-						);
-					}}
-					title= "Add To Cart"
-				>
-					Add To Cart
-				</button>
-				</div>
-
-			)
-		}
 		return null
 	}
 
@@ -200,7 +178,9 @@ class Table extends Component {
 	///											 ///
 	////////////////////////////////////////////////
 	renderTable(_this) {
-		return ( <ReactTable
+		return ( 
+			<div>
+			<ReactTable
 		    data={_this.renderRows()}
 		    filterable
 		    defaultFilterMethod={ (filter, row) => 
@@ -216,7 +196,7 @@ class Table extends Component {
 		    					<th>Vendor</th>
 		    					<th>Price</th>
 		    				</tr>
-		    				{_this.renderVendorRows(row)}
+		    				{_this.renderVendorRows(row, _this)}
 		    				<AddVendor ing={row.original.fullIng} edit={TableData.canEdit}/>
 		    			</tbody>
 		    			</table>
@@ -226,6 +206,8 @@ class Table extends Component {
                 );
 		    }}
 		  />
+		  <span>Click on a header to sort that column!</span>
+		  </div>
 		);
 	}
 	render() {
@@ -249,12 +231,15 @@ class Table extends Component {
 			<Button
 				onClick={this.edit.bind(this)}
 				title= "Edit"
-				>Toggle Edit Mode</Button>
+				>{this.editButtonText()}</Button>
 				<p></p>
 			{this.renderTable(this)}
 		   	</div>
 		);
 
+	}
+	editButtonText() {
+		return TableData.canEdit ? "Leave Edit Mode" : "Enter Edit Mode"
 	}
 	
 }
