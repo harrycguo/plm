@@ -1,4 +1,5 @@
 import '../../api/Users/users.js';
+import '../../api/Users/netIDusers.js';
 import '../../api/Vendors/vendors.js';
 import '../../api/Ingredients/IngredientList.js';
 import '../../api/Ingredients/IngredientsApi.js';

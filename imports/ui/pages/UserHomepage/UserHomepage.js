@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { Meteor } from 'meteor/meteor';
  
 // App component - represents the whole app
 class UserHomepage extends Component {
   constructor(props) {
     super(props);
-  
+    console.log("User = ")
+    console.log(Meteor.user());
     
   }
  
