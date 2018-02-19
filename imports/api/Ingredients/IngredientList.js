@@ -1,5 +1,5 @@
 import { Mongo } from 'meteor/mongo';
-import { IngredientSchema } from './Schemas.js';
+import { IngredientSchema, PackageInfoSchema, NativeInfoSchema } from './Schemas.js';
 import { Vendors } from '../Vendors/vendors.js';
 
 IngredientsList = new Mongo.Collection('ingredients');

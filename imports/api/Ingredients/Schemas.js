@@ -1,15 +1,38 @@
 import { Mongo } from 'meteor/mongo';
 
-//Schema for ingredient vendor info
-// VendorInfoSchema = new SimpleSchema({
-// 	vendor: {
-// 		type: Object,
-// 		blackbox: true
-// 	},
-// 	price: {
-// 		type: Number
-// 	}
-// });
+PackageInfoSchema = new SimpleSchema({
+  type: {
+    type: String,
+    allowedValues: ['sack','pail','drum','supersack','truckload','railcar']
+  },
+  remaining: {
+    type: Number,
+    min: 0
+  }
+});
+
+VendorInfoSchema = new SimpleSchema({
+  vendor: {
+    type: String
+  },
+  price: {
+    type: Number,
+    min: 0
+  }
+});
+
+NativeInfoSchema = new SimpleSchema({
+   type: {
+    type: String
+   },
+   pkgQty: {
+    type: Number
+   },
+   remaining: {
+    type: Number,
+    min: 0
+   } 
+});
 
 //Specifies ingredient field type constraints
 IngredientSchema = new SimpleSchema({
@@ -18,9 +41,8 @@ IngredientSchema = new SimpleSchema({
     min: 1,
     unique: true //ensures only one database entry for each ingredient name
   },
-  package: {
-    type: String,
-    allowedValues: ["sack","pail","drum","supersack","truckload","railcar"]
+  packageInfo: {
+    type: PackageInfoSchema,
   },
   temperatureState: {
     type: String,
@@ -31,23 +53,33 @@ IngredientSchema = new SimpleSchema({
     blackbox: true //You need this so that the data isn't autocleaned out by the schema 
                    // or you can register the object schema manually.
   },
-  // quantity: {
-  //   type: Number
-  // },
-  price: {
+  quantity: {
     type: Number,
-    decimal: true
+    min: 0
+  },
+  nativeInfo: {
+    type: NativeInfoSchema
+  },
+  formulaInfo: {
+    type: [Object],
+    blackbox: true
   }
 });
 
 //Schema for individual ingredient entries in the cart
 CartIngredientSchema = new SimpleSchema({
 	ingredient: {
-		type: IngredientSchema
+		type: String,
+    min: 0
 	},
 	quantity: {
-		type: Number
-	}
+		type: Number,
+    min: 1
+	},
+  vendor: {
+    type: String,
+    min: 0
+  }
 })
 
 // //Cart schema. Each user has their own mini database of ingredients.
@@ -58,8 +90,8 @@ CartSchema = new SimpleSchema({
 		blackbox: true
 	},
 	ingredients: {
-		type: [Object],
-		blackbox: true
+		type: [CartIngredientSchema],
+    optional: true
 	}
 })
 
@@ -91,4 +123,4 @@ SpendingSchema = new SimpleSchema({
 	total: {type: Number}
 })
 
-export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema };
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema };
