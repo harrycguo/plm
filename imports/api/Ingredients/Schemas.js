@@ -1,11 +1,11 @@
 import { Mongo } from 'meteor/mongo';
 
 PackageInfoSchema = new SimpleSchema({
-  type: {
+  packageType: {
     type: String,
     allowedValues: ['sack','pail','drum','supersack','truckload','railcar']
   },
-  remaining: {
+  numPackages: {
     type: Number,
     min: 0
   }
@@ -22,17 +22,29 @@ VendorInfoSchema = new SimpleSchema({
 });
 
 NativeInfoSchema = new SimpleSchema({
-   type: {
+   nativeUnit: {
     type: String
    },
-   pkgQty: {
-    type: Number
+   numNativeUnitsPerPackage: {
+    type: Number,
+    min: 1
    },
-   remaining: {
+   totalQuantity: {
     type: Number,
     min: 0
    } 
 });
+
+FormulaInfoSchema = new SimpleSchema({
+  formulaId: {
+    type: String,
+    min: 1
+  },
+  nativeUnitsConsumption: {
+    type: Number,
+    min: 1
+  }
+})
 
 //Specifies ingredient field type constraints
 IngredientSchema = new SimpleSchema({
@@ -46,11 +58,11 @@ IngredientSchema = new SimpleSchema({
   },
   temperatureState: {
     type: String,
-    allowedValues: ["frozen","refrigerated","room temperature"]
+    allowedValues: ['frozen','refrigerated','room temperature']
   },
   vendorInfo: {
-    type: [Object], 
-    blackbox: true //You need this so that the data isn't autocleaned out by the schema 
+    type: [VendorInfoSchema], 
+    optional: true //You need this so that the data isn't autocleaned out by the schema 
                    // or you can register the object schema manually.
   },
   storage: {
@@ -61,8 +73,8 @@ IngredientSchema = new SimpleSchema({
     type: NativeInfoSchema
   },
   formulaInfo: {
-    type: [Object],
-    blackbox: true
+    type: [FormulaInfoSchema],
+    optional: true
   }
 });
 
@@ -123,4 +135,4 @@ SpendingSchema = new SimpleSchema({
 	total: {type: Number}
 })
 
-export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema };
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema };
