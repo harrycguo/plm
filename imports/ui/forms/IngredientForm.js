@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import VendorForm from './VendorForm.js';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Link, BrowserRouter } from 'react-router-dom'
 import { Bert } from 'meteor/themeteorchef:bert';
@@ -97,7 +95,7 @@ export class IngredientForm extends Component {
 		packagingMap.set('Sack', 0.5);
 		packagingMap.set('Pail', 1.5);
 		packagingMap.set('Drum', 3);
-		packagingMap.set('Supersack', 6);
+		packagingMap.set('Supersack', 16);
 		packagingMap.set('Truckload', 0);
 		packagingMap.set('Railcar', 0);
 
@@ -105,8 +103,8 @@ export class IngredientForm extends Component {
 
 		for (var i = 0; i < this.props.vendors.length; i++) {
 			if (this.props.vendors[i]._id == vendorId) {
-				vendor = this.props.vendors[i];
-				// priceObj = {vendorId: vendor._id, vendorPrice: priceVal};
+				vendor = this.props.vendors[i]._id;
+				// priceObj = {vendorId: vendor._id, vendorPrice: priceVal};	
 				break;
 			}
 		}
@@ -129,9 +127,13 @@ export class IngredientForm extends Component {
 		} else if (Meteor.isClient) {
 			Meteor.call("addToExistingIngredient",
 				name,
-				packaging,
-				ingredientStorage,
 				temperatureState,
+				packaging,
+				numPackages,
+				ingredientStorage,
+				totalNumNativeUnits,
+				nativeUnit,
+				numNativeUnitsPerPackage,
 				vendor,
 				ingredientPrice,
 				function (error, result) {
@@ -156,7 +158,7 @@ export class IngredientForm extends Component {
 		packagingMap.set('Sack', 0.5);
 		packagingMap.set('Pail', 1.5);
 		packagingMap.set('Drum', 3);
-		packagingMap.set('Supersack', 6);
+		packagingMap.set('Supersack', 16);
 		packagingMap.set('Truckload', 0);
 		packagingMap.set('Railcar', 0);
 
@@ -168,14 +170,6 @@ export class IngredientForm extends Component {
 			totalNumNativeUnits: Number(this.numPackages.value) * Number(this.numNativeUnits.value)
 		})
 
-	}
-
-	renderOptions() {
-		let items = [];
-		for (i = 0; i < this.props.vendors.length; i++) {
-			items.push(<option key={i} value={this.props.vendors[i]._id}>{this.props.vendors[i].vendor}</option>);
-		}
-		return items;
 	}
 
 	renderUsedCapacity() {
@@ -197,17 +191,8 @@ export class IngredientForm extends Component {
 	}
 
 	render() {
-		let user = Meteor.user();
-		let returnLink = null;
-
-		if (Roles.userIsInRole(user, ['admin'])) {
-			returnLink = <Link to='/adminViewInventory'>Return to Table</Link>
-		} else {
-			returnLink = <Link to='/userViewInventory'>Return to Table</Link>
-		}
-
+		
 		return (
-
 			<div className="container">
 				<form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
 					<FormGroup>
@@ -229,7 +214,7 @@ export class IngredientForm extends Component {
 							<option value="Sack">Sack (0.5 Sq. Ft.)</option>
 							<option value="Pail">Pail (1.5 Sq. Ft.)</option>
 							<option value="Drum">Drum (3 Sq. Ft.)</option>
-							<option value="Supersack">Supersack (6 Sq. Ft.)</option>
+							<option value="Supersack">Supersack (16 Sq. Ft.)</option>
 							<option value="Truckload">Truckload (0 Sq. Ft.)</option>
 							<option value="Railcar">Railcar (0 Sq. Ft.)</option>
 						</select></p>
@@ -297,8 +282,6 @@ export class IngredientForm extends Component {
 					</FormGroup>
 
 					<Button type="submit" bsStyle="success">Add Ingredient</Button>
-					<p></p>
-					<p>{returnLink}</p>
 
 				</form>
 			</div>

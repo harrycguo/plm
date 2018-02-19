@@ -83,6 +83,10 @@ class Login extends Component {
             if (Roles.userIsInRole(user, ['admin'])) {
               history.push('/adminHomepage');
             }
+            //manager login
+            else if (Roles.userIsInRole(user, ['manager'])) {
+              history.push('/managerHomepage')
+            }
             //user login
             else {
               history.push('/userHomepage');
@@ -149,6 +153,10 @@ class Login extends Component {
             //admin login
             if (Roles.userIsInRole(user, ['admin'])) {
               history.push('/adminHomepage');
+            }
+            //manager login
+            else if (Roles.userIsInRole(user, ['manager'])) {
+              history.push('/managerHomepage')
             }
             //user login
             else {

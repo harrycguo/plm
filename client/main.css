@@ -22,11 +22,15 @@ body {
   }
 
   .container {
-    max-width: 1200px;
+    max-width: 7000px;
     margin: 0 auto;
     min-height: 100%;
     background: white;
-    padding: 20px 15px 15px 15px;
+    padding: 20px 15px 15px 0px;
+  }
+
+  .containerSome {
+    padding: 0px 10px 10px 0px;
   }
 
   .containerNone {
@@ -58,11 +62,26 @@ body {
   .side-container{
     display: flex;
     flex-direction: row;
-    padding: 5px 5px 5px 5px;
+    padding: 5px 5px 5px 15px;
+  }
+
+  .side-container-zero{
+    display: flex;
+    flex-direction: row;
+    padding: 0px 0px 0px 0px;
+  }
+
+  .side-spacing {
+    margin-right: 20px
   }
 
   .container-nav{
     padding: 5px 5px 5px 5px;
+  }
+
+  .container-nav-right{
+    padding: 5px 5px 5px 5px;
+    float: right;
   }
    
   #login-buttons {

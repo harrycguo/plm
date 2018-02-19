@@ -25,7 +25,11 @@ import AddIngredient from '../../ui/pages/AddIngredient/AddIngredient.js';
 import IngredientCart from '../../ui/pages/Cart/Cart.js';
 import SpendingReport from '../../ui/pages/SpendingReport/SpendingReport.js';
 import UserManagement from '../../ui/pages/UserManagement/UserManagement';
- 
+import ManagerViewInventory from '../../ui/pages/ManagerViewInventory/ManagerViewInventory';
+import ManagerHomepage from '../../ui/pages/ManagerHomepage/ManagerHomepage';
+import FormulaManagement from '../../ui/pages/FormulaManagement/FormulaManagement';
+import AddFormula from '../../ui/pages/AddFormula/AddFormula';
+
 export const renderRoutes = () => (
   <Router>
   <div>
@@ -33,6 +37,7 @@ export const renderRoutes = () => (
     <Route path="/login" component={Login}/>
     <Route path="/logout" component={Logout}/>
     <Route path="/adminHomepage" component={AdminHomepage}/>
+    <Route path="/managerHomepage" component={ManagerHomepage}/>
     <Route path="/userHomepage" component={UserHomepage}/>
     <Route path="/userManagement" component={UserManagement}/>
     <Route path="/createUser" component={CreateUser}/>
@@ -47,9 +52,12 @@ export const renderRoutes = () => (
     <Route path="/table" component={Table}/>
     <Route path="/addingredient" component={AddIngredient}/>
     <Route path="/userViewInventory" component={UserViewInventory}/>
+    <Route path="/managerViewInventory" component={ManagerViewInventory}/>
     <Route path="/adminViewInventory" component={AdminViewInventory}/>
     <Route path="/cart" component={IngredientCart}/>
     <Route path="/report" component={SpendingReport}/>
+    <Route path='/formulaManagement' component={FormulaManagement}/>
+    <Route path='/addFormula' component={AddFormula}/>
   </div>
 </Router>
 );
