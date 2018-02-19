@@ -17,7 +17,8 @@ VendorInfoSchema = new SimpleSchema({
   },
   price: {
     type: Number,
-    min: 0
+    min: 0,
+    decimal: true
   }
 });
 
@@ -42,7 +43,8 @@ FormulaInfoSchema = new SimpleSchema({
   },
   nativeUnitsConsumption: {
     type: Number,
-    min: 1
+    min: 1,
+    decimal: true
   }
 })
 
@@ -67,7 +69,8 @@ IngredientSchema = new SimpleSchema({
   },
   storage: {
     type: Number,
-    min: 0
+    min: 0,
+    decimal: true
   },
   nativeInfo: {
     type: NativeInfoSchema
