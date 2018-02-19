@@ -17,7 +17,8 @@ VendorInfoSchema = new SimpleSchema({
   },
   price: {
     type: Number,
-    min: 0
+    min: 0,
+    decimal: true
   }
 });
 
