@@ -105,8 +105,8 @@ export class IngredientForm extends Component {
 
 		for (var i = 0; i < this.props.vendors.length; i++) {
 			if (this.props.vendors[i]._id == vendorId) {
-				vendor = this.props.vendors[i];
-				// priceObj = {vendorId: vendor._id, vendorPrice: priceVal};
+				vendor = this.props.vendors[i]._id;
+				// priceObj = {vendorId: vendor._id, vendorPrice: priceVal};	
 				break;
 			}
 		}
@@ -129,9 +129,13 @@ export class IngredientForm extends Component {
 		} else if (Meteor.isClient) {
 			Meteor.call("addToExistingIngredient",
 				name,
-				packaging,
-				ingredientStorage,
 				temperatureState,
+				packaging,
+				numPackages,
+				ingredientStorage,
+				totalNumNativeUnits,
+				nativeUnit,
+				numNativeUnitsPerPackage,
 				vendor,
 				ingredientPrice,
 				function (error, result) {
@@ -197,17 +201,8 @@ export class IngredientForm extends Component {
 	}
 
 	render() {
-		let user = Meteor.user();
-		let returnLink = null;
-
-		if (Roles.userIsInRole(user, ['admin'])) {
-			returnLink = <Link to='/adminViewInventory'>Return to Table</Link>
-		} else {
-			returnLink = <Link to='/userViewInventory'>Return to Table</Link>
-		}
-
+		
 		return (
-
 			<div className="container">
 				<form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
 					<FormGroup>
@@ -297,8 +292,6 @@ export class IngredientForm extends Component {
 					</FormGroup>
 
 					<Button type="submit" bsStyle="success">Add Ingredient</Button>
-					<p></p>
-					<p>{returnLink}</p>
 
 				</form>
 			</div>

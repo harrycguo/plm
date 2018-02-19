@@ -38,7 +38,27 @@ function renderEditable(cellInfo) {
 					if(confirm(message)) {
 						var entry = parseInt(e.target.value)
 						if(entry >= 0) {
-							Meteor.call('editQuantity', cellInfo.original.fullIng._id, Number(entry),
+							Meteor.call('editTotalNumNativeUnits', cellInfo.original.fullIng._id, Number(entry),
+								function(error,result){
+	                   			if(error){
+	                        		console.log("something goes wrong with the following error message " + error.reason )
+	               	  				Bert.alert(error.reason, 'danger');
+	                  			}
+							});
+						} else {
+							Bert.alert('Must be greater than or equal to zero', 'danger');
+							e.target.value = cellInfo.original.qty;
+						}
+					} else {
+						e.target.value = cellInfo.original.qty;
+					}
+				} else if (cellInfo.column.id === 'numNativeUnitsPerPackage') {
+					var message = "Edit Number of Native Units Per Package\nFrom "
+					message = message.concat(cellInfo.original.qty).concat(" to ").concat(e.target.value);
+					if(confirm(message)) {
+						var entry = parseInt(e.target.value)
+						if(entry >= 0) {
+							Meteor.call('editNumNativeUnitsPerPackage', cellInfo.original.fullIng._id, Number(entry),
 								function(error,result){
 	                   			if(error){
 	                        		console.log("something goes wrong with the following error message " + error.reason )
@@ -197,12 +217,12 @@ function renderEditableDropdown(cellInfo) {
 				}
 			}}
 			>
-			   <option value = "sack">Sack (50 lbs)</option>
-			   <option value = "pail">Pail (50 lbs)</option>
-			   <option value = "drum">Drum (500 lbs)</option>
-			   <option value = "supersack">Supersack (2000 lbs)</option>
-			   <option value = "truckload">Truckload (50000)</option>
-			   <option value = "railcar">Railcar (280000)</option>
+			   <option value = "sack">Sack (0.5 Sq. Ft.)</option>
+			   <option value = "pail">Pail (1.5 Sq. Ft.)</option>
+			   <option value = "drum">Drum (3 Sq. Ft.)</option>
+			   <option value = "supersack">Supersack (6 Sq. Ft.)</option>
+			   <option value = "truckload">Truckload (0 Sq. Ft.)</option>
+			   <option value = "railcar">Railcar (0 Sq. Ft.)</option>
 			</select>
 			);
 		}
@@ -284,16 +304,28 @@ export const HeaderValues = [
 	      </select>,
 	},
 	{
-		Header: 'Native Units',
-		accessor: 'unit',
-		Cell: renderEditableUnits,
+		Header: 'Number of Packages',
+		accessor: 'numpkg',
 		Filter: ({ filter, onChange }) =>
 	      <input
 	        type="text"
 	        onChange={event => onChange(event.target.value)}
 	        style={{ width: '100%', height: '100%'}}
 	        value={filter ? filter.value : ''}
-	        placeholder="Filter by units"
+	        placeholder="Filter by number of packs"
+	      />
+	}, 
+	{
+		Header: 'Native Units Per Package',
+		accessor: 'numNativeUnitsPerPackage',
+		Cell: renderEditable,
+		Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by Num of Native Units Per Pacakge"
 	      />
 	}, 
 	{
@@ -310,17 +342,21 @@ export const HeaderValues = [
 	      />
 	},
 	{
-		Header: 'Number of Packages',
-		accessor: 'numpkg',
+		Header: 'Native Units',
+		accessor: 'unit',
+		Cell: renderEditableUnits,
 		Filter: ({ filter, onChange }) =>
 	      <input
 	        type="text"
 	        onChange={event => onChange(event.target.value)}
 	        style={{ width: '100%', height: '100%'}}
 	        value={filter ? filter.value : ''}
-	        placeholder="Filter by number of packs"
+	        placeholder="Filter by units"
 	      />
 	}, 
+	
+	
+	
 ];
 
 export function convertToFrontend(ingredient, ingredientsList) {
@@ -335,9 +371,11 @@ export function convertToFrontend(ingredient, ingredientsList) {
 	return {
 			name: ingredient.name, 
 			temp: ingredient.temperatureState, 
-			pkg: ingredient.package, 
-			amt: ingredient.numPackages,
-			qty: ingredient.quantity, 
+			pkg: ingredient.packageInfo.packageType, 
+			numpkg: ingredient.packageInfo.numPackages,
+			qty: ingredient.nativeInfo.totalQuantity,
+			unit: ingredient.nativeInfo.nativeUnit, 
+			numNativeUnitsPerPackage: ingredient.nativeInfo.numNativeUnitsPerPackage,
 			vendors: VendArray,
 			fullIng: ingredient
 	}
