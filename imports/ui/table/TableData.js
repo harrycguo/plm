@@ -220,7 +220,7 @@ function renderEditableDropdown(cellInfo) {
 			   <option value = "sack">Sack (0.5 Sq. Ft.)</option>
 			   <option value = "pail">Pail (1.5 Sq. Ft.)</option>
 			   <option value = "drum">Drum (3 Sq. Ft.)</option>
-			   <option value = "supersack">Supersack (6 Sq. Ft.)</option>
+			   <option value = "supersack">Supersack (16 Sq. Ft.)</option>
 			   <option value = "truckload">Truckload (0 Sq. Ft.)</option>
 			   <option value = "railcar">Railcar (0 Sq. Ft.)</option>
 			</select>

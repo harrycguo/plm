@@ -97,7 +97,7 @@ export class IngredientForm extends Component {
 		packagingMap.set('Sack', 0.5);
 		packagingMap.set('Pail', 1.5);
 		packagingMap.set('Drum', 3);
-		packagingMap.set('Supersack', 6);
+		packagingMap.set('Supersack', 16);
 		packagingMap.set('Truckload', 0);
 		packagingMap.set('Railcar', 0);
 
@@ -160,7 +160,7 @@ export class IngredientForm extends Component {
 		packagingMap.set('Sack', 0.5);
 		packagingMap.set('Pail', 1.5);
 		packagingMap.set('Drum', 3);
-		packagingMap.set('Supersack', 6);
+		packagingMap.set('Supersack', 16);
 		packagingMap.set('Truckload', 0);
 		packagingMap.set('Railcar', 0);
 
@@ -224,7 +224,7 @@ export class IngredientForm extends Component {
 							<option value="Sack">Sack (0.5 Sq. Ft.)</option>
 							<option value="Pail">Pail (1.5 Sq. Ft.)</option>
 							<option value="Drum">Drum (3 Sq. Ft.)</option>
-							<option value="Supersack">Supersack (6 Sq. Ft.)</option>
+							<option value="Supersack">Supersack (16 Sq. Ft.)</option>
 							<option value="Truckload">Truckload (0 Sq. Ft.)</option>
 							<option value="Railcar">Railcar (0 Sq. Ft.)</option>
 						</select></p>

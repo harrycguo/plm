@@ -235,7 +235,7 @@ Meteor.methods({
 		packagingMap.set('sack', 0.5);
 		packagingMap.set('pail', 1.5);
 		packagingMap.set('drum', 3);
-		packagingMap.set('supersack', 6);
+		packagingMap.set('supersack', 16);
 		packagingMap.set('truckload', 0);
         packagingMap.set('railcar', 0);
         
@@ -307,7 +307,7 @@ Meteor.methods({
 		packagingMap.set('sack', 0.5);
 		packagingMap.set('pail', 1.5);
 		packagingMap.set('drum', 3);
-		packagingMap.set('supersack', 6);
+		packagingMap.set('supersack', 16);
 		packagingMap.set('truckload', 0);
         packagingMap.set('railcar', 0);
 
@@ -431,13 +431,13 @@ Meteor.methods({
         //WILL BE DONE IN THE CART NOW!
         check(numPackages, Number);
 
-        var packagingMap = new Map();
-        packagingMap.set('sack', 50);
-        packagingMap.set('pail', 50);
-        packagingMap.set('drum', 500);
-        packagingMap.set('supersack', 2000);
-        packagingMap.set('truckload', 50000);
-        packagingMap.set('railcar', 280000);
+        let packagingMap = new Map();
+		packagingMap.set('sack', 0.5);
+		packagingMap.set('pail', 1.5);
+		packagingMap.set('drum', 3);
+		packagingMap.set('supersack', 16);
+		packagingMap.set('truckload', 0);
+        packagingMap.set('railcar', 0);
 
         let ingredientQuantity = Number(packagingMap.get(ingredient.package)) * Number(numPackages)
         console.log("\t"+vendor)
