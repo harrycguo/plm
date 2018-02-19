@@ -31,9 +31,9 @@ IngredientSchema = new SimpleSchema({
     blackbox: true //You need this so that the data isn't autocleaned out by the schema 
                    // or you can register the object schema manually.
   },
-  quantity: {
-    type: Number
-  },
+  // quantity: {
+  //   type: Number
+  // },
   price: {
     type: Number,
     decimal: true

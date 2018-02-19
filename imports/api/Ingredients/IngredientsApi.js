@@ -65,6 +65,10 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
+        if (Number(ingStorage) <= 0){
+            throw new Meteor.Error('storage must be positive', 'Number of Packages Must Be Greater Than 0');
+        }
+
         let existingIng = IngredientsList.findOne({ name: ingName.trim() });
         console.log(existingIng)
 
@@ -101,7 +105,7 @@ Meteor.methods({
             Meteor.call('addIngredient',
                 ingName.trim(),
                 ingPackage,
-                ingStorage,
+                Number(ingStorage),
                 ingTemperatureState,
                 ingVendor,
                 ingPrice

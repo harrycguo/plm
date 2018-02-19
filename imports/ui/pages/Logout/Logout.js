@@ -15,7 +15,7 @@ class Logout extends React.Component {
                 <h1>Logged out!</h1> 
             </header>
 
-            <li><Link to='/'>Home</Link></li>
+            <li><Link to='/login'>Login</Link></li>
           </div>
         );
       }
