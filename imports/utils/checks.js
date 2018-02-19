@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import { Vendors } from '../api/Vendors/vendors.js';
+import Carts from '../api/Cart/Cart.js';
 
 // Short-circuiting, and saving a parse operation.
 export function isInt(value) {
@@ -14,13 +15,13 @@ export function isInt(value) {
 
 //Checks if the vendor is already listed in the vendorInfo field of the specified ingredient
 export function containsVendor(vendor,vendorArr) {
-	var ven = Vendors.findOne({vendor: vendor.vendor});
+	var ven = Vendors.findOne({vendor: vendor});
 	console.log(ven);
 	if (!ven)
 		return false;
 	for (i = 0; i < vendorArr.length; i++) {
-		console.log(JSON.stringify(vendorArr[i].vendor) == JSON.stringify(ven));
-		if (JSON.stringify(vendorArr[i].vendor) == JSON.stringify(ven))
+		console.log(vendor == ven);
+		if (vendor == ven)
 			return true;
 	}
 	return false;
@@ -35,6 +36,35 @@ export function indexOfVendorWithId(vendorId,vendorArr) {
 			return i;
 	}
 	return null;
+}
+
+export function checkUndefined(obj, type) {
+	check(type,String);
+	if(obj === undefined)
+		throw new Meteor.Error(type + ' is undefined', type + 'is undefined')
+}
+
+export function checkIngExists(ing) {
+	if (IngredientsList.findOne({ _id : ing}) === undefined) {
+		throw new Meteor.Error('Ingredient not found', 'Ingredient not found')
+		return false
+	}
+	return true
+}
+
+export function checkGreaterThanZero(number, errorMessage) {
+	check(number, Number);
+	if (number <= 0)
+		throw new Meteor.Error(errorMessage,errorMessage)
+}
+
+// export function vendorExists(vendor)
+
+export function cartContainsIng(ing) {
+	if (Carts.find({ingredient : ing}) === undefined) {
+		return false
+	}
+	return true
 }
 
 //Check if the ingredient exists in the database
