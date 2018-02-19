@@ -388,6 +388,15 @@ Meteor.methods({
 
     },
 
+
+
+
+
+
+
+
+
+    
     'editPrice': function (selectedIngredient, vendorId, newPrice) {
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');

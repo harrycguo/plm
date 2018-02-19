@@ -27,7 +27,10 @@ import SpendingReport from '../../ui/pages/SpendingReport/SpendingReport.js';
 import UserManagement from '../../ui/pages/UserManagement/UserManagement';
 import ManagerViewInventory from '../../ui/pages/ManagerViewInventory/ManagerViewInventory';
 import ManagerHomepage from '../../ui/pages/ManagerHomepage/ManagerHomepage';
- 
+import FormulaManagement from '../../ui/pages/FormulaManagement/FormulaManagement';
+
+
+
 export const renderRoutes = () => (
   <Router>
   <div>
@@ -54,6 +57,7 @@ export const renderRoutes = () => (
     <Route path="/adminViewInventory" component={AdminViewInventory}/>
     <Route path="/cart" component={IngredientCart}/>
     <Route path="/report" component={SpendingReport}/>
+    <Route path='/formulaManagement' component={FormulaManagement}/>
   </div>
 </Router>
 );

@@ -91,7 +91,7 @@ class IngredientCart extends Component {
 			<header>
           		<h1>Cart</h1>
         	</header>
-
+		
 				{this.linkBack()}
 		    	<table>
 		    		<tbody>

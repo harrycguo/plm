@@ -34,13 +34,13 @@ class AdminViewInventoryNavBar extends Component {
                 </Link>
                 <Link
                     className="container-nav"
-                    to="/cart">
+                    to="/report">
                     Spending Report
                 </Link>
              
                 <Link
                     className="container-nav-right"
-                    to="/report">
+                    to="/cart">
                     Cart
                 </Link>    
             </div>

@@ -9,6 +9,7 @@ import IngredientList from '../../../api/Ingredients/IngredientList.js';
 import { Vendors } from '../../../api/Vendors/vendors.js';
 import { StorageCapacities } from '../../../api/StorageCapacities/storageCapacities.js';
 import { check } from 'meteor/check';
+import AdminViewInventoryNavBar from '../../components/AdminViewInventoryNavBar/AdminViewInventoryNavBar.js'
 
 // App component - represents the whole app
 class BulkImport extends Component {
@@ -299,7 +300,7 @@ class BulkImport extends Component {
         <header>
           <h1>Bulk Import</h1>
         </header>
-        <li><Link to='/adminViewInventory'>Manage Inventory</Link></li>
+        <AdminViewInventoryNavBar/>
         <hr></hr>
         <b>Upload File Below</b>
 
