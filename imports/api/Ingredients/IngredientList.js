@@ -27,7 +27,6 @@ const handle = cursor.observeChanges({
 export default IngredientsList;
 
 if(Meteor.isServer) {
-	console.log('publishing ings')
 	Meteor.publish('ingredients', function() {
 		return IngredientsList.find();
 	})

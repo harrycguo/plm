@@ -8,3 +8,4 @@ import '../../api/Cart/CartApi.js';
 import '../../api/SpendingReport/SpendingReport.js';
 import '../../api/SpendingReport/SpendingReportApi.js';
 import '../../api/SpendingReport/TotalSpending.js';
+import '../../api/Formula/formula.js'

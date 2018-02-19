@@ -1,6 +1,4 @@
 import React, { Component, PropTypes } from 'react';
-import ReactDOM from 'react-dom';
-import VendorForm from './VendorForm.js';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Link, BrowserRouter } from 'react-router-dom'
 import { Bert } from 'meteor/themeteorchef:bert';
@@ -172,14 +170,6 @@ export class IngredientForm extends Component {
 			totalNumNativeUnits: Number(this.numPackages.value) * Number(this.numNativeUnits.value)
 		})
 
-	}
-
-	renderOptions() {
-		let items = [];
-		for (i = 0; i < this.props.vendors.length; i++) {
-			items.push(<option key={i} value={this.props.vendors[i]._id}>{this.props.vendors[i].vendor}</option>);
-		}
-		return items;
 	}
 
 	renderUsedCapacity() {
