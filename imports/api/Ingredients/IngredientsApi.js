@@ -353,9 +353,10 @@ Meteor.methods({
         //update number of native units per package
         IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.numNativeUnitsPerPackage" : Number(newNumNativeUnitsPerPackage)}});
 
-        //edit new total quantity
-        let newTotalQuantity = Number(existingIng.packageInfo.numPackages) * Number(newNumNativeUnitsPerPackage)
-        IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.totalQuantity" : Number(newTotalQuantity)}});
+        //edit packages
+        let remainingPackages = Math.ceil(Number(existingIng.nativeInfo.totalQuantity) / Number(newNumNativeUnitsPerPackage))
+
+        Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
 
     },
     'editTotalNumNativeUnits': function(selectedIngredient, newTotalNumNativeUnits) {
