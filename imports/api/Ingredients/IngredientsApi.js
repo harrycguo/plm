@@ -387,17 +387,7 @@ Meteor.methods({
 
         IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.nativeUnit" : newNativeUnit}});
 
-    },
-
-
-
-
-
-
-
-
-
-    
+    },    
     'editPrice': function (selectedIngredient, vendorId, newPrice) {
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
