@@ -13,7 +13,7 @@ class VendorManagement extends Component {
     super(props);
     console.log("User = ")
     console.log(Meteor.user());
-    console.log(this.props.vendors)
+
   }
 
   renderVendors() {
