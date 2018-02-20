@@ -70,7 +70,7 @@ class FormulaIngredientInput extends Component {
                         ref={numUnits => (this.numUnits = numUnits)}
                         name="numUnits"
                         placeholder="# of Units"
-                        //onChange
+                        onChange={this.setQuantity}
                         className="form-control"
                         style={{ width: '100%', height: '100%' }}
                     />
