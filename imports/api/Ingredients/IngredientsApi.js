@@ -387,17 +387,7 @@ Meteor.methods({
 
         IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.nativeUnit" : newNativeUnit}});
 
-    },
-
-
-
-
-
-
-
-
-
-    
+    },    
     'editPrice': function (selectedIngredient, vendorId, newPrice) {
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
@@ -458,7 +448,12 @@ Meteor.methods({
 
         Meteor.call('logOrderInReport', ingredient, ingredientQuantity, vendor.cost)
     },
-    
+    'getIngredientFromId': function(id) {
+        var ing = IngredientsList.findOne( _id : id);
+        if (ing === undefined)
+            throw new Meteor.Error('Ingredient does not exist','Ingredient does not exist');
+        return ing;
+    },
     'addVendor': function(selectedIngredient, vendorId, price) {
         if (vendorId === "null" || !price) {
             throw new Meteor.Error("Missing fields","Vendor and/or price unspecified");
@@ -474,6 +469,7 @@ Meteor.methods({
             price: price
         };
         IngredientsList.update({ _id : selectedIngredient._id}, {$push : {vendorInfo : newVendor}});
+
     },
     'removeVendor': function(selectedIngredient, vendor) {
         IngredientsList.update({ _id : selectedIngredient._id} , {$pull : { vendorInfo : { "vendor._id" : vendor._id}}});
