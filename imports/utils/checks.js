@@ -1,4 +1,5 @@
 import { Mongo } from 'meteor/mongo';
+import { check } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 import { Vendors } from '../api/Vendors/vendors.js';
 import Carts from '../api/Cart/Cart.js';
@@ -15,7 +16,7 @@ export function isInt(value) {
 
 //Checks if the vendor is already listed in the vendorInfo field of the specified ingredient
 export function containsVendor(vendor,vendorArr) {
-	var ven = Vendors.findOne({vendor: vendor});
+	var ven = Vendors.findOne({ _id : vendor});
 	console.log(ven);
 	if (!ven)
 		return false;
