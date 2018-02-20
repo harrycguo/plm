@@ -278,8 +278,7 @@ Meteor.methods({
 
         //update package
         IngredientsList.update({ _id: selectedIngredient }, { $set: { "packageInfo.packageType": newPackage.toLowerCase() } });
-        IngredientsList.update({ _id: selectedIngredient }, { $set: { storage:  Number(newStorage)} });
-        
+        IngredientsList.update({ _id: selectedIngredient }, { $set: { storage:  Number(newStorage)} });    
     },
     'editNumPackages': function (selectedIngredient, newNumPackages) {
 
@@ -313,9 +312,7 @@ Meteor.methods({
 
         let newStorage = newNumPackages * packagingMap.get(existingIng.packageInfo.packageType)
 
-        Meteor.call('editStorage', selectedIngredient, Number(newStorage))
-
-        
+        Meteor.call('editStorage', selectedIngredient, Number(newStorage))     
     },
     'editStorage': function (selectedIngredient, newStorage) {
 
@@ -336,7 +333,6 @@ Meteor.methods({
         }
 
         IngredientsList.update({ _id: selectedIngredient }, { $set: { storage : Number(newStorage) } });
-
     },
     'editNumNativeUnitsPerPackage': function(selectedIngredient, newNumNativeUnitsPerPackage) {
         
@@ -357,7 +353,6 @@ Meteor.methods({
         let remainingPackages = Math.ceil(Number(existingIng.nativeInfo.totalQuantity) / Number(newNumNativeUnitsPerPackage))
 
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
-
     },
     'editTotalNumNativeUnits': function(selectedIngredient, newTotalNumNativeUnits) {
         
@@ -377,7 +372,6 @@ Meteor.methods({
         let remainingPackages = Math.ceil(Number(newTotalNumNativeUnits) / Number(existingIng.nativeInfo.numNativeUnitsPerPackage))
 
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
-
     },
     'editNativeUnit': function(selectedIngredient, newNativeUnit){
         
@@ -386,8 +380,12 @@ Meteor.methods({
         }
 
         IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.nativeUnit" : newNativeUnit}});
+<<<<<<< Updated upstream
 
     },    
+=======
+    },
+>>>>>>> Stashed changes
     'editPrice': function (selectedIngredient, vendorId, newPrice) {
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
@@ -448,7 +446,6 @@ Meteor.methods({
 
         Meteor.call('logOrderInReport', ingredient, ingredientQuantity, vendor.cost)
     },
-    
     'addVendor': function(selectedIngredient, vendorId, price) {
         if (vendorId === "null" || !price) {
             throw new Meteor.Error("Missing fields","Vendor and/or price unspecified");
@@ -466,6 +463,7 @@ Meteor.methods({
         IngredientsList.update({ _id : selectedIngredient._id}, {$push : {vendorInfo : newVendor}});
     },
     'removeVendor': function(selectedIngredient, vendor) {
+        //This comment only exists just so that I can minimize the method
         IngredientsList.update({ _id : selectedIngredient._id} , {$pull : { vendorInfo : { "vendor._id" : vendor._id}}});
     }
 });

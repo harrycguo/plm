@@ -98,12 +98,17 @@ function renderCustomField() {
 
 function renderEditableUnits(cellInfo) {
 	if(canEdit) {
+		var defaultValue = cellInfo.value;
+		if(defaultValue != "Gallons" && defaultValue != "Pounds"){
+			defaultValue = "custom"
+		}
 		return (
 			<span>
 				<select
 					ref={nativeUnit => (this.nativeUnit = nativeUnit)}
 					name="nativeUnit"
 					placeholder="# of Native Units Per Package"
+					defaultValue={defaultValue}
 					onChange={ e => {
 						console.log(e.target.value)
 						if(e.target.value == "custom") {
@@ -120,26 +125,13 @@ function renderEditableUnits(cellInfo) {
 				{renderCustomField()}
 			</span>
 		)
+	} else {
+		return(<div style = {{ backgroundColor: "#ffffff" }}
+			dangerouslySetInnerHTML={{
+				__html: cellInfo.value
+			}}
+		/>);
 	}
-	// 	if (cellInfo.column.id === 'unit') {
-	// 		var message = "Edit Native Units\nFrom "
-	// 		message = message.concat(cellInfo.original.units).concat(" to ").concat(e.target.value);
-	// 		if(confirm(message)) {
-	// 			Meteor.call('editNativeUnits', 
-	// 				cellInfo.original.fullIng._id, 
-	// 				e.target.value,  
-	// 				function(error,result){
-	//                 			if(error){
-	//                              console.log("something goes wrong with the following error message " + error.reason )
-	//           	  				Bert.alert(error.reason, 'danger');
-	// 							e.target.value = cellInfo.original.units;
-	// 						}
-	// 					}
-	// 				);
-	// 		} else {
-	// 			// e.target.value = cellInfo.original.units;
-	// 		}
-	// 	}
 }
 
 function editNativeUnits(currUnits, newUnits) {
@@ -147,17 +139,17 @@ function editNativeUnits(currUnits, newUnits) {
 	message = message.concat(currUnits).concat(" to ").concat(newUnits);
 	if(confirm(message)) {
 		var success = false
-// 		Meteor.call('editNativeUnits', 
-// 			cellInfo.original.fullIng._id, 
-// 			newUnits,  
-// 			function(error,result){
-//                 if(error){
-//                     console.log("something goes wrong with the following error message " + error.reason )
-//           	  		Bert.alert(error.reason, 'danger');
-// 				}else {
-// 					success = true
-// 				}
-// 			});
+		Meteor.call('editNativeUnits', 
+			cellInfo.original.fullIng._id, 
+			newUnits,  
+			function(error,result){
+                if(error){
+                    console.log("something goes wrong with the following error message " + error.reason )
+          	  		Bert.alert(error.reason, 'danger');
+				}else {
+					success = true
+				}
+			});
 
 	}
 	return success;
