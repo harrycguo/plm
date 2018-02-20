@@ -63,6 +63,10 @@ Meteor.methods({
         FCC: FCC.toUpperCase()
       }})
     },
+    'getVendorById'(vendorID) {
+        console.log(Vendors.findOne({_id: vendorID}))
+        return Vendors.findOne({_id: vendorID})
+    }
   });
 
 if (Meteor.isServer) {
