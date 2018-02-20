@@ -18,6 +18,11 @@ Meteor.methods({
 		});
 	},
     'addIngredientToCart': function(selectedIngredient, amount) {
+        if(Meteor.userId()){
+            if (Roles.userIsInRole(Meteor.userId(), ['admin','manager'])){
+               throw new Meteor.Error('not-authorized', 'not-authorized')
+            }
+        }
         addToCartCheck(selectedIngredient._id, amount)
         vendorInfo = IngredientsList.findOne({ _id : selectedIngredient._id }).vendorInfo
         if (cartContainsIng(selectedIngredient._id)) {
