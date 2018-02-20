@@ -3,6 +3,7 @@ import { check } from 'meteor/check';
 import { Meteor } from 'meteor/meteor';
 import { Vendors } from '../api/Vendors/vendors.js';
 import Carts from '../api/Cart/Cart.js';
+import IngredientsList from '../api/Ingredients/IngredientList.js'
 
 // Short-circuiting, and saving a parse operation.
 export function isInt(value) {
@@ -40,7 +41,7 @@ export function indexOfVendorWithId(vendorId,vendorArr) {
 }
 
 export function checkUndefined(obj, type) {
-	check(type,String);
+	// check(type,String);
 	if(obj === undefined)
 		throw new Meteor.Error(type + ' is undefined', type + 'is undefined')
 }
@@ -54,7 +55,7 @@ export function checkIngExists(ing) {
 }
 
 export function checkGreaterThanZero(number, errorMessage) {
-	check(number, Number);
+	// check(number, Number);
 	if (number <= 0)
 		throw new Meteor.Error(errorMessage,errorMessage)
 }
@@ -66,6 +67,37 @@ export function cartContainsIng(ing) {
 		return false
 	}
 	return true
+}
+
+export function addToCartCheck(ingId, quantity) {
+	let ingQty = selectedIngredient.quantity;
+    // console.log(cart.length === 0);
+    checkIngExists(selectedIngredient._id)
+    checkGreaterThanZero(amount,'Cart amount must be greater than zero','Cart amount must be greater than zero')
+    if (ing.vendorInfo.length === 0) {
+        throw new Meteor.Error('No vendor exists for this ingredient','no vendor exists for this ingredient')
+    }
+    else if ((ingQty - amount) < 0) {
+        throw new Meteor.Error("Can't add more to cart than is in inventory","Can't add more to cart than is in inventory");
+    }
+}
+
+export function cartExists() {
+	cart = Carts.findOne({ _id : Meteor.userId() }) 
+	if (cart === undefined) {
+		Meteor.call('createUserCart')
+		// return false
+	}
+	// return true
+}
+
+export function checkCartExists() {
+	cart = Carts.findOne({ _id : Meteor.userId() }) 
+	if (cart === undefined) {
+		Meteor.call('createUserCart')
+		// return false
+	}
+	// return true
 }
 
 //Check if the ingredient exists in the database

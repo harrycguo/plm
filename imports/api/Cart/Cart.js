@@ -1,5 +1,5 @@
 import { Mongo } from 'meteor/mongo';
-import { CartSchema, CartIngredientSchema } from '../Ingredients/Schemas.js';
+import { CartSchema, CartIngredientSchema, VendorInfoSchema } from '../Ingredients/Schemas.js';
 import IngredientsList from '../Ingredients/IngredientList.js';
 //Cart Database
 
