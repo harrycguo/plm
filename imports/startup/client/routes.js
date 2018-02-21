@@ -29,6 +29,7 @@ import ManagerViewInventory from '../../ui/pages/ManagerViewInventory/ManagerVie
 import ManagerHomepage from '../../ui/pages/ManagerHomepage/ManagerHomepage';
 import FormulaManagement from '../../ui/pages/FormulaManagement/FormulaManagement';
 import AddFormula from '../../ui/pages/AddFormula/AddFormula';
+import EditFormula from '../../ui/pages/EditFormula/EditFormula.js'
 
 export const renderRoutes = () => (
   <Router>
@@ -58,6 +59,7 @@ export const renderRoutes = () => (
     <Route path="/report" component={SpendingReport}/>
     <Route path='/formulaManagement' component={FormulaManagement}/>
     <Route path='/addFormula' component={AddFormula}/>
+    <Route path='/editFormula/:formulaID' component={EditFormula}/>
   </div>
 </Router>
 );

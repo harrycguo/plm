@@ -3,7 +3,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import IngredientSelect from '../../forms/IngredientSelect.js'
 import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 
-class FormulaIngredientInput extends Component {
+class FormulaIngredientInputWithDefault extends Component {
 
     constructor(props) {
         super(props);
@@ -11,15 +11,44 @@ class FormulaIngredientInput extends Component {
         this.state = {
             ingredient: "",
             nativeUnit: "",
-            quantity: Number(0)
+            quantity: Number(0),
+            oldNativeUnit: true
         };
+    
+    }
 
+    componentWillMount() {
+        for (i = 0; i < this.props.ingredients.length; i++) {
+            if (this.props.ingredients[i]._id == this.props.defaultIngredient) {
+                this.setState({
+                    ingredient: this.props.ingredients[i],
+                    nativeUnit: this.props.ingredients[i].nativeInfo.nativeUnit,
+                });
+            }
+        }
+    }
+
+    renderNativeUnit() {
+        let nativeUnit = "";
+
+        for (i = 0; i < this.props.ingredients.length; i++) {
+            if (this.props.ingredients[i]._id == this.props.defaultIngredient) {
+                nativeUnit = this.props.ingredients[i].nativeInfo.nativeUnit
+            }
+        }
+        return nativeUnit
     }
 
     renderOptions() {
         let items = [];
         for (i = 0; i < this.props.ingredients.length; i++) {
-            items.push(<option key={i} value={this.props.ingredients[i]._id}>{this.props.ingredients[i].name}</option>);
+            
+            if (this.props.ingredients[i]._id == this.props.defaultIngredient) {
+
+                items.push(<option selected key={i} value={this.props.ingredients[i]._id}>{this.props.ingredients[i].name}</option>);
+            } else {
+                items.push(<option key={i} value={this.props.ingredients[i]._id}>{this.props.ingredients[i].name}</option>);
+            }
         }
         return items;
     }
@@ -35,6 +64,7 @@ class FormulaIngredientInput extends Component {
         }
 
         this.setState({
+            oldNativeUnit: false,
             ingredient: existingIng,
             nativeUnit: existingIng.nativeInfo.nativeUnit,
         });
@@ -65,7 +95,12 @@ class FormulaIngredientInput extends Component {
          * Submit?
          * Delete
          */
+
+        let nativeUnit = this.state.oldNativeUnit ? this.renderNativeUnit() : this.state.nativeUnit
+            
         return (
+
+            
 
             <div className="side-container-zero">
 
@@ -76,7 +111,6 @@ class FormulaIngredientInput extends Component {
                         style={{ width: '100%', height: '100%' }}
                         onChange={this.setIngredientInfo}
                     >
-                        <option disabled selected value> -- select an ingredient -- </option>
                         {this.renderOptions()}
                     </select>
                 </div>
@@ -88,13 +122,14 @@ class FormulaIngredientInput extends Component {
                         name="numUnits"
                         placeholder="# of Units"
                         onChange={this.setQuantity}
+                        defaultValue={this.props.defaultQuantity}
                         className="form-control"
                         style={{ width: '100%', height: '100%' }}
                     />
                 </div>
 
                 <div className="side-spacing">
-                    <p>{this.state.nativeUnit}</p>
+                    <p>{nativeUnit}</p>
                 </div>
 
                 <div className="side-spacing">
@@ -116,4 +151,4 @@ export default withTracker(() => {
     return {
         ingredients: IngredientsList.find({}).fetch()
     };
-})(FormulaIngredientInput);
+})(FormulaIngredientInputWithDefault);

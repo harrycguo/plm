@@ -34,9 +34,11 @@ class Vendor extends Component {
             contact: this.props.vendor.contact,
             FCC: this.props.vendor.FCC}
           }}>
-            <button>
+            <Button
+            bsStyle="info"
+          >
             Edit Vendor
-            </button>
+        </Button>
           </Link>
       </li>
     );

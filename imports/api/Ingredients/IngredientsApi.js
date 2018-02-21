@@ -449,7 +449,7 @@ Meteor.methods({
         Meteor.call('logOrderInReport', ingredient, ingredientQuantity, vendor.cost)
     },
     'getIngredientFromId': function(id) {
-        var ing = IngredientsList.findOne( _id : id);
+        var ing = IngredientsList.findOne({ _id : id});
         if (ing === undefined)
             throw new Meteor.Error('Ingredient does not exist','Ingredient does not exist');
         return ing;
