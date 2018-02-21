@@ -17,7 +17,7 @@ class EditFormula extends Component {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
         console.log(this.props.location.state.formula)
-        
+
         this.state = {
             inputs: [],
             ingList: []
@@ -26,11 +26,11 @@ class EditFormula extends Component {
         this.add = this.add.bind(this);
     }
 
-    componentWillMount(){
- 
+    componentWillMount() {
+
         let formula = this.props.location.state.formula
-        
-        for (let i = 0; i < formula.ingredientsList.length; i++){
+
+        for (let i = 0; i < formula.ingredientsList.length; i++) {
 
             this.setState((prevState) => ({
                 inputs: prevState.inputs.concat(
@@ -42,10 +42,12 @@ class EditFormula extends Component {
                         defaultIngredient={formula.ingredientsList[i].id}
                         onChange={this.onChangeInput.bind(this)}
                     /></div>),
-                ingList: prevState.ingList.concat({ ingredient: {
+                ingList: prevState.ingList.concat({
+                    ingredient: {
                         ingredient: formula.ingredientsList[i],
                         valid: true,
-                }})
+                    }
+                })
 
             }));
         }
@@ -105,30 +107,29 @@ class EditFormula extends Component {
         let ogIng = formula.ingredientsList.length
 
 
-        for (let i = 0; i < formula.ingredientsList.length; i++){
-            //if valid (on screen) ADD
+
+        for (let i = 0; i < ingList.length; i++) {
+
+            console.log(ingList[i].ingredient.ingredient)
+            let objIng = ingList[i].ingredient.ingredient
+        
             if (ingList[i].ingredient.valid) {
+                if (objIng != null) {
+                    //if has just id?
+                    if (objIng.hasOwnProperty("id")) {
+                        ingListArray.push({
+                            id: ingList[i].ingredient.ingredient.id,
+                            amount: ingList[i].ingredient.ingredient.amount
+                        })
+                    } else {
+                        ingListArray.push({
+                            id: ingList[i].ingredient.ingredient.state.ingredient,
+                            amount: ingList[i].ingredient.ingredient.state.quantity
+                        })
+                    }
 
-                //has id and number already
-                if (ingList[i].ingredient.ingredient.id != null) {
-                    ingListArray.push({
-                        id: ingList[i].ingredient.ingredient.id,
-                        amount: ingList[i].ingredient.ingredient.amount
-                    })
-                } 
-            }}
-
-
-        for (let i = formula.ingredientsList.length; i < ingList.length; i++){
-
-            if (ingList[i].ingredient.valid) {
-                //regular entry
-                if (ingList[i].ingredient.ingredient != null) {
-                    ingListArray.push({
-                        id: ingList[i].ingredient.ingredient.state.ingredient._id,
-                        amount: ingList[i].ingredient.ingredient.state.quantity
-                    })
-                } else {
+                }
+                else {
                     ingListArray.push({
                         id: null,
                         amount: null
@@ -139,15 +140,15 @@ class EditFormula extends Component {
 
         console.log('ingListArray')
         console.log(ingListArray)
-   
+
         Meteor.call('formulas.edit',
             this.props.location.state.formula._id,
             name,
             description,
             productUnits,
             ingListArray,
-            function(error, result) {
-                if (error){
+            function (error, result) {
+                if (error) {
                     Bert.alert(error.reason, 'danger');
                 } else {
                     Bert.alert('Edited Formula!', 'success');
@@ -167,24 +168,28 @@ class EditFormula extends Component {
                     ref={input => (this[`input${inputs.length}`] = input)}
                     onChange={this.onChangeInput.bind(this)}
                 /></div>),
-            ingList: prevState.ingList.concat({ ingredient: {
+            ingList: prevState.ingList.concat({
+                ingredient: {
                     ingredient: null,
                     valid: true,
                     id: null
-                } })
+                }
+            })
 
         }));
     }
 
     onChangeInput(index, componentToBeUpdated, valid) {
-        
+
         let inputs = this.state.inputs
         let ingList = this.state.ingList
-        
+
         ingList[index].ingredient = {
             ingredient: componentToBeUpdated,
             valid: true,
         }
+
+
 
         if (!valid) {
             inputs[index] = <div className="containerEmpty" key={index}></div>
@@ -194,6 +199,8 @@ class EditFormula extends Component {
                 id: null,
             }
         }
+
+        console.log(ingList)
 
         this.setState({
             inputs: inputs,
@@ -208,10 +215,10 @@ class EditFormula extends Component {
 
             <div className="container">
 
-            <header>
+                <header>
                     <h1>Edit Formula: {this.props.location.state.formula.name}</h1>
-                    </header>
-                    <FormulaManagementNavBar/>
+                </header>
+                <FormulaManagementNavBar />
 
                 <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
 
@@ -277,7 +284,7 @@ class EditFormula extends Component {
                 </form>
                 <p></p>
                 <div className="container-keepLeft">
-                <Link to='/formulaManagement'>Return to Formula Management</Link>
+                    <Link to='/formulaManagement'>Return to Formula Management</Link>
                 </div>
             </div>
         );

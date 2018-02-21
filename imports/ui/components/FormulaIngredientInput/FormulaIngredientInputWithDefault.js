@@ -9,10 +9,10 @@ class FormulaIngredientInputWithDefault extends Component {
         super(props);
 
         this.state = {
-            ingredient: "",
-            nativeUnit: "",
-            quantity: Number(0),
-            oldNativeUnit: true
+            ingredient: this.props.defaultIngredient,
+            quantity: this.props.defaultQuantity,
+            oldNativeUnit: true,
+            oldIng: true
         };
     
     }
@@ -21,7 +21,7 @@ class FormulaIngredientInputWithDefault extends Component {
         for (i = 0; i < this.props.ingredients.length; i++) {
             if (this.props.ingredients[i]._id == this.props.defaultIngredient) {
                 this.setState({
-                    ingredient: this.props.ingredients[i],
+                    ingredient: this.props.ingredients[i]._id,
                     nativeUnit: this.props.ingredients[i].nativeInfo.nativeUnit,
                 });
             }
@@ -65,7 +65,7 @@ class FormulaIngredientInputWithDefault extends Component {
 
         this.setState({
             oldNativeUnit: false,
-            ingredient: existingIng,
+            ingredient: existingIng._id,
             nativeUnit: existingIng.nativeInfo.nativeUnit,
         });
 
@@ -77,6 +77,7 @@ class FormulaIngredientInputWithDefault extends Component {
         var quantity = event.target.value;
 
         this.setState({
+            
             quantity: Number(quantity)
         })
 

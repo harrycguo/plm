@@ -83,7 +83,7 @@ export class AddFormulaForm extends Component {
    
                 if (ingList[i].ingredient.ingredient != null) {
                     ingListArray.push({
-                        id: ingList[i].ingredient.ingredient.state.ingredient._id,
+                        id: ingList[i].ingredient.ingredient.state.ingredient,
                         amount: ingList[i].ingredient.ingredient.state.quantity
                     })
                 } else {

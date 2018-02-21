@@ -28,6 +28,9 @@ Meteor.methods({
         if (ingredientsList[i].id == null) {
           throw new Meteor.Error('Null Entries', 'Null Entries in Ingredient Selection');
         }
+        if (ingredientsList[i].amount <= 0) {
+          throw new Meteor.Error('Zero', 'Ingredient Quantity entered must be greater than 0');
+        }
       }
 
       //Check to see that ingredients aren't showing up twice when passed in
@@ -80,6 +83,9 @@ Meteor.methods({
       for (let i = 0; i < ingredientsList.length; i++){
         if (ingredientsList[i].id == null) {
           throw new Meteor.Error('Null Entries', 'Null Entries in Ingredient Selection');
+        }
+        if (ingredientsList[i].amount <= 0) {
+          throw new Meteor.Error('Zero', 'Ingredient Quantity entered must be greater than 0');
         }
       }
 

@@ -9,8 +9,8 @@ class FormulaIngredientInput extends Component {
         super(props);
 
         this.state = {
-            ingredient: "",
-            nativeUnit: "",
+            ingredient: null,
+            nativeUnit: null,
             quantity: Number(0)
         };
 
@@ -35,7 +35,7 @@ class FormulaIngredientInput extends Component {
         }
 
         this.setState({
-            ingredient: existingIng,
+            ingredient: existingIng._id,
             nativeUnit: existingIng.nativeInfo.nativeUnit,
         });
 
