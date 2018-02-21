@@ -85,18 +85,15 @@ IngredientSchema = new SimpleSchema({
 CartIngredientSchema = new SimpleSchema({
 	ingredient: {
 		type: String,
-    min: 0
+    min: 1
 	},
-	quantity: {
+	amount: {
 		type: Number,
     min: 1
 	},
-  vendor: {
-    type: String,
-    min: 0
-  },
-  price: {
-    type: Number,
+  vendorInfo: {
+    type: VendorInfoSchema,
+    min: 1
   }
 })
 
