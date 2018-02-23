@@ -1,25 +1,23 @@
 import React, { Component, PropTypes } from 'react';
-import { withTracker } from 'meteor/react-meteor-data';
-import { Link, BrowserRouter } from 'react-router-dom'
-import { Bert } from 'meteor/themeteorchef:bert';
-import { Vendors } from '../../api/Vendors/vendors.js';
-import { isExistingIngredient } from '../../utils/checks.js';
-import { createContainer } from 'meteor/react-meteor-data'
-import { selectStyle, inputStyle } from './Styles.js';
 import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
-import validate from '../../modules/validate.js';
-import { VendorSelect } from './VendorSelect.js';
-import CustomNativeUnitInput from './CustomNativeUnitInput.js'
-import FormulaIngredientInput from '../components/FormulaIngredientInput/FormulaIngredientInput.js'
+import { Link } from 'react-router-dom';
+import { Meteor } from 'meteor/meteor';
+import { Bert } from 'meteor/themeteorchef:bert';
+import validate from '../../../modules/validate';
+import { Accounts } from 'meteor/accounts-base';
+import { Vendors } from '../../../api/Vendors/vendors.js';
+import { withTracker } from 'meteor/react-meteor-data';
+import FormulaManagementNavBar from '../../components/FormulaManagementNavBar/FormulaManagementNavBar.js';
+import FormulaIngredientInput from '../../components/FormulaIngredientInput/FormulaIngredientInput.js'
+import FormulaIngredientInputWithDefault from '../../components/FormulaIngredientInput/FormulaIngredientInputWithDefault';
 
-if (Meteor.isClient) {
-    Meteor.subscribe('formulas')
-}
 
-export class AddFormulaForm extends Component {
+class EditFormula extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
+        console.log(this.props.location.state.formula)
+
         this.state = {
             inputs: [],
             ingList: []
@@ -28,8 +26,34 @@ export class AddFormulaForm extends Component {
         this.add = this.add.bind(this);
     }
 
-    componentDidMount() {
+    componentWillMount() {
 
+        let formula = this.props.location.state.formula
+
+        for (let i = 0; i < formula.ingredientsList.length; i++) {
+
+            this.setState((prevState) => ({
+                inputs: prevState.inputs.concat(
+                    <div className="containerSome" key={i}><FormulaIngredientInputWithDefault
+                        key={i}
+                        index={i}
+                        ref={input => (this[`input${i}`] = input)}
+                        defaultQuantity={formula.ingredientsList[i].amount}
+                        defaultIngredient={formula.ingredientsList[i].id}
+                        onChange={this.onChangeInput.bind(this)}
+                    /></div>),
+                ingList: prevState.ingList.concat({
+                    ingredient: {
+                        ingredient: formula.ingredientsList[i],
+                        valid: true,
+                    }
+                })
+
+            }));
+        }
+    }
+
+    componentDidMount() {
         const component = this;
 
         validate(component.form, {
@@ -60,12 +84,14 @@ export class AddFormulaForm extends Component {
             },
             submitHandler() { component.handleSubmit(); },
         });
+
+
     }
 
 
     handleSubmit() {
-        console.log("Adding Formula Now")
-        const { history } = this.props.hist;
+        console.log("Editing Formula Now")
+        const { history } = this.props
 
         let name = this.formulaName.value
         let description = this.formulaDescription.value
@@ -77,17 +103,33 @@ export class AddFormulaForm extends Component {
 
         let ingListArray = new Array()
 
-        for (let i = 0; i < ingList.length; i++){
-            //if valid (on screen) ADD
+        let formula = this.props.location.state.formula
+        let ogIng = formula.ingredientsList.length
+
+
+
+        for (let i = 0; i < ingList.length; i++) {
+
+            console.log(ingList[i].ingredient.ingredient)
+            let objIng = ingList[i].ingredient.ingredient
+        
             if (ingList[i].ingredient.valid) {
-   
-                if (ingList[i].ingredient.ingredient != null) {
-                    ingListArray.push({
-                        id: ingList[i].ingredient.ingredient.state.ingredient,
-                        amount: ingList[i].ingredient.ingredient.state.quantity
-                    })
-                } else {
-                 
+                if (objIng != null) {
+                    //if has just id?
+                    if (objIng.hasOwnProperty("id")) {
+                        ingListArray.push({
+                            id: ingList[i].ingredient.ingredient.id,
+                            amount: ingList[i].ingredient.ingredient.amount
+                        })
+                    } else {
+                        ingListArray.push({
+                            id: ingList[i].ingredient.ingredient.state.ingredient,
+                            amount: ingList[i].ingredient.ingredient.state.quantity
+                        })
+                    }
+
+                }
+                else {
                     ingListArray.push({
                         id: null,
                         amount: null
@@ -98,25 +140,26 @@ export class AddFormulaForm extends Component {
 
         console.log('ingListArray')
         console.log(ingListArray)
-   
-        Meteor.call('formulas.insert',
+
+        Meteor.call('formulas.edit',
+            this.props.location.state.formula._id,
             name,
             description,
             productUnits,
             ingListArray,
-            function(error, result) {
-                if (error){
+            function (error, result) {
+                if (error) {
                     Bert.alert(error.reason, 'danger');
                 } else {
-                    Bert.alert('Added Formula!', 'success');
+                    Bert.alert('Edited Formula!', 'success');
                     history.push('/formulaManagement')
                 }
             })
-        
     }
 
     add() {
         const inputs = this.state.inputs;
+
         this.setState((prevState) => ({
             inputs: prevState.inputs.concat(
                 <div className="containerSome" key={inputs.length}><FormulaIngredientInput
@@ -125,30 +168,39 @@ export class AddFormulaForm extends Component {
                     ref={input => (this[`input${inputs.length}`] = input)}
                     onChange={this.onChangeInput.bind(this)}
                 /></div>),
-            ingList: prevState.ingList.concat({ ingredient: {
-                ingredient: null,
-                valid: true,
-            } })
+            ingList: prevState.ingList.concat({
+                ingredient: {
+                    ingredient: null,
+                    valid: true,
+                    id: null
+                }
+            })
+
         }));
     }
 
     onChangeInput(index, componentToBeUpdated, valid) {
-        
+
         let inputs = this.state.inputs
         let ingList = this.state.ingList
-        
+
         ingList[index].ingredient = {
             ingredient: componentToBeUpdated,
-            valid: true
+            valid: true,
         }
+
+
 
         if (!valid) {
             inputs[index] = <div className="containerEmpty" key={index}></div>
             ingList[index].ingredient = {
                 ingredient: null,
                 valid: false,
+                id: null,
             }
         }
+
+        console.log(ingList)
 
         this.setState({
             inputs: inputs,
@@ -160,10 +212,16 @@ export class AddFormulaForm extends Component {
     render() {
 
         return (
+
             <div className="container">
 
+                <header>
+                    <h1>Edit Formula: {this.props.location.state.formula.name}</h1>
+                </header>
+                <FormulaManagementNavBar />
+
                 <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
-            
+
                     <FormGroup>
                         <ControlLabel>Formula Name</ControlLabel>
                         <input
@@ -171,6 +229,7 @@ export class AddFormulaForm extends Component {
                             name="formulaName"
                             placeholder="Enter Formula Name"
                             ref={formulaName => (this.formulaName = formulaName)}
+                            defaultValue={this.props.location.state.formula.name}
                             className="form-control"
                         />
                     </FormGroup>
@@ -183,6 +242,7 @@ export class AddFormulaForm extends Component {
                             name="formulaDescription"
                             ref={formulaDescription => (this.formulaDescription = formulaDescription)}
                             className="form-control"
+                            defaultValue={this.props.location.state.formula.description}
                             placeholder="Description of Formula"
                         />
                     </FormGroup>
@@ -195,6 +255,7 @@ export class AddFormulaForm extends Component {
                             ref={foodProductUnits => (this.foodProductUnits = foodProductUnits)}
                             name="foodProductUnits"
                             placeholder="# of Product Units"
+                            defaultValue={this.props.location.state.formula.productUnits}
                             className="form-control"
                         /></p>
                     </FormGroup>
@@ -212,18 +273,24 @@ export class AddFormulaForm extends Component {
                         bsSize="small"
                         onClick={this.add}>
                         Add Ingredient
-                </Button>
+                    </Button>
 
                     <p></p>
 
-                    <Button type="submit" bsStyle="success" 
-                    //onClick={this.handleSubmit} 
-                    >
-                    Add New Formula</Button>
-                    </form>
+                    <Button type="submit" bsStyle="success">
+                        Submit
+                    </Button>
+
+                </form>
+                <p></p>
+                <div className="container-keepLeft">
+                    <Link to='/formulaManagement'>Return to Formula Management</Link>
+                </div>
             </div>
         );
+
     }
+
 }
 
 export default withTracker(() => {
@@ -231,4 +298,4 @@ export default withTracker(() => {
     return {
         vendors: Vendors.find({}).fetch(),
     };
-})(AddFormulaForm);
+})(EditFormula);

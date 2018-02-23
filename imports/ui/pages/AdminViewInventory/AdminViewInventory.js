@@ -16,7 +16,7 @@ class AdminViewInventory extends Component {
     return (
       <div className="container">
         <header>
-          <h1>Inventory</h1>
+          <h1>Inventory Management</h1>
         </header>
         <AdminViewInventoryNavBar/>
         <StorageCapacityWrapper/>

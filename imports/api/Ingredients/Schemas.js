@@ -94,6 +94,9 @@ CartIngredientSchema = new SimpleSchema({
   vendor: {
     type: String,
     min: 0
+  },
+  price: {
+    type: Number,
   }
 })
 

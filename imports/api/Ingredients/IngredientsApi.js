@@ -441,6 +441,15 @@ Meteor.methods({
 
         Meteor.call('logOrderInReport', ingredient, ingredientQuantity, vendor.cost)
     },
+<<<<<<< HEAD
+=======
+    'getIngredientFromId': function(id) {
+        var ing = IngredientsList.findOne({ _id : id});
+        if (ing === undefined)
+            throw new Meteor.Error('Ingredient does not exist','Ingredient does not exist');
+        return ing;
+    },
+>>>>>>> Harry
     'addVendor': function(selectedIngredient, vendorId, price) {
         if (vendorId === "null" || !price) {
             throw new Meteor.Error("Missing fields","Vendor and/or price unspecified");
@@ -456,6 +465,7 @@ Meteor.methods({
             price: price
         };
         IngredientsList.update({ _id : selectedIngredient._id}, {$push : {vendorInfo : newVendor}});
+
     },
     'removeVendor': function(selectedIngredient, vendor) {
         //This comment only exists just so that I can minimize the method

@@ -37,6 +37,10 @@ body {
     padding: 0px 0px 0px 0px;
   }
 
+  .containerEmpty {
+    display: none;
+  }
+
   .verticalList {
     white-space: pre
   }
@@ -77,6 +81,10 @@ body {
 
   .container-nav{
     padding: 5px 5px 5px 5px;
+  }
+
+  .container-keepLeft{
+    padding: 5px 5px 5px 0px;
   }
 
   .container-nav-right{
