@@ -16,7 +16,7 @@ import SuccessLoginAdmin from '../../ui/pages/Success/SuccessLoginAdmin';
 import SuccessLoginUser from '../../ui/pages/Success/SuccessLoginUser';
 import IngredientForm from '../../ui/forms/IngredientForm.js'
 import Table from '../../ui/table/Table.js';
-import BulkImport from '../../ui/pages/BulkImport/BulkImport.js';
+import BulkImportIngredients from '../../ui/pages/BulkImportIngredients/BulkImportIngredients.js';
 import AdminHomepage from '../../ui/pages/AdminHomepage/AdminHomepage.js';
 import UserHomepage from '../../ui/pages/UserHomepage/UserHomepage.js';
 import UserViewInventory from '../../ui/pages/UserViewInventory/UserViewInventory.js';
@@ -50,7 +50,7 @@ export const renderRoutes = () => (
     <Route path="/successCreateUser" component={SuccessCreateUser}/>
     <Route path="/successLoginAdmin" component={SuccessLoginAdmin}/>
     <Route path="/successLoginUser" component={Table}/>
-    <Route path="/bulkImport" component={BulkImport}/>
+    <Route path="/bulkImportIngredients" component={BulkImportIngredients}/>
     <Route path="/table" component={Table}/>
     <Route path="/addingredient" component={AddIngredient}/>
     <Route path="/userViewInventory" component={UserViewInventory}/>

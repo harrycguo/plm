@@ -37,7 +37,7 @@ class StorageCapacity extends Component {
         <Row>
             <Col><b>Location:</b> {this.props.sc.name}</Col>
             <Col><b>Total Capacity:</b> {this.props.sc.capacity} Sq. Ft.</Col>
-            {/* <Col><b>Capacity Used:</b> {this.props.sc.used} Sq. Ft.</Col> */}
+            <Col><b>Capacity Used:</b> {this.props.sc.used} Sq. Ft.</Col>
             <Col><b>Capacity Remaining:</b> {Number(this.props.sc.capacity-this.props.sc.used)} Sq. Ft.</Col>
             {button}
         </Row>

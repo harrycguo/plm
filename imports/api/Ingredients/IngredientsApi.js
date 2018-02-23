@@ -18,6 +18,7 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
+        console.log('adding ingredient')
         console.log(ingVendor)
         console.log(ingPrice)
 
@@ -93,7 +94,6 @@ Meteor.methods({
         }
 
         let existingIng = IngredientsList.findOne({ name: ingName.trim() });
-        console.log(existingIng)
 
         //If ingredient exists, update it instead of adding a new database entry
         if (existingIng !== undefined) {
@@ -221,8 +221,6 @@ Meteor.methods({
     },
     'editPackage': function (selectedIngredient, newPackage) {
         
-        console.log(newPackage)
-        
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
@@ -268,7 +266,7 @@ Meteor.methods({
             console.log("physical to physical")
         }
 
-        console.log(newUsed)
+  
 
         Meteor.call('sc.editUsed', container._id, Number(newUsed));
 

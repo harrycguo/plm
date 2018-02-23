@@ -32,7 +32,7 @@ class AdminViewInventoryNavBar extends Component {
 
                 <Link
                     className="container-nav"
-                    to="/bulkImport">
+                    to="/bulkImportIngredients">
                     Bulk Import Ingredients
                 </Link>
 
