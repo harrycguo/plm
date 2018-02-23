@@ -18,9 +18,6 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
-        console.log(ingVendor)
-        console.log(ingPrice)
-
         if (Object.keys(ingVendor).length === 0 && ingVendor.constructor === Object && ingPrice) {
             throw new Meteor.Error('Vendor required for price','Specify vendor or remove price');
         } 
@@ -93,7 +90,6 @@ Meteor.methods({
         }
 
         let existingIng = IngredientsList.findOne({ name: ingName.trim() });
-        console.log(existingIng)
 
         //If ingredient exists, update it instead of adding a new database entry
         if (existingIng !== undefined) {
@@ -220,9 +216,7 @@ Meteor.methods({
         IngredientsList.update({ _id: selectedIngredient }, { $set: { temperatureState: newTemperatureState.toLowerCase() } });
     },
     'editPackage': function (selectedIngredient, newPackage) {
-        
-        console.log(newPackage)
-        
+            
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
@@ -268,7 +262,6 @@ Meteor.methods({
             console.log("physical to physical")
         }
 
-        console.log(newUsed)
 
         Meteor.call('sc.editUsed', container._id, Number(newUsed));
 
@@ -423,11 +416,8 @@ Meteor.methods({
         packagingMap.set('railcar', 0);
 
         let ingredientQuantity = Number(packagingMap.get(ingredient.package)) * Number(numPackages)
-        console.log("\t"+vendor)
-        console.log("\t"+vendor.cost+" "+ingredientQuantity +" "+ingredient.price +" "+ ingredient.storage)
         let newPrice = Number((vendor.cost * ingredientQuantity + ingredient.price * ingredient.storage) / (ingredientQuantity +ingredient.quantity))
 
-        console.log("\t"+newPrice)
         IngredientsList.update({ _id: ingredient._id}, {$set: {price: Number(newPrice)}});
 
         // TODO: Throw down a call to the sales table

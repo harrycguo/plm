@@ -57,7 +57,6 @@ class Table extends Component {
 	renderButtons(_this, row) {
 		if(TableData.canEdit) {
 			return (<div>
-				
 				<button
 				onClick={this.remove.bind(row)}
 				>Remove Ingredient</button> 
@@ -85,7 +84,7 @@ class Table extends Component {
                	  	Bert.alert(error.reason, 'danger');
                 } else {
 					Bert.alert('Successfully Removed Vendor', 'success');
-					}
+				}
 			}
 		);
 	}
@@ -138,7 +137,6 @@ class Table extends Component {
 				<button
 					onClick={e => {
 						if(recentVendor === vendor) {
-							console.log(vendor)
 							Meteor.call('addIngredientToCart',
 								row.original.fullIng, 
 								qty, 
@@ -160,16 +158,6 @@ class Table extends Component {
 				</td>
 			</tr>
 		));
-	}
-
-	////////////////////////////////////////////////
-	///											 ///
-	/// Ingredient Useage and Cart Renders		 ///
-	///											 ///
-	////////////////////////////////////////////////
-	
-	renderIngredientUse(row) {
-		return null
 	}
 
 	////////////////////////////////////////////////
@@ -200,7 +188,6 @@ class Table extends Component {
 		    				<AddVendor ing={row.original.fullIng} edit={TableData.canEdit}/>
 		    			</tbody>
 		    			</table>
-						{_this.renderIngredientUse(row)}
 		    			{_this.renderButtons(_this, row)}
                 	</div>
                 );
