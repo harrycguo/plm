@@ -6,7 +6,7 @@ IngredientsList = new Mongo.Collection('ingredients');
 // IngredientsList.remove({}); // remove every ingredient from the collection
 
 //Attach a schema to the collection for automatic validation on insert/update operations
-IngredientsList.attachSchema(IngredientSchema);
+//IngredientsList.attachSchema(IngredientSchema);
 
 //Update vendors for each ingredient when a vendor is edited
 // var cursor = Vendors.find();

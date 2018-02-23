@@ -200,7 +200,9 @@ class Login extends Component {
             <Button type="submit" bsStyle="success">Login</Button>
             <p></p>
             <a href="https://oauth.oit.duke.edu/oauth/authorize.php?client_id=production-lifecycle-management&client_secret=FatQCXrMNx5EyBq!ms=i=%FJSSjMMFafJClHKTv*4WqC%dvmBt&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Flogin&response_type=token&state=1327&scope=basic">
-              <Button>
+              <Button
+              bsStyle="primary"
+              >
                 Login With Duke NetID
           </Button>
             </a>

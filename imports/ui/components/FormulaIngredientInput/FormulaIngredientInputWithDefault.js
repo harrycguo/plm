@@ -105,7 +105,7 @@ class FormulaIngredientInputWithDefault extends Component {
 
             <div className="side-container-zero">
 
-                <div className="side-spacing">
+                <div className="side-spacingInput">
                     <select
                         ref={ingredient => (this.ingredient = ingredient)}
                         name="ingredient"
@@ -129,8 +129,10 @@ class FormulaIngredientInputWithDefault extends Component {
                     />
                 </div>
 
-                <div className="side-spacing">
-                    <p>{nativeUnit}</p>
+                <div className="nativeUnit">
+                    <div className="nativeUnitPad">
+                        {nativeUnit}
+                    </div>
                 </div>
 
                 <div className="side-spacing">

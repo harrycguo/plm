@@ -312,7 +312,8 @@ Meteor.methods({
         packagingMap.set('railcar', 0);
 
         let newStorage = newNumPackages * packagingMap.get(existingIng.packageInfo.packageType)
-
+        console.log('new storage')
+        console.log(newStorage)
         Meteor.call('editStorage', selectedIngredient, Number(newStorage))
 
         
@@ -369,13 +370,18 @@ Meteor.methods({
             throw new Meteor.Error('Number of Total Native Units must be an integer', 'Number of Total Native Units must be an Integer');
         }
 
+        if (newTotalNumNativeUnits < 0) {
+            throw new Meteor.Error('Number of Total Native Units must be greater than 0', 'Number of Total Native Units must be greater than 0');
+        }
+
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
         IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.totalQuantity" : Number(newTotalNumNativeUnits)}});
 
         //re-calculate footprint
         let remainingPackages = Math.ceil(Number(newTotalNumNativeUnits) / Number(existingIng.nativeInfo.numNativeUnitsPerPackage))
-
+        console.log('remainig pakgs')
+        console.log(remainingPackages)
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
 
     },

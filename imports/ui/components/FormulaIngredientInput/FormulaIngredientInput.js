@@ -69,7 +69,7 @@ class FormulaIngredientInput extends Component {
 
             <div className="side-container-zero">
 
-                <div className="side-spacing">
+                <div className="side-spacingInput">
                     <select
                         ref={ingredient => (this.ingredient = ingredient)}
                         name="ingredient"
@@ -93,8 +93,10 @@ class FormulaIngredientInput extends Component {
                     />
                 </div>
 
-                <div className="side-spacing">
-                    <p>{this.state.nativeUnit}</p>
+                <div className="nativeUnit">
+                    <div className="nativeUnitPad">
+                        {this.state.nativeUnit}
+                    </div>
                 </div>
 
                 <div className="side-spacing">

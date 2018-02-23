@@ -1,4 +1,5 @@
 import { Mongo } from 'meteor/mongo';
+//import SimpleSchema from 'simpl-schema';
 
 PackageInfoSchema = new SimpleSchema({
   packageType: {
@@ -41,11 +42,11 @@ FormulaInfoSchema = new SimpleSchema({
     type: String,
     min: 1
   },
-  nativeUnitsConsumption: {
-    type: Number,
-    min: 1,
-    decimal: true
-  }
+  // nativeUnitsConsumption: {
+  //   type: Number,
+  //   min: 1,
+  //   decimal: true
+  // }
 })
 
 //Specifies ingredient field type constraints
@@ -69,8 +70,8 @@ IngredientSchema = new SimpleSchema({
   },
   storage: {
     type: Number,
+    decimal: true,
     min: 0,
-    decimal: true
   },
   nativeInfo: {
     type: NativeInfoSchema
