@@ -464,7 +464,9 @@ Meteor.methods({
             vendor: vendor,
             price: price
         };
-        IngredientsList.update({ _id : selectedIngredient._id}, {$push : {vendorInfo : newVendor}});
+        ing.vendorInfo.push(newVendor)
+        ing.vendorInfo.sort(function(a,b) {return (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0);})
+        IngredientsList.update({ _id : selectedIngredient._id}, {$set : {vendorInfo : ing.vendorInfo}});
 
     },
     'removeVendor': function(selectedIngredient, vendor) {
