@@ -9,6 +9,7 @@ import ReactTable from 'react-table';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import { Vendors } from '../../api/Vendors/vendors.js';
 import AddVendor from './AddVendor.js';
 import EditVendor from './EditVendor.js';
 import CartApi from '../../api/Cart/CartApi.js';
@@ -25,10 +26,10 @@ class Table extends Component {
 		super(props);
 	}
 
-	renderRows() {
+	renderRows(_this) {
 		var ingredientsList = new Array()
 		this.props.ingredients.forEach(function(ing) {
-			ingredientsList.push(TableData.convertToFrontend(ing, IngredientsList))
+			ingredientsList.push(TableData.convertToFrontend(ing, IngredientsList, _this.props.vendors))
 		});
 		return ingredientsList
 	}
@@ -128,7 +129,7 @@ class Table extends Component {
 		return row.original.vendors.map(vendor => (
 			<tr key={vendor.name}>
 				<td>{vendor.name}</td>
-				<td>{vendor.cost}</td>
+				<td>{vendor.price}</td>
 				<td><input type="text" onChange={ e=> {
 					qty = e.target.value;
 					recentVendor = vendor;
@@ -169,7 +170,7 @@ class Table extends Component {
 		return ( 
 			<div>
 			<ReactTable
-		    data={_this.renderRows()}
+		    data={_this.renderRows(_this)}
 		    filterable
 		    defaultFilterMethod={ (filter, row) => 
 		    	String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase())
@@ -230,7 +231,9 @@ class Table extends Component {
 
 export default withTracker(() => {
 	Meteor.subscribe('ingredients')
+	Meteor.subscribe('vendors')
 	return {
-		ingredients: IngredientsList.find({}).fetch()
+		ingredients: IngredientsList.find({}).fetch(),
+		vendors: Vendors.find({}).fetch(),
 	};
 })(Table);

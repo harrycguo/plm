@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import CustomNativeUnitsInput from '../forms/CustomNativeUnitInput.js'
+import { Vendors } from '../../api/Vendors/vendors.js';
+
 
 export var canEdit = false;
 var nativeUnitSwitch = {cellInfo: null, target: null, toggled: false};
@@ -375,19 +377,18 @@ export const HeaderValues = [
 	}, 	
 ];
 
-export function convertToFrontend(ingredient, ingredientsList) {
+export function convertToFrontend(ingredient, ingredientsList, vendors) {
 	VendArray = new Array()
 	ingredient.vendorInfo.forEach(function(info){
-		var vendor = info.vendor;
-		Meteor.call('getVendorById', 
-			vendor, 
-			function(error,result) {
-				vendor = result;
-				if(vendor != null && vendor._id != null && info.price != -1) {
-					VendArray.push({_id: vendor._id, name: vendor.vendor, price: info.price});
-				}
+		var foundVendor = null;
+		vendors.forEach(function(vendor) {
+			if(vendor._id == info.vendor){
+				foundVendor = vendor
 			}
-		);		
+		})
+		if(foundVendor != null) {
+			VendArray.push({_id: foundVendor._id, name: foundVendor.vendor, price: info.price});
+		}
 	});
 	
 	return {

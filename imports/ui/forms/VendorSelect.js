@@ -21,9 +21,12 @@ export class VendorSelect extends Component {
       let items = [];
       var vendorArr = Vendors.find().fetch();
       //console.log(vendorArr)
-      // console.log(this.props)
       for (i = 1; i < Vendors.find().fetch().length + 1; i++) {
-        items.push(<option key={i} value={vendorArr[i-1]._id}>{vendorArr[i-1].vendor}</option>);
+        if(this.props.vendor && vendorArr[i-1]._id == this.props.vendor._id) {
+          items.push(<option selected="selected" key={i} value={vendorArr[i-1]._id}>{vendorArr[i-1].vendor}</option>);
+        } else {
+          items.push(<option key={i} value={vendorArr[i-1]._id}>{vendorArr[i-1].vendor}</option>);
+        }
       }
       return items;
   }

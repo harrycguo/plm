@@ -438,6 +438,10 @@ Meteor.methods({
         return ing;
     },
     'addVendor': function(selectedIngredient, vendorId, price) {
+        console.log("From Add Vendor:")
+        console.log(selectedIngredient)
+        console.log(vendorId)
+        console.log(price)
         if (vendorId === "null" || !price) {
             throw new Meteor.Error("Missing fields","Vendor and/or price unspecified");
         }
@@ -454,7 +458,6 @@ Meteor.methods({
         ing.vendorInfo.push(newVendor)
         ing.vendorInfo.sort(function(a,b) {return (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0);})
         IngredientsList.update({ _id : selectedIngredient._id}, {$set : {vendorInfo : ing.vendorInfo}});
-
     },
     'removeVendor': function(selectedIngredient, vendor) {
         //This comment only exists just so that I can minimize the method
