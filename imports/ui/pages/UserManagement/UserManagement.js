@@ -54,7 +54,7 @@ class UserManagement extends Component {
                 </header>
                 <UserManagementNavBar/>
                 <p></p>
-                <Button
+                <Button bsStyle="primary"
 				onClick={this.edit.bind(this)}
 				title= "Edit"
 				>{buttonText}</Button>

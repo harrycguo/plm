@@ -225,6 +225,7 @@ class Table extends Component {
 		return (
 			<div>
 			<Button
+			bsStyle="primary"
 				onClick={this.edit.bind(this)}
 				title= "Edit"
 				>{this.editButtonText()}</Button>

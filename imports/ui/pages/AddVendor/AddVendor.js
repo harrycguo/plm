@@ -106,6 +106,7 @@ class AddVendor extends Component {
                         name="contact"
                         ref={contact => (this.contact = contact)}
                         className="form-control"
+                        placeholder="Contact Info"
                     />
                 </FormGroup>
 

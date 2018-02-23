@@ -323,9 +323,9 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
-        if (!isInt(newStorage)) {
-            throw new Meteor.Error('Storage must be an Integer', 'Storage must be an Integer');
-        }
+        // if (!isInt(newStorage)) {
+        //     throw new Meteor.Error('Storage must be an Integer', 'Storage must be an Integer');
+        // }
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
@@ -365,9 +365,9 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
-        if (!isInt(newTotalNumNativeUnits)) {
-            throw new Meteor.Error('Number of Total Native Units must be an integer', 'Number of Total Native Units must be an Integer');
-        }
+        // if (!isInt(newTotalNumNativeUnits)) {
+        //     throw new Meteor.Error('Number of Total Native Units must be an integer', 'Number of Total Native Units must be an Integer');
+        // }
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 

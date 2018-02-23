@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withTracker } from 'meteor/react-meteor-data';
+import FormulaManagementNavBar from '../../components/FormulaManagementNavBar/FormulaManagementNavBar.js'
 
-// App component - represents the whole app
 class FormulaManagement extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +15,12 @@ class FormulaManagement extends Component {
         <header>
           <h1>Formula Management</h1>
         </header>
-        
+        <FormulaManagementNavBar/>
+        <p></p>
+
+        <h2>List of Formulas</h2>
+        <hr></hr>
+
       </div>
     );
   }

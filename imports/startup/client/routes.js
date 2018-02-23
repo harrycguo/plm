@@ -28,8 +28,7 @@ import UserManagement from '../../ui/pages/UserManagement/UserManagement';
 import ManagerViewInventory from '../../ui/pages/ManagerViewInventory/ManagerViewInventory';
 import ManagerHomepage from '../../ui/pages/ManagerHomepage/ManagerHomepage';
 import FormulaManagement from '../../ui/pages/FormulaManagement/FormulaManagement';
-
-
+import AddFormula from '../../ui/pages/AddFormula/AddFormula';
 
 export const renderRoutes = () => (
   <Router>
@@ -58,6 +57,7 @@ export const renderRoutes = () => (
     <Route path="/cart" component={IngredientCart}/>
     <Route path="/report" component={SpendingReport}/>
     <Route path='/formulaManagement' component={FormulaManagement}/>
+    <Route path='/addFormula' component={AddFormula}/>
   </div>
 </Router>
 );

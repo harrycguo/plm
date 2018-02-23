@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Navbar, NavItem, Nav } from 'react-bootstrap';
 
 // App component - represents the whole app
-class AdminViewInventoryNavBar extends Component {
+class FormulaManagementNavBar extends Component {
     constructor(props) {
         super(props);
     }
@@ -19,36 +19,25 @@ class AdminViewInventoryNavBar extends Component {
                 </Link>
                 <Link
                     className="container-nav"
-                    to="/adminViewInventory">
-                    Inventory Management
+                    to="/formulaManagement">
+                    Formula Management
                 </Link>
                 <Link
                     className="container-nav"
-                    to="/addingredient">
-                    Add Ingredient
+                    to="/addFormula">
+                    Add New Formula
                 </Link>
                 <Link
                     className="container-nav"
                     to="/bulkImport">
-                    Bulk Import Ingredients
-                </Link>
-                <Link
-                    className="container-nav"
-                    to="/report">
-                    Spending Report
-                </Link>
-             
-                <Link
-                    className="container-nav-right"
-                    to="/cart">
-                    Cart
-                </Link>    
+                    Bulk Import Formula
+                </Link>  
             </div>
         );
     }
 }
 
-export default AdminViewInventoryNavBar;
+export default FormulaManagementNavBar;
 
 
 

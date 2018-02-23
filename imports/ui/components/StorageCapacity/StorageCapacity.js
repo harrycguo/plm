@@ -4,7 +4,6 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { StorageCapacities } from '../../../api/StorageCapacities/storageCapacities.js'
 import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 
-// Task component - represents a single todo item
 class StorageCapacity extends Component {
     constructor(props) {
       super(props);
@@ -23,7 +22,7 @@ class StorageCapacity extends Component {
           capacity: this.props.sc.capacity,
           }
         }}>
-          <Button>
+          <Button bsStyle="info" bsSize="xsmall">
           Edit Capacity
           </Button>
         </Link></Col>;

@@ -13,7 +13,7 @@ class VendorManagement extends Component {
     super(props);
     console.log("User = ")
     console.log(Meteor.user());
-    console.log(this.props.vendors)
+
   }
 
   renderVendors() {
@@ -31,7 +31,6 @@ class VendorManagement extends Component {
         
         <VendorManagementNavBar/>
         <p></p>
-
 
         <h2>List of Vendors</h2>
         <hr></hr>
