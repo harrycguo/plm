@@ -17,21 +17,25 @@ class AdminViewInventoryNavBar extends Component {
                     to="/adminHomepage">
                     Admin Homepage
                 </Link>
+
                 <Link
                     className="container-nav"
                     to="/adminViewInventory">
                     Inventory Management
                 </Link>
+
                 <Link
                     className="container-nav"
                     to="/addingredient">
                     Add Ingredient
                 </Link>
+
                 <Link
                     className="container-nav"
-                    to="/bulkImport">
+                    to="/bulkImportIngredients">
                     Bulk Import Ingredients
                 </Link>
+
                 <Link
                     className="container-nav"
                     to="/report">

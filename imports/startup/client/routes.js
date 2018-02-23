@@ -16,7 +16,7 @@ import SuccessLoginAdmin from '../../ui/pages/Success/SuccessLoginAdmin';
 import SuccessLoginUser from '../../ui/pages/Success/SuccessLoginUser';
 import IngredientForm from '../../ui/forms/IngredientForm.js'
 import Table from '../../ui/table/Table.js';
-import BulkImport from '../../ui/pages/BulkImport/BulkImport.js';
+import BulkImportIngredients from '../../ui/pages/BulkImportIngredients/BulkImportIngredients.js';
 import AdminHomepage from '../../ui/pages/AdminHomepage/AdminHomepage.js';
 import UserHomepage from '../../ui/pages/UserHomepage/UserHomepage.js';
 import UserViewInventory from '../../ui/pages/UserViewInventory/UserViewInventory.js';
@@ -29,6 +29,8 @@ import ManagerViewInventory from '../../ui/pages/ManagerViewInventory/ManagerVie
 import ManagerHomepage from '../../ui/pages/ManagerHomepage/ManagerHomepage';
 import FormulaManagement from '../../ui/pages/FormulaManagement/FormulaManagement';
 import AddFormula from '../../ui/pages/AddFormula/AddFormula';
+import EditFormula from '../../ui/pages/EditFormula/EditFormula.js'
+import ProductionRun from '../../ui/pages/ProductionRun/ProductionRun.js'
 
 export const renderRoutes = () => (
   <Router>
@@ -48,7 +50,7 @@ export const renderRoutes = () => (
     <Route path="/successCreateUser" component={SuccessCreateUser}/>
     <Route path="/successLoginAdmin" component={SuccessLoginAdmin}/>
     <Route path="/successLoginUser" component={Table}/>
-    <Route path="/bulkImport" component={BulkImport}/>
+    <Route path="/bulkImportIngredients" component={BulkImportIngredients}/>
     <Route path="/table" component={Table}/>
     <Route path="/addingredient" component={AddIngredient}/>
     <Route path="/userViewInventory" component={UserViewInventory}/>
@@ -58,6 +60,8 @@ export const renderRoutes = () => (
     <Route path="/report" component={SpendingReport}/>
     <Route path='/formulaManagement' component={FormulaManagement}/>
     <Route path='/addFormula' component={AddFormula}/>
+    <Route path='/editFormula/:formulaID' component={EditFormula}/>
+    <Route path='/productionRun' component={ProductionRun}/>
   </div>
 </Router>
 );

@@ -18,6 +18,7 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
+        console.log('adding ingredient')
         console.log(ingVendor)
         console.log(ingPrice)
 
@@ -93,7 +94,6 @@ Meteor.methods({
         }
 
         let existingIng = IngredientsList.findOne({ name: ingName.trim() });
-        console.log(existingIng)
 
         //If ingredient exists, update it instead of adding a new database entry
         if (existingIng !== undefined) {
@@ -221,8 +221,6 @@ Meteor.methods({
     },
     'editPackage': function (selectedIngredient, newPackage) {
         
-        console.log(newPackage)
-        
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
@@ -268,7 +266,7 @@ Meteor.methods({
             console.log("physical to physical")
         }
 
-        console.log(newUsed)
+  
 
         Meteor.call('sc.editUsed', container._id, Number(newUsed));
 
@@ -312,7 +310,8 @@ Meteor.methods({
         packagingMap.set('railcar', 0);
 
         let newStorage = newNumPackages * packagingMap.get(existingIng.packageInfo.packageType)
-
+        console.log('new storage')
+        console.log(newStorage)
         Meteor.call('editStorage', selectedIngredient, Number(newStorage))
 
         
@@ -369,13 +368,18 @@ Meteor.methods({
         //     throw new Meteor.Error('Number of Total Native Units must be an integer', 'Number of Total Native Units must be an Integer');
         // }
 
+        if (newTotalNumNativeUnits < 0) {
+            throw new Meteor.Error('Number of Total Native Units must be greater than 0', 'Number of Total Native Units must be greater than 0');
+        }
+
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
         IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.totalQuantity" : Number(newTotalNumNativeUnits)}});
 
         //re-calculate footprint
         let remainingPackages = Math.ceil(Number(newTotalNumNativeUnits) / Number(existingIng.nativeInfo.numNativeUnitsPerPackage))
-
+        console.log('remainig pakgs')
+        console.log(remainingPackages)
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
 
     },
@@ -449,7 +453,7 @@ Meteor.methods({
         Meteor.call('logOrderInReport', ingredient, ingredientQuantity, vendor.cost)
     },
     'getIngredientFromId': function(id) {
-        var ing = IngredientsList.findOne( _id : id);
+        var ing = IngredientsList.findOne({ _id : id});
         if (ing === undefined)
             throw new Meteor.Error('Ingredient does not exist','Ingredient does not exist');
         return ing;

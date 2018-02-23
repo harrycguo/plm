@@ -27,7 +27,8 @@
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-table": "^6.7.6",
-    "reactstrap": "^4.8.0"
+    "reactstrap": "^4.8.0",
+    "simpl-schema": "^1.4.2"
   },
   "devDependencies": {
     "bootstrap": "^4.0.0",

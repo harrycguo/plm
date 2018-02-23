@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Row, Col, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
+import { Row, Col, Container, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 
- 
+
 // Task component - represents a single todo item
 class Vendor extends Component {
   constructor(props) {
@@ -34,9 +34,11 @@ class Vendor extends Component {
             contact: this.props.vendor.contact,
             FCC: this.props.vendor.FCC}
           }}>
-            <button>
+            <Button
+            bsStyle="info"
+          >
             Edit Vendor
-            </button>
+        </Button>
           </Link>
       </li>
     );

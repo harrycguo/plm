@@ -9,8 +9,8 @@ class FormulaIngredientInput extends Component {
         super(props);
 
         this.state = {
-            ingredient: "",
-            nativeUnit: "",
+            ingredient: null,
+            nativeUnit: null,
             quantity: Number(0)
         };
 
@@ -24,7 +24,7 @@ class FormulaIngredientInput extends Component {
         return items;
     }
 
-    sendInfo = () => {
+    setIngredientInfo = (event, key) => {
 
         let existingIng;
 
@@ -35,9 +35,27 @@ class FormulaIngredientInput extends Component {
         }
 
         this.setState({
-            ingredient: existingIng,
+            ingredient: existingIng._id,
             nativeUnit: existingIng.nativeInfo.nativeUnit,
         });
+
+        this.props.onChange(this.props.index, this, true);
+    }
+
+    setQuantity = (event, key) => {
+        
+        var quantity = event.target.value;
+
+        this.setState({
+            quantity: Number(quantity)
+        })
+
+        this.props.onChange(this.props.index, this, true);
+    }
+
+    delete = (event, key) => {
+
+        this.props.onChange(this.props.index, this, false);
     }
 
     render() {
@@ -51,12 +69,12 @@ class FormulaIngredientInput extends Component {
 
             <div className="side-container-zero">
 
-                <div className="side-spacing">
+                <div className="side-spacingInput">
                     <select
                         ref={ingredient => (this.ingredient = ingredient)}
                         name="ingredient"
                         style={{ width: '100%', height: '100%' }}
-                        onChange={this.sendInfo}
+                        onChange={this.setIngredientInfo}
                     >
                         <option disabled selected value> -- select an ingredient -- </option>
                         {this.renderOptions()}
@@ -66,27 +84,28 @@ class FormulaIngredientInput extends Component {
                 <div className="side-spacing">
                     <input
                         type="number"
-                        step="1"
                         ref={numUnits => (this.numUnits = numUnits)}
                         name="numUnits"
                         placeholder="# of Units"
-                        //onChange
+                        onChange={this.setQuantity}
                         className="form-control"
                         style={{ width: '100%', height: '100%' }}
                     />
                 </div>
 
-                <div className="side-spacing">
-                    <p>{this.state.nativeUnit}</p>
+                <div className="nativeUnit">
+                    <div className="nativeUnitPad">
+                        {this.state.nativeUnit}
+                    </div>
                 </div>
 
                 <div className="side-spacing">
                     <Button
                         bsStyle="danger"
                         bsSize="small"
-                    //onClick={this.add}
+                        onClick={this.delete}
                     >
-                        Delete
+                    Delete
                 </Button>
                 </div>
             </div>

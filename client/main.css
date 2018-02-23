@@ -37,6 +37,10 @@ body {
     padding: 0px 0px 0px 0px;
   }
 
+  .containerEmpty {
+    display: none;
+  }
+
   .verticalList {
     white-space: pre
   }
@@ -71,6 +75,12 @@ body {
     padding: 0px 0px 0px 0px;
   }
 
+  .side-spacingInput {
+    margin-right: 20px;
+    width:200px; /* or whatever width you want. */
+    max-width:200px; /* or whatever width you want. */
+  }
+
   .side-spacing {
     margin-right: 20px
   }
@@ -79,9 +89,30 @@ body {
     padding: 5px 5px 5px 5px;
   }
 
+  .container-keepLeft{
+    padding: 5px 5px 5px 0px;
+  }
+
   .container-nav-right{
     padding: 5px 5px 5px 5px;
     float: right;
+  }
+
+  .nativeUnit{
+    width:150px; /* or whatever width you want. */
+    max-width:150px; /* or whatever width you want. */
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+  }
+
+  .nativeUnitPad{
+    width:150px; /* or whatever width you want. */
+    max-width:150px; /* or whatever width you want. */
+    display: table-cell;
+    text-align: left;
+    vertical-align: middle;
+    padding-top: 5px
   }
    
   #login-buttons {
