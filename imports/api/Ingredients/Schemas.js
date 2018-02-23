@@ -138,4 +138,8 @@ SpendingSchema = new SimpleSchema({
 	total: {type: Number}
 })
 
+LogSchema = new SimpleSchema({
+  
+})
+
 export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema };
