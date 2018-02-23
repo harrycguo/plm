@@ -391,11 +391,33 @@ export function convertToFrontend(ingredient, ingredientsList, vendors) {
 		}
 	});
 	
+	var numPackagesWithFloorspace = ingredient.packageInfo.numPackages.toString().concat(" (")
+	var floorSpace = null
+	switch(ingredient.packageInfo.packageType) {
+        case "sack":
+        	floorSpace = 0.5;
+        	break;
+        case "pail":
+        	floorSpace = 1.5;
+        	break;
+        case "drum":
+        	floorSpace = 3;
+        	break;
+        case "supersack":
+        	floorSpace = 16;
+        	break;
+        case "truckload":
+        case "railcar":
+        	floorSpace = 0;
+        	break;
+	}
+	numPackagesWithFloorspace = numPackagesWithFloorspace.concat(floorSpace*ingredient.packageInfo.numPackages).concat(" Sq. Ft.)");
+
 	return {
 			name: ingredient.name, 
 			temp: ingredient.temperatureState, 
 			pkg: ingredient.packageInfo.packageType, 
-			numpkg: ingredient.packageInfo.numPackages,
+			numpkg: numPackagesWithFloorspace,
 			qty: ingredient.nativeInfo.totalQuantity,
 			unit: ingredient.nativeInfo.nativeUnit, 
 			numNativeUnitsPerPackage: ingredient.nativeInfo.numNativeUnitsPerPackage,
