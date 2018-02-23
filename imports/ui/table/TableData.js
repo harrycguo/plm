@@ -353,11 +353,20 @@ export const HeaderValues = [
 
 export function convertToFrontend(ingredient, ingredientsList) {
 	VendArray = new Array()
+	console.log(ingredient)
 	ingredient.vendorInfo.forEach(function(info){
 		var vendor = info.vendor;
-		if(vendor != null && vendor._id != null && info.price != -1) {
-			VendArray.push({_id: vendor._id, name: vendor.vendor, price: info.price});
-		}
+		console.log(info)
+		Meteor.call('getVendorById', 
+			vendor, 
+			function(error,result) {
+				console.log(result)
+				vendor = result;
+				if(vendor != null && vendor._id != null && info.price != -1) {
+					VendArray.push({_id: vendor._id, name: vendor.vendor, price: info.price});
+				}
+			}
+		);		
 	});
 	
 	return {
