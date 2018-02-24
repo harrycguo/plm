@@ -7,7 +7,7 @@ export const Formulas = new Mongo.Collection('formulas');
 
 Meteor.methods({
     'formulas.insert'(name, description, productUnits, ingredientsList) {
-    
+      
       // Make sure the user is logged in before inserting a task
       if (! this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
         throw new Meteor.Error('not-authorized', 'not-authorized');

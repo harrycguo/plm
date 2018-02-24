@@ -30,7 +30,7 @@ class FormulaManagementNavBar extends Component {
 
                 <Link
                     className="container-nav"
-                    to="/bulkImportFormula">
+                    to="/bulkImportFormulas">
                     Bulk Import Formula
                 </Link>  
 

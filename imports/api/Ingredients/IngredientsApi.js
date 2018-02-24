@@ -310,8 +310,6 @@ Meteor.methods({
         packagingMap.set('railcar', 0);
 
         let newStorage = newNumPackages * packagingMap.get(existingIng.packageInfo.packageType)
-        console.log('new storage')
-        console.log(newStorage)
         Meteor.call('editStorage', selectedIngredient, Number(newStorage))
 
         
@@ -378,8 +376,6 @@ Meteor.methods({
 
         //re-calculate footprint
         let remainingPackages = Math.ceil(Number(newTotalNumNativeUnits) / Number(existingIng.nativeInfo.numNativeUnitsPerPackage))
-        console.log('remainig pakgs')
-        console.log(remainingPackages)
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
 
     },

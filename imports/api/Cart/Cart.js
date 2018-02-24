@@ -21,7 +21,6 @@ const handle = cursor.observeChanges({
 });
 
 if(Meteor.isServer) {
-	console.log('publishing carts')
 	Meteor.publish('carts', function() {
 		return Carts.find();
 	})

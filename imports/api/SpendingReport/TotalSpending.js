@@ -6,7 +6,6 @@ import Report from './SpendingReport.js';
 if (Meteor.isClient) {
 	Meteor.subscribe('report');
 }
-console.log("Creating spending collection");
 TotalSpending = new Mongo.Collection('spending');
 
 //Attach a schema to the collection for automatic validation on insert/update operations
@@ -73,7 +72,6 @@ TotalSpending.update({},{$set : { total : total}});
 export default TotalSpending;
 
 if(Meteor.isServer) {
-	console.log('publishing spending')
 	Meteor.publish('spending', function() {
 		return TotalSpending.find();
 	})

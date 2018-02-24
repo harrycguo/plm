@@ -31,6 +31,8 @@ import FormulaManagement from '../../ui/pages/FormulaManagement/FormulaManagemen
 import AddFormula from '../../ui/pages/AddFormula/AddFormula';
 import EditFormula from '../../ui/pages/EditFormula/EditFormula.js'
 import ProductionRun from '../../ui/pages/ProductionRun/ProductionRun.js'
+import BulkImportFormulas from '../../ui/pages/BulkImportFormulas/BulkImportFormulas.js';
+
 
 export const renderRoutes = () => (
   <Router>
@@ -61,6 +63,7 @@ export const renderRoutes = () => (
     <Route path='/formulaManagement' component={FormulaManagement}/>
     <Route path='/addFormula' component={AddFormula}/>
     <Route path='/editFormula/:formulaID' component={EditFormula}/>
+    <Route path='/bulkImportFormulas' component={BulkImportFormulas}/>
     <Route path='/productionRun' component={ProductionRun}/>
   </div>
 </Router>

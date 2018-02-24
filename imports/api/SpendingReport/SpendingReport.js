@@ -8,7 +8,6 @@ Report.attachSchema(ReportSchema);
 export default Report;
 
 if(Meteor.isServer) {
-	console.log('publishing report');
 	Meteor.publish('report', function() {
 		return Report.find();
 	});
