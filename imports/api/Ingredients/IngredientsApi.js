@@ -469,7 +469,7 @@ Meteor.methods({
             throw new Meteor.Error('Already has vendor','this vendor is already associated with this ingredient');
         }
         var newVendor = {
-            vendor: vendor,
+            vendor: vendor._id,
             price: price
         };
         ing.vendorInfo.push(newVendor)
