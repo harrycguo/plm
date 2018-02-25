@@ -77,7 +77,7 @@ IngredientSchema = new SimpleSchema({
     type: NativeInfoSchema
   },
   formulaInfo: {
-    type: [FormulaInfoSchema],
+    type: [String],
     optional: true
   }
 });

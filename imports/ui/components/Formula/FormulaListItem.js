@@ -49,6 +49,8 @@ class FormulaListItem extends Component {
 
     return (
       <li>
+
+        {deleteButton}
         
         <p> <b>Formula Name:</b> {this.props.formula.name}</p>
         <p> <b>Description:</b> {this.props.formula.description}</p>

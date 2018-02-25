@@ -112,15 +112,6 @@ export class IngredientForm extends Component {
 			vendor = {};
 		}
 
-		let user = Meteor.user();
-		let returnLink = null;
-
-		if (Roles.userIsInRole(user, ['admin'])) {
-			returnLink = '/adminViewInventory'
-		} else {
-			returnLink = '/userViewInventory'
-		}
-
 		//Have to implement vendor selection
 		if (Meteor.isServer) {
 			console.log("server side");
@@ -142,7 +133,7 @@ export class IngredientForm extends Component {
 					}
 					else {
 						Bert.alert('Ingredient added', 'success');
-						history.push(returnLink)
+						history.push('/inventoryManagement')
 					}
 				});
 		}

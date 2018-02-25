@@ -77,8 +77,6 @@ class EditCapacities extends Component {
             }
         }
 
-        console.log(capacitiesMap)
-
         for (let i = 0; i < capacitiesIDArray.length; i++){
             
             let id = capacitiesIDArray[i]
