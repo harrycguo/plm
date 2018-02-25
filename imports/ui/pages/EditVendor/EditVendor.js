@@ -7,6 +7,8 @@ import validate from '../../../modules/validate';
 import { Accounts } from 'meteor/accounts-base';
 import { Vendors } from '../../../api/Vendors/vendors.js';
 import { withTracker } from 'meteor/react-meteor-data';
+import VendorManagementNavBar from '../../components/VendorManagementNavBar/VendorManagementNavBar.js'
+
 
 class EditVendor extends Component {
     constructor(props) {
@@ -89,6 +91,8 @@ class EditVendor extends Component {
                 <header>
                     <h1>Edit Vendor</h1>
                 </header>
+                <VendorManagementNavBar/>
+                <p></p>
 
                 <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
             

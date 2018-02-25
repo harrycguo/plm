@@ -9,7 +9,7 @@ import IngredientList from '../../../api/Ingredients/IngredientList.js';
 import { Vendors } from '../../../api/Vendors/vendors.js';
 import { StorageCapacities } from '../../../api/StorageCapacities/storageCapacities.js';
 import { check } from 'meteor/check';
-import AdminViewInventoryNavBar from '../../components/AdminViewInventoryNavBar/AdminViewInventoryNavBar.js'
+import InventoryManagementNavBar from '../../components/InventoryManagementNavBar/InventoryManagementNavBar.js'
 
 // App component - represents the whole app
 class BulkImportIngredients extends Component {
@@ -380,7 +380,7 @@ class BulkImportIngredients extends Component {
         <header>
           <h1>Bulk Import Ingredients</h1>
         </header>
-        <AdminViewInventoryNavBar />
+        <InventoryManagementNavBar />
         <p></p>
         <b>Format:</b>
         <p>The bulk import ingredients feature only supports .csv files. You can make your spreadsheet in Excel and when saving, simply "Save As" a ".csv" file. </p>
@@ -398,7 +398,7 @@ class BulkImportIngredients extends Component {
 
         <b>Example:</b>
         <div>
-        <img src={"bulkImportIngredients.png"} width="600" height="200"/>
+        <img src={"bulkImportIngredients.png"} width="910" height="133"/>
         </div>
         
         <p></p>

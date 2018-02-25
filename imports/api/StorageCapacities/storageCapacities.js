@@ -35,7 +35,7 @@ Meteor.methods({
       check(capacity, Number)
       let current = StorageCapacities.findOne({_id: scID}, { used: 1, _id:0 })
       if (capacity < current.used) {
-        throw new Meteor.Error('capacity under currently used', 'Capacity is below currently used');
+        throw new Meteor.Error('capacity under currently used', 'New Capacity is below currently used for ' + current.name);
       }
       
 

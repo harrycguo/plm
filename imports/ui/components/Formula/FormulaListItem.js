@@ -9,10 +9,6 @@ class FormulaListItem extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      ingList: ""
-    };
-
   }
 
   deleteThisFormula() {
@@ -21,52 +17,65 @@ class FormulaListItem extends Component {
     };
   }
 
-  showDetails = (event, key) => {
-    console.log("showing detail!!!")
-    console.log(this.props.formula)
-    console.log(this.state.ingList)
-        
-  }
-
-    
-
-  pushToList(list, item) {
-    list.push(item)
-  }
-
-  donePushing(){
-    // this.setState({
-    //   ingList: list
-    // })
-  
-  }
-
-
-
   render() {
+    let user = Meteor.user();
+    let editButton = null;
+    let deleteButton = null;
+
+    if (Roles.userIsInRole(user, ['admin'])) {
+      editButton = <Link to={{
+        pathname: '/editFormula/'+this.props.formula._id, 
+        state: {
+          formula: this.props.formula,
+        }}}>
+          <Button
+          bsStyle="info"
+        >
+          Edit Formula
+      </Button>
+        </Link>
+
+      deleteButton = <button className="delete" onClick={this.deleteThisFormula.bind(this)}>
+            &times;
+          Delete Formula
+          </button>
+          
+    } 
+    
+    else {
+      editButton = <div className="containerNone"></div>;
+      deleteButton = <div className="containerNone"></div>
+    }
 
     return (
       <li>
-        <button className="delete" onClick={this.deleteThisFormula.bind(this)}>
-          &times;
-        Delete Formula
-        </button>
-
+        
         <p> <b>Formula Name:</b> {this.props.formula.name}</p>
         <p> <b>Description:</b> {this.props.formula.description}</p>
         <p> <b>Product Units:</b> {this.props.formula.productUnits}</p>
         
+        <div className="side-container-zero">
+
+        <div className="container-button">
         <Link to={{
-          pathname: '/editFormula/'+this.props.formula._id, 
-          state: {
-            formula: this.props.formula,
-          }}}>
-            <Button
-            bsStyle="info"
-          >
-            View/Edit Formula
-        </Button>
-          </Link>
+            pathname: '/viewFormula/'+this.props.formula._id, 
+            state: {
+              formula: this.props.formula,
+            }}}>
+              <Button
+              
+            >
+              View Formula
+          </Button>
+            </Link>
+            </div>
+
+          
+            <div className="container-button">
+          {editButton}
+            </div>
+
+          </div>
       </li>
     );
   }

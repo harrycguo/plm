@@ -55,9 +55,9 @@ class SpendingReport extends Component {
 
 	linkBack() {
 		if (!Meteor.user() || !Roles.userIsInRole(Meteor.user()._id, 'admin')) {
-			return (<li><Link to='/userViewInventory'>Return to Inventory</Link></li>)
+			return (<li><Link to='/inventoryManagement'>Return to Inventory</Link></li>)
 		} else {
-			return (<li><Link to='/adminViewInventory'>Return to Inventory</Link></li>)
+			return (<li><Link to='/inventoryManagement'>Return to Inventory</Link></li>)
 		}
 	}
 

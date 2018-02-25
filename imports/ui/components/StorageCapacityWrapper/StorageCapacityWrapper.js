@@ -18,10 +18,40 @@ class StorageCapacityWrapper extends Component {
       }
   
     render() {
-      return (     
+      
+      let user = Meteor.user();
+      let editButton = null;
+        
+      if (Roles.userIsInRole(user, ['admin'])) {
+        editButton = <Link to={{
+          pathname: '/editCapacities', 
+          state: {
+            capacities: this.props.sc,
+            hist: this.props.hist
+          }}}>
+            <Button
+            bsStyle="info" 
+          >
+            Edit Capacities
+        </Button>
+          </Link>
+            
+      } 
+      
+      else {
+        editButton = <div className="containerNone"></div>;
+      }
+
+      return (   
+        <div>  
         <div className="side-container">
             {this.renderCapacities()}
+            
         </div>
+          {editButton}
+          <p></p>
+        </div>
+
       );
     }
   }

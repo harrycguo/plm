@@ -74,7 +74,7 @@ class ProductionRun extends Component {
                     </div>
 
                     <div className="side-spacingInput">
-                        <b>Amount to be Used</b>
+                        <b>Native Units To Be Used</b>
                     </div>
 
                     <div className="side-spacingInput">

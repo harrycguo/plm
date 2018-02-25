@@ -285,6 +285,23 @@ class BulkImportFormulas extends Component {
           <h1>Bulk Import Formulas</h1>
         </header>
         <FormulaManagementNavBar />
+        <p></p>
+        <b>Format:</b>
+        <p>The bulk import formulas feature only supports .csv files. You can make your spreadsheet in Excel and when saving, simply "Save As" a ".csv" file. </p>
+        
+        <p><b>Headers:</b>
+        <br></br>NAME: Unique name of formula being added (cannot be pre-existing)
+        <br></br>PRODUCT UNITS: Number of product units this formula will produce
+        <br></br>DESCRIPTION: description of formula
+        <br></br>INGREDIENT: name of ingredient used for formula
+        <br></br>UNITS: Number of ingredient native units used in the formula
+        <br></br>*NAME, PRODUCT UNITS, DESCRIPTION are only specified once per formula. Also, no duplicates within a single file*
+        </p>
+
+        <b>Example:</b>
+        <div>
+        <img src={"bulkImportFormulas.png"} width="500" height="125"/>
+        </div>
       
         <p></p>
         <b>Upload File Below</b>

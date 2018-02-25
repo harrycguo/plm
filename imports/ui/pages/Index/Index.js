@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 
-// App component - represents the whole app
 class Index extends Component {
   constructor(props) {
     super(props);
     
 }
-
-
-  
 
   render() {
     return (
