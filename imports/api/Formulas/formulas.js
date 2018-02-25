@@ -76,7 +76,7 @@ Meteor.methods({
     //detach id from ingredient
     let existingFormula = Formulas.findOne({ _id: formulaID})
     let ingList = existingFormula.ingredientsList
-    
+
     for (let i = 0; i < ingList.length; i++){
       let ing = IngredientsList.findOne({ _id: ingList[i].id })
       let formulaInfo = ing.formulaInfo
@@ -90,10 +90,7 @@ Meteor.methods({
         }
       })
     }
-
-
-
-
+    
     Formulas.remove(formulaID);
   },
 
