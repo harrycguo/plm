@@ -226,9 +226,17 @@ class BulkImportFormulas extends Component {
         formulaArray.push(ingredientUnits)
       }
     }
-
+    console.log(errors)
     console.log(formulaArray)
-    //organize formulas
+
+    if (errors.length > 0) {
+      return {
+        valid: errors.length == 0 ? true : false,
+        errors: errors,
+      };
+    }
+
+    //organize formulas if no errors at this point
     let organizedFormulaArray = []
     let tracker = -1;
     for (let i = 0; i < formulaArray.length; i++){

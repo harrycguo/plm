@@ -148,7 +148,7 @@ class BulkImportIngredients extends Component {
         }
       }
       Bert.alert("Successfully Bulk Imported Ingredients!", 'success');
-      history.push('/adminViewInventory')
+      history.push('/inventoryManagement')
     }
   }
 
