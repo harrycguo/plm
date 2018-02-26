@@ -4,6 +4,7 @@ import { Formulas } from '../Formulas/formulas.js';
 
 Meteor.methods({
     'production.log': function(formula, qty) {
+        console.log(Formulas.find().fetch())
         if (ProductionReport.find({ formula : formula }).fetch().length === 0) {
             formula = Formulas.find({ _id : formula}).fetch()[0]
             ingList = []

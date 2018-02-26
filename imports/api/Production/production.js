@@ -32,7 +32,7 @@ Meteor.methods({
 
             Meteor.call('editTotalNumNativeUnits', ingList[i].ingredient, ingList[i].newStock)
         }
-
+        Meteor.call('production.log',formulaID,numUnitsProduce)
     },
 
 })
