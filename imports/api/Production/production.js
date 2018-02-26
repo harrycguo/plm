@@ -29,7 +29,6 @@ Meteor.methods({
         //Consume!!!
         for (let i = 0; i < ingList.length; i++) {
             let ingredient = IngredientsList.findOne({_id: ingList[i].ingredient})
-            console.log(ingredient)
 
             Meteor.call('editTotalNumNativeUnits', ingList[i].ingredient, ingList[i].newStock)
         }

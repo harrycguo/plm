@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link , BrowserRouter} from 'react-router-dom';
 import IngredientForm from '../../forms/IngredientForm.js'
-import AdminViewInventoryNavBar from '../../components/AdminViewInventoryNavBar/AdminViewInventoryNavBar.js'
+import InventoryManagementNavBar from '../../components/InventoryManagementNavBar/InventoryManagementNavBar.js'
 
  
 class AddIngredient extends Component {
@@ -16,7 +16,7 @@ class AddIngredient extends Component {
         <header>
           <h1>Add Ingredient</h1>
         </header>
-        <AdminViewInventoryNavBar/>
+        <InventoryManagementNavBar/>
         <IngredientForm hist = {this.props}/>
           
       </div>

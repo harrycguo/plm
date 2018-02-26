@@ -47,6 +47,20 @@ class UserManagement extends Component {
 
         let buttonText = UserManagementData.canEdit ? "Finished Editing" : "Edit User Permissions"
 
+        let user = Meteor.user();
+        let button = null
+
+        //admin
+        if (Roles.userIsInRole(user, ['admin'])) {
+            button = <Button bsStyle="primary"
+            onClick={this.edit.bind(this)}
+            title= "Edit"
+            >{buttonText}</Button>
+        } else {
+            button = <div className="containerNone"></div>
+        }
+
+
         return (
             <div className="container">
                 <header>
@@ -54,11 +68,28 @@ class UserManagement extends Component {
                 </header>
                 <UserManagementNavBar/>
                 <p></p>
-                <Button bsStyle="primary"
-				onClick={this.edit.bind(this)}
-				title= "Edit"
-				>{buttonText}</Button>
+                <p><b>Administrator:</b>
+                <br></br>
+                A user with the “administrator permission” has all manager
+                rights plus the ability to override system rules to directly correct data, input new ingredients
+                and formulas, and perform other core configuration operations.
+                </p>
+
+                <p><b>Manager:</b>
+                <br></br>
+                A user with with the “manager permission” is able to order ingredients and
+                perform production runs.</p>
+
+                <p><b>Unprivileged User:</b>
+                <br></br>
+                A user with neither of the above two permissions. Still able to read
+                inventory status, read reports, etc.</p>
+                
                 <p></p>
+                {button}
+                <p></p>
+
+                
                 {this.renderUserTable()}
             </div>
         );

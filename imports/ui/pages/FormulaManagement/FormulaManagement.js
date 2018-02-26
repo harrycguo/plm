@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import FormulaManagementNavBar from '../../components/FormulaManagementNavBar/FormulaManagementNavBar.js'
 import { Formulas } from '../../../api/Formulas/formulas.js'
+import IngredientList from '../../../api/Ingredients/IngredientList.js';
 import FormulaListItem from '../../components/Formula/FormulaListItem.js'
 
 class FormulaManagement extends Component {
@@ -12,7 +13,9 @@ class FormulaManagement extends Component {
 
 renderFormulas() {
   return this.props.formulas.map((formula) => (
+    <div key = {formula._id} className="containerNone">
     <FormulaListItem key={formula._id} formula={formula} />
+    </div>
   ));
 }
 
@@ -26,7 +29,7 @@ renderFormulas() {
         <p></p>
 
         <h2>List of Formulas</h2>
-        <hr></hr>
+        <hr className='divider'></hr>
 
         <ul>
           {this.renderFormulas()}
@@ -39,8 +42,10 @@ renderFormulas() {
 
 export default withTracker(() => {
   Meteor.subscribe('formulas');
+  Meteor.subscribe('ingredients')
     return {
       formulas: Formulas.find({}).fetch(),
+      ingredients: IngredientList.find({}).fetch(),
     };
   })(FormulaManagement);
 

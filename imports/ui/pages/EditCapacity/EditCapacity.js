@@ -7,7 +7,7 @@ import validate from '../../../modules/validate';
 import { Accounts } from 'meteor/accounts-base';
 import { StorageCapacities } from '../../../api/StorageCapacities/storageCapacities.js';
 import { withTracker } from 'meteor/react-meteor-data';
-import AdminViewInventoryNavBar from '../../components/AdminViewInventoryNavBar/AdminViewInventoryNavBar.js'
+import InventoryManagementNavBar from '../../components/InventoryManagementNavBar/InventoryManagementNavBar.js'
 
 
 class EditCapacity extends Component {
@@ -73,7 +73,7 @@ class EditCapacity extends Component {
                 <header>
                     <h1>Edit Capacity</h1>
                 </header>
-                <AdminViewInventoryNavBar/>
+                <InventoryManagementNavBar/>
 
                 <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
             

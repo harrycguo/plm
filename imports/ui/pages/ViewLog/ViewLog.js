@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import LogTable from '../../syslog/LogTable.js'
 
-class Index extends Component {
+class ViewLog extends Component {
   constructor(props) {
     super(props);
     
@@ -11,17 +12,16 @@ class Index extends Component {
     return (
       <div className="container">
         <header>
-          <h1>Welcome to Production Lifecycle Management Tool!</h1>
+          <h1>Global Log</h1>
         </header>
-        <ul>
-          <li><Link to='/login'>Login</Link></li>
-        </ul>
+        <p></p>
+        <LogTable />
       </div>
     );
   }
 }
 
-export default Index;
+export default ViewLog;
 
 
 

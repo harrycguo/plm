@@ -3,10 +3,9 @@ import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Table from '../../table/Table.js'
 import StorageCapacityWrapper from '../../components/StorageCapacityWrapper/StorageCapacityWrapper.js'
-import AdminViewInventoryNavBar from '../../components/AdminViewInventoryNavBar/AdminViewInventoryNavBar.js'
- 
-// App component - represents the whole app
-class AdminViewInventory extends Component {
+import InventoryManagementNavBar from '../../components/InventoryManagementNavBar/InventoryManagementNavBar.js'
+
+class InventoryManagement extends Component {
   constructor(props) {
     super(props);
     
@@ -18,7 +17,7 @@ class AdminViewInventory extends Component {
         <header>
           <h1>Inventory Management</h1>
         </header>
-        <AdminViewInventoryNavBar/>
+        <InventoryManagementNavBar/>
         <StorageCapacityWrapper/>
         <Table/>
 
@@ -27,4 +26,4 @@ class AdminViewInventory extends Component {
   }
 }
 
-export default AdminViewInventory;
+export default InventoryManagement;
