@@ -257,6 +257,24 @@ class BulkImportFormulas extends Component {
       }
     }
 
+    console.log(organizedFormulaArray)
+
+    for (let i = 0; i < organizedFormulaArray.length; i++){
+      let ingredientsList = organizedFormulaArray[i].ingredientsList
+      let ingListSet = new Set()
+
+      for (let j = 0; j < ingredientsList.length; j++){
+        ingListSet.add(ingredientsList[j].id)
+      }
+
+      if (ingListSet.size < ingredientsList.length) {
+        errors.push("Duplicate ingredients for Formula: " + organizedFormulaArray[i].formulaName )
+      }
+
+      ingListSet.clear()
+
+    }
+
     // return 
     return {
       valid: errors.length == 0 ? true : false,
