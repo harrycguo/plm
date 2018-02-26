@@ -69,7 +69,7 @@ export function checkGreaterThanZero(number, errorMessage) {
 // export function vendorExists(vendor)
 
 export function cartContainsIng(ingId) {
-	var ingredients = Carts.findOne({ user : Meteor.userId()}).ingredients
+	var ingredients = Carts.find({ user : Meteor.userId()}).fetch()[0].ingredients
 	console.log(ingredients)
 	for (var i = 0; i < ingredients.length; i++) {
 		if (ingredients[i].ingredient == ingId) {

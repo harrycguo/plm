@@ -21,10 +21,14 @@ Meteor.methods({
         // if(Meteor.userId()){
         //     if (Roles.userIsInRole(Meteor.userId(), ['admin','manager'])){
         //        throw new Meteor.Error('not-authorized', 'not-authorized')
-        //     }
+        //     }sdfsdfsdf
         // }
         console.log(Carts.find().fetch())
         console.log(Vendors.find().fetch())
+
+        if (Carts.find({user: Meteor.userId()}).fetch()[0] === undefined) {
+            Meteor.call('createUserCart')
+        }
 
         addToCartCheck(selectedIngredient._id, numPackages)
         let vendorInfo = null

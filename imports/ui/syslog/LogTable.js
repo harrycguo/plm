@@ -225,7 +225,6 @@ class LogTable extends Component {
 	render() {
 		return (
 			<div>
-
 			{this.renderTable(this)}
 		   	</div>
 		);
