@@ -4,7 +4,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import Carts from '../../../api/Cart/Cart.js';
 import IngredientsApi from '../../../api/Ingredients/IngredientsApi.js';
 import { Vendors } from '../../../api/Vendors/vendors.js';
-import EditVendor from '../../table/EditVendor.js';
+import { Button } from 'react-bootstrap';
 
 
 import { Link } from 'react-router-dom';
@@ -13,8 +13,14 @@ import InventoryManagementNavBar from '../../components/InventoryManagementNavBa
 
 class IngredientCart extends Component {
 	
+	constructor(props) {
+		super(props);
+		this.state = {
+			edit: props.edit
+		}
+	}
+
 	remove() {
-		console.log(this.fullIng)
 		Meteor.call('removeIngredientFromCart', this.fullIng.ingredient,
 			function(error, result){
 				if(error){
@@ -49,18 +55,17 @@ class IngredientCart extends Component {
 			})
 		});
 
-		console.log(frontEndCart)
-
 		return frontEndCart.length > 0 ? frontEndCart.map(ingredient => (
 			<tr key={ingredient.key}>
 				<td>{ingMap.get(ingredient.fullIng.ingredient).name}</td>
-				<td>{ingredient.amt}</td>
-				<EditVendor 
-					key={ingredient.fullIng.ingredient}
-					ing={ingMap.get(ingredient.fullIng.ingredient)} 
-					vendor={ingredient.fullIng.vendorInfo}
-					edit={false}
-				/>
+				<td>{this.renderEditableAmount(ingredient)}</td>
+				<td>{ingMap.get(ingredient.fullIng.ingredient).nativeInfo.numNativeUnitsPerPackage
+					+' '+ingMap.get(ingredient.fullIng.ingredient).nativeInfo.nativeUnit}</td>
+				<td>{this.renderVendorSelector(
+					ingMap.get(ingredient.fullIng.ingredient),
+					vendorMap,
+					vendorMap.get(ingredient.fullIng.vendorInfo.vendor))}</td>
+				<td>{ingredient.fullIng.vendorInfo.price}</td>
 				<td>
 					<button
 					onClick={this.remove.bind(ingredient)}
@@ -70,6 +75,64 @@ class IngredientCart extends Component {
 				</td>
 			</tr>
 		)) : null;
+	}
+
+	renderVendorSelector(ingredient, vendorMap, vendorInfo) {
+		var ingredientVendors = ingredient.vendorInfo
+		let items = new Array();
+		ingredientVendors.forEach(function(possibleVendor) {
+			var newVendorId = possibleVendor.vendor
+			if(vendorMap.get(newVendorId)) {
+			var newVendorName = vendorMap.get(newVendorId).vendor
+				var oldVendorId = vendorInfo._id
+				var oldVendorName = vendorMap.get(oldVendorId).vendor
+				if(oldVendorId == newVendorId){
+					items.push(
+					<option selected="selected" key={newVendorId} value={newVendorId}> 
+						{newVendorName + ' | ' + possibleVendor.price} 
+					</option>)
+				} else {
+					items.push(
+					<option key={newVendorId} value={newVendorId}> 
+						{newVendorName + ' | ' + possibleVendor.price} 
+					</option>)
+				}
+			}
+		})
+		if(this.state.edit) {
+			return(
+				<select
+		            name="vendor"
+		            onChange={e => {
+		           		var message = "Change vendor in cart from "
+		           		message = message.concat(vendorMap.get(vendorInfo._id).vendor).concat(" to ").concat(vendorMap.get(e.target.value).vendor)
+		           		if(confirm(message)) {
+				           	Meteor.call('cart.changeVendor',
+								ingredient._id,
+								e.target.value,
+								function(error, result) {
+									if(error){
+										console.log("something goes wrong with the following error message " + error.reason )
+										Bert.alert(error.reason, 'danger');
+									}
+								}
+							)
+			           } else {
+			           	e.target.value = vendorInfo._id
+			           }
+		           	}
+		           }>
+		           {items}
+				</select>
+          	)
+		} else {
+			return (<div>{vendorInfo.vendor}</div>)
+		}
+	}
+
+	changeEditState(newEdit) {
+		this.state.edit=newEdit;
+		this.forceUpdate();
 	}
 
 	checkoutButton() {
@@ -95,7 +158,7 @@ class IngredientCart extends Component {
 							Bert.alert('Successfully Checked Out!', 'success');
 							history.push(returnLink)
 							
-							}
+						}
 					});
 				}}
 				title="Checkout"
@@ -111,17 +174,20 @@ class IngredientCart extends Component {
           		<h1>Cart</h1>
         	</header>
 			<InventoryManagementNavBar/>
-		
-			
+			<Button
+				bsStyle="primary"
+				onClick={this.edit.bind(this)}
+				title= "Edit"
+				>{this.editButtonText()}
+			</Button>
 		    	<table>
 		    		<tbody>
 		    			<tr>
 		    				<th>Ingredient</th>
-		    				<th>Amount</th>
+		    				<th>Packages</th>
+		    				<th>Quantity</th>
 		    				<th>Vendor</th>
 		    				<th>Price</th>
-		    				<th>Edit Vendor</th>
-		    				<th>Remove</th>
 						</tr>
 	    				{this.renderCartItems()}
 	    			</tbody>
@@ -130,7 +196,51 @@ class IngredientCart extends Component {
 			</div>
 		)
 	}
+	edit(){
+		this.changeEditState(!this.state.edit)
+	}
+	editButtonText() {
+		return this.state.edit ? "Leave Edit Mode" : "Enter Edit Mode"
+	}
+	renderEditableAmount (ingredient) {
+		if(this.state.edit) {
+			return(
+			<input
+				type="text"
+				defaultValue={ingredient.amt}
+				ref="numPacks"
+				onBlur={ e => {
+					var message = "Change cart quantity from "
+					message = message.concat(ingredient.amt).concat(" to ").concat(e.target.value).concat("?\n")
+					message = message.concat("This change will happen immediately. \nYou do not need to hit submit to finalize this change.")
+					if(confirm(message)) {
+						e.persist()
+						Meteor.call('cart.changeQuantity', 
+						ingredient.fullIng.ingredient,
+						e.target.value,
+						function(error,result){
+							if(error){
+								console.log("something goes wrong with the following error message " + error.reason )
+								Bert.alert(error.reason, 'danger');
+								e.target.value = ingredient.amt
+							}
+						})
+					}
+				}}
+				placeholder="Native Unit"
+			/>
+			);
+		} else {
+			return(
+				<>
+				{ingredient.amt}
+				</>
+			);
+		}
+	}
 }
+
+
 
 export default withTracker(() => {
 	Meteor.subscribe('carts')

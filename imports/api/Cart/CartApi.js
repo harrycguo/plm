@@ -36,27 +36,26 @@ Meteor.methods({
     'removeIngredientFromCart': function(selectedIngredient) {
     	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { ingredient : selectedIngredient}}});
     },
-    'changeQuantity': function(selectedIngredient, amount){
-        //TODO: Implement
-        ings = Carts.findOne({ user : Meteor.userId }).ingredients
-        // for (var i = 0; i < ings.length; i++) {
-        //     if (ings[i].ingredient == selectedIngredient._id) {
-        //         newAmount = ings[i].amount + amount;
-        //     }
-        // }
-        addToCartCheck(selectedIngredient._id,amount)
+    'cart.changeQuantity': function(selectedIngredient, amount){
+        addToCartCheck(selectedIngredient,amount)
         console.log("LETS GET IT")
-        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient._id }, {$set : { 'ingredients.$.amount' : amount }});
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.amount' : amount }});
     },
-    'changeVendor': function(selectedIngredient, vendor) {
+    'cart.changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement
         // checkCartExists()
-        vendorInfoArr = IngredientsList({ _id : selectedIngredient_id }).vendorInfo
+        vendorInfoArr = IngredientsList.find({ _id : selectedIngredient }).fetch()[0].vendorInfo
         vendorInfo = {}
+        console.log(vendorInfoArr)
+        console.log(vendor)
         for (var i=0; i<vendorInfoArr.length; i++) {
-            if (vendorInfoArr[i].vendor == vendor) vendorInfo = vendorInfoArr[i];
+            if (vendorInfoArr[i].vendor == vendor) {
+                console.log('WE HERE')
+                vendorInfo = vendorInfoArr[i];
+            }
         }
-        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient._id}, {$set : { 'ingredients.$.vendorInfo' : vendorInfo }});
+        console.log(vendorInfo)
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient}, {$set : { 'ingredients.$.vendorInfo' : vendorInfo }});
     },
     'checkoutIngredients': function() { //Allow adding to inentory instead of just remove
         let cart = Carts.find({ user : Meteor.userId()}).fetch()[0];
@@ -68,7 +67,8 @@ Meteor.methods({
             console.log(ingCartInfo.ingredient._id)
             diff = ingCartInfo.ingredient.quantity - ingCartInfo.amount;
             //Meteor.call('editQuantity',ingCartInfo.ingredient._id,Number(diff));
-            Meteor.call('logProductionInReport',ingCartInfo.ingredient,Number(ingCartInfo.amount));
+            var ing = IngredientsList.find({ _id : ingCartInfo.ingredient}).fetch()[0]
+            Meteor.call('logProductionInReport',ing,Number(ingCartInfo.amount),Number(ingCartInfo.vendorInfo.price));
         });
         Carts.update({ user : Meteor.userId()}, {$set : {ingredients : []}});
         console.log("finished");

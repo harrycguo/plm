@@ -19,17 +19,22 @@ import { VendorSelect } from '../forms/VendorSelect.js';
 export class EditVendor extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			edit: props.edit
+		}
 	}
 
 	renderPriceField() {
-			return this.props.edit ? 
+			return this.props.source == "table" ? 
 			(
 				<td> 
 					<input type="text"  
 					defaultValue={this.props.vendor.price}
 					onBlur = {e=> {
 						var message = "Change price from "
-						message = message.concat(this.props.vendor.price).concat(" to ").concat(e.target.value).concat("?")
+						message = message.concat(this.props.vendor.price).concat(" to ").concat(e.target.value).concat("?\n")
+						message = message.concat("You will still need to submit changes!")
+
 						if(confirm(message=message)){
 							// Make the edit happen
 						}else{
@@ -44,25 +49,40 @@ export class EditVendor extends Component {
 				</td>
 			);
 	}
+	renderButton(){
+		return this.props.noButton && !this.state.edit ? null : (
+		<td>
+		<button
+			onClick={e => {
+				if(this.props.source == "table") {
+					if(confirm("Update vendor?")) {
+						// Full Ingredient: 
+						console.log(this.props.ing)
+						// Vendor id: 
+						console.log(this.refs.vendorSel.vendor.value)
+						// New price: 
+						console.log(this.refs.price.value)
+					}
+				}
+				var success = false;
+				this.state.edit = !this.state.edit
+				this.forceUpdate()
+			}}
+			title= "Edit Vendor"
+		>{!this.state.edit && this.props.source == "cart" ? "Edit" : "Submit Edits"}</button>
+		</td>)
+	}
 	render() {
-		console.log("props:")
-		console.log(this.props)
+		if(this.props.edit != undefined) {
+			this.state.edit = this.props.edit
+		}
 		return (
 			<>
 			<td>
-				<VendorSelect edit={this.props.edit} vendor={this.props.vendor} ref="vendorSel" />
+				<VendorSelect edit={this.state.edit} source ={this.props.source}vendor={this.props.vendor} ref="vendorSel" />
 			</td>
 			{this.renderPriceField()}
-			<td>
-				<button
-					onClick={e => {
-						var success = false;
-						console.log(this.refs.price.value)
-						console.log(this.refs.vendorSel.vendor)
-					}}
-					title= "Edit Vendor"
-				>Edit Vendor</button>
-			</td>
+			{this.renderButton()}
 			</>
 		);
 	}
