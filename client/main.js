@@ -4,6 +4,7 @@ import { render } from 'react-dom';
  
 import { renderRoutes } from '../imports/startup/client/routes.js';
 import 'react-table/react-table.css'
+import 'react-widgets/dist/css/react-widgets.css'
 import '../imports/api/Vendors/vendors.js';
 
 Meteor.startup(() => {

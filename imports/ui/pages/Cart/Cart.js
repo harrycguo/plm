@@ -59,8 +59,7 @@ class IngredientCart extends Component {
 			<tr key={ingredient.key}>
 				<td>{ingMap.get(ingredient.fullIng.ingredient).name}</td>
 				<td>{this.renderEditableAmount(ingredient)}</td>
-				<td>{ingMap.get(ingredient.fullIng.ingredient).nativeInfo.numNativeUnitsPerPackage
-					+' '+ingMap.get(ingredient.fullIng.ingredient).nativeInfo.nativeUnit}</td>
+				<td>{this.getNativeUnits(ingMap, ingredient)}</td>
 				<td>{this.renderVendorSelector(
 					ingMap.get(ingredient.fullIng.ingredient),
 					vendorMap,
@@ -77,6 +76,11 @@ class IngredientCart extends Component {
 		)) : null;
 	}
 
+	getNativeUnits(ingMap, ingredient){
+		var totalNum = ingMap.get(ingredient.fullIng.ingredient).nativeInfo.numNativeUnitsPerPackage * ingredient.amt
+		return (totalNum.toString().concat(" ").concat(ingMap.get(ingredient.fullIng.ingredient).nativeInfo.nativeUnit))
+	}
+	
 	renderVendorSelector(ingredient, vendorMap, vendorInfo) {
 		var ingredientVendors = ingredient.vendorInfo
 		let items = new Array();
