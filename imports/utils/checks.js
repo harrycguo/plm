@@ -69,13 +69,15 @@ export function checkGreaterThanZero(number, errorMessage) {
 // export function vendorExists(vendor)
 
 export function cartContainsIng(ingId) {
-	let ing = Carts.find({ user : Meteor.userId()}, { $elemMatch : {'ingredients.$.ingredient' : ingId}}).fetch()
-	console.log(ing)
-	// if (!ing) {
-	// 	console.log("FALSE")
-	// 	return false
-	// }
-	// return true
+	var ingredients = Carts.find({ user : Meteor.userId()}).fetch()[0].ingredients
+	console.log(ingredients)
+	for (var i = 0; i < ingredients.length; i++) {
+		if (ingredients[i].ingredient == ingId) {
+			console.log(ingredients[i])
+			return true
+		}
+	}
+	return false
 }
 
 export function addToCartCheck(ingId, amount) {
@@ -87,7 +89,7 @@ export function addToCartCheck(ingId, amount) {
     if (ing.vendorInfo.length === 0) {
         throw new Meteor.Error('No vendor exists for this ingredient','no vendor exists for this ingredient')
     }
-    else if ((ing.packageInfo.numPackages - amount) < 0) {
+    else if ((ing.packageInfo.numPackages - amount) <= 0) {
         throw new Meteor.Error("Can't add more to cart than is in inventory","Can't add more to cart than is in inventory");
     }
 }
