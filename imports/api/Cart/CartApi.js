@@ -18,18 +18,20 @@ Meteor.methods({
 		});
 	},
     'addIngredientToCart': function(selectedIngredient, amount) {
-        if(Meteor.userId()){
-            if (Roles.userIsInRole(Meteor.userId(), ['admin','manager'])){
-               throw new Meteor.Error('not-authorized', 'not-authorized')
-            }
-        }
+        // if(Meteor.userId()){
+        //     if (Roles.userIsInRole(Meteor.userId(), ['admin','manager'])){
+        //        throw new Meteor.Error('not-authorized', 'not-authorized')
+        //     }kuhkjhj
+        // }
+        console.log(Carts.find().fetch())
         addToCartCheck(selectedIngredient._id, amount)
-        vendorInfo = IngredientsList.findOne({ _id : selectedIngredient._id }).vendorInfo
+        vendorInfo = IngredientsList.findOne({ _id : selectedIngredient._id }).vendorInfo[0]
         if (cartContainsIng(selectedIngredient._id)) {
+            console.log('CHANGING QTY')
             Meteor.call('changeQuantity',selectedIngredient, amount)
         } else {
             Carts.update({ user : Meteor.userId()}, {$push : { ingredients : {
-                ingredient : selectedIngredient,
+                ingredient : selectedIngredient._id,
                 amount: amount,
                 vendorInfo: vendorInfo
             }}});
@@ -40,9 +42,15 @@ Meteor.methods({
     },
     'changeQuantity': function(selectedIngredient, amount){
         //TODO: Implement
-        addToCartCheck(selectedIngredient._id,amount)
-        checkCartExists()
-        Carts.update({ user : Meteor.userId()}, {$set : { ingredients : { amount: amount }}});
+        ings = Carts.findOne({ user : Meteor.userId }).ingredients
+        for (var i = 0; i < ings.length; i++) {
+            if (ings[i].ingredient == selectedIngredient._id) {
+                newAmount = ings[i].amount + amount;
+            }
+        }
+        addToCartCheck(selectedIngredient._id,newAmount)
+        // checkCartExists()
+        Carts.update({ user : Meteor.userId()}, {$set : { ingredients : { amount: newAmount }}});
     },
     'changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement

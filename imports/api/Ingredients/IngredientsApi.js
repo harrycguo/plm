@@ -18,6 +18,10 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
+        console.log('adding ingredient')
+        console.log(ingVendor)
+        console.log(ingPrice)
+
         if (Object.keys(ingVendor).length === 0 && ingVendor.constructor === Object && ingPrice) {
             throw new Meteor.Error('Vendor required for price','Specify vendor or remove price');
         } 
@@ -162,9 +166,9 @@ Meteor.methods({
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
-        // if (existingIng.formulaInfo.length > 0) {
-        //     throw new Meteor.Error('Ingredient used in a formula','Ingredient used in a formula');
-        // }
+        if (existingIng.formulaInfo.length > 0) {
+            throw new Meteor.Error('Ingredient used in a formula','Ingredient used in a formula');
+        }
 
         if (!(existingIng.package == 'truckload' || existingIng.package == 'railcar')) {
 
@@ -262,7 +266,6 @@ Meteor.methods({
             console.log("physical to physical")
         }
 
-
         Meteor.call('sc.editUsed', container._id, Number(newUsed));
 
         check(selectedIngredient, String);
@@ -304,7 +307,8 @@ Meteor.methods({
         packagingMap.set('railcar', 0);
 
         let newStorage = newNumPackages * packagingMap.get(existingIng.packageInfo.packageType)
-
+        console.log('new storage')
+        console.log(newStorage)
         Meteor.call('editStorage', selectedIngredient, Number(newStorage))
 
     },
@@ -453,8 +457,9 @@ Meteor.methods({
         }
         var ing = IngredientsList.findOne({ _id : selectedIngredient._id });
         var vendor = Vendors.findOne({ _id : vendorId}); 
+        console.log(vendor)
         checkUndefined(vendor,'vendor');
-        if(containsVendor(vendor,ing.vendorInfo)) {
+        if(containsVendor(vendor._id, ing.vendorInfo)) {
             throw new Meteor.Error('Already has vendor','this vendor is already associated with this ingredient');
         }
         var newVendor = {
@@ -467,6 +472,6 @@ Meteor.methods({
     },
     'removeVendor': function(selectedIngredient, vendor) {
         //This comment only exists just so that I can minimize the method
-        IngredientsList.update({ _id : selectedIngredient._id} , {$pull : { vendorInfo : { "vendor._id" : vendor._id}}});
+        IngredientsList.update({ _id : selectedIngredient._id} , {$pull : { vendorInfo : { vendor : vendor._id}}});
     }
 });

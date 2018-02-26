@@ -138,6 +138,7 @@ class Table extends Component {
 				<button
 					onClick={e => {
 						if(recentVendor === vendor) {
+							console.log(row.original.fullIng)
 							Meteor.call('addIngredientToCart',
 								row.original.fullIng, 
 								qty, 
