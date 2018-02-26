@@ -266,10 +266,6 @@ Meteor.methods({
             console.log("physical to physical")
         }
 
-<<<<<<< HEAD
-=======
-  
->>>>>>> database/forms
 
         Meteor.call('sc.editUsed', container._id, Number(newUsed));
 
@@ -312,16 +308,9 @@ Meteor.methods({
         packagingMap.set('railcar', 0);
 
         let newStorage = newNumPackages * packagingMap.get(existingIng.packageInfo.packageType)
-<<<<<<< HEAD
 
-        Meteor.call('editStorage', selectedIngredient, Number(newStorage))     
-=======
-        console.log('new storage')
-        console.log(newStorage)
         Meteor.call('editStorage', selectedIngredient, Number(newStorage))
 
-        
->>>>>>> database/forms
     },
     'editStorage': function (selectedIngredient, newStorage) {
 
