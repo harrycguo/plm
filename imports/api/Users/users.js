@@ -3,7 +3,7 @@ import { Accounts } from 'meteor/accounts-base';
 import { Carts } from '../Cart/Cart.js'
 
 if (Meteor.isClient) {
-  Meteor.subscribe('cart');
+  Meteor.subscribe('carts');
 }
 
 Meteor.methods({

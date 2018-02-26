@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, NavItem, Nav } from 'react-bootstrap';
+import { withTracker } from 'meteor/react-meteor-data';
+import Carts from '../../../api/Cart/Cart.js';
 
 class InventoryManagementNavBar extends Component {
     constructor(props) {
@@ -9,7 +11,17 @@ class InventoryManagementNavBar extends Component {
 
     render() {
 
-        let user = Meteor.user();
+        let user = Meteor.user()
+        let carts = this.props.carts
+        let cartNum = 0;
+
+        for (let i = 0; i < carts.length; i++){
+            if (carts[i].user == user._id){
+                cartNum = carts[i].ingredients.length
+            }
+        }
+
+
 
         //admin
         if (Roles.userIsInRole(user, ['admin'])) {
@@ -49,7 +61,7 @@ class InventoryManagementNavBar extends Component {
                 <Link
                     className="container-nav-right"
                     to="/cart">
-                    Cart
+                    Cart({cartNum})
                 </Link>    
             </div>
             )
@@ -82,7 +94,7 @@ class InventoryManagementNavBar extends Component {
                 <Link
                     className="container-nav-right"
                     to="/cart">
-                    Cart
+                    Cart({cartNum})
                 </Link>    
             </div>
             )
@@ -120,7 +132,12 @@ class InventoryManagementNavBar extends Component {
     }
 }
 
-export default InventoryManagementNavBar;
+export default withTracker(() => {
+	Meteor.subscribe('carts');
+	return {
+		carts: Carts.find({}).fetch(),
+	};
+})(InventoryManagementNavBar)
 
 
 
