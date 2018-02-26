@@ -51,6 +51,8 @@ Meteor.methods({
         console.log(vendor)
         vendorInfoArr = IngredientsList.find({ _id : selectedIngredient }).fetch()[0].vendorInfo
         vendorInfo = {}
+        console.log(vendorInfoArr)
+        console.log(vendor)
         for (var i=0; i<vendorInfoArr.length; i++) {
             if (vendorInfoArr[i].vendor == vendor) {
                 console.log(Carts.find().fetch())
@@ -71,7 +73,7 @@ Meteor.methods({
             diff = ingCartInfo.ingredient.quantity - ingCartInfo.amount;
             //Meteor.call('editQuantity',ingCartInfo.ingredient._id,Number(diff));
             var ing = IngredientsList.find({ _id : ingCartInfo.ingredient}).fetch()[0]
-            Meteor.call('logProductionInReport',ing.name,Number(ingCartInfo.amount),Number(ingCartInfo.vendorInfo.price));
+            Meteor.call('logProductionInReport',ing,Number(ingCartInfo.amount),Number(ingCartInfo.vendorInfo.price));
         });
         Carts.update({ user : Meteor.userId()}, {$set : {ingredients : []}});
         console.log("finished");

@@ -142,37 +142,11 @@ class Table extends Component {
 			<tr key={vendor.name}>
 				<td>{vendor.name}</td>
 				<td>{vendor.price}</td>
-				<td><input type="text" onChange={ e=> {
-					qty = e.target.value;
-					recentVendor = vendor;
-				}}/></td>
-				<td>
-				<button
-					onClick={e => {
-						if(recentVendor === vendor) {
-							console.log(row.original.fullIng)
-							Meteor.call('addIngredientToCart',
-								row.original.fullIng, 
-								qty, 
-								function(error,result){
-									if(error){
-	                        				console.log("something goes wrong with the following error message " + error.reason )
-	               	  						Bert.alert(error.reason, 'danger');
-	                  				} else {
-											Bert.alert('Successfully added ' + qty +' ' + row.original.fullIng.nativeInfo.nativeUnit + ' to Cart!', 'success')
-									}
-								}
-							);
-						}
-
-					}}
-				>
-					Add Packages To Cart
-				</button>
-				</td>
+				{this.renderOrderFields(row, vendor, _this)}
 			</tr>
 		));
 	}
+
 
 	////////////////////////////////////////////////
 	///											 ///
@@ -239,6 +213,47 @@ class Table extends Component {
 	}
 	editButtonText() {
 		return TableData.canEdit ? "Leave Edit Mode" : "Enter Edit Mode"
+	}
+
+	renderOrderFields(row,vendor, _this){
+		console.log(Meteor.user())
+
+		return (Meteor.user() && ( 
+			Roles.userIsInRole(Meteor.user()._id, 'manager')
+			|| Roles.userIsInRole(Meteor.user()._id, 'admin'))) ? 
+			(<>
+				<td>
+					<input type="text" onChange={ e=> {
+						qty = e.target.value;
+						recentVendor = vendor;
+					}}/>
+				</td>
+				<td>
+				<button
+					onClick={e => {
+						if(recentVendor === vendor) {
+							console.log(row.original.fullIng)
+							Meteor.call('addIngredientToCart',
+								row.original.fullIng, 
+								qty, 
+								function(error,result){
+									if(error){
+	                        				console.log("something goes wrong with the following error message " + error.reason )
+	               	  						Bert.alert(error.reason, 'danger');
+	                  				} else {
+											Bert.alert('Successfully added ' + qty +' ' + row.original.fullIng.nativeInfo.nativeUnit + ' to Cart!', 'success')
+									}
+								}
+							);
+						}
+
+					}}
+				>
+					Add Packages To Cart
+				</button>
+				</td>
+				</>
+			) : null;
 	}
 	
 }

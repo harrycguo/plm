@@ -89,9 +89,6 @@ export function addToCartCheck(ingId, amount) {
     if (ing.vendorInfo.length === 0) {
         throw new Meteor.Error('No vendor exists for this ingredient','no vendor exists for this ingredient')
     }
-    else if ((ing.packageInfo.numPackages - amount) <= 0) {
-        throw new Meteor.Error("Can't add more to cart than is in inventory","Can't add more to cart than is in inventory");
-    }
 }
 
 export function cartExists() {
