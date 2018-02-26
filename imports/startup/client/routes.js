@@ -29,7 +29,8 @@ import ManagerViewInventory from '../../ui/pages/ManagerViewInventory/ManagerVie
 import ManagerHomepage from '../../ui/pages/ManagerHomepage/ManagerHomepage';
 import FormulaManagement from '../../ui/pages/FormulaManagement/FormulaManagement';
 import AddFormula from '../../ui/pages/AddFormula/AddFormula';
-import EditFormula from '../../ui/pages/EditFormula/EditFormula.js'
+import EditFormula from '../../ui/pages/EditFormula/EditFormula.js';
+import LogTable from '../../ui/syslog/LogTable.js';
 
 export const renderRoutes = () => (
   <Router>
@@ -60,6 +61,7 @@ export const renderRoutes = () => (
     <Route path='/formulaManagement' component={FormulaManagement}/>
     <Route path='/addFormula' component={AddFormula}/>
     <Route path='/editFormula/:formulaID' component={EditFormula}/>
+    <Route path='/log' component={LogTable}/>
   </div>
 </Router>
 );

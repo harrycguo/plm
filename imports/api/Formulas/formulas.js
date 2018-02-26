@@ -50,6 +50,7 @@ Meteor.methods({
         productUnits: Number(productUnits),
         ingredientsList: ingredientsList
       });
+      Meteor.call('systemlog.insert', "Formula", name, 0, "Created", "Nothing", "Something")
     },
 
     'formulas.remove'(formulaID) {
