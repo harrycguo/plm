@@ -166,9 +166,9 @@ Meteor.methods({
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
-        // if (existingIng.formulaInfo.length > 0) {
-        //     throw new Meteor.Error('Ingredient used in a formula','Ingredient used in a formula');
-        // }
+        if (existingIng.formulaInfo.length > 0) {
+            throw new Meteor.Error('Ingredient used in a formula','Ingredient used in a formula');
+        }
 
         if (!(existingIng.package == 'truckload' || existingIng.package == 'railcar')) {
 
@@ -220,7 +220,6 @@ Meteor.methods({
         IngredientsList.update({ _id: selectedIngredient }, { $set: { temperatureState: newTemperatureState.toLowerCase() } });
     },
     'editPackage': function (selectedIngredient, newPackage) {
-        
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
@@ -266,8 +265,6 @@ Meteor.methods({
             console.log("physical to physical")
         }
 
-  
-
         Meteor.call('sc.editUsed', container._id, Number(newUsed));
 
         check(selectedIngredient, String);
@@ -276,8 +273,7 @@ Meteor.methods({
 
         //update package
         IngredientsList.update({ _id: selectedIngredient }, { $set: { "packageInfo.packageType": newPackage.toLowerCase() } });
-        IngredientsList.update({ _id: selectedIngredient }, { $set: { storage:  Number(newStorage)} });
-        
+        IngredientsList.update({ _id: selectedIngredient }, { $set: { storage:  Number(newStorage)} });    
     },
     'editNumPackages': function (selectedIngredient, newNumPackages) {
 
@@ -314,7 +310,6 @@ Meteor.methods({
         console.log(newStorage)
         Meteor.call('editStorage', selectedIngredient, Number(newStorage))
 
-        
     },
     'editStorage': function (selectedIngredient, newStorage) {
 
@@ -335,7 +330,6 @@ Meteor.methods({
         }
 
         IngredientsList.update({ _id: selectedIngredient }, { $set: { storage : Number(newStorage) } });
-
     },
     'editNumNativeUnitsPerPackage': function(selectedIngredient, newNumNativeUnitsPerPackage) {
         
@@ -356,7 +350,6 @@ Meteor.methods({
         let remainingPackages = Math.ceil(Number(existingIng.nativeInfo.totalQuantity) / Number(newNumNativeUnitsPerPackage))
 
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
-
     },
     'editTotalNumNativeUnits': function(selectedIngredient, newTotalNumNativeUnits) {
         
@@ -381,7 +374,6 @@ Meteor.methods({
         console.log('remainig pakgs')
         console.log(remainingPackages)
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
-
     },
     'editNativeUnit': function(selectedIngredient, newNativeUnit){
         
@@ -390,8 +382,7 @@ Meteor.methods({
         }
 
         IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.nativeUnit" : newNativeUnit}});
-
-    },    
+    },
     'editPrice': function (selectedIngredient, vendorId, newPrice) {
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
@@ -434,11 +425,8 @@ Meteor.methods({
         packagingMap.set('railcar', 0);
 
         let ingredientQuantity = Number(packagingMap.get(ingredient.package)) * Number(numPackages)
-        console.log("\t"+vendor)
-        console.log("\t"+vendor.cost+" "+ingredientQuantity +" "+ingredient.price +" "+ ingredient.storage)
         let newPrice = Number((vendor.cost * ingredientQuantity + ingredient.price * ingredient.storage) / (ingredientQuantity +ingredient.quantity))
 
-        console.log("\t"+newPrice)
         IngredientsList.update({ _id: ingredient._id}, {$set: {price: Number(newPrice)}});
 
         // TODO: Throw down a call to the sales table
@@ -459,6 +447,10 @@ Meteor.methods({
         return ing;
     },
     'addVendor': function(selectedIngredient, vendorId, price) {
+        console.log("From Add Vendor:")
+        console.log(selectedIngredient)
+        console.log(vendorId)
+        console.log(price)
         if (vendorId === "null" || !price) {
             throw new Meteor.Error("Missing fields","Vendor and/or price unspecified");
         }
@@ -475,9 +467,9 @@ Meteor.methods({
         ing.vendorInfo.push(newVendor)
         ing.vendorInfo.sort(function(a,b) {return (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0);})
         IngredientsList.update({ _id : selectedIngredient._id}, {$set : {vendorInfo : ing.vendorInfo}});
-
     },
     'removeVendor': function(selectedIngredient, vendor) {
+        //This comment only exists just so that I can minimize the method
         IngredientsList.update({ _id : selectedIngredient._id} , {$pull : { vendorInfo : { "vendor._id" : vendor._id}}});
     }
 });
