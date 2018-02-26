@@ -5,9 +5,8 @@ import ReactTable from 'react-table';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
-
 import { SystemLog } from '../../api/Log/systemlog.js';
-
+import Datetime from 'react-datetime'
 class LogTable extends Component {
 	
 	////////////////////////////////////////////////
@@ -18,6 +17,7 @@ class LogTable extends Component {
 	
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			filterlow: -1,
 			filterhigh: -1,
@@ -194,30 +194,22 @@ class LogTable extends Component {
 				},
 				Filter: ({ filter, onChange }) => (
 			      <div>
-			      <input
-			      	type="text"
-			      	ref="low"
-			      	onChange={event=>{
-			      		this.state.filterlow = event.target.value
-			      		onChange(event.target.value)
-			      		console.log(this.state)
+			      	<Datetime 
+			      	defaultValue = {new Date(0)}
+			      	onChange = {event => {
+			      		var x = new Date(event._i)
+			      		this.state.filterlow = isNaN(Date.parse(x)) ? this.state.filterlow : Date.parse(x);
+						onChange(Date.parse(this.state.filterlow))
 			      	}}
-			      	style={{width:'50%',height:'100%'}}
-			      	value={this.state.filterlow >=0 ? this.state.filterlow :''}
-			      	placeholder="Start Time"
-			      />
-			      <input
-			        type="text"
-			        ref="high"
-			        onChange={event => {
-			        	this.state.filterhigh = event.target.value
-			      		onChange(event.target.value)
-			      		console.log(this.state)
-			        }}
-			        style={{ width: '50%', height: '100%'}}
-			        value={this.state.filterhigh > 0 ? this.state.filterhigh : ''}
-			        placeholder="End Time"
-			      />
+			      	/>
+			      	<Datetime 
+			      	defaultValue = {new Date(Date.now())}
+			      	onChange = {event => {
+			      		var x = new Date(event._i)
+			      		this.state.filterhigh = isNaN(Date.parse(x)) ? this.state.filterhigh : Date.parse(x);
+			      		onChange(Date.parse(this.state.filterhigh))
+			      	}}
+			      	/>
 				</div>
 				)
 			}, 	
@@ -233,6 +225,7 @@ class LogTable extends Component {
 	render() {
 		return (
 			<div>
+
 			{this.renderTable(this)}
 		   	</div>
 		);
