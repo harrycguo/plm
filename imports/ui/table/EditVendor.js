@@ -19,10 +19,13 @@ import { VendorSelect } from '../forms/VendorSelect.js';
 export class EditVendor extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			edit: props.edit
+		}
 	}
 
 	renderPriceField() {
-			return this.props.edit ? 
+			return this.props.source == "table" ? 
 			(
 				<td> 
 					<input type="text"  
@@ -50,18 +53,24 @@ export class EditVendor extends Component {
 		return (
 			<>
 			<td>
-				<VendorSelect edit={this.props.edit} vendor={this.props.vendor} ref="vendorSel" />
+				<VendorSelect edit={this.state.edit} source ={this.props.source}vendor={this.props.vendor} ref="vendorSel" />
 			</td>
 			{this.renderPriceField()}
 			<td>
 				<button
 					onClick={e => {
+						if(this.props.source == "table") {
+							console.log("table called submit")
+						} else if (this.props.source == "cart") {
+							console.log("cart called edit/submit")
+							this.props.onChange(!this.state.edit)
+						}
 						var success = false;
-						console.log(this.refs.price.value)
-						console.log(this.refs.vendorSel.vendor)
+						this.state.edit = !this.state.edit
+						this.forceUpdate()
 					}}
 					title= "Edit Vendor"
-				>Edit Vendor</button>
+				>{!this.state.edit && this.props.source == "cart" ? "Edit Vendor" : "Submit Edits"}</button>
 			</td>
 			</>
 		);

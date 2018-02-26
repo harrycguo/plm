@@ -34,7 +34,7 @@ export class VendorSelect extends Component {
     return this
   }
   render() {
-    if(this.props.edit){
+    if(this.props.source != "cart"){
       return (
           <select
            ref={vendor => (this.vendor = vendor)}
@@ -45,13 +45,23 @@ export class VendorSelect extends Component {
           </select>
       );
     } else { 
-      var vendorArr = Vendors.find().fetch();
-      for (i = 1; i < Vendors.find().fetch().length + 1; i++) {
-        if(this.props.vendor && (vendorArr[i-1]._id == this.props.vendor._id || vendorArr[i-1]._id==this.props.vendor.vendor)) {
-          return (<div>{vendorArr[i-1].vendor}</div>)
+      if(!this.props.edit) {
+        var vendorArr = Vendors.find().fetch();
+        for (i = 1; i < Vendors.find().fetch().length + 1; i++) {
+          if(this.props.vendor && (vendorArr[i-1]._id == this.props.vendor._id || vendorArr[i-1]._id==this.props.vendor.vendor)) {
+            return (<div>{vendorArr[i-1].vendor}</div>)
+          }
         }
       }
-      return null 
+      return (
+        <select
+           ref={vendor => (this.vendor = vendor)}
+           name="vendor"
+           onChange={this.optionChanged.bind(this)}>
+           <option key={0} value="null">(no vendor)</option>
+           {this.renderOptions()}
+          </select>
+      ) 
     }
   }
 }

@@ -11,6 +11,13 @@ import { Link } from 'react-router-dom';
 
 class IngredientCart extends Component {
 	
+	constructor(props) {
+		super(props);
+		this.state = {
+			edit: props.edit
+		}
+	}
+
 	remove() {
 		console.log(this.fullIng)
 		Meteor.call('removeIngredientFromCart', this.fullIng.ingredient,
@@ -52,12 +59,15 @@ class IngredientCart extends Component {
 		return frontEndCart.length > 0 ? frontEndCart.map(ingredient => (
 			<tr key={ingredient.key}>
 				<td>{ingMap.get(ingredient.fullIng.ingredient).name}</td>
-				<td>{ingredient.amt}</td>
+				<td>{this.renderEditableAmount(ingredient)}</td>
+				<td>{ingMap.get(ingredient.fullIng.ingredient).nativeInfo.numNativeUnitsPerPackage}</td>
 				<EditVendor 
 					key={ingredient.fullIng.ingredient}
 					ing={ingMap.get(ingredient.fullIng.ingredient)} 
 					vendor={ingredient.fullIng.vendorInfo}
-					edit={false}
+					source="cart"
+					edit={this.state.edit}
+					onChange={this.changeEditState.bind(this)}
 				/>
 				<td>
 					<button
@@ -68,6 +78,13 @@ class IngredientCart extends Component {
 				</td>
 			</tr>
 		)) : null;
+	}
+
+	
+
+	changeEditState(newEdit) {
+		this.state.edit=newEdit;
+		this.forceUpdate();
 	}
 
 	linkBack() {
@@ -122,7 +139,8 @@ class IngredientCart extends Component {
 		    		<tbody>
 		    			<tr>
 		    				<th>Ingredient</th>
-		    				<th>Amount</th>
+		    				<th>Packages</th>
+		    				<th>Number of Native Units</th>
 		    				<th>Vendor</th>
 		    				<th>Price</th>
 		    				<th>Edit Vendor</th>
@@ -135,7 +153,41 @@ class IngredientCart extends Component {
 			</div>
 		)
 	}
+
+	renderEditableAmount (ingredient) {
+		console.log("render::")
+		console.log(ingredient)
+		if(this.state.edit) {
+			return(
+			<input
+				type="text"
+				defaultValue={ingredient.amt}
+				onBlur={ e => {
+					Meteor.call('changeQuantity', 
+					ingredient.fullIng.ingredient,
+					e.target.value,
+					function(error,result){
+						if(error){
+							console.log("something goes wrong with the following error message " + error.reason )
+							Bert.alert(error.reason, 'danger');
+
+						}
+					})
+				}}
+				placeholder="Native Unit"
+			/>
+			);
+		} else {
+			return(
+				<>
+				{ingredient.amt}
+				</>
+			);
+		}
+	}
 }
+
+
 
 export default withTracker(() => {
 	Meteor.subscribe('carts')

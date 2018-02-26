@@ -93,7 +93,13 @@ class Table extends Component {
 	renderEditableVendorRows(row) {
 		return row.original.vendors.map(vendor => (
 			<tr key = {vendor.name}>
-				<EditVendor key={vendor.name} ing={row.original.fullIng} vendor={vendor} edit={TableData.canEdit}/>
+				<EditVendor 
+					key={vendor.name} 
+					ing={row.original.fullIng}
+					source="table" 
+					vendor={vendor} 
+					edit={TableData.canEdit}
+				/>
 				<td> 
 					<button
 						onClick={e=> {
