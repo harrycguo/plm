@@ -48,10 +48,13 @@ Meteor.methods({
     'cart.changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement
         // checkCartExists()
-        vendorInfoArr = IngredientsList({ _id : selectedIngredient }).vendorInfo
+        vendorInfoArr = IngredientsList.find({ _id : selectedIngredient }).fetch()[0].vendorInfo
         vendorInfo = {}
         for (var i=0; i<vendorInfoArr.length; i++) {
-            if (vendorInfoArr[i].vendor == vendor) vendorInfo = vendorInfoArr[i];
+            if (vendorInfoArr[i].vendor == vendor) {
+                console.log('WE HERE')
+                vendorInfo = vendorInfoArr[i];
+            }
         }
         console.log(selectedIngredient)
         Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient}, {$set : { 'ingredients.$.vendorInfo' : vendorInfo }});
