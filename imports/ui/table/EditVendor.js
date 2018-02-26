@@ -19,10 +19,13 @@ import { VendorSelect } from '../forms/VendorSelect.js';
 export class EditVendor extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			edit: props.edit
+		}
 	}
 
 	renderPriceField() {
-			return this.props.edit ? 
+			return this.props.source == "table" ? 
 			(
 				<td> 
 					<input type="text"  
@@ -44,25 +47,47 @@ export class EditVendor extends Component {
 				</td>
 			);
 	}
+	renderButton(){
+		return this.props.noButton && !this.state.edit ? null : (
+		<td>
+		<button
+					onClick={e => {
+						if(this.props.source == "table") {
+							console.log("table called submit")
+						} else if (this.props.source == "cart" && this.state.edit) {
+							console.log("cart called edit/submit")
+							Meteor.call('cart.changeVendor',
+								this.props.ing._id,
+								this.props.vendor.vendor,
+								function(error, result) {
+
+								}
+								)
+							this.props.onChange(!this.state.edit)
+						}
+						var success = false;
+						this.state.edit = !this.state.edit
+						this.forceUpdate()
+					}}
+					title= "Edit Vendor"
+		>{!this.state.edit && this.props.source == "cart" ? "Edit" : "Submit Edits"}</button>
+		</td>)
+	}
 	render() {
 		console.log("props:")
+		//console.log(this.props)
 		console.log(this.props)
+		if(this.props.edit != undefined) {
+			this.state.edit = this.props.edit
+		}
 		return (
 			<>
 			<td>
-				<VendorSelect edit={1} vendor={this.props.vendor} ref="vendorSel" />
+				<VendorSelect edit={this.state.edit} source ={this.props.source}vendor={this.props.vendor} ref="vendorSel" />
 			</td>
 			{this.renderPriceField()}
-			<td>
-				<button
-					onClick={e => {
-						var success = false;
-						console.log(this.refs.price.value)
-						console.log(this.refs.vendorSel.vendor)
-					}}
-					title= "Edit Vendor"
-				>Edit Vendor</button>
-			</td>
+			
+				{this.renderButton()}
 			</>
 		);
 	}

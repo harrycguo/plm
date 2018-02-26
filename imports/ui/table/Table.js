@@ -99,7 +99,13 @@ class Table extends Component {
 	renderEditableVendorRows(row) {
 		return row.original.vendors.map(vendor => (
 			<tr key = {vendor.name}>
-				<EditVendor key={vendor.name} ing={row.original.fullIng} vendor={vendor} edit={TableData.canEdit}/>
+				<EditVendor 
+					key={vendor.name} 
+					ing={row.original.fullIng}
+					source="table" 
+					vendor={vendor} 
+					edit={TableData.canEdit}
+				/>
 				<td> 
 					<button
 						onClick={e=> {
@@ -153,7 +159,7 @@ class Table extends Component {
 	                        				console.log("something goes wrong with the following error message " + error.reason )
 	               	  						Bert.alert(error.reason, 'danger');
 	                  				} else {
-											Bert.alert('Successfully added ' + qty + ' lbs to Cart!', 'success')
+											Bert.alert('Successfully added ' + qty +' ' + row.original.fullIng.nativeInfo.nativeUnit + ' to Cart!', 'success')
 									}
 								}
 							);
@@ -220,10 +226,11 @@ class Table extends Component {
 		return (
 			<div>
 			<Button
-			bsStyle="primary"
+				bsStyle="primary"
 				onClick={this.edit.bind(this)}
 				title= "Edit"
-				>{this.editButtonText()}</Button>
+				>{this.editButtonText()}
+			</Button>
 				<p></p>
 			{this.renderTable(this)}
 		   	</div>
