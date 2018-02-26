@@ -7,5 +7,5 @@ import IngredientsList from '../api/Ingredients/IngredientList.js'
 
 export function retrieveVendorInfo(selectedIngredient, vendorId) {
 	vendorInfo = IngredientsList({ _id : selectedIngredient_id })
-
+	
 }

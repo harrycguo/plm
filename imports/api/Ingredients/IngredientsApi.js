@@ -163,9 +163,9 @@ Meteor.methods({
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
-        // if (existingIng.formulaInfo.length > 0) {
-        //     throw new Meteor.Error('Ingredient used in a formula','Cannot delete, Ingredient used in Formula(s)');
-        // }
+        if (existingIng.formulaInfo.length > 0) {
+            throw new Meteor.Error('Ingredient used in a formula','Cannot delete, Ingredient used in Formula(s)');
+        }
 
         if (!(existingIng.package == 'truckload' || existingIng.package == 'railcar')) {
 

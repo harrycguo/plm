@@ -17,15 +17,30 @@ Meteor.methods({
 			ingredients: []
 		});
 	},
-    'addIngredientToCart': function(selectedIngredient, amount) {
+    'addIngredientToCart': function(selectedIngredient, vendor, amount) {
         // if(Meteor.userId()){
         //     if (Roles.userIsInRole(Meteor.userId(), ['admin','manager'])){
         //        throw new Meteor.Error('not-authorized', 'not-authorized')
-        //     }kuhkjhj
+        //     }
         // }
         console.log(Carts.find().fetch())
+        console.log(Vendors.find().fetch())
+
         addToCartCheck(selectedIngredient._id, amount)
-        vendorInfo = IngredientsList.find({ _id : selectedIngredient._id }).fetch()[0].vendorInfo[0]
+        
+        if (vendor == null) {
+            vendorInfo = IngredientsList.find({ _id : selectedIngredient._id }).fetch()[0].vendorInfo[0]
+        }
+        else {
+            vendorList = IngredientsList.find({ _id : selectedIngredient._id }).fetch()[0].vendorInfo
+            for (var i = 0; i < vendorList.length; i++) {
+                if (vendorList[i].vendor == vendor) {
+                    console.log('We setting!')
+                    vendorInfo = vendorList[i]
+                }
+            }
+        }
+
         if (cartContainsIng(selectedIngredient._id)) {
             console.log('CHANGING QTY')
             Meteor.call('cart.changeQuantity',selectedIngredient._id, amount)

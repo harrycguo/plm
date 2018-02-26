@@ -1,5 +1,5 @@
 import { Mongo } from 'meteor/mongo';
-import { ProdReportSchema } from '../Ingredients/Schemas.js';
+import { ProdReportSchema, IngredientProdInfoSchema } from '../Ingredients/Schemas.js';
 
 ProductionReport = new Mongo.Collection('prodReport');
 ProductionReport.attachSchema(ProdReportSchema);
