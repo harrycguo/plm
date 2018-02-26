@@ -62,11 +62,8 @@ export const renderRoutes = () => (
     <Route path='/formulaManagement' component={FormulaManagement}/>
     <Route path='/addFormula' component={AddFormula}/>
     <Route path='/editFormula/:formulaID' component={EditFormula}/>
-<<<<<<< HEAD
     <Route path='/log' component={LogTable}/>
-=======
     <Route path='/productionRun' component={ProductionRun}/>
->>>>>>> database/forms
   </div>
 </Router>
 );
