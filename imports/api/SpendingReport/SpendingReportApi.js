@@ -11,12 +11,14 @@ Meteor.methods({
             type: "Ordered"
         });
     },
-    'logProductionInReport': function(ingredient, amount) {
+    'logProductionInReport': function(ingredient, amount, price) {
+        console.log("log says:")
+        console.log(ingredient)
         Report.insert({
             createdAt: Date.now(),
             ingredient_name: ingredient.name,
             quantity: Number(amount),
-            price: ingredient.price,
+            price: price,
             type: "In Production"
         });
     }
