@@ -145,17 +145,14 @@ LogSchema = new SimpleSchema({
   
 })
 
-// ProdReportSchema = new SimpleSchema({
-//    formula: {
-//     type: String,
-//     min: 1
-//    },
-//    totalProduced: {
-//     type: Number
-//    },
-//    ingsConsumed: {
-//     type: Array,
-//    }
-// })
+ProdReportSchema = new SimpleSchema({
+   formula: {
+    type: String,
+    min: 1
+   },
+   total: {
+    type: Number
+   }
+})
 
 export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema };
