@@ -216,11 +216,7 @@ Meteor.methods({
         IngredientsList.update({ _id: selectedIngredient }, { $set: { temperatureState: newTemperatureState.toLowerCase() } });
     },
     'editPackage': function (selectedIngredient, newPackage) {
-<<<<<<< HEAD
-            
-=======
-        
->>>>>>> database/forms
+
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
