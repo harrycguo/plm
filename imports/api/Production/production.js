@@ -65,7 +65,8 @@ Meteor.methods({
                 console.log('adding things')
                 Meteor.call('addIngredientToCart',
                         ingredient,
-                        packagesNeeded)
+                        packagesNeeded,
+                        null)
 
             }
         }

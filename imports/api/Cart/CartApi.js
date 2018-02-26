@@ -17,18 +17,38 @@ Meteor.methods({
 			ingredients: []
 		});
 	},
-    'addIngredientToCart': function(selectedIngredient, amount) {
-        
-        addToCartCheck(selectedIngredient._id, amount)
-        vendorInfo = IngredientsList.find({ _id : selectedIngredient._id }).fetch()[0].vendorInfo[0]
+    'addIngredientToCart': function(selectedIngredient, numPackages, vendor) {
+        // if(Meteor.userId()){
+        //     if (Roles.userIsInRole(Meteor.userId(), ['admin','manager'])){
+        //        throw new Meteor.Error('not-authorized', 'not-authorized')
+        //     }
+        // }
+        console.log(Carts.find().fetch())
+        console.log(Vendors.find().fetch())
+
+        addToCartCheck(selectedIngredient._id, numPackages)
+        let vendorInfo = null
+
+        if (vendor == null) {
+            vendorInfo = IngredientsList.find({ _id : selectedIngredient._id }).fetch()[0].vendorInfo[0]
+        }
+        else {
+            vendorList = IngredientsList.find({ _id : selectedIngredient._id }).fetch()[0].vendorInfo
+            for (var i = 0; i < vendorList.length; i++) {
+                if (vendorList[i].vendor == vendor) {
+                    console.log('We setting!')
+                    vendorInfo = vendorList[i]
+                }
+            }
+        }
 
         if (cartContainsIng(selectedIngredient._id)) {
             console.log('CHANGING QTY')
-            Meteor.call('cart.changeQuantity',selectedIngredient._id, amount)
+            Meteor.call('cart.changeQuantity',selectedIngredient._id, numPackages)
         } else {
             Carts.update({ user : Meteor.userId()}, {$push : { ingredients : {
                 ingredient : selectedIngredient._id,
-                amount: amount,
+                amount: numPackages,
                 vendorInfo: vendorInfo
             }}});
         }
@@ -36,10 +56,10 @@ Meteor.methods({
     'removeIngredientFromCart': function(selectedIngredient) {
     	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { ingredient : selectedIngredient}}});
     },
-    'cart.changeQuantity': function(selectedIngredient, amount){
-        addToCartCheck(selectedIngredient,amount)
+    'cart.changeQuantity': function(selectedIngredient, numPackages){
+        addToCartCheck(selectedIngredient,numPackages)
         console.log("LETS GET IT")
-        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.amount' : amount }});
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.amount' : numPackages }});
     },
     'cart.changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement
