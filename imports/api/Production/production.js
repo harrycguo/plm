@@ -4,6 +4,7 @@ import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import IngredientsList from '../Ingredients/IngredientList.js'
 import { Formulas } from '../Formulas/formulas.js'
+import '../ProductionReport/ProductionReportApi.js';
 
 Meteor.methods({
     'production.produce'(formulaID, numUnitsProduce, ingList) {
