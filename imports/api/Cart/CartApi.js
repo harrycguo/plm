@@ -24,7 +24,7 @@ Meteor.methods({
 
         if (cartContainsIng(selectedIngredient._id)) {
             console.log('CHANGING QTY')
-            Meteor.call('changeQuantity',selectedIngredient, amount)
+            Meteor.call('cart.changeQuantity',selectedIngredient._id, amount)
         } else {
             Carts.update({ user : Meteor.userId()}, {$push : { ingredients : {
                 ingredient : selectedIngredient._id,
@@ -44,13 +44,14 @@ Meteor.methods({
     'cart.changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement
         // checkCartExists()
+        console.log(vendor)
         vendorInfoArr = IngredientsList.find({ _id : selectedIngredient }).fetch()[0].vendorInfo
         vendorInfo = {}
         console.log(vendorInfoArr)
         console.log(vendor)
         for (var i=0; i<vendorInfoArr.length; i++) {
             if (vendorInfoArr[i].vendor == vendor) {
-                console.log('WE HERE')
+                console.log(Carts.find().fetch())
                 vendorInfo = vendorInfoArr[i];
             }
         }
@@ -64,10 +65,10 @@ Meteor.methods({
         var diff;
         console.log(ings);
         ings.forEach(function(ingCartInfo){
-            console.log(ingCartInfo.ingredient._id)
-            diff = ingCartInfo.ingredient.quantity - ingCartInfo.amount;
-            //Meteor.call('editQuantity',ingCartInfo.ingredient._id,Number(diff));
+            console.log(ingCartInfo.ingredient)
             var ing = IngredientsList.find({ _id : ingCartInfo.ingredient}).fetch()[0]
+            newAmount = ing.packageInfo.numPackages + ingCartInfo.amount;
+            Meteor.call('editNumPackages',ingCartInfo.ingredient,Number(newAmount));
             Meteor.call('logProductionInReport',ing,Number(ingCartInfo.amount),Number(ingCartInfo.vendorInfo.price));
         });
         Carts.update({ user : Meteor.userId()}, {$set : {ingredients : []}});
