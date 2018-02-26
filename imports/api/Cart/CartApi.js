@@ -43,14 +43,14 @@ Meteor.methods({
     'changeQuantity': function(selectedIngredient, amount){
         //TODO: Implement
         ings = Carts.findOne({ user : Meteor.userId }).ingredients
-        for (var i = 0; i < ings.length; i++) {
-            if (ings[i].ingredient == selectedIngredient._id) {
-                newAmount = ings[i].amount + amount;
-            }
-        }
-        addToCartCheck(selectedIngredient._id,newAmount)
+        // for (var i = 0; i < ings.length; i++) {
+        //     if (ings[i].ingredient == selectedIngredient._id) {
+        //         newAmount = ings[i].amount + amount;
+        //     }
+        // }
+        addToCartCheck(selectedIngredient._id,amount)
         // checkCartExists()
-        Carts.update({ user : Meteor.userId()}, {$set : { ingredients : { amount: newAmount }}});
+        Carts.update({ user : Meteor.userId()}, {$set : { ingredients : { amount: amount }}});
     },
     'changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement
