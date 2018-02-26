@@ -200,8 +200,6 @@ class EditFormula extends Component {
             }
         }
 
-        console.log(ingList)
-
         this.setState({
             inputs: inputs,
             ingList: ingList,

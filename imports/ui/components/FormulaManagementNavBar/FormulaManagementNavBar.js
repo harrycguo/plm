@@ -27,11 +27,18 @@ class FormulaManagementNavBar extends Component {
                     to="/addFormula">
                     Add New Formula
                 </Link>
+
                 <Link
                     className="container-nav"
-                    to="/bulkImport">
+                    to="/bulkImportFormula">
                     Bulk Import Formula
                 </Link>  
+
+                <Link
+                    className="container-nav"
+                    to="/productionRun">
+                    Produce Formula
+                </Link>
             </div>
         );
     }

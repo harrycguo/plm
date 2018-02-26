@@ -216,7 +216,11 @@ Meteor.methods({
         IngredientsList.update({ _id: selectedIngredient }, { $set: { temperatureState: newTemperatureState.toLowerCase() } });
     },
     'editPackage': function (selectedIngredient, newPackage) {
+<<<<<<< HEAD
             
+=======
+        
+>>>>>>> database/forms
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
@@ -262,6 +266,10 @@ Meteor.methods({
             console.log("physical to physical")
         }
 
+<<<<<<< HEAD
+=======
+  
+>>>>>>> database/forms
 
         Meteor.call('sc.editUsed', container._id, Number(newUsed));
 
@@ -304,8 +312,16 @@ Meteor.methods({
         packagingMap.set('railcar', 0);
 
         let newStorage = newNumPackages * packagingMap.get(existingIng.packageInfo.packageType)
+<<<<<<< HEAD
 
         Meteor.call('editStorage', selectedIngredient, Number(newStorage))     
+=======
+        console.log('new storage')
+        console.log(newStorage)
+        Meteor.call('editStorage', selectedIngredient, Number(newStorage))
+
+        
+>>>>>>> database/forms
     },
     'editStorage': function (selectedIngredient, newStorage) {
 
@@ -313,9 +329,9 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
-        if (!isInt(newStorage)) {
-            throw new Meteor.Error('Storage must be an Integer', 'Storage must be an Integer');
-        }
+        // if (!isInt(newStorage)) {
+        //     throw new Meteor.Error('Storage must be an Integer', 'Storage must be an Integer');
+        // }
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
@@ -353,8 +369,12 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
-        if (!isInt(newTotalNumNativeUnits)) {
-            throw new Meteor.Error('Number of Total Native Units must be an integer', 'Number of Total Native Units must be an Integer');
+        // if (!isInt(newTotalNumNativeUnits)) {
+        //     throw new Meteor.Error('Number of Total Native Units must be an integer', 'Number of Total Native Units must be an Integer');
+        // }
+
+        if (newTotalNumNativeUnits < 0) {
+            throw new Meteor.Error('Number of Total Native Units must be greater than 0', 'Number of Total Native Units must be greater than 0');
         }
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
@@ -363,7 +383,8 @@ Meteor.methods({
 
         //re-calculate footprint
         let remainingPackages = Math.ceil(Number(newTotalNumNativeUnits) / Number(existingIng.nativeInfo.numNativeUnitsPerPackage))
-
+        console.log('remainig pakgs')
+        console.log(remainingPackages)
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
     },
     'editNativeUnit': function(selectedIngredient, newNativeUnit){
@@ -452,7 +473,7 @@ Meteor.methods({
             throw new Meteor.Error('Already has vendor','this vendor is already associated with this ingredient');
         }
         var newVendor = {
-            vendor: vendor,
+            vendor: vendor._id,
             price: price
         };
         ing.vendorInfo.push(newVendor)
