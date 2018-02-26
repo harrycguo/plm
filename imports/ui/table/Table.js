@@ -226,10 +226,11 @@ class Table extends Component {
 		return (
 			<div>
 			<Button
-			bsStyle="primary"
+				bsStyle="primary"
 				onClick={this.edit.bind(this)}
 				title= "Edit"
-				>{this.editButtonText()}</Button>
+				>{this.editButtonText()}
+			</Button>
 				<p></p>
 			{this.renderTable(this)}
 		   	</div>

@@ -47,22 +47,22 @@ export class EditVendor extends Component {
 				</td>
 			);
 	}
-	render() {
-		console.log("props:")
-		console.log(this.props)
-		return (
-			<>
-			<td>
-				<VendorSelect edit={this.state.edit} source ={this.props.source}vendor={this.props.vendor} ref="vendorSel" />
-			</td>
-			{this.renderPriceField()}
-			<td>
-				<button
+	renderButton(){
+		return this.props.noButton && !this.state.edit ? null : (
+		<td>
+		<button
 					onClick={e => {
 						if(this.props.source == "table") {
 							console.log("table called submit")
-						} else if (this.props.source == "cart") {
+						} else if (this.props.source == "cart" && this.state.edit) {
 							console.log("cart called edit/submit")
+							Meteor.call('cart.changeVendor',
+								this.props.ing._id,
+								this.props.vendor.vendor,
+								function(error, result) {
+
+								}
+								)
 							this.props.onChange(!this.state.edit)
 						}
 						var success = false;
@@ -70,8 +70,24 @@ export class EditVendor extends Component {
 						this.forceUpdate()
 					}}
 					title= "Edit Vendor"
-				>{!this.state.edit && this.props.source == "cart" ? "Edit Vendor" : "Submit Edits"}</button>
+		>{!this.state.edit && this.props.source == "cart" ? "Edit" : "Submit Edits"}</button>
+		</td>)
+	}
+	render() {
+		console.log("props:")
+		//console.log(this.props)
+		console.log(this.props)
+		if(this.props.edit != undefined) {
+			this.state.edit = this.props.edit
+		}
+		return (
+			<>
+			<td>
+				<VendorSelect edit={this.state.edit} source ={this.props.source}vendor={this.props.vendor} ref="vendorSel" />
 			</td>
+			{this.renderPriceField()}
+			
+				{this.renderButton()}
 			</>
 		);
 	}
