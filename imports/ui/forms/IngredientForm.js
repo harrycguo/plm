@@ -116,7 +116,7 @@ export class IngredientForm extends Component {
 		if (Meteor.isServer) {
 			console.log("server side");
 		} else if (Meteor.isClient) {
-			Meteor.call("addToExistingIngredient",
+			Meteor.call("addIngredient",
 				name,
 				temperatureState,
 				packaging,

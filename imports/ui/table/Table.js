@@ -234,7 +234,6 @@ class Table extends Component {
 	}
 
 	renderOrderFields(row,vendor, _this){
-		console.log(Meteor.user())
 
 		return (Meteor.user() && ( 
 			Roles.userIsInRole(Meteor.user()._id, 'manager')

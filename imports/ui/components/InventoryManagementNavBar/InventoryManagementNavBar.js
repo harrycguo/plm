@@ -43,7 +43,7 @@ class InventoryManagementNavBar extends Component {
                 <Link
                     className="container-nav"
                     to="/addingredient">
-                    Add Ingredient
+                    Add New Ingredient
                 </Link>
 
                 <Link
