@@ -20,9 +20,8 @@ export class VendorSelect extends Component {
   renderOptions() {
       let items = [];
       var vendorArr = Vendors.find().fetch();
-      //console.log(vendorArr)
       for (i = 1; i < Vendors.find().fetch().length + 1; i++) {
-        if(this.props.vendor && vendorArr[i-1]._id == this.props.vendor._id) {
+        if(this.props.vendor && (vendorArr[i-1]._id == this.props.vendor._id || vendorArr[i-1]._id==this.props.vendor.vendor)) {
           items.push(<option selected="selected" key={i} value={vendorArr[i-1]._id}>{vendorArr[i-1].vendor}</option>);
         } else {
           items.push(<option key={i} value={vendorArr[i-1]._id}>{vendorArr[i-1].vendor}</option>);
@@ -35,15 +34,25 @@ export class VendorSelect extends Component {
     return this
   }
   render() {
-    return (
-        <select
-         ref={vendor => (this.vendor = vendor)}
-         name="vendor"
-         onChange={this.optionChanged.bind(this)}>
-         <option key={0} value="null">(no vendor)</option>
-         {this.renderOptions()}
-        </select>
-    );
+    if(this.props.edit){
+      return (
+          <select
+           ref={vendor => (this.vendor = vendor)}
+           name="vendor"
+           onChange={this.optionChanged.bind(this)}>
+           <option key={0} value="null">(no vendor)</option>
+           {this.renderOptions()}
+          </select>
+      );
+    } else { 
+      var vendorArr = Vendors.find().fetch();
+      for (i = 1; i < Vendors.find().fetch().length + 1; i++) {
+        if(this.props.vendor && (vendorArr[i-1]._id == this.props.vendor._id || vendorArr[i-1]._id==this.props.vendor.vendor)) {
+          return (<div>{vendorArr[i-1].vendor}</div>)
+        }
+      }
+      return null 
+    }
   }
 }
 

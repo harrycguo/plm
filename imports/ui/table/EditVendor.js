@@ -50,7 +50,7 @@ export class EditVendor extends Component {
 		return (
 			<>
 			<td>
-				<VendorSelect edit={1} vendor={this.props.vendor} ref="vendorSel" />
+				<VendorSelect edit={this.props.edit} vendor={this.props.vendor} ref="vendorSel" />
 			</td>
 			{this.renderPriceField()}
 			<td>
