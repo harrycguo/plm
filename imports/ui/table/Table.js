@@ -276,7 +276,8 @@ class Table extends Component {
 							console.log(row.original.fullIng)
 							Meteor.call('addIngredientToCart',
 								row.original.fullIng, 
-								qty, 
+								qty,
+								vendor, 
 								function(error,result){
 									if(error){
 	                        				console.log("something goes wrong with the following error message " + error.reason )

@@ -486,7 +486,7 @@ Meteor.methods({
             if (vendorInfo[i].vendor == vendorId) {
                 IngredientsList.update({
                     _id: selectedIngredient,
-                    "vendorInfo._id": vendorId
+                    "vendorInfo.vendor": vendorId
                 },
                     {
                         $set:
