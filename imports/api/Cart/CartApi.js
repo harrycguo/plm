@@ -41,16 +41,9 @@ Meteor.methods({
     	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { ingredient : selectedIngredient}}});
     },
     'changeQuantity': function(selectedIngredient, amount){
-        //TODO: Implement
-        ings = Carts.findOne({ user : Meteor.userId }).ingredients
-        // for (var i = 0; i < ings.length; i++) {
-        //     if (ings[i].ingredient == selectedIngredient._id) {
-        //         newAmount = ings[i].amount + amount;
-        //     }
-        // }
-        addToCartCheck(selectedIngredient._id,amount)
+        addToCartCheck(selectedIngredient,amount)
         console.log("LETS GET IT")
-        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient._id }, {$set : { 'ingredients.$.amount' : amount }});
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.amount' : amount }});
     },
     'changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement
