@@ -36,18 +36,6 @@ NativeInfoSchema = new SimpleSchema({
    } 
 });
 
-FormulaInfoSchema = new SimpleSchema({
-  formulaId: {
-    type: String,
-    min: 1
-  },
-  nativeUnitsConsumption: {
-    type: Number,
-    min: 1,
-    decimal: true
-  }
-})
-
 //Specifies ingredient field type constraints
 IngredientSchema = new SimpleSchema({
   name: {
@@ -64,8 +52,7 @@ IngredientSchema = new SimpleSchema({
   },
   vendorInfo: {
     type: [VendorInfoSchema], 
-    optional: true //You need this so that the data isn't autocleaned out by the schema 
-                   // or you can register the object schema manually.
+    optional: true 
   },
   storage: {
     type: Number,
@@ -145,17 +132,28 @@ LogSchema = new SimpleSchema({
   
 })
 
-// ProdReportSchema = new SimpleSchema({
-//    formula: {
-//     type: String,
-//     min: 1
-//    },
-//    totalProduced: {
-//     type: Number
-//    },
-//    ingsConsumed: {
-//     type: Array,
-//    }
-// })
+IngredientProdInfoSchema = new SimpleSchema({
+  ingredient: {
+    type: String,
+    min: 1
+  },
+  totalNativeUnitsConsumed: {
+    type: Number,
+    decimal: true
+  }
+})
 
-export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema };
+ProdReportSchema = new SimpleSchema({
+   formula: {
+    type: String,
+    min: 1
+   },
+   totalProduced: {
+    type: Number
+   },
+   ingredientsUsed: {
+    type: [IngredientProdInfoSchema]
+   }
+})
+
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema };

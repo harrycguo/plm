@@ -102,13 +102,27 @@ class BulkImportIngredients extends Component {
         let currIngName = dataFile.data[i]["INGREDIENT"];
         let currIngPackage = dataFile.data[i]["PACKAGE"].toLowerCase()
         let currIngTotalNumNativeUnits = dataFile.data[i]["AMOUNT (NATIVE UNITS)"]
+       
+        if (currIngTotalNumNativeUnits.length == 0) {
+          currIngTotalNumNativeUnits = 0
+        } 
+
         let currIngNativeUnit = dataFile.data[i]["NATIVE UNIT"]
         let currIngNumNativeUnitsPerPackage = dataFile.data[i]["UNITS PER PACKAGE"]
         let currIngPricePerPackage = dataFile.data[i]["PRICE PER PACKAGE"];
         let currIngFCC = dataFile.data[i]["VENDOR FREIGHT CODE"].toUpperCase()
         let currIngTemp = dataFile.data[i]["TEMPERATURE"].toLowerCase()
 
-        let vendor = vendorFCCMap.get(currIngFCC)
+        let vendorID = null
+        if (vendorFCCMap.has(currIngFCC)) {
+          let vendor = vendorFCCMap.get(currIngFCC)
+          vendorID = vendor._id
+        } else {
+          vendorID = {}
+        }
+        
+
+
         let ingredient = ingMap.get(currIngName)
 
         let numPackages = Math.ceil(Number(currIngTotalNumNativeUnits) / Number(currIngNumNativeUnitsPerPackage))
@@ -124,7 +138,7 @@ class BulkImportIngredients extends Component {
        
         let ingredientStorage = packagingMap.get(currIngPackage) * Number(numPackages)
 
-        Meteor.call("addToExistingIngredient",
+        Meteor.call("addToExistingIngredientBulk",
           currIngName,
           currIngTemp,
           currIngPackage,
@@ -133,7 +147,7 @@ class BulkImportIngredients extends Component {
           Number(currIngTotalNumNativeUnits),
           currIngNativeUnit,
           Number(currIngNumNativeUnitsPerPackage),
-          vendor._id,
+          vendorID,
           currIngPricePerPackage,
           function (error, result) {
             if (error) {
@@ -264,7 +278,9 @@ class BulkImportIngredients extends Component {
         }
 
         //check for valid total num native units
-        if (typeof currIngTotalNumNativeUnits != 'number') {
+        if (currIngTotalNumNativeUnits.length == 0) {
+          
+        } else if (typeof currIngTotalNumNativeUnits != 'number' || currIngTotalNumNativeUnits < 0) {
           errors.push("Invalid AMOUNT (NATIVE UNITS) on Line " + Number(i + 2))
         }
 
@@ -274,7 +290,7 @@ class BulkImportIngredients extends Component {
         }
 
         //check for valid num native units per package
-        if (currIngNumNativeUnitsPerPackage != existingIng.nativeInfo.numNativeUnitsPerPackage || typeof currIngNumNativeUnitsPerPackage != 'number') {
+        if (currIngNumNativeUnitsPerPackage != existingIng.nativeInfo.numNativeUnitsPerPackage || typeof currIngNumNativeUnitsPerPackage != 'number' || currIngNumNativeUnitsPerPackage <= 0) {
           errors.push("Ingredient is in the database already, but UNITS PER PACKAGE is incorrect. Should be " + existingIng.nativeInfo.numNativeUnitsPerPackage + " on Line " + Number(i + 2))
         }
 
@@ -304,12 +320,14 @@ class BulkImportIngredients extends Component {
         }
 
         //check for valid total num native units
-        if (typeof currIngTotalNumNativeUnits != 'number') {
+        if (currIngTotalNumNativeUnits.length == 0) {
+          
+        } else if (typeof currIngTotalNumNativeUnits != 'number' || currIngTotalNumNativeUnits < 0) {
           errors.push("Invalid AMOUNT (NATIVE UNITS) on Line " + Number(i + 2))
         }
 
         //check for valid num units per package
-        if (typeof currIngNumNativeUnitsPerPackage != 'number') {
+        if (typeof currIngNumNativeUnitsPerPackage != 'number' || currIngNumNativeUnitsPerPackage <= 0) {
           errors.push("Invalid UNITS PER PACKAGE on Line " + Number(i + 2))
         }
 
@@ -330,15 +348,25 @@ class BulkImportIngredients extends Component {
 
       }
 
-      //check vendor CHECK
-      if (!vendorFCCMap.has(currIngFCC)) {
-        errors.push("VENDOR FREIGHT CODE does not exist in the database. Error on line " + Number(i + 2))
-      } 
+      //if both are not empty
+      if (currIngFCC.length != 0 && currIngPricePerPackage != 0){
 
-      //check to see if price valid CHECK
-      if (typeof currIngPricePerPackage != 'number') {
-        errors.push("Invalid PRICE PER PACKAGE on Line " + Number(i + 2))
+        //check vendor CHECK
+        if (!vendorFCCMap.has(currIngFCC)) {
+          errors.push("VENDOR FREIGHT CODE does not exist in the database. Error on line " + Number(i + 2))
+        } 
+
+        //check to see if price valid CHECK
+        if (typeof currIngPricePerPackage != 'number' || currIngPricePerPackage <= 0) {
+          errors.push("Invalid PRICE PER PACKAGE on Line " + Number(i + 2))
+        }
+      } else if (currIngFCC.length == 0 && currIngPricePerPackage == 0){
+        
+      } else {
+        errors.push('VENDOR FREIGHT CODE and PRICE PER PACKAGE must be both filled or both empty. Error on line ' + Number(i + 2))
       }
+
+
     }
 
     // check capacities CHECK
@@ -388,7 +416,7 @@ class BulkImportIngredients extends Component {
         <p><b>Headers:</b>
         <br></br>INGREDIENT: Name of Ingredient To Be Added (can be pre-existing)
         <br></br>PACKAGE: Type of Package from [sack, pail, drum, supersack, truckload, railcar]
-        <br></br>AMOUNT (NATIVE UNITS): Quantity of Ingredient in Native Units
+        <br></br>AMOUNT (NATIVE UNITS): Quantity of Ingredient in Native Units (If blank, will default to 0)
         <br></br>NATIVE UNIT: The native unit of the ingredient
         <br></br>UNITS PER PACKAGE: Number of native units per package
         <br></br>PRICE PER PACKAGE: Price per package of ingredient

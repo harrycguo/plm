@@ -34,5 +34,45 @@ Meteor.methods({
         }
 
     },
+    'production.addToCart'(ingList) {
+        if (! this.userId || !Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
+            throw new Meteor.Error('not-authorized', 'not-authorized');
+        }
+
+        // if actually enough lol
+        let enoughCount = 0
+        for (let i = 0; i < ingList.length; i++) {
+            if (ingList[i].notEnough == false) {
+                enoughCount++
+            }
+        }
+
+        if (enoughCount == ingList.length) {
+            throw new Meteor.Error('Enough Stock', 'Enough Stock. Please produce Formula!');
+        }
+
+        
+        //if not enough
+        for (let i = 0; i < ingList.length; i++) {
+            if (ingList[i].notEnough == true) {
+                
+                let ingredient = IngredientsList.findOne({_id: ingList[i].ingredient})
+
+                let numPerPackage = Number(ingredient.nativeInfo.numNativeUnitsPerPackage) 
+
+                let packagesNeeded = Math.ceil( Number(ingList[i].newStock) / Number(numPerPackage) * -1 ) 
+
+                console.log('adding things')
+                Meteor.call('addIngredientToCart',
+                        ingredient,
+                        packagesNeeded,
+                        null)
+
+            }
+        }
+
+
+
+    },
 
 })

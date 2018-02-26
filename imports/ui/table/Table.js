@@ -8,7 +8,7 @@ import TableData from './TableData.js';
 import ReactTable from 'react-table';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { Button , ButtonToolbar } from 'react-bootstrap';
 import { Vendors } from '../../api/Vendors/vendors.js';
 import AddVendor from './AddVendor.js';
 import EditVendor from './EditVendor.js';
@@ -59,13 +59,31 @@ class Table extends Component {
 				Bert.alert(error.reason, 'danger')
 			} 
 		})
+		
 	}
 	
 	renderButtons(_this, row) {
 		if(TableData.canEdit) {
 			return (<div>
 				<button
-				onClick={this.remove.bind(row)}
+				//onClick={this.remove.bind(row)}
+				onClick={e => {
+					
+					if (confirm('Delete this Ingredient?')){
+
+						Meteor.call('removeIngredient', 
+						row.original.fullIng._id,
+						function(error, result){
+							if (error) {
+								Bert.alert(error.reason, 'danger')
+							} else {
+								_this.edit()
+								_this.edit()
+							}
+						})
+					}
+					
+				}}
 				>Remove Ingredient</button> 
 				</div>
 			)
@@ -94,6 +112,16 @@ class Table extends Component {
 				}
 			}
 		);
+	}
+
+	addNewIng(){
+		const { history } = this.props.hist
+		history.push('/addingredient')
+	}
+
+	bulkImport(){
+		const { history } = this.props.hist
+		history.push('/bulkImportIngredients')
 	}
 
 	renderEditableVendorRows(row) {
@@ -199,12 +227,26 @@ class Table extends Component {
 		}
 		return (
 			<div>
+				<ButtonToolbar>
 			<Button
 				bsStyle="primary"
 				onClick={this.edit.bind(this)}
 				title= "Edit"
 				>{this.editButtonText()}
 			</Button>
+			<Button
+				bsStyle="success"
+				onClick={this.addNewIng.bind(this)}
+				title= "AddIng"
+				>Add New Ingredient
+			</Button>
+			<Button
+				bsStyle="success"
+				onClick={this.bulkImport.bind(this)}
+				title= "Bulk Import"
+				>Bulk Import Ingredients
+			</Button>
+			</ButtonToolbar>
 				<p></p>
 			{this.renderTable(this)}
 		   	</div>
@@ -216,7 +258,6 @@ class Table extends Component {
 	}
 
 	renderOrderFields(row,vendor, _this){
-		console.log(Meteor.user())
 
 		return (Meteor.user() && ( 
 			Roles.userIsInRole(Meteor.user()._id, 'manager')

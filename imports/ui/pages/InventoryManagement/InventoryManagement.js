@@ -19,7 +19,7 @@ class InventoryManagement extends Component {
         </header>
         <InventoryManagementNavBar/>
         <StorageCapacityWrapper/>
-        <Table/>
+        <Table hist = {this.props} />
 
       </div>
     );

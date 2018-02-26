@@ -24,7 +24,7 @@ export function isInt(value) {
 //Checks if the vendor is already listed in the vendorInfo field of the specified ingredient
 export function containsVendor(vendor,vendorArr) {
 	var ven = Vendors.find({ _id : vendor}).fetch()[0];
-	console.log(ven);
+	
 	if (!ven)
 		return false;
 	for (i = 0; i < vendorArr.length; i++) {
@@ -69,7 +69,7 @@ export function checkGreaterThanZero(number, errorMessage) {
 // export function vendorExists(vendor)
 
 export function cartContainsIng(ingId) {
-	var ingredients = Carts.find({ user : Meteor.userId()}).fetch()[0].ingredients
+	var ingredients = Carts.findOne({ user : Meteor.userId()}).ingredients
 	console.log(ingredients)
 	for (var i = 0; i < ingredients.length; i++) {
 		if (ingredients[i].ingredient == ingId) {
@@ -85,9 +85,9 @@ export function addToCartCheck(ingId, amount) {
     checkIngExists(ingId)
     let ing = IngredientsList.findOne({ _id : ingId});
     console.log(ing)
-    checkGreaterThanZero(amount,'Cart amount must be greater than zero','Cart amount must be greater than zero')
+    checkGreaterThanZero(amount,'Cart amount must be greater than zero','Add to Cart amount must be greater than zero')
     if (ing.vendorInfo.length === 0) {
-        throw new Meteor.Error('No vendor exists for this ingredient','no vendor exists for this ingredient')
+        throw new Meteor.Error('No vendor exists for this ingredient','No Vendor exists for Ingredient ' + ing.name)
     }
 }
 

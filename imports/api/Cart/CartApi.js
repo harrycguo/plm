@@ -17,22 +17,38 @@ Meteor.methods({
 			ingredients: []
 		});
 	},
-    'addIngredientToCart': function(selectedIngredient, amount) {
+    'addIngredientToCart': function(selectedIngredient, numPackages, vendor) {
         // if(Meteor.userId()){
         //     if (Roles.userIsInRole(Meteor.userId(), ['admin','manager'])){
         //        throw new Meteor.Error('not-authorized', 'not-authorized')
-        //     }kuhkjhj
+        //     }
         // }
         console.log(Carts.find().fetch())
-        addToCartCheck(selectedIngredient._id, amount)
-        vendorInfo = IngredientsList.find({ _id : selectedIngredient._id }).fetch()[0].vendorInfo[0]
+        console.log(Vendors.find().fetch())
+
+        addToCartCheck(selectedIngredient._id, numPackages)
+        let vendorInfo = null
+
+        if (vendor == null) {
+            vendorInfo = IngredientsList.find({ _id : selectedIngredient._id }).fetch()[0].vendorInfo[0]
+        }
+        else {
+            vendorList = IngredientsList.find({ _id : selectedIngredient._id }).fetch()[0].vendorInfo
+            for (var i = 0; i < vendorList.length; i++) {
+                if (vendorList[i].vendor == vendor) {
+                    console.log('We setting!')
+                    vendorInfo = vendorList[i]
+                }
+            }
+        }
+
         if (cartContainsIng(selectedIngredient._id)) {
             console.log('CHANGING QTY')
-            Meteor.call('changeQuantity',selectedIngredient, amount)
+            Meteor.call('cart.changeQuantity',selectedIngredient._id, numPackages)
         } else {
             Carts.update({ user : Meteor.userId()}, {$push : { ingredients : {
                 ingredient : selectedIngredient._id,
-                amount: amount,
+                amount: numPackages,
                 vendorInfo: vendorInfo
             }}});
         }
@@ -40,21 +56,22 @@ Meteor.methods({
     'removeIngredientFromCart': function(selectedIngredient) {
     	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { ingredient : selectedIngredient}}});
     },
-    'cart.changeQuantity': function(selectedIngredient, amount){
-        addToCartCheck(selectedIngredient,amount)
+    'cart.changeQuantity': function(selectedIngredient, numPackages){
+        addToCartCheck(selectedIngredient,numPackages)
         console.log("LETS GET IT")
-        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.amount' : amount }});
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.amount' : numPackages }});
     },
     'cart.changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement
         // checkCartExists()
+        console.log(vendor)
         vendorInfoArr = IngredientsList.find({ _id : selectedIngredient }).fetch()[0].vendorInfo
         vendorInfo = {}
         console.log(vendorInfoArr)
         console.log(vendor)
         for (var i=0; i<vendorInfoArr.length; i++) {
             if (vendorInfoArr[i].vendor == vendor) {
-                console.log('WE HERE')
+                console.log(Carts.find().fetch())
                 vendorInfo = vendorInfoArr[i];
             }
         }
@@ -68,10 +85,10 @@ Meteor.methods({
         var diff;
         console.log(ings);
         ings.forEach(function(ingCartInfo){
-            console.log(ingCartInfo.ingredient._id)
-            diff = ingCartInfo.ingredient.quantity - ingCartInfo.amount;
-            //Meteor.call('editQuantity',ingCartInfo.ingredient._id,Number(diff));
+            console.log(ingCartInfo.ingredient)
             var ing = IngredientsList.find({ _id : ingCartInfo.ingredient}).fetch()[0]
+            newAmount = ing.packageInfo.numPackages + ingCartInfo.amount;
+            Meteor.call('editNumPackages',ingCartInfo.ingredient,Number(newAmount));
             Meteor.call('logProductionInReport',ing,Number(ingCartInfo.amount),Number(ingCartInfo.vendorInfo.price));
         });
         Carts.update({ user : Meteor.userId()}, {$set : {ingredients : []}});

@@ -18,29 +18,20 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
+        // if ingredient already exists
+        let existingIng = IngredientsList.findOne({ name: ingName.trim() });
+        if (existingIng !== undefined){
+            throw new Meteor.Error("Ingredient Already Exists", "Ingredient Already Exists")
+        }
+
+        //check vendor price tuple
         if (Object.keys(ingVendor).length === 0 && ingVendor.constructor === Object && ingPrice) {
-            throw new Meteor.Error('Vendor required for price','Specify vendor or remove price');
+            throw new Meteor.Error('Vendor required for price','Specify Vendor or remove Price');
         } 
 
         if (Object.keys(ingVendor).length > 0 && !ingPrice) {
-            throw new Meteor.Error('Price required for vendor','Specify price or remove vendor');
+            throw new Meteor.Error('Price required for vendor','Specify Price or remove Vendor');
         }
-
-        //Check if vendor exists
-        var obj = Vendors.findOne({ _id : ingVendor});
-        // if (Object.keys(obj).length === 0 && obj.constructor === Object) {
-        //     throw new Meteor.Error('Vendor does not exist','Vendor does not exist');
-        // }
-
-        // if (Object.keys(obj).length === 0 && obj.constructor === Object) {
-        //     throw new Meteor.Error('Ingredient native info must be provided','Ingredient native info must be provided');
-        // }
-        // else {
-        //     check(ingNativeInfo.name,String);
-        //     check(ingNativeInfo.perPackageQty,Number);
-        // }
-
-        // console.log(ingVendor);
 
         //Check to see if capacity won't be exceeded
         if (!(ingPackage.toLowerCase() == 'truckload' || ingPackage.toLowerCase() == 'railcar')) {
@@ -128,15 +119,117 @@ Meteor.methods({
             IngredientsList.update({ _id: existingIng._id }, { $inc: { "nativeInfo.totalQuantity": Number(ingTotalNumNativeUnits) } });
             
             
-            if (!containsVendor(ingVendor, existingIng.vendorInfo)) {
-                existingIng.vendorInfo.push({
-                    vendor: ingVendor,
-                    price: Number(ingPrice)
-                });
+            //if it has both price and vendor
+            if (ingPrice && ingVendor) {
+
+                let vendorInfo = existingIng.vendorInfo
+
+                if (!containsVendor(ingVendor, vendorInfo)) {
+                    vendorInfo.push({
+                        vendor: ingVendor,
+                        price: Number(ingPrice)
+                    });
+                    
+                } else {
+                    
+                    for (let i = 0; i < vendorInfo.length; i++) {
+                        if (vendorInfo[i] == ingVendor){
+                            vendorInfo[i] = {vendor: ingVendor, price: Number(ingPrice)}
+                        }
+                    }
+                }
+
                 IngredientsList.update({ _id: existingIng._id }, {
-                    $set: { vendorInfo: existingIng.vendorInfo }
+                    $set: { vendorInfo: vendorInfo }
                 });
+            }   
+        }
+
+
+        else {
+            Meteor.call('addIngredient',
+                ingName.trim(),
+                ingTemperatureState,
+                ingPackage,
+                numPackages,
+                Number(ingStorage),
+                ingTotalNumNativeUnits,
+                ingNativeUnit,
+                ingNumNativeUnitsPerPackage,
+                ingVendor,
+                ingPrice
+            );
+        }
+    },
+    'addToExistingIngredientBulk': function (ingName, ingTemperatureState, ingPackage, numPackages, ingStorage, ingTotalNumNativeUnits , ingNativeUnit, ingNumNativeUnitsPerPackage, ingVendor, ingPrice) {
+        
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized', 'not-authorized');
+        }
+
+        let existingIng = IngredientsList.findOne({ name: ingName.trim() });
+
+        //If ingredient exists, update it instead of adding a new database entry
+        if (existingIng !== undefined) {
+
+            //check packaging time
+            if (existingIng.packageInfo.packageType != ingPackage.toLowerCase()) {
+                throw new Meteor.Error('incorrect temperature state', 'Incorrect Packaging Selected, Should be ' + existingIng.packageInfo.packageType);
             }
+
+             //check temperature state
+             if (existingIng.temperatureState != ingTemperatureState.toLowerCase()) {
+                throw new Meteor.Error('incorrect temperature state', 'Incorrect Temperature State Selected, Should be ' + existingIng.temperatureState);
+            }
+
+            //check to see if num native units per package is correct
+            if (existingIng.nativeInfo.numNativeUnitsPerPackage != ingNumNativeUnitsPerPackage) {
+                throw new Meteor.Error('incorrect native unit per package', 'Incorrect Native Units perPackage, Should be ' + existingIng.nativeInfo.numNativeUnitsPerPackage);
+            }
+
+            //Check if native unit is correct
+            if (existingIng.nativeInfo.nativeUnit != ingNativeUnit) {
+                throw new Meteor.Error('incorrect native unit', 'Incorrect Native Unit Selected, Should be ' + existingIng.nativeInfo.nativeUnit);
+            }
+
+            //Edit quantity to match new package
+            if (!(ingPackage.toLowerCase() == 'truckload' || ingPackage.toLowerCase() == 'railcar')) {
+                let container = StorageCapacities.findOne({ type: ingTemperatureState });
+                let newUsed = Number(container.used) + Number(ingStorage)
+                Meteor.call('sc.editUsed', container._id, Number(newUsed));
+            }
+
+            // increase storage, num packages, quantity of native units
+            IngredientsList.update({ _id: existingIng._id }, { $inc: { storage: Number(ingStorage) } });
+            IngredientsList.update({ _id: existingIng._id }, { $inc: { "packageInfo.numPackages": Number(numPackages) } });
+            IngredientsList.update({ _id: existingIng._id }, { $inc: { "nativeInfo.totalQuantity": Number(ingTotalNumNativeUnits) } });
+            
+            
+            //if it has both price and vendor
+            if (ingPrice && ingVendor) {
+
+                let vendorInfo = existingIng.vendorInfo
+
+                if (!containsVendor(ingVendor, vendorInfo)) {
+                    vendorInfo.push({
+                        vendor: ingVendor,
+                        price: Number(ingPrice)
+                    });
+                    
+                } else {
+                    console.log(ingVendor)
+                    console.log(vendorInfo)
+                    for (let i = 0; i < vendorInfo.length; i++) {
+                        if (vendorInfo[i].vendor == ingVendor){
+                            vendorInfo[i] = {vendor: ingVendor, price: Number(ingPrice)}
+                        }
+                    }
+                }
+
+                IngredientsList.update({ _id: existingIng._id }, {
+                    $set: { vendorInfo: vendorInfo }
+                });
+            }   
         }
 
 
@@ -163,9 +256,9 @@ Meteor.methods({
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
-        // if (existingIng.formulaInfo.length > 0) {
-        //     throw new Meteor.Error('Ingredient used in a formula','Cannot delete, Ingredient used in Formula(s)');
-        // }
+        if (existingIng.formulaInfo.length > 0) {
+            throw new Meteor.Error('Ingredient used in a formula','Cannot delete, Ingredient used in Formula(s)');
+        }
 
         if (!(existingIng.package == 'truckload' || existingIng.package == 'railcar')) {
 

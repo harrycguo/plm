@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import LogTable from '../../syslog/LogTable.js'
+import LogNavBar from '../../components/LogNavBar/LogNavBar.js'
+
 
 class ViewLog extends Component {
   constructor(props) {
@@ -14,6 +16,7 @@ class ViewLog extends Component {
         <header>
           <h1>Global Log</h1>
         </header>
+        <LogNavBar/>
         <p></p>
         <LogTable />
       </div>
