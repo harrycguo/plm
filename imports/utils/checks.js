@@ -87,7 +87,7 @@ export function addToCartCheck(ingId, amount) {
     console.log(ing)
     checkGreaterThanZero(amount,'Cart amount must be greater than zero','Add to Cart amount must be greater than zero')
     if (ing.vendorInfo.length === 0) {
-        throw new Meteor.Error('No vendor exists for this ingredient','no vendor exists for this ingredient')
+        throw new Meteor.Error('No vendor exists for this ingredient','No Vendor exists for Ingredient ' + ing.name)
     }
 }
 
