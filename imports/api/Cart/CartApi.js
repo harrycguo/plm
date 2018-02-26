@@ -25,7 +25,7 @@ Meteor.methods({
         // }
         console.log(Carts.find().fetch())
         addToCartCheck(selectedIngredient._id, amount)
-        vendorInfo = IngredientsList.findOne({ _id : selectedIngredient._id }).vendorInfo[0]
+        vendorInfo = IngredientsList.find({ _id : selectedIngredient._id }).fetch()[0].vendorInfo[0]
         if (cartContainsIng(selectedIngredient._id)) {
             console.log('CHANGING QTY')
             Meteor.call('changeQuantity',selectedIngredient, amount)
@@ -38,7 +38,7 @@ Meteor.methods({
         }
     },
     'removeIngredientFromCart': function(selectedIngredient) {
-    	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { "ingredient._id" : selectedIngredient._id}}});
+    	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { ingredient : selectedIngredient}}});
     },
     'changeQuantity': function(selectedIngredient, amount){
         //TODO: Implement
