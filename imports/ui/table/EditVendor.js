@@ -51,25 +51,15 @@ export class EditVendor extends Component {
 		return this.props.noButton && !this.state.edit ? null : (
 		<td>
 		<button
-					onClick={e => {
-						if(this.props.source == "table") {
-							console.log("table called submit")
-						} else if (this.props.source == "cart" && this.state.edit) {
-							console.log("cart called edit/submit")
-							Meteor.call('cart.changeVendor',
-								this.props.ing._id,
-								this.props.vendor.vendor,
-								function(error, result) {
+			onClick={e => {
+				if(this.props.source == "table") {
 
-								}
-								)
-							this.props.onChange(!this.state.edit)
-						}
-						var success = false;
-						this.state.edit = !this.state.edit
-						this.forceUpdate()
-					}}
-					title= "Edit Vendor"
+				}
+				var success = false;
+				this.state.edit = !this.state.edit
+				this.forceUpdate()
+			}}
+			title= "Edit Vendor"
 		>{!this.state.edit && this.props.source == "cart" ? "Edit" : "Submit Edits"}</button>
 		</td>)
 	}
