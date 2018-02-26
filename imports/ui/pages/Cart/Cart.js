@@ -21,7 +21,6 @@ class IngredientCart extends Component {
 	}
 
 	remove() {
-		console.log(this.fullIng)
 		Meteor.call('removeIngredientFromCart', this.fullIng.ingredient,
 			function(error, result){
 				if(error){
@@ -56,9 +55,6 @@ class IngredientCart extends Component {
 			})
 		});
 
-		console.log("THIS: ")
-		console.log(frontEndCart)
-
 		return frontEndCart.length > 0 ? frontEndCart.map(ingredient => (
 			<tr key={ingredient.key}>
 				<td>{ingMap.get(ingredient.fullIng.ingredient).name}</td>
@@ -80,43 +76,29 @@ class IngredientCart extends Component {
 			</tr>
 		)) : null;
 	}
-	// renderOptions() {
- //      let items = [];
- //      var vendorArr = Vendors.find().fetch();
- //      for (i = 1; i < Vendors.find().fetch().length + 1; i++) {
- //        if(this.props.vendor && (vendorArr[i-1]._id == this.props.vendor._id || vendorArr[i-1]._id==this.props.vendor.vendor)) {
- //          items.push(<option selected="selected" key={i} value={vendorArr[i-1]._id}>{vendorArr[i-1].vendor}</option>);
- //        } else {
- //          items.push(<option key={i} value={vendorArr[i-1]._id}>{vendorArr[i-1].vendor}</option>);
- //        }
- //      }
- //      return items;
- //  }
-	
+
 	renderVendorSelector(ingredient, vendorMap, vendorInfo) {
 		var ingredientVendors = ingredient.vendorInfo
-		console.log(ingredientVendors)
 		let items = new Array();
 		ingredientVendors.forEach(function(possibleVendor) {
 			var newVendorId = possibleVendor.vendor
+			if(vendorMap.get(newVendorId)) {
 			var newVendorName = vendorMap.get(newVendorId).vendor
-			console.log("finding price info: ")
-			console.log(possibleVendor)
-			var oldVendorId = vendorInfo._id
-			var oldVendorName = vendorMap.get(oldVendorId).vendor
-			if(oldVendorId == newVendorId){
-				items.push(
-				<option selected="selected" key={newVendorId} value={newVendorId}> 
-					{newVendorName + ' | ' + possibleVendor.price} 
-				</option>)
-			} else {
-				items.push(
-				<option key={newVendorId} value={newVendorId}> 
-					{newVendorName + ' | ' + possibleVendor.price} 
-				</option>)
+				var oldVendorId = vendorInfo._id
+				var oldVendorName = vendorMap.get(oldVendorId).vendor
+				if(oldVendorId == newVendorId){
+					items.push(
+					<option selected="selected" key={newVendorId} value={newVendorId}> 
+						{newVendorName + ' | ' + possibleVendor.price} 
+					</option>)
+				} else {
+					items.push(
+					<option key={newVendorId} value={newVendorId}> 
+						{newVendorName + ' | ' + possibleVendor.price} 
+					</option>)
+				}
 			}
 		})
-		console.log(items)
 		if(this.state.edit) {
 			return(
 				<select
@@ -149,10 +131,6 @@ class IngredientCart extends Component {
 	}
 
 	changeEditState(newEdit) {
-		console.log("Editing state:")
-		if(newEdit == false) {
-			console.log(this)
-		}
 		this.state.edit=newEdit;
 		this.forceUpdate();
 	}
