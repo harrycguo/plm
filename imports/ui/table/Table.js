@@ -27,6 +27,7 @@ class Table extends Component {
 	}
 
 	renderRows(_this) {
+		console.log('rendering')
 		var ingredientsList = new Array()
 		this.props.ingredients.forEach(function(ing) {
 			ingredientsList.push(TableData.convertToFrontend(ing, IngredientsList, _this.props.vendors))
@@ -59,13 +60,31 @@ class Table extends Component {
 				Bert.alert(error.reason, 'danger')
 			} 
 		})
+		
 	}
 	
 	renderButtons(_this, row) {
 		if(TableData.canEdit) {
 			return (<div>
 				<button
-				onClick={this.remove.bind(row)}
+				//onClick={this.remove.bind(row)}
+				onClick={e => {
+					
+					if (confirm('Delete this Ingredient?')){
+
+						Meteor.call('removeIngredient', 
+						row.original.fullIng._id,
+						function(error, result){
+							if (error) {
+								Bert.alert(error.reason, 'danger')
+							} else {
+								_this.edit()
+								_this.edit()
+							}
+						})
+					}
+					
+				}}
 				>Remove Ingredient</button> 
 				</div>
 			)
