@@ -27,7 +27,6 @@ class Table extends Component {
 	}
 
 	renderRows(_this) {
-		console.log('rendering')
 		var ingredientsList = new Array()
 		this.props.ingredients.forEach(function(ing) {
 			ingredientsList.push(TableData.convertToFrontend(ing, IngredientsList, _this.props.vendors))

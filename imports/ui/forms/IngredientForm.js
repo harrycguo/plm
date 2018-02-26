@@ -132,7 +132,7 @@ export class IngredientForm extends Component {
 						Bert.alert(error.reason, 'danger');
 					}
 					else {
-						Bert.alert('Ingredient added', 'success');
+						Bert.alert('Added Ingredient!', 'success');
 						history.push('/inventoryManagement')
 					}
 				});

@@ -19,11 +19,11 @@ Meteor.methods({
         }
 
         if (Object.keys(ingVendor).length === 0 && ingVendor.constructor === Object && ingPrice) {
-            throw new Meteor.Error('Vendor required for price','Specify vendor or remove price');
+            throw new Meteor.Error('Vendor required for price','Specify Vendor or remove Price');
         } 
 
         if (Object.keys(ingVendor).length > 0 && !ingPrice) {
-            throw new Meteor.Error('Price required for vendor','Specify price or remove vendor');
+            throw new Meteor.Error('Price required for vendor','Specify Price or remove Vendor');
         }
 
         //Check if vendor exists
@@ -128,15 +128,21 @@ Meteor.methods({
             IngredientsList.update({ _id: existingIng._id }, { $inc: { "nativeInfo.totalQuantity": Number(ingTotalNumNativeUnits) } });
             
             
-            if (!containsVendor(ingVendor, existingIng.vendorInfo)) {
-                existingIng.vendorInfo.push({
-                    vendor: ingVendor,
-                    price: Number(ingPrice)
-                });
+            //if it has both
+            if (ingPrice && ingVendor) {
+
+                if (!containsVendor(ingVendor, existingIng.vendorInfo)) {
+                    existingIng.vendorInfo.push({
+                        vendor: ingVendor,
+                        price: Number(ingPrice)
+                    });
+                    console.log(existingIng.vendorInfo) 
+                }
+
                 IngredientsList.update({ _id: existingIng._id }, {
                     $set: { vendorInfo: existingIng.vendorInfo }
                 });
-            }
+            }   
         }
 
 
