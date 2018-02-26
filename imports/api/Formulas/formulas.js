@@ -67,12 +67,6 @@ Meteor.methods({
         }
       })
 
-      Formulas.insert({
-        name: name,
-        description: description,
-        productUnits: Number(productUnits),
-        ingredientsList: ingredientsList
-      });
       Meteor.call('systemlog.insert', "Formula", name, 0, "Created", "Nothing", "Something")
     
   },
