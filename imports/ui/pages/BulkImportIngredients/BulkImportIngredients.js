@@ -9,7 +9,7 @@ import IngredientList from '../../../api/Ingredients/IngredientList.js';
 import { Vendors } from '../../../api/Vendors/vendors.js';
 import { StorageCapacities } from '../../../api/StorageCapacities/storageCapacities.js';
 import { check } from 'meteor/check';
-import AdminViewInventoryNavBar from '../../components/AdminViewInventoryNavBar/AdminViewInventoryNavBar.js'
+import InventoryManagementNavBar from '../../components/InventoryManagementNavBar/InventoryManagementNavBar.js'
 
 // App component - represents the whole app
 class BulkImportIngredients extends Component {
@@ -99,14 +99,14 @@ class BulkImportIngredients extends Component {
 
       for (let i = 0; i < dataFile.data.length; i++) {
 
-        let currIngName = dataFile.data[i]["INGREDIENT"].toLowerCase();
-        let currIngPackage = dataFile.data[i]["PACKAGE"].toLowerCase();
+        let currIngName = dataFile.data[i]["INGREDIENT"];
+        let currIngPackage = dataFile.data[i]["PACKAGE"].toLowerCase()
         let currIngTotalNumNativeUnits = dataFile.data[i]["AMOUNT (NATIVE UNITS)"]
-        let currIngNativeUnit = dataFile.data[i]["NATIVE UNIT"].toLowerCase();
+        let currIngNativeUnit = dataFile.data[i]["NATIVE UNIT"]
         let currIngNumNativeUnitsPerPackage = dataFile.data[i]["UNITS PER PACKAGE"]
         let currIngPricePerPackage = dataFile.data[i]["PRICE PER PACKAGE"];
-        let currIngFCC = dataFile.data[i]["VENDOR FREIGHT CODE"].toUpperCase();
-        let currIngTemp = dataFile.data[i]["TEMPERATURE"].toLowerCase();
+        let currIngFCC = dataFile.data[i]["VENDOR FREIGHT CODE"].toUpperCase()
+        let currIngTemp = dataFile.data[i]["TEMPERATURE"].toLowerCase()
 
         let vendor = vendorFCCMap.get(currIngFCC)
         let ingredient = ingMap.get(currIngName)
@@ -147,8 +147,8 @@ class BulkImportIngredients extends Component {
           Meteor.call('editTotalNumNativeUnits', existingIng._id, newTotalNumNativeUnits)
         }
       }
-      Bert.alert("Successfully Bulk Imported", 'success');
-      history.push('/adminViewInventory')
+      Bert.alert("Successfully Bulk Imported Ingredients!", 'success');
+      history.push('/inventoryManagement')
     }
   }
 
@@ -222,7 +222,6 @@ class BulkImportIngredients extends Component {
 
     //Check headers
     let headers = ["INGREDIENT", "PACKAGE", "AMOUNT (NATIVE UNITS)", "NATIVE UNIT", "UNITS PER PACKAGE", "PRICE PER PACKAGE", "VENDOR FREIGHT CODE", "TEMPERATURE"]
-    let checkHeaders = Array();
     let headersValid = this.arraysEqual(headers, dataFile.meta.fields)
 
     if (!headersValid) {
@@ -245,7 +244,7 @@ class BulkImportIngredients extends Component {
     //Check line by line
     for (let i = 0; i < dataFile.data.length; i++) {
 
-      let currIngName = dataFile.data[i]["INGREDIENT"].toLowerCase();
+      let currIngName = dataFile.data[i]["INGREDIENT"];
       let currIngPackage = dataFile.data[i]["PACKAGE"].toLowerCase();
       let currIngTotalNumNativeUnits = dataFile.data[i]["AMOUNT (NATIVE UNITS)"]
       let currIngNativeUnit = dataFile.data[i]["NATIVE UNIT"];
@@ -381,7 +380,7 @@ class BulkImportIngredients extends Component {
         <header>
           <h1>Bulk Import Ingredients</h1>
         </header>
-        <AdminViewInventoryNavBar />
+        <InventoryManagementNavBar />
         <p></p>
         <b>Format:</b>
         <p>The bulk import ingredients feature only supports .csv files. You can make your spreadsheet in Excel and when saving, simply "Save As" a ".csv" file. </p>
@@ -399,7 +398,7 @@ class BulkImportIngredients extends Component {
 
         <b>Example:</b>
         <div>
-        <img src={"bulkImport.png"} width="600" height="200"/>
+        <img src={"bulkImportIngredients.png"} width="910" height="133"/>
         </div>
         
         <p></p>

@@ -18,6 +18,8 @@ class AddFormula extends Component {
         </header>
         <FormulaManagementNavBar/>
         <AddFormulaForm hist = {this.props}/>
+        <p></p>
+				<p><Link to='/formulaManagement'>Return to Formula Management</Link></p>
           
       </div>
     );

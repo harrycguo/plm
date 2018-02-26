@@ -163,6 +163,9 @@ class CreateUser extends Component {
           </FormGroup>
           <Button type="submit" bsStyle="success">Create User</Button>
 
+          <p></p>
+				  <p><Link to='/userManagement'>Return to User Management</Link></p>
+
          
 
         </form>

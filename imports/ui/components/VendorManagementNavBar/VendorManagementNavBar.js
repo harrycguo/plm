@@ -9,26 +9,77 @@ class VendorManagementNavBar extends Component {
     }
 
     render() {
-        return (
-            <div className="topContainer">
+
+        let user = Meteor.user();
+
+        //admin
+        if (Roles.userIsInRole(user, ['admin'])) {
+            return (
+                <div className="topContainer">
+
+                    <Link
+                        className="container-nav"
+                        to="/adminHomepage">
+                        Admin Homepage
+                                </Link>
+                    <Link
+                        className="container-nav"
+                        to="/vendorManagement">
+                        Vendor Management
+                                </Link>
+                    <Link
+                        className="container-nav"
+                        to="/addVendor">
+                        Add Vendor
+                                </Link>
+                </div>
+            )
+
+        }
+
+        //manager
+        else if (Roles.userIsInRole(user, ['manager'])) {
+            return (
+                <div className="topContainer">
 
                 <Link
                     className="container-nav"
-                    to="/adminHomepage">
-                    Admin Homepage
+                    to="/managerHomepage">
+                    Manager Homepage
                             </Link>
                 <Link
                     className="container-nav"
                     to="/vendorManagement">
                     Vendor Management
                             </Link>
+               
+                </div>
+            )
+
+        }
+
+        //user
+        else {
+            return (
+
+
+                <div className="topContainer">
+
                 <Link
                     className="container-nav"
-                    to="/addVendor">
-                    Add Vendor
+                    to="/userHomepage">
+                    User Homepage
                             </Link>
+                <Link
+                    className="container-nav"
+                    to="/vendorManagement">
+                    Vendor Management
+                            </Link>
+                
             </div>
-        );
+            )
+
+        }
     }
 }
 

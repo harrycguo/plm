@@ -8,6 +8,8 @@ import EditVendor from '../../table/EditVendor.js';
 
 
 import { Link } from 'react-router-dom';
+import InventoryManagementNavBar from '../../components/InventoryManagementNavBar/InventoryManagementNavBar.js'
+
 
 class IngredientCart extends Component {
 	
@@ -87,14 +89,6 @@ class IngredientCart extends Component {
 		this.forceUpdate();
 	}
 
-	linkBack() {
-		if (!Meteor.user() || !Roles.userIsInRole(Meteor.user()._id, 'admin')) {
-			return (<li><Link to='/userViewInventory'>Return to Inventory</Link></li>)
-		} else {
-			return (<li><Link to='/adminViewInventory'>Return to Inventory</Link></li>)
-		}
-	}
-
 	checkoutButton() {
 
 		const {history} = this.props
@@ -103,9 +97,9 @@ class IngredientCart extends Component {
 		let returnLink = null;
 		
 		if (Roles.userIsInRole(user, ['admin'])) {
-			returnLink = '/adminViewInventory'
+			returnLink = '/inventoryManagement'
 		} else {
-			returnLink = '/userViewInventory'
+			returnLink = '/inventoryManagement'
 		}
 
 		return (<button
@@ -128,13 +122,14 @@ class IngredientCart extends Component {
 
 	render() {
 		return (
-			<div className="container" style={{ padding: "5px" }}>
+			<div className="container">
 
 			<header>
           		<h1>Cart</h1>
         	</header>
+			<InventoryManagementNavBar/>
 		
-				{this.linkBack()}
+			
 		    	<table>
 		    		<tbody>
 		    			<tr>

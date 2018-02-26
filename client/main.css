@@ -93,6 +93,15 @@ body {
     padding: 5px 5px 5px 0px;
   }
 
+  .container-keepLeftBigRight{
+    padding: 5px 15px 5px 0px;
+    width:400px;
+  }
+
+  .container-button{
+    padding: 0px 5px 0px 0px;
+  }
+
   .container-nav-right{
     padding: 5px 5px 5px 5px;
     float: right;
@@ -167,7 +176,7 @@ body {
   li {
     position: relative;
     list-style: none;
-    padding: 10px;
+    padding: 10px 5px 10px 0px;
     border-bottom: #eee solid 1px;
   }
    
@@ -200,6 +209,11 @@ body {
     -webkit-flex-direction: row;
     -ms-flex-direction: row;
     flex-direction: row;
+  }
+
+  hr.divider { 
+    margin: 0em;
+    border-width: 1px;
   }
    
   @media (max-width: 600px) {

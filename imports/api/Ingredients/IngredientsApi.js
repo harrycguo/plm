@@ -18,10 +18,6 @@ Meteor.methods({
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
 
-        console.log('adding ingredient')
-        console.log(ingVendor)
-        console.log(ingPrice)
-
         if (Object.keys(ingVendor).length === 0 && ingVendor.constructor === Object && ingPrice) {
             throw new Meteor.Error('Vendor required for price','Specify vendor or remove price');
         } 
@@ -79,6 +75,7 @@ Meteor.methods({
             storage: Number(ingStorage),
             nativeInfo: nativeInfoArr,
             vendorInfo: vendorInfoArr,
+            formulaInfo: []
         });
     },
     //This method will check to see if the ingredient already exists. If not, then call addIngredient.
@@ -166,9 +163,9 @@ Meteor.methods({
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
-        if (existingIng.formulaInfo.length > 0) {
-            throw new Meteor.Error('Ingredient used in a formula','Ingredient used in a formula');
-        }
+        // if (existingIng.formulaInfo.length > 0) {
+        //     throw new Meteor.Error('Ingredient used in a formula','Cannot delete, Ingredient used in Formula(s)');
+        // }
 
         if (!(existingIng.package == 'truckload' || existingIng.package == 'railcar')) {
 
@@ -178,7 +175,7 @@ Meteor.methods({
         }
 
         IngredientsList.remove({ _id: selectedIngredient });
-        // }
+        
     },
     'editName': function (selectedIngredient, newName) {
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
@@ -307,8 +304,6 @@ Meteor.methods({
         packagingMap.set('railcar', 0);
 
         let newStorage = newNumPackages * packagingMap.get(existingIng.packageInfo.packageType)
-        console.log('new storage')
-        console.log(newStorage)
         Meteor.call('editStorage', selectedIngredient, Number(newStorage))
 
     },
@@ -372,8 +367,6 @@ Meteor.methods({
 
         //re-calculate footprint
         let remainingPackages = Math.ceil(Number(newTotalNumNativeUnits) / Number(existingIng.nativeInfo.numNativeUnitsPerPackage))
-        console.log('remainig pakgs')
-        console.log(remainingPackages)
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
     },
     'editNativeUnit': function(selectedIngredient, newNativeUnit){

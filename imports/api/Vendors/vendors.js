@@ -43,9 +43,6 @@ Meteor.methods({
         throw new Meteor.Error('not-authorized', 'not-authorized');
       }
 
-      console.log('yee')
-      console.log(Vendors.find({_id: id}))
-
       //Vendor names must be unique
       if (Vendors.find({vendor: name.trim()}).count() > 0 && !(oldName == name)) {
         throw new Meteor.Error('vendor already in system', 'Vendor Name Must Be Unique');
@@ -64,7 +61,7 @@ Meteor.methods({
       }})
     },
     'getVendorById'(vendorID) {
-        console.log(Vendors.findOne({_id: vendorID}))
+
         return Vendors.findOne({_id: vendorID})
     }
   });

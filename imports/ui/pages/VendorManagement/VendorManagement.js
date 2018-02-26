@@ -26,14 +26,14 @@ class VendorManagement extends Component {
     return (
       <div className="container">
         <header>
-          <h1>Vendor Management Page</h1>
+          <h1>Vendor Management</h1>
         </header>
         
         <VendorManagementNavBar/>
         <p></p>
 
         <h2>List of Vendors</h2>
-        <hr></hr>
+        <hr className="divider"></hr>
 
         <ul>
           {this.renderVendors()}

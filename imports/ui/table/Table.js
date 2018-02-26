@@ -52,7 +52,13 @@ class Table extends Component {
 	}
 	
 	remove() {
-		Meteor.call('removeIngredient', this.row._original.fullIng._id)
+		Meteor.call('removeIngredient', 
+		this.row._original.fullIng._id,
+		function(error, result){
+			if (error) {
+				Bert.alert(error.reason, 'danger')
+			} 
+		})
 	}
 	
 	renderButtons(_this, row) {

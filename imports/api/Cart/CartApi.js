@@ -25,7 +25,7 @@ Meteor.methods({
         // }
         console.log(Carts.find().fetch())
         addToCartCheck(selectedIngredient._id, amount)
-        vendorInfo = IngredientsList.findOne({ _id : selectedIngredient._id }).vendorInfo[0]
+        vendorInfo = IngredientsList.find({ _id : selectedIngredient._id }).fetch()[0].vendorInfo[0]
         if (cartContainsIng(selectedIngredient._id)) {
             console.log('CHANGING QTY')
             Meteor.call('changeQuantity',selectedIngredient, amount)
@@ -38,19 +38,12 @@ Meteor.methods({
         }
     },
     'removeIngredientFromCart': function(selectedIngredient) {
-    	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { "ingredient._id" : selectedIngredient._id}}});
+    	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { ingredient : selectedIngredient}}});
     },
     'changeQuantity': function(selectedIngredient, amount){
-        //TODO: Implement
-        ings = Carts.findOne({ user : Meteor.userId }).ingredients
-        for (var i = 0; i < ings.length; i++) {
-            if (ings[i].ingredient == selectedIngredient._id) {
-                newAmount = ings[i].amount + amount;
-            }
-        }
-        addToCartCheck(selectedIngredient._id,newAmount)
-        // checkCartExists()
-        Carts.update({ user : Meteor.userId()}, {$set : { ingredients : { amount: newAmount }}});
+        addToCartCheck(selectedIngredient,amount)
+        console.log("LETS GET IT")
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.amount' : amount }});
     },
     'changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement
@@ -60,7 +53,8 @@ Meteor.methods({
         for (var i=0; i<vendorInfoArr.length; i++) {
             if (vendorInfoArr[i].vendor == vendor) vendorInfo = vendorInfoArr[i];
         }
-        Carts.update({ user : Meteor.userId()}, {$set : { ingredients : { vendorInfo: vendorInfo }}});
+        console.log(selectedIngredient)
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient._id}, {$set : { 'ingredients.$.vendorInfo' : vendorInfo }});
     },
     'checkoutIngredients': function() { //Allow adding to inentory instead of just remove
         let cart = Carts.find({ user : Meteor.userId()}).fetch()[0];

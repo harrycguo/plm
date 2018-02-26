@@ -12,15 +12,17 @@ class ManagerHomepage extends Component {
     
   }
  
- 
   render() {
     return (
       <div className="container">
         <header>
           <h1>Manager Homepage</h1>
         </header>
-
-        <li><Link to='/managerViewInventory'>View Inventory</Link></li>
+        <li><Link to='/inventoryManagement'>Inventory Management</Link></li>
+        <li><Link to='/formulaManagement'>Formula Management</Link></li>
+        <li><Link to='/vendorManagement'>Vendor Management</Link></li>
+        <li><Link to='/userManagement'>User Management</Link></li>
+        <li><Link to='/viewLog'>View Global Log</Link></li>
         <li><Link to='/logout'>Logout</Link></li>
       </div>
     );

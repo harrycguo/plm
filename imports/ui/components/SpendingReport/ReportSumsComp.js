@@ -18,13 +18,14 @@ class ReportSumsComp extends Component {
 		})
 
 		return (
-		<div className="container">
-	        <Row>
-	            <Col><b>Total Spending:</b>{total}</Col>
-	            <Col><b>Total Production Spending:</b> {totalProduction}</Col>
-	        </Row>
-        </div>)
-        
+		<div className="container-keepLeft">
+	        
+				<p><b>Total Spending: </b>{total}
+				<br></br>
+	            <b>Total Production Spending:</b> {totalProduction}</p>
+	      
+		</div>
+		)
 	}
 }
 

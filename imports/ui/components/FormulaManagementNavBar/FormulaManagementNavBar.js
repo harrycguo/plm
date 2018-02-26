@@ -9,7 +9,11 @@ class FormulaManagementNavBar extends Component {
     }
 
     render() {
-        return (
+        let user = Meteor.user();
+
+        //admin
+        if (Roles.userIsInRole(user, ['admin'])) {
+            return (
             <div className="topContainer">
 
                 <Link
@@ -22,17 +26,19 @@ class FormulaManagementNavBar extends Component {
                     to="/formulaManagement">
                     Formula Management
                 </Link>
+
                 <Link
                     className="container-nav"
                     to="/addFormula">
                     Add New Formula
-                </Link>
+                    </Link>
 
-                <Link
+                    <Link
                     className="container-nav"
-                    to="/bulkImportFormula">
+                    to="/bulkImportFormulas">
                     Bulk Import Formula
-                </Link>  
+                    </Link>  
+                
 
                 <Link
                     className="container-nav"
@@ -40,7 +46,57 @@ class FormulaManagementNavBar extends Component {
                     Produce Formula
                 </Link>
             </div>
-        );
+            )
+
+        } 
+        
+        //manager
+        else if (Roles.userIsInRole(user, ['manager'])) {
+            return (
+                <div className="topContainer">
+    
+                    <Link
+                        className="container-nav"
+                        to="/managerHomepage">
+                        Manager Homepage
+                    </Link>
+                    <Link
+                        className="container-nav"
+                        to="/formulaManagement">
+                        Formula Management
+                    </Link>
+    
+                    <Link
+                        className="container-nav"
+                        to="/productionRun">
+                        Produce Formula
+                    </Link>
+                </div>
+                )
+
+        } 
+        
+        //user
+        else {
+            return (
+                <div className="topContainer">
+    
+                    <Link
+                        className="container-nav"
+                        to="/userHomepage">
+                        User Homepage
+                    </Link>
+
+                    <Link
+                        className="container-nav"
+                        to="/formulaManagement">
+                        Formula Management
+                    </Link>
+    
+                </div>
+                )
+
+        }
     }
 }
 
