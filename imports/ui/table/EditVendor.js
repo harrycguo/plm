@@ -32,7 +32,9 @@ export class EditVendor extends Component {
 					defaultValue={this.props.vendor.price}
 					onBlur = {e=> {
 						var message = "Change price from "
-						message = message.concat(this.props.vendor.price).concat(" to ").concat(e.target.value).concat("?")
+						message = message.concat(this.props.vendor.price).concat(" to ").concat(e.target.value).concat("?\n")
+						message = message.concat("You will still need to submit changes!")
+
 						if(confirm(message=message)){
 							// Make the edit happen
 						}else{
@@ -53,7 +55,14 @@ export class EditVendor extends Component {
 		<button
 			onClick={e => {
 				if(this.props.source == "table") {
-
+					if(confirm("Update vendor?")) {
+						// Full Ingredient: 
+						console.log(this.props.ing)
+						// Vendor id: 
+						console.log(this.refs.vendorSel.vendor.value)
+						// New price: 
+						console.log(this.refs.price.value)
+					}
 				}
 				var success = false;
 				this.state.edit = !this.state.edit
@@ -64,9 +73,6 @@ export class EditVendor extends Component {
 		</td>)
 	}
 	render() {
-		console.log("props:")
-		//console.log(this.props)
-		console.log(this.props)
 		if(this.props.edit != undefined) {
 			this.state.edit = this.props.edit
 		}
@@ -76,8 +82,7 @@ export class EditVendor extends Component {
 				<VendorSelect edit={this.state.edit} source ={this.props.source}vendor={this.props.vendor} ref="vendorSel" />
 			</td>
 			{this.renderPriceField()}
-			
-				{this.renderButton()}
+			{this.renderButton()}
 			</>
 		);
 	}
