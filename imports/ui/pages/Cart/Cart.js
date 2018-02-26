@@ -191,7 +191,7 @@ class IngredientCart extends Component {
 		    				<th>Packages</th>
 		    				<th>Quantity</th>
 		    				<th>Vendor</th>
-		    				<th>Price</th>
+		    				<th>Price per Package</th>
 						</tr>
 	    				{this.renderCartItems()}
 	    			</tbody>
