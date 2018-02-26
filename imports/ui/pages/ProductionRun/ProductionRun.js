@@ -141,6 +141,41 @@ class ProductionRun extends Component {
 
     addToCart = () => {
         console.log("adding to cart")
+
+        const { history } = this.props
+
+        let ingList = this.state.ingList
+        let ingListArray = []
+        
+        for (let i = 0; i < ingList.length; i++) {
+            let state = ingList[i].ingredient.state
+            let ingredient = ingList[i].ingredient.props.ingredient
+
+            ingListArray.push({
+                ingredient: ingredient.id,
+                newStock: state.stockAfterProduction,
+                notEnough: state.notEnough
+            })
+        }
+
+        console.log(ingListArray)
+
+        Meteor.call('production.addToCart',
+            ingListArray,
+            function (error, result) {
+                if (error) {
+                    Bert.alert(error.reason, 'danger')
+                } else {
+                    Bert.alert("Added Missing Ingredients To Cart", 'success')
+                    //history.push('/cart')
+                }
+            })
+    }
+
+    goToCart = () => {
+        const { history } = this.props
+        history.push('/cart')
+
     }
 
 
@@ -232,16 +267,24 @@ class ProductionRun extends Component {
 
                     <ButtonToolbar>
                         <Button type="submit" bsStyle="success"
-                        //onClick={this.handleSubmit} 
                         >
                             Produce
-                    </Button>
+                        </Button>
 
                         <Button
                             bsStyle="danger"
                             onClick={this.addToCart}>
                             Add Missing Ingredients To Cart (if applicable)
                         </Button>
+
+                        <Button
+                            bsStyle="warning" 
+                            onClick={this.goToCart}
+                        >
+                            Go To Cart
+                        </Button>
+
+
                     </ButtonToolbar>
                 </form>
 

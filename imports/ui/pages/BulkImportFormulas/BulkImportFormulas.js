@@ -226,8 +226,6 @@ class BulkImportFormulas extends Component {
         formulaArray.push(ingredientUnits)
       }
     }
-    console.log(errors)
-    console.log(formulaArray)
 
     if (errors.length > 0) {
       return {
@@ -257,6 +255,24 @@ class BulkImportFormulas extends Component {
         })
         i = i + 1
       }
+    }
+
+    console.log(organizedFormulaArray)
+
+    for (let i = 0; i < organizedFormulaArray.length; i++){
+      let ingredientsList = organizedFormulaArray[i].ingredientsList
+      let ingListSet = new Set()
+
+      for (let j = 0; j < ingredientsList.length; j++){
+        ingListSet.add(ingredientsList[j].id)
+      }
+
+      if (ingListSet.size < ingredientsList.length) {
+        errors.push("Duplicate ingredients for Formula: " + organizedFormulaArray[i].formulaName )
+      }
+
+      ingListSet.clear()
+
     }
 
     // return 

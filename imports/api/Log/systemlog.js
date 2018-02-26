@@ -1,11 +1,15 @@
 import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { Roles } from 'meteor/alanning:roles';
+import { Accounts } from 'meteor/accounts-base';
+
  
 export const SystemLog = new Mongo.Collection('log');
 
 Meteor.methods({
     'systemlog.insert'(type, name, _id, change, _from, to) {
+
+      let user = Meteor.users.findOne(this.userId)
 
       SystemLog.insert({
         type: type,
@@ -13,7 +17,7 @@ Meteor.methods({
         change: change,
         from: _from,
         to: to,
-        user: this.userId,
+        user: user.username,
         time: Date.now(),
         id: _id,
       });

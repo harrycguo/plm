@@ -116,7 +116,7 @@ export class IngredientForm extends Component {
 		if (Meteor.isServer) {
 			console.log("server side");
 		} else if (Meteor.isClient) {
-			Meteor.call("addToExistingIngredient",
+			Meteor.call("addIngredient",
 				name,
 				temperatureState,
 				packaging,
@@ -132,7 +132,7 @@ export class IngredientForm extends Component {
 						Bert.alert(error.reason, 'danger');
 					}
 					else {
-						Bert.alert('Ingredient added', 'success');
+						Bert.alert('Added Ingredient!', 'success');
 						history.push('/inventoryManagement')
 					}
 				});
