@@ -62,6 +62,16 @@ export class EditVendor extends Component {
 						console.log(this.refs.vendorSel.vendor.value)
 						// New price: 
 						console.log(this.refs.price.value)
+						Meteor.call('editPrice', 
+							this.props.ing._id, 
+							this.refs.vendorSel.vendor.value, 
+							Number(this.refs.price.value),
+							function(error, result) {
+								if (error){
+				                    Bert.alert(error.reason, 'danger');
+				                }
+							}
+						)
 					}
 				}
 				var success = false;
