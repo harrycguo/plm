@@ -49,8 +49,8 @@ Meteor.methods({
         //     }
         // }
         addToCartCheck(selectedIngredient._id,amount)
-        // checkCartExists()
-        Carts.update({ user : Meteor.userId()}, {$set : { ingredients : { amount: amount }}});
+        console.log("LETS GET IT")
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient._id }, {$set : { 'ingredients.$.amount' : amount }});
     },
     'changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement
@@ -60,7 +60,7 @@ Meteor.methods({
         for (var i=0; i<vendorInfoArr.length; i++) {
             if (vendorInfoArr[i].vendor == vendor) vendorInfo = vendorInfoArr[i];
         }
-        Carts.update({ user : Meteor.userId()}, {$set : { ingredients : { vendorInfo: vendorInfo }}});
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient._id}, {$set : { 'ingredients.$.vendorInfo' : vendorInfo }});
     },
     'checkoutIngredients': function() { //Allow adding to inentory instead of just remove
         let cart = Carts.find({ user : Meteor.userId()}).fetch()[0];
