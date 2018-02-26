@@ -58,10 +58,11 @@ Meteor.methods({
                 
                 let ingredient = IngredientsList.findOne({_id: ingList[i].ingredient})
 
-                let numPerPackage = Number(ingredient.nativeInfo.numNativeUnitsPerPackage)
+                let numPerPackage = Number(ingredient.nativeInfo.numNativeUnitsPerPackage) 
 
                 let packagesNeeded = Math.ceil( Number(ingList[i].newStock) / Number(numPerPackage) * -1 ) 
 
+                console.log('adding things')
                 Meteor.call('addIngredientToCart',
                         ingredient,
                         packagesNeeded)
