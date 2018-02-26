@@ -16,7 +16,7 @@ var cursor = IngredientsList.find();
 const handle = cursor.observeChanges({
     'removed': function(id, ing) {
        console.log("removing");
-       Carts.update({},{$pull : {ingredients : { "ingredient._id" : id}}});
+       Carts.update({},{$pull : {ingredients : { ingredient : id}}});
     }
 });
 
