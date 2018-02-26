@@ -40,21 +40,21 @@ Meteor.methods({
     'removeIngredientFromCart': function(selectedIngredient) {
     	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { ingredient : selectedIngredient}}});
     },
-    'changeQuantity': function(selectedIngredient, amount){
+    'cart.changeQuantity': function(selectedIngredient, amount){
         addToCartCheck(selectedIngredient,amount)
         console.log("LETS GET IT")
         Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.amount' : amount }});
     },
-    'changeVendor': function(selectedIngredient, vendor) {
+    'cart.changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement
         // checkCartExists()
-        vendorInfoArr = IngredientsList({ _id : selectedIngredient_id }).vendorInfo
+        vendorInfoArr = IngredientsList({ _id : selectedIngredient }).vendorInfo
         vendorInfo = {}
         for (var i=0; i<vendorInfoArr.length; i++) {
             if (vendorInfoArr[i].vendor == vendor) vendorInfo = vendorInfoArr[i];
         }
         console.log(selectedIngredient)
-        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient._id}, {$set : { 'ingredients.$.vendorInfo' : vendorInfo }});
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient}, {$set : { 'ingredients.$.vendorInfo' : vendorInfo }});
     },
     'checkoutIngredients': function() { //Allow adding to inentory instead of just remove
         let cart = Carts.find({ user : Meteor.userId()}).fetch()[0];
@@ -66,7 +66,8 @@ Meteor.methods({
             console.log(ingCartInfo.ingredient._id)
             diff = ingCartInfo.ingredient.quantity - ingCartInfo.amount;
             //Meteor.call('editQuantity',ingCartInfo.ingredient._id,Number(diff));
-            Meteor.call('logProductionInReport',ingCartInfo.ingredient,Number(ingCartInfo.amount));
+            var ing = IngredientsList.find({ _id : ingCartInfo.ingredient}).fetch()[0]
+            Meteor.call('logProductionInReport',ing.name,Number(ingCartInfo.amount),Number(ingCartInfo.vendorInfo.price));
         });
         Carts.update({ user : Meteor.userId()}, {$set : {ingredients : []}});
         console.log("finished");
