@@ -28,7 +28,7 @@ Meteor.methods({
         vendorInfo = IngredientsList.find({ _id : selectedIngredient._id }).fetch()[0].vendorInfo[0]
         if (cartContainsIng(selectedIngredient._id)) {
             console.log('CHANGING QTY')
-            Meteor.call('changeQuantity',selectedIngredient, amount)
+            Meteor.call('cart.changeQuantity',selectedIngredient._id, amount)
         } else {
             Carts.update({ user : Meteor.userId()}, {$push : { ingredients : {
                 ingredient : selectedIngredient._id,
@@ -69,10 +69,10 @@ Meteor.methods({
         var diff;
         console.log(ings);
         ings.forEach(function(ingCartInfo){
-            console.log(ingCartInfo.ingredient._id)
-            diff = ingCartInfo.ingredient.quantity - ingCartInfo.amount;
-            //Meteor.call('editQuantity',ingCartInfo.ingredient._id,Number(diff));
+            console.log(ingCartInfo.ingredient)
             var ing = IngredientsList.find({ _id : ingCartInfo.ingredient}).fetch()[0]
+            newAmount = ing.packageInfo.numPackages + ingCartInfo.amount;
+            Meteor.call('editNumPackages',ingCartInfo.ingredient,Number(newAmount));
             Meteor.call('logProductionInReport',ing,Number(ingCartInfo.amount),Number(ingCartInfo.vendorInfo.price));
         });
         Carts.update({ user : Meteor.userId()}, {$set : {ingredients : []}});
