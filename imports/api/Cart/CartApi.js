@@ -53,7 +53,10 @@ Meteor.methods({
         console.log(vendorInfoArr)
         console.log(vendor)
         for (var i=0; i<vendorInfoArr.length; i++) {
-            if (vendorInfoArr[i].vendor == vendor) vendorInfo = vendorInfoArr[i];
+            if (vendorInfoArr[i].vendor == vendor) {
+                console.log('WE HERE')
+                vendorInfo = vendorInfoArr[i];
+            }
         }
         console.log(vendorInfo)
         Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient}, {$set : { 'ingredients.$.vendorInfo' : vendorInfo }});
