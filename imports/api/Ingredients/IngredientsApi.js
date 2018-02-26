@@ -155,6 +155,77 @@ Meteor.methods({
             );
         }
     },
+    'addToExistingIngredientBulk': function (ingName, ingTemperatureState, ingPackage, numPackages, ingStorage, ingTotalNumNativeUnits , ingNativeUnit, ingNumNativeUnitsPerPackage, ingVendor, ingPrice) {
+        
+        if (!this.userId) {
+            throw new Meteor.Error('not-authorized', 'not-authorized');
+        }
+
+        let existingIng = IngredientsList.findOne({ name: ingName.trim() });
+
+        //If ingredient exists, update it instead of adding a new database entry
+        if (existingIng !== undefined) {
+
+            //check packaging time
+            if (existingIng.packageInfo.packageType != ingPackage.toLowerCase()) {
+                throw new Meteor.Error('incorrect temperature state', 'Incorrect Packaging Selected, Should be ' + existingIng.packageInfo.packageType);
+            }
+
+             //check temperature state
+             if (existingIng.temperatureState != ingTemperatureState.toLowerCase()) {
+                throw new Meteor.Error('incorrect temperature state', 'Incorrect Temperature State Selected, Should be ' + existingIng.temperatureState);
+            }
+
+            //check to see if num native units per package is correct
+            if (existingIng.nativeInfo.numNativeUnitsPerPackage != ingNumNativeUnitsPerPackage) {
+                throw new Meteor.Error('incorrect native unit per package', 'Incorrect Native Units perPackage, Should be ' + existingIng.nativeInfo.numNativeUnitsPerPackage);
+            }
+
+            //Check if native unit is correct
+            if (existingIng.nativeInfo.nativeUnit != ingNativeUnit) {
+                throw new Meteor.Error('incorrect native unit', 'Incorrect Native Unit Selected, Should be ' + existingIng.nativeInfo.nativeUnit);
+            }
+
+            //Edit quantity to match new package
+            if (!(ingPackage.toLowerCase() == 'truckload' || ingPackage.toLowerCase() == 'railcar')) {
+                let container = StorageCapacities.findOne({ type: ingTemperatureState });
+                let newUsed = Number(container.used) + Number(ingStorage)
+                Meteor.call('sc.editUsed', container._id, Number(newUsed));
+            }
+
+            // increase storage, num packages, quantity of native units
+            IngredientsList.update({ _id: existingIng._id }, { $inc: { storage: Number(ingStorage) } });
+            IngredientsList.update({ _id: existingIng._id }, { $inc: { "packageInfo.numPackages": Number(numPackages) } });
+            IngredientsList.update({ _id: existingIng._id }, { $inc: { "nativeInfo.totalQuantity": Number(ingTotalNumNativeUnits) } });
+            
+            
+            if (!containsVendor(ingVendor, existingIng.vendorInfo)) {
+                existingIng.vendorInfo.push({
+                    vendor: ingVendor,
+                    price: Number(ingPrice)
+                });
+                IngredientsList.update({ _id: existingIng._id }, {
+                    $set: { vendorInfo: existingIng.vendorInfo }
+                });
+            }
+        }
+
+
+        else {
+            Meteor.call('addIngredient',
+                ingName.trim(),
+                ingTemperatureState,
+                ingPackage,
+                numPackages,
+                Number(ingStorage),
+                ingTotalNumNativeUnits,
+                ingNativeUnit,
+                ingNumNativeUnitsPerPackage,
+                ingVendor,
+                ingPrice
+            );
+        }
+    },
     'removeIngredient': function (selectedIngredient) {
         //Check if user can
         if (!this.userId) {

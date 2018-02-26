@@ -51,6 +51,7 @@ Meteor.methods({
             throw new Meteor.Error('Enough Stock', 'Enough Stock. Please produce Formula!');
         }
 
+        
         //if not enough
         for (let i = 0; i < ingList.length; i++) {
             if (ingList[i].notEnough == true) {
