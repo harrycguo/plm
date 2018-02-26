@@ -10,13 +10,11 @@ import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 import { VendorSelect } from '../forms/VendorSelect.js';
 
 // import isInt from '../../utils/checks.js';
-
-						// select id="selVendor"
-						// 	ref={vendor => (this.vendor = vendor)}
-
-						// 	name="vendor">
-						// 	{this.renderOptions()}
-						// </select>
+// select id="selVendor"
+// 	ref={vendor => (this.vendor = vendor)}
+// 	name="vendor">
+// 	{this.renderOptions()}
+// </select>
 
 export class EditVendor extends Component {
 	constructor(props) {

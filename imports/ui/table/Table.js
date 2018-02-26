@@ -9,6 +9,7 @@ import ReactTable from 'react-table';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
+import { Vendors } from '../../api/Vendors/vendors.js';
 import AddVendor from './AddVendor.js';
 import EditVendor from './EditVendor.js';
 import CartApi from '../../api/Cart/CartApi.js';
@@ -25,10 +26,10 @@ class Table extends Component {
 		super(props);
 	}
 
-	renderRows() {
+	renderRows(_this) {
 		var ingredientsList = new Array()
 		this.props.ingredients.forEach(function(ing) {
-			ingredientsList.push(TableData.convertToFrontend(ing, IngredientsList))
+			ingredientsList.push(TableData.convertToFrontend(ing, IngredientsList, _this.props.vendors))
 		});
 		return ingredientsList
 	}
@@ -63,7 +64,6 @@ class Table extends Component {
 	renderButtons(_this, row) {
 		if(TableData.canEdit) {
 			return (<div>
-				
 				<button
 				onClick={this.remove.bind(row)}
 				>Remove Ingredient</button> 
@@ -91,7 +91,7 @@ class Table extends Component {
                	  	Bert.alert(error.reason, 'danger');
                 } else {
 					Bert.alert('Successfully Removed Vendor', 'success');
-					}
+				}
 			}
 		);
 	}
@@ -135,7 +135,7 @@ class Table extends Component {
 		return row.original.vendors.map(vendor => (
 			<tr key={vendor.name}>
 				<td>{vendor.name}</td>
-				<td>{vendor.cost}</td>
+				<td>{vendor.price}</td>
 				<td><input type="text" onChange={ e=> {
 					qty = e.target.value;
 					recentVendor = vendor;
@@ -144,7 +144,7 @@ class Table extends Component {
 				<button
 					onClick={e => {
 						if(recentVendor === vendor) {
-							console.log(vendor)
+							console.log(row.original.fullIng)
 							Meteor.call('addIngredientToCart',
 								row.original.fullIng, 
 								qty, 
@@ -170,16 +170,6 @@ class Table extends Component {
 
 	////////////////////////////////////////////////
 	///											 ///
-	/// Ingredient Useage and Cart Renders		 ///
-	///											 ///
-	////////////////////////////////////////////////
-	
-	renderIngredientUse(row) {
-		return null
-	}
-
-	////////////////////////////////////////////////
-	///											 ///
 	/// Render 									 ///
 	///											 ///
 	////////////////////////////////////////////////
@@ -187,7 +177,7 @@ class Table extends Component {
 		return ( 
 			<div>
 			<ReactTable
-		    data={_this.renderRows()}
+		    data={_this.renderRows(_this)}
 		    filterable
 		    defaultFilterMethod={ (filter, row) => 
 		    	String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase())
@@ -206,7 +196,6 @@ class Table extends Component {
 		    				<AddVendor ing={row.original.fullIng} edit={TableData.canEdit}/>
 		    			</tbody>
 		    			</table>
-						{_this.renderIngredientUse(row)}
 		    			{_this.renderButtons(_this, row)}
                 	</div>
                 );
@@ -249,7 +238,9 @@ class Table extends Component {
 
 export default withTracker(() => {
 	Meteor.subscribe('ingredients')
+	Meteor.subscribe('vendors')
 	return {
-		ingredients: IngredientsList.find({}).fetch()
+		ingredients: IngredientsList.find({}).fetch(),
+		vendors: Vendors.find({}).fetch(),
 	};
 })(Table);

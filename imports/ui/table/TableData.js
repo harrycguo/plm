@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import CustomNativeUnitsInput from '../forms/CustomNativeUnitInput.js'
+import { Vendors } from '../../api/Vendors/vendors.js';
+
 
 export var canEdit = false;
-var nativeUnitSwitch = false;
+var nativeUnitSwitch = {cellInfo: null, target: null, toggled: false};
 
 export function toggleEditable() {
 	canEdit = !canEdit;
@@ -54,11 +56,11 @@ function renderEditable(cellInfo) {
 					}
 				} else if (cellInfo.column.id === 'numNativeUnitsPerPackage') {
 					var message = "Edit Number of Native Units Per Package\nFrom "
-					message = message.concat(cellInfo.original.qty).concat(" to ").concat(e.target.value);
+					message = message.concat(cellInfo.original.numNativeUnitsPerPackage).concat(" to ").concat(e.target.value);
 					if(confirm(message)) {
 						var entry = parseInt(e.target.value)
 						if(entry >= 0) {
-							Meteor.call('editNumNativeUnitsPerPackage', cellInfo.original.fullIng._id, Number(entry),
+							Meteor.call('editNumNativeUnitsPerPackage', cellInfo.original.fullIng._id, entry,
 								function(error,result){
 	                   			if(error){
 	                        		console.log("something goes wrong with the following error message " + error.reason )
@@ -67,10 +69,10 @@ function renderEditable(cellInfo) {
 							});
 						} else {
 							Bert.alert('Must be greater than or equal to zero', 'danger');
-							e.target.value = cellInfo.original.qty;
+							e.target.value = cellInfo.original.numNativeUnitsPerPackage;
 						}
 					} else {
-						e.target.value = cellInfo.original.qty;
+						e.target.value = cellInfo.original.numNativeUnitsPerPackage;
 					}
 				} 
 			}}
@@ -85,12 +87,31 @@ function renderEditable(cellInfo) {
 	}
 }
 
-function renderCustomField() {
+function renderCustomField(cellInfo) {
+	var defVal = (cellInfo.original.unit == "Gallons" ||
+						cellInfo.original.unit == "Pounds") ? "" : cellInfo.original.unit;
 	return (
 		<input
 				type="text"
 				ref={customNativeUnit => (this.customNativeUnit = customNativeUnit)}
 				name="customNativeUnit"
+				defaultValue={defVal}
+				onBlur={ e => {
+					var result = false;
+					if(cellInfo === nativeUnitSwitch.cellInfo && nativeUnitSwitch.toggled) {
+						console.log(cellInfo)
+						console.log(nativeUnitSwitch)
+						console.log(e.target.value)
+						result = editNativeUnits(nativeUnitSwitch.target, cellInfo, cellInfo.value, e.target.value)
+		
+					} else if (cellInfo.original.unit != "Pounds" && cellInfo.original.unit != "Gallons"){
+						result = editNativeUnits(e.target, cellInfo, cellInfo.value, e.target.value);
+					}
+					if(!result){
+						e.target.value = (cellInfo.original.unit == "Gallons" ||
+							cellInfo.original.unit == "Pounds") ? "" : cellInfo.original.unit;
+					}
+				}}
 				placeholder="Native Unit"
 			/>
 	)
@@ -98,18 +119,25 @@ function renderCustomField() {
 
 function renderEditableUnits(cellInfo) {
 	if(canEdit) {
+		var defaultValue = cellInfo.value;
+		if(defaultValue != "Gallons" && defaultValue != "Pounds"){
+			defaultValue = "custom"
+		}
 		return (
 			<span>
 				<select
 					ref={nativeUnit => (this.nativeUnit = nativeUnit)}
 					name="nativeUnit"
 					placeholder="# of Native Units Per Package"
+					defaultValue={defaultValue}
 					onChange={ e => {
-						console.log(e.target.value)
+						nativeUnitSwitch.cellInfo = cellInfo;
+						nativeUnitSwitch.target = e.target;
 						if(e.target.value == "custom") {
-							nativeUnitSwitch = true
+							nativeUnitSwitch.toggled = true
 						} else {
-							
+							nativeUnitSwitch.toggled = false
+							var somevar = editNativeUnits(e.target, cellInfo, cellInfo.value, e.target.value)
 						}
 					}}
 				>
@@ -117,50 +145,43 @@ function renderEditableUnits(cellInfo) {
 					<option value="Gallons">Gallons</option>
 					<option value="custom">Custom...</option>
 				</select>
-				{renderCustomField()}
+				{renderCustomField(cellInfo)}
 			</span>
 		)
+	} else {
+		return(<div style = {{ backgroundColor: "#ffffff" }}
+			dangerouslySetInnerHTML={{
+				__html: cellInfo.value
+			}}
+		/>);
 	}
-	// 	if (cellInfo.column.id === 'unit') {
-	// 		var message = "Edit Native Units\nFrom "
-	// 		message = message.concat(cellInfo.original.units).concat(" to ").concat(e.target.value);
-	// 		if(confirm(message)) {
-	// 			Meteor.call('editNativeUnits', 
-	// 				cellInfo.original.fullIng._id, 
-	// 				e.target.value,  
-	// 				function(error,result){
-	//                 			if(error){
-	//                              console.log("something goes wrong with the following error message " + error.reason )
-	//           	  				Bert.alert(error.reason, 'danger');
-	// 							e.target.value = cellInfo.original.units;
-	// 						}
-	// 					}
-	// 				);
-	// 		} else {
-	// 			// e.target.value = cellInfo.original.units;
-	// 		}
-	// 	}
 }
 
-function editNativeUnits(currUnits, newUnits) {
+function editNativeUnits(target, cellInfo, currUnits, newUnits) {
 	var message = "Edit Native Units\nFrom "
 	message = message.concat(currUnits).concat(" to ").concat(newUnits);
+	console.log(target)
 	if(confirm(message)) {
-		var success = false
-// 		Meteor.call('editNativeUnits', 
-// 			cellInfo.original.fullIng._id, 
-// 			newUnits,  
-// 			function(error,result){
-//                 if(error){
-//                     console.log("something goes wrong with the following error message " + error.reason )
-//           	  		Bert.alert(error.reason, 'danger');
-// 				}else {
-// 					success = true
-// 				}
-// 			});
-
+		var success = Meteor.call('editNativeUnit', 
+			cellInfo.original.fullIng._id, 
+			newUnits,
+			function(error,result){
+				if(error){
+					console.log("something goes wrong with the following error message " + error.reason )
+					Bert.alert(error.reason, 'danger');
+					target.value = (cellInfo.original.unit == "Gallons" ||
+						cellInfo.original.unit == "Pounds") ? cellInfo.original.unit : "custom";
+				}
+			});
+	} else {
+		target.value = (cellInfo.original.unit == "Gallons" ||
+						cellInfo.original.unit == "Pounds") ? cellInfo.original.unit : "custom";
+		if(target.value!="custom") {
+			nativeUnitSwitch.toggled = false
+		}
+		return false
 	}
-	return success;
+	return true;
 }
 
 function renderEditableDropdown(cellInfo) {
@@ -353,26 +374,50 @@ export const HeaderValues = [
 	        value={filter ? filter.value : ''}
 	        placeholder="Filter by units"
 	      />
-	}, 
-	
-	
-	
+	}, 	
 ];
 
-export function convertToFrontend(ingredient, ingredientsList) {
+export function convertToFrontend(ingredient, ingredientsList, vendors) {
 	VendArray = new Array()
 	ingredient.vendorInfo.forEach(function(info){
-		var vendor = info.vendor;
-		if(vendor != null && vendor._id != null && info.price != -1) {
-			VendArray.push({_id: vendor._id, name: vendor.vendor, price: info.price});
+		var foundVendor = null;
+		vendors.forEach(function(vendor) {
+			if(vendor._id == info.vendor){
+				foundVendor = vendor
+			}
+		})
+		if(foundVendor != null) {
+			VendArray.push({_id: foundVendor._id, name: foundVendor.vendor, price: info.price});
 		}
 	});
 	
+	var numPackagesWithFloorspace = ingredient.packageInfo.numPackages.toString().concat(" (")
+	var floorSpace = null
+	switch(ingredient.packageInfo.packageType) {
+        case "sack":
+        	floorSpace = 0.5;
+        	break;
+        case "pail":
+        	floorSpace = 1.5;
+        	break;
+        case "drum":
+        	floorSpace = 3;
+        	break;
+        case "supersack":
+        	floorSpace = 16;
+        	break;
+        case "truckload":
+        case "railcar":
+        	floorSpace = 0;
+        	break;
+	}
+	numPackagesWithFloorspace = numPackagesWithFloorspace.concat(floorSpace*ingredient.packageInfo.numPackages).concat(" Sq. Ft.)");
+
 	return {
 			name: ingredient.name, 
 			temp: ingredient.temperatureState, 
 			pkg: ingredient.packageInfo.packageType, 
-			numpkg: ingredient.packageInfo.numPackages,
+			numpkg: numPackagesWithFloorspace,
 			qty: ingredient.nativeInfo.totalQuantity,
 			unit: ingredient.nativeInfo.nativeUnit, 
 			numNativeUnitsPerPackage: ingredient.nativeInfo.numNativeUnitsPerPackage,
