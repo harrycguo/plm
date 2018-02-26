@@ -45,8 +45,6 @@ Meteor.methods({
       }
     }
 
-    console.log(set)
-
     Formulas.insert({
       name: name,
       description: description,

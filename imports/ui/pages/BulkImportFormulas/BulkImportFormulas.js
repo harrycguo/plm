@@ -226,8 +226,6 @@ class BulkImportFormulas extends Component {
         formulaArray.push(ingredientUnits)
       }
     }
-    console.log(errors)
-    console.log(formulaArray)
 
     if (errors.length > 0) {
       return {

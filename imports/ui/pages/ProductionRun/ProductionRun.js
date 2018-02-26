@@ -167,9 +167,15 @@ class ProductionRun extends Component {
                     Bert.alert(error.reason, 'danger')
                 } else {
                     Bert.alert("Added Missing Ingredients To Cart", 'success')
-                    history.push('/cart')
+                    //history.push('/cart')
                 }
             })
+    }
+
+    goToCart = () => {
+        const { history } = this.props
+        history.push('/cart')
+
     }
 
 
@@ -261,16 +267,24 @@ class ProductionRun extends Component {
 
                     <ButtonToolbar>
                         <Button type="submit" bsStyle="success"
-                        //onClick={this.handleSubmit} 
                         >
                             Produce
-                    </Button>
+                        </Button>
 
                         <Button
                             bsStyle="danger"
                             onClick={this.addToCart}>
                             Add Missing Ingredients To Cart (if applicable)
                         </Button>
+
+                        <Button
+                            bsStyle="warning" 
+                            onClick={this.goToCart}
+                        >
+                            Go To Cart
+                        </Button>
+
+
                     </ButtonToolbar>
                 </form>
 
