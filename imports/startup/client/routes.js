@@ -26,6 +26,7 @@ import ManagerHomepage from '../../ui/pages/ManagerHomepage/ManagerHomepage';
 import FormulaManagement from '../../ui/pages/FormulaManagement/FormulaManagement';
 import AddFormula from '../../ui/pages/AddFormula/AddFormula';
 import LogTable from '../../ui/syslog/LogTable.js';
+import ViewLog from '../../ui/pages/ViewLog/ViewLog';
 import EditFormula from '../../ui/pages/EditFormula/EditFormula.js'
 import ViewFormula from '../../ui/pages/ViewFormula/ViewFormula.js'
 import ProductionRun from '../../ui/pages/ProductionRun/ProductionRun.js'
@@ -61,6 +62,7 @@ export const renderRoutes = () => (
     <Route path='/viewFormula/:formulaID' component={ViewFormula}/> 
     <Route path='/bulkImportFormulas' component={BulkImportFormulas}/>
     <Route path='/log' component={LogTable}/>
+    <Route path='/viewLog' component={ViewLog}/>
     <Route path='/productionRun' component={ProductionRun}/>
   </div>
 </Router>

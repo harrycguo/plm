@@ -3,6 +3,8 @@ import { button } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import Carts from '../../../api/Cart/Cart.js';
 import { Link } from 'react-router-dom';
+import InventoryManagementNavBar from '../../components/InventoryManagementNavBar/InventoryManagementNavBar.js'
+
 
 class IngredientCart extends Component {
 	
@@ -45,14 +47,6 @@ class IngredientCart extends Component {
 		))
 	}
 
-	linkBack() {
-		if (!Meteor.user() || !Roles.userIsInRole(Meteor.user()._id, 'admin')) {
-			return (<li><Link to='/inventoryManagement'>Return to Inventory</Link></li>)
-		} else {
-			return (<li><Link to='/inventoryManagement'>Return to Inventory</Link></li>)
-		}
-	}
-
 	checkoutButton() {
 
 		const {history} = this.props
@@ -86,13 +80,14 @@ class IngredientCart extends Component {
 
 	render() {
 		return (
-			<div className="container" style={{ padding: "5px" }}>
+			<div className="container">
 
 			<header>
           		<h1>Cart</h1>
         	</header>
+			<InventoryManagementNavBar/>
 		
-				{this.linkBack()}
+			
 		    	<table>
 		    		<tbody>
 		    			<tr>

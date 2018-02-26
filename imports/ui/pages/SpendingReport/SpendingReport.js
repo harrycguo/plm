@@ -5,6 +5,8 @@ import Report from '../../../api/SpendingReport/SpendingReport.js';
 import ReportSumsComp from '../../components/SpendingReport/ReportSumsComp.js';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
+import InventoryManagementNavBar from '../../components/InventoryManagementNavBar/InventoryManagementNavBar.js'
+
 
 
 // <<<<<<< HEAD
@@ -102,12 +104,12 @@ class SpendingReport extends Component {
 
 	render() {
 		return (
-			<div className="container" style={{ padding: "5px" }}>
-			<ReportSumsComp />
+			<div className="container" >
 			<header>
           		<h1>Spending Report</h1>
         	</header>
-				{this.linkBack()}
+			<InventoryManagementNavBar/>
+			<ReportSumsComp />
 	       		<ReactTable
 		    		data={this.renderRows(this)}
 		    		filterable
