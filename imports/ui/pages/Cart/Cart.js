@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { button } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import Carts from '../../../api/Cart/Cart.js';
+import IngredientsApi from '../../../api/Ingredients/IngredientsApi.js';
+import { Vendors } from '../../../api/Vendors/vendors.js';
+import EditVendor from '../../table/EditVendor.js';
+
+
 import { Link } from 'react-router-dom';
 import InventoryManagementNavBar from '../../components/InventoryManagementNavBar/InventoryManagementNavBar.js'
 
@@ -23,19 +28,39 @@ class IngredientCart extends Component {
 	renderCartItems() {
 		var frontEndCart = Array()
 		var keyCount = 0;
+		var vendorMap = new Map();
+		var ingMap = new Map();
+
+		this.props.ingredients.forEach(function(ing) {
+			ingMap.set(ing._id, ing);
+		});
+
+		this.props.vendors.forEach(function (vend) {
+			vendorMap.set(vend._id, vend);
+		});
+
 		this.props.carts.forEach(function(ingredients) {
 			ingredients.ingredients.forEach(function(ing) {
+
 				frontEndCart.push(
 					{key: keyCount, fullIng: ing, amt: ing.amount}
 				)
 				keyCount++;
-				console.log(ing)
 			})
 		});
-		return frontEndCart.map(ingredient => (
+
+		console.log(frontEndCart)
+
+		return frontEndCart.length > 0 ? frontEndCart.map(ingredient => (
 			<tr key={ingredient.key}>
-				<td>{ingredient.fullIng.ingredient.name}</td>
+				<td>{ingMap.get(ingredient.fullIng.ingredient).name}</td>
 				<td>{ingredient.amt}</td>
+				<EditVendor 
+					key={ingredient.fullIng.ingredient}
+					ing={ingMap.get(ingredient.fullIng.ingredient)} 
+					vendor={ingredient.fullIng.vendorInfo}
+					edit={false}
+				/>
 				<td>
 					<button
 					onClick={this.remove.bind(ingredient)}
@@ -44,7 +69,7 @@ class IngredientCart extends Component {
 					</button>
 				</td>
 			</tr>
-		))
+		)) : null;
 	}
 
 	checkoutButton() {
@@ -93,6 +118,9 @@ class IngredientCart extends Component {
 		    			<tr>
 		    				<th>Ingredient</th>
 		    				<th>Amount</th>
+		    				<th>Vendor</th>
+		    				<th>Price</th>
+		    				<th>Edit Vendor</th>
 		    				<th>Remove</th>
 						</tr>
 	    				{this.renderCartItems()}
@@ -106,7 +134,12 @@ class IngredientCart extends Component {
 
 export default withTracker(() => {
 	Meteor.subscribe('carts')
+	Meteor.subscribe('vendors')
+	Meteor.subscribe('ingredients')
+
 	return {
+		ingredients: IngredientsList.find({}).fetch(),
+		vendors: Vendors.find({}).fetch(),
 		carts: Carts.find({"user" : Meteor.userId()}).fetch()
 	};
 })(IngredientCart);
