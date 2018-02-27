@@ -40,11 +40,17 @@ class FormulaManagementNavBar extends Component {
                     </Link>  
                 
 
-                <Link
-                    className="container-nav"
-                    to="/productionRun">
-                    Produce Formula
-                </Link>
+                    <Link
+                        className="container-nav"
+                        to="/productionRun">
+                        Produce Formula
+                    </Link>
+
+                    <Link
+                        className="container-nav"
+                        to="/productionReport">
+                        Production Report
+                    </Link>
             </div>
             )
 
@@ -71,6 +77,12 @@ class FormulaManagementNavBar extends Component {
                         to="/productionRun">
                         Produce Formula
                     </Link>
+
+                    <Link
+                        className="container-nav"
+                        to="/productionReport">
+                        Production Report
+                    </Link>
                 </div>
                 )
 
@@ -91,6 +103,12 @@ class FormulaManagementNavBar extends Component {
                         className="container-nav"
                         to="/formulaManagement">
                         Formula Management
+                    </Link>
+
+                    <Link
+                        className="container-nav"
+                        to="/productionReport">
+                        Production Report
                     </Link>
     
                 </div>
