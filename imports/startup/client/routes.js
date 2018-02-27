@@ -30,6 +30,7 @@ import ViewLog from '../../ui/pages/ViewLog/ViewLog';
 import EditFormula from '../../ui/pages/EditFormula/EditFormula.js'
 import ViewFormula from '../../ui/pages/ViewFormula/ViewFormula.js'
 import ProductionRun from '../../ui/pages/ProductionRun/ProductionRun.js'
+import ProductionReport from '../../ui/pages/ProductionReport/ProductionReport.js'
 import BulkImportFormulas from '../../ui/pages/BulkImportFormulas/BulkImportFormulas.js';
 
 
@@ -64,6 +65,7 @@ export const renderRoutes = () => (
     <Route path='/log' component={LogTable}/>
     <Route path='/viewLog' component={ViewLog}/>
     <Route path='/productionRun' component={ProductionRun}/>
+    <Route path='/productionReport' component={ProductionReport}/>
   </div>
 </Router>
 );

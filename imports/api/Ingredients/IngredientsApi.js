@@ -477,15 +477,17 @@ Meteor.methods({
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
-        //update number of native units per package
-        IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.numNativeUnitsPerPackage" : Number(newNumNativeUnitsPerPackage)}});
-
         //edit packages
         let remainingPackages = Math.ceil(Number(existingIng.nativeInfo.totalQuantity) / Number(newNumNativeUnitsPerPackage))
         Meteor.call('systemlog.insert',
             "Ingredient", existingIng.name, existingIng._id, 
             "Modified - Native Units per Package", newNumNativeUnitsPerPackage);
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
+
+        //update number of native units per package
+        IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.numNativeUnitsPerPackage" : Number(newNumNativeUnitsPerPackage)}});
+
+        
     },
     'editTotalNumNativeUnits': function(selectedIngredient, newTotalNumNativeUnits) {
         
@@ -511,6 +513,8 @@ Meteor.methods({
         //re-calculate footprint
         let remainingPackages = Math.ceil(Number(newTotalNumNativeUnits) / Number(existingIng.nativeInfo.numNativeUnitsPerPackage))
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
+
+        IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.totalQuantity" : Number(newTotalNumNativeUnits)}});
     },
     'editNativeUnit': function(selectedIngredient, newNativeUnit){
         
