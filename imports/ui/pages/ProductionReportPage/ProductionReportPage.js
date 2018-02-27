@@ -31,12 +31,19 @@ class ProductionReportPage extends Component {
 
   renderRows(_this) {
 
-    console.log(this.props.prodReport)
-
     var reportRows = new Array()
-    this.props.formulas.forEach(function (formula) {
+
+    let formulaNameMap = new Map()
+    let formulas = this.props.formulas
+  
+    for (let i = 0; i < formulas.length; i++){
+      formulaNameMap.set(formulas[i]._id, formulas[i].name)
+    }
+
+    this.props.prodReport.forEach(function (formula) {
+      
       reportRows.push({
-        formulaName: formula.name,
+        formulaName: formulaNameMap.get(formula.formula),
         numUnitsProduced: formula.totalProduced,
         totalSpending: formula.totalSpent,
       })

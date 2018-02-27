@@ -66,6 +66,10 @@ Meteor.methods({
                 
                 let ingredient = IngredientsList.findOne({_id: ingList[i].ingredient})
 
+                if (ingredient.vendorInfo.length <= 0){
+                    throw new Meteor.Error('Ingredient Has No Vendor', 'Ingredient: ' + ingredient.name + " has no Vendor. Please add a Vendor.");
+                }
+
                 let numPerPackage = Number(ingredient.nativeInfo.numNativeUnitsPerPackage) 
 
                 let packagesNeeded = Math.ceil( Number(ingList[i].newStock) / Number(numPerPackage) * -1 ) 
