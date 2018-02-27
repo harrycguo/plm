@@ -208,6 +208,12 @@ class LogTable extends Component {
 				Cell: _this.displayLink,
 			},
 		]}
+		defaultSorted={[
+            {
+              id: "time",
+              desc: true
+            }
+          ]}
 		  />
 		);
 	}

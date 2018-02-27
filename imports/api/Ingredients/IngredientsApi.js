@@ -69,7 +69,9 @@ Meteor.methods({
             vendorInfo: vendorInfoArr,
             formulaInfo: []
         });
-
+        Meteor.call('systemlog.insert',
+      "Ingredient", ingName.trim(), IngredientsList.findOne({name: ingName.trim()})._id, 
+        "Added", ingName.trim());
         // IngredientsList.simpleSchema().clean()
         console.log(IngredientsList.find().fetch())
     },
@@ -209,7 +211,17 @@ Meteor.methods({
             IngredientsList.update({ _id: existingIng._id }, { $inc: { "packageInfo.numPackages": Number(numPackages) } });
             IngredientsList.update({ _id: existingIng._id }, { $inc: { "nativeInfo.totalQuantity": Number(ingTotalNumNativeUnits) } });
             
+            Meteor.call('systemlog.insert',
+            "Ingredient", existingIng.name, existingIng._id, 
+            "Modified - Storage", ingStorage);
             
+            Meteor.call('systemlog.insert',
+            "Ingredient", existingIng.name, existingIng._id, 
+            "Modified - Package Count", numPackages);
+
+            Meteor.call('systemlog.insert',
+            "Ingredient", existingIng.name, existingIng._id, 
+            "Modified - Total Native Units", ingTotalNumNativeUnits);
             //if it has both price and vendor
             if (ingPrice && ingVendor) {
 
@@ -231,12 +243,15 @@ Meteor.methods({
                     }
                 }
 
+
+                Meteor.call('systemlog.insert',
+                    "Ingredient", existingIng.name, existingIng._id, 
+                    "Modified - Vendors", "");
                 IngredientsList.update({ _id: existingIng._id }, {
                     $set: { vendorInfo: vendorInfo }
                 });
             }   
         }
-
 
         else {
             Meteor.call('addIngredient',
@@ -280,7 +295,9 @@ Meteor.methods({
         }
 
         IngredientsList.remove({ _id: selectedIngredient });
-        
+        Meteor.call('systemlog.insert',
+            "Ingredient", existingIng.name, existingIng._id, 
+            "Removed", "");
     },
     'editName': function (selectedIngredient, newName) {
         if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
@@ -292,10 +309,15 @@ Meteor.methods({
         if (existingIng !== undefined) {
             throw new Meteor.Error('ingredient name already exists', 'Ingredient Name Already Exists');
         }
-    
+        
         check(selectedIngredient, String);
         //Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
         check(newName, String);
+        Meteor.call('systemlog.insert',
+            "Ingredient", 
+            IngredientsList.findOne({_id: selectedIngredient}).name, 
+            selectedIngredient, 
+            "Modified - Name", newName);
         IngredientsList.update({ _id: selectedIngredient }, { $set: { name: newName.trim() } });
     },
     'editTemperatureState': function (selectedIngredient, newTemperatureState) {
@@ -319,6 +341,9 @@ Meteor.methods({
         check(selectedIngredient, String);
         //Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
         check(newTemperatureState, String);
+        Meteor.call('systemlog.insert',
+            "Ingredient", existingIng.name, existingIng._id, 
+            "Modified - Temp. State", newTemperatureState);
         IngredientsList.update({ _id: selectedIngredient }, { $set: { temperatureState: newTemperatureState.toLowerCase() } });
     },
     'editPackage': function (selectedIngredient, newPackage) {
@@ -374,6 +399,9 @@ Meteor.methods({
         //Javacript auto converts numbers to strings if necessary but not the other way around so we need this check
         check(newPackage, String);
 
+        Meteor.call('systemlog.insert',
+            "Ingredient", existingIng.name, existingIng._id, 
+            "Modified - Packaging", newPackage);
         //update package
         IngredientsList.update({ _id: selectedIngredient }, { $set: { "packageInfo.packageType": newPackage.toLowerCase() } });
         IngredientsList.update({ _id: selectedIngredient }, { $set: { storage:  Number(newStorage)} });    
@@ -409,6 +437,9 @@ Meteor.methods({
         packagingMap.set('railcar', 0);
 
         let newStorage = newNumPackages * packagingMap.get(existingIng.packageInfo.packageType)
+        Meteor.call('systemlog.insert',
+            "Ingredient", existingIng.name, existingIng._id, 
+            "Modified - Package Count", newNumPackages);
         Meteor.call('editStorage', selectedIngredient, Number(newStorage))
 
     },
@@ -429,7 +460,9 @@ Meteor.methods({
             let newUsed = Number(container.used) - Number(existingIng.storage) + Number(newStorage)
             Meteor.call('sc.editUsed', container._id, Number(newUsed));
         }
-
+        Meteor.call('systemlog.insert',
+            "Ingredient", existingIng.name, existingIng._id, 
+            "Modified - Storage", newStorage);
         IngredientsList.update({ _id: selectedIngredient }, { $set: { storage : Number(newStorage) } });
     },
     'editNumNativeUnitsPerPackage': function(selectedIngredient, newNumNativeUnitsPerPackage) {
@@ -449,7 +482,9 @@ Meteor.methods({
 
         //edit packages
         let remainingPackages = Math.ceil(Number(existingIng.nativeInfo.totalQuantity) / Number(newNumNativeUnitsPerPackage))
-
+        Meteor.call('systemlog.insert',
+            "Ingredient", existingIng.name, existingIng._id, 
+            "Modified - Native Units per Package", newNumNativeUnitsPerPackage);
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
     },
     'editTotalNumNativeUnits': function(selectedIngredient, newTotalNumNativeUnits) {
@@ -468,6 +503,9 @@ Meteor.methods({
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
+        Meteor.call('systemlog.insert',
+            "Ingredient", existingIng.name, existingIng._id, 
+            "Modified - Total Native Units", newTotalNumNativeUnits);
         IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.totalQuantity" : Number(newTotalNumNativeUnits)}});
 
         //re-calculate footprint
@@ -479,7 +517,9 @@ Meteor.methods({
         if (!this.userId) {
             throw new Meteor.Error('not-authorized', 'not-authorized');
         }
-
+        Meteor.call('systemlog.insert',
+            "Ingredient", IngredientsList.findOne({_id: selectedIngredient}).name, selectedIngredient, 
+            "Modified - Native Unit", newNativeUnit);
         IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.nativeUnit" : newNativeUnit}});
     },
     'editPrice': function (selectedIngredient, vendorId, newPrice) {
@@ -508,6 +548,10 @@ Meteor.methods({
                     });
             }
         }
+
+        Meteor.call('systemlog.insert',
+            "Ingredient", IngredientsList.findOne({_id: selectedIngredient}).name, selectedIngredient, 
+            "Modified - Price", newPrice); 
         vendorInfoUpdated = IngredientsList.find({ _id: selectedIngredient }).fetch()[0].vendorInfo;
         vendorInfoUpdated.sort(function(a,b) {return (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0);})
         IngredientsList.update({ _id : selectedIngredient._id}, {$set : {vendorInfo : vendorInfoUpdated}});
@@ -567,12 +611,18 @@ Meteor.methods({
             vendor: vendor._id,
             price: price
         };
+        Meteor.call('systemlog.insert',
+            "Ingredient", selectedIngredient.name, selectedIngredient._id, 
+            "Modified - New Price Option", price);
         ing.vendorInfo.push(newVendor)
         ing.vendorInfo.sort(function(a,b) {return (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0);})
         IngredientsList.update({ _id : selectedIngredient._id}, {$set : {vendorInfo : ing.vendorInfo}});
     },
     'removeVendor': function(selectedIngredient, vendor) {
         //This comment only exists just so that I can minimize the method
+        Meteor.call('systemlog.insert',
+            "Ingredient", selectedIngredient.name, selectedIngredient._id, 
+            "Modified - Removed Vendor", vendor.name);
         IngredientsList.update({ _id : selectedIngredient._id} , {$pull : { vendorInfo : { vendor : vendor._id}}});
     },
     'ingredients.updateTotalSpending': function(selectedIngredient, vendor, numPackages) {

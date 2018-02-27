@@ -38,7 +38,7 @@ Meteor.methods({
         throw new Meteor.Error('capacity under currently used', 'New Capacity is below currently used for ' + current.name);
       }
       
-      Meteor.call('systemlog.insert',"Storage Capacities", current.name, scID, "Modified", capacity)
+      Meteor.call('systemlog.insert',"Storage Capacities", current.name, scID, "Modified - Capacity", capacity)
       StorageCapacities.update({_id: scID}, 
         { $set: 
         { capacity: Number(capacity),

@@ -91,7 +91,8 @@ Meteor.methods({
         }
       })
     }
-    
+    Meteor.call('systemlog.insert', "Formula", existingFormula.name, formulaID, "Removed", "")
+
     Formulas.remove(formulaID);
   },
 
@@ -150,6 +151,11 @@ Meteor.methods({
         })
       }  
     }
+
+    var oldFormula = Formulas.findOne({_id: id})
+    Meteor.call('systemlog.insert', "Formula", oldFormula.name, id, "Modified - Name", name)
+    Meteor.call('systemlog.insert', "Formula", name, id, "Modified - Description", description)
+    Meteor.call('systemlog.insert', "Formula", name, id, "Modified - Units", productUnits)
 
     Formulas.update({ _id: id }, {
       $set: {

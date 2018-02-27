@@ -59,9 +59,9 @@ Meteor.methods({
         throw new Meteor.Error('vendor already in system', 'Vendor Freight Code Already In System');
       }
 
-      Meteor.call('systemlog.insert',"Vendor", oldName, FCC, "Modified", name)
-      Meteor.call('systemlog.insert',"Vendor", name, FCC, "Modified", contact)
-      Meteor.call('systemlog.insert',"Vendor", name, FCC, "Modified", FCC)
+      Meteor.call('systemlog.insert',"Vendor", oldName, FCC, "Modified - Name", name)
+      Meteor.call('systemlog.insert',"Vendor", name, FCC, "Modified - Contact", contact)
+      Meteor.call('systemlog.insert',"Vendor", name, FCC, "Modified - FCC", FCC)
 
     
       Vendors.update({_id: id}, { $set: { 

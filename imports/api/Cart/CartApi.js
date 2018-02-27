@@ -66,7 +66,7 @@ Meteor.methods({
             "Cart", 
             IngredientsList.find({_id:selectedIngredient}).fetch()[0].name,  
             selectedIngredient, 
-            "Modified", 
+            "Modified - Package Count", 
             numPackages
         );
         Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.amount' : numPackages }});
@@ -86,7 +86,7 @@ Meteor.methods({
             "Cart", 
             IngredientsList.find({_id:selectedIngredient}).fetch()[0].name,  
             selectedIngredient._id, 
-            "Modified", 
+            "Modified - Vendor", 
             Vendors.find({_id : vendorInfo.vendor}).fetch()[0].vendor
         );
         Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient}, {$set : { 'ingredients.$.vendorInfo' : vendorInfo }});

@@ -73,20 +73,32 @@ Meteor.methods({
         },
       },
     });
+    Meteor.call('systemlog.insert',
+      "User", username, Meteor.users.findOne({username: username})._id, 
+        "Added", username);
+
     Roles.addUsersToRoles(user, [permissionLevel]);
   },
 
 
   'editUserRole': function (user, newPermissionLevel) {
-
     if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('not-authorized', 'not-authorized');
     }
+    console.log(user)
+    Meteor.call('systemlog.insert',"User", user.username, 
+      user._id, 
+      "Modified", 
+      newPermissionLevel);
+
 
     Roles.setUserRoles(user, [newPermissionLevel]);
   },
 
   'users.deleteUser'(userID) {
+    var myUser = Meteor.users.findOne({_id: userID})
+    console.log(myUser)
+    Meteor.call('systemlog.insert',"User", myUser.username, "", "Removed", "")
     Meteor.users.remove(userID)
   }
 
