@@ -36,6 +36,32 @@ NativeInfoSchema = new SimpleSchema({
    } 
 });
 
+SpendingInfoSchema = new SimpleSchema({
+  totalSpending: {
+    type: Number,
+    decimal: true,
+    min: 0,
+    defaultValue: 0
+  },
+  totalProdSpending: {
+    type: Number,
+    decimal: true,
+    min: 0,
+    defaultValue: 0
+  },
+  avgPrice: {
+    type: Number,
+    decimal: true,
+    min: 0,
+    defaultValue: 0
+  },
+  numPackagesOrdered: {
+    type: Number,
+    min: 0,
+    defaultValue: 0
+  }
+})
+
 //Specifies ingredient field type constraints
 IngredientSchema = new SimpleSchema({
   name: {
@@ -65,6 +91,9 @@ IngredientSchema = new SimpleSchema({
   formulaInfo: {
     type: [String],
     optional: true
+  },
+  spendingInfo: {
+    type: SpendingInfoSchema
   }
 });
 
@@ -137,9 +166,17 @@ IngredientProdInfoSchema = new SimpleSchema({
     type: String,
     min: 1
   },
-  totalNativeUnitsConsumed: {
+  totalCost: {
     type: Number,
-    decimal: true
+    decimal: true,
+    min: 0,
+    defaultValue: 0
+  },
+  totalUnitsConsumed: {
+    type: Number,
+    decimal: true,
+    min: 0,
+    defaultValue: 0
   }
 })
 
@@ -149,11 +186,15 @@ ProdReportSchema = new SimpleSchema({
     min: 1
    },
    totalProduced: {
-    type: Number
+    type: Number,
+    decimal: true,
+    min: 0,
+    defaultValue: 0
    },
    ingredientsUsed: {
-    type: [IngredientProdInfoSchema]
+    type: [IngredientProdInfoSchema],
+    min: 1
    }
 })
 
-export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema };
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema };

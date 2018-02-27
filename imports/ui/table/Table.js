@@ -274,9 +274,11 @@ class Table extends Component {
 					onClick={e => {
 						if(recentVendor === vendor) {
 							console.log(row.original.fullIng)
+							console.log(vendor)
 							Meteor.call('addIngredientToCart',
-								row.original.fullIng, 
+								row.original.fullIng,
 								qty, 
+								vendor._id,
 								function(error,result){
 									if(error){
 	                        				console.log("something goes wrong with the following error message " + error.reason )

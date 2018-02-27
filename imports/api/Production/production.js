@@ -4,6 +4,8 @@ import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import IngredientsList from '../Ingredients/IngredientList.js'
 import { Formulas } from '../Formulas/formulas.js'
+import '../ProductionReport/ProductionReportApi.js';
+import ProductionReport from '../ProductionReport/ProductionReport.js'
 
 Meteor.methods({
     'production.produce'(formulaID, numUnitsProduce, ingList) {
@@ -29,10 +31,10 @@ Meteor.methods({
         //Consume!!!
         for (let i = 0; i < ingList.length; i++) {
             let ingredient = IngredientsList.findOne({_id: ingList[i].ingredient})
-
             Meteor.call('editTotalNumNativeUnits', ingList[i].ingredient, ingList[i].newStock)
+            Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, numUnitsProduce * ingList[i].amount)
         }
-
+        Meteor.call('production.log',formulaID,numUnitsProduce)
     },
     'production.addToCart'(ingList) {
         if (! this.userId || !Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
