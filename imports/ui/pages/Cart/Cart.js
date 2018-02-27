@@ -68,11 +68,12 @@ class IngredientCart extends Component {
 					vendorMap.get(ingredient.fullIng.vendorInfo.vendor))}</td>
 				<td>{ingredient.fullIng.vendorInfo.price}</td>
 				<td>
-					<button
+					<Button
+					bsStyle="danger"
 					onClick={this.remove.bind(ingredient)}
 					title= "Edit">
 						Remove From Cart
-					</button>
+					</Button>
 				</td>
 			</tr>
 		)) : null;
@@ -154,7 +155,8 @@ class IngredientCart extends Component {
 			returnLink = '/inventoryManagement'
 		}
 
-		return (<button
+		return (<Button
+				bsStyle="success"
 				onClick={e => {
 					Meteor.call('checkoutIngredients', function(error, result) {
 						if(error){
@@ -168,7 +170,7 @@ class IngredientCart extends Component {
 					});
 				}}
 				title="Checkout"
-				>Checkout Cart</button>
+				>Checkout Cart</Button>
 		);
 	}
 
@@ -182,6 +184,7 @@ class IngredientCart extends Component {
           		<h1>Cart</h1>
         	</header>
 			<InventoryManagementNavBar/>
+			<p></p>
 			<Button
 				bsStyle="primary"
 				onClick={this.edit.bind(this)}

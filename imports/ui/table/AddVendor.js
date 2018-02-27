@@ -36,7 +36,8 @@ export class AddVendor extends Component {
 						}} ref="price"/>
 					</td>
 					<td>
-						<button
+						<Button
+							bsStyle="success"
 							onClick={e => {
 								console.log(this)
 								console.log(this.props.ing)
@@ -54,7 +55,7 @@ export class AddVendor extends Component {
 								);
 							}}
 							title= "Add Vendor"
-						>Add Vendor</button>
+						>Add Vendor</Button>
 					</td>
 				</tr>
 			);

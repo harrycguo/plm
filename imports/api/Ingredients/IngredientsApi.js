@@ -4,6 +4,7 @@ import { Vendors } from '../Vendors/vendors.js';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { containsVendor, indexOfVendorWithId, isInt, checkUndefined, checkIngExists, checkGreaterThanZero } from '../../utils/checks.js';
 import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
+import { Formulas } from '../Formulas/formulas.js'
 
 if (Meteor.isClient) {
     Meteor.subscribe('storageCapacities'); 
@@ -261,7 +262,14 @@ Meteor.methods({
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
         if (existingIng.formulaInfo.length > 0) {
-            throw new Meteor.Error('Ingredient used in a formula','Cannot delete, Ingredient used in Formula(s)');
+            let formulas = ""
+            for (let i = 0; i < existingIng.formulaInfo.length; i++){
+                let existingFormula = Formulas.findOne({_id: existingIng.formulaInfo[i]})
+                formulas += existingFormula.name + ", "
+            }
+            formulas = formulas.substring(0, formulas.length - 2)
+
+            throw new Meteor.Error('Ingredient used in a formulas','Cannot delete, Ingredient used in Formula(s): ' + formulas);
         }
 
         if (!(existingIng.package == 'truckload' || existingIng.package == 'railcar')) {

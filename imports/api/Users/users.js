@@ -84,6 +84,10 @@ Meteor.methods({
     }
 
     Roles.setUserRoles(user, [newPermissionLevel]);
+  },
+
+  'users.deleteUser'(userID) {
+    Meteor.users.remove(userID)
   }
 
 })

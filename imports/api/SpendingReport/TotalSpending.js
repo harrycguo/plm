@@ -56,8 +56,8 @@ Report.find().fetch().forEach(function(rep) {
             total += (rep.price * rep.quantity);
       }
 })
-TotalSpending.update({},{$set : { productionTotal : totalProduction}});
-TotalSpending.update({},{$set : { total : total}});
+//TotalSpending.update({},{$set : { productionTotal : totalProduction}});
+//TotalSpending.update({},{$set : { total : total}});
 // const handle = cursor.observeChanges({
 //     'added': function(id, report) {
 //       console.log("Report changed")
