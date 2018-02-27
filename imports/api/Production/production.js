@@ -16,7 +16,7 @@ Meteor.methods({
 
         let formula = Formulas.findOne({_id: formulaID})
         
-        //check to see we hit min num units to producejnm,mnn
+        //check to see we hit min num units to produce
         if (numUnitsProduce < formula.productUnits){
             throw new Meteor.Error('Must Produce At Least Minimum Product Units', 'Must Produce At Least Minimum Product Units');
         }
@@ -78,9 +78,6 @@ Meteor.methods({
 
             }
         }
-
-
-
     },
 
 })

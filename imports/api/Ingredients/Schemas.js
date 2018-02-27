@@ -195,6 +195,12 @@ ProdReportSchema = new SimpleSchema({
    ingredientsUsed: {
     type: [IngredientProdInfoSchema],
     min: 1
+   },
+   totalSpent: {
+    type: Number,
+    min:0,
+    decimal: true,
+    defaultValue: 0
    }
 })
 

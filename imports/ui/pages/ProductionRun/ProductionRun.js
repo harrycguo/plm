@@ -92,7 +92,8 @@ class ProductionRun extends Component {
 
     setFormulaInfo = () => {
         console.log(this.formula.value)
-        if (this.formula.value != true) {
+        console.log(this.formula.value == 'undefined')
+        if (this.formula.value != 'undefined') {
 
             let formulaID = this.formula.value
             let formula = null
