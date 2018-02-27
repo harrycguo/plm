@@ -209,7 +209,7 @@ class BulkImportIngredients extends Component {
         vendorFCCMap.set(this.props.vendors[i].FCC, this.props.vendors[i]);
       }
 
-    //Create array of vendors of storage capacities
+    //Create array of storage capacities
     let scMapUsed = new Map();
     let scMapTotal = new Map();
 

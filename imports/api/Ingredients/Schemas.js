@@ -104,7 +104,7 @@ CartIngredientSchema = new SimpleSchema({
 		type: String,
     min: 1
 	},
-	amount: {
+	numPackages: {
 		type: Number,
     min: 1
 	},

@@ -8,10 +8,6 @@ import InventoryManagementNavBar from '../../components/InventoryManagementNavBa
 
 class SpendingReport extends Component {
 
-	linkBack() {
-		return (<li><Link to='/inventoryManagement'>Return to Inventory</Link></li>)
-	}
-
 	headerValues() {
 		return [
 			{
