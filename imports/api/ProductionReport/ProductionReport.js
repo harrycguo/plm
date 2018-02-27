@@ -9,6 +9,6 @@ export default ProductionReport;
 if(Meteor.isServer) {
 	console.log('publishing production report');
 	Meteor.publish('prodReport', function() {
-		return Report.find();
+		return ProductionReport.find();
 	});
 }

@@ -2,7 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
-import IngredientsList from '../Ingredients/IngredientList';
+import IngredientsList from '../Ingredients/IngredientList.js';
+import ProductionReport from '../ProductionReport/ProductionReport.js';
 
 export const Formulas = new Mongo.Collection('formulas');
 
@@ -92,7 +93,9 @@ Meteor.methods({
       })
     }
     
+    Meteor.call('production.remove',formulaID)
     Formulas.remove(formulaID);
+
   },
 
   'formulas.edit'(id, name, description, productUnits, ingredientsList) {
