@@ -34,6 +34,7 @@ Meteor.methods({
             Meteor.call('editTotalNumNativeUnits', ingList[i].ingredient, ingList[i].newStock)
             Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, numUnitsProduce * ingList[i].amount)
         }
+        Meteor.call('production.log',formulaID,numUnitsProduce)
     },
     'production.addToCart'(ingList) {
         if (! this.userId || !Roles.userIsInRole(this.userId, ['admin', 'manager'])) {

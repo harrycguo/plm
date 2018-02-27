@@ -3,15 +3,17 @@ import ProductionReport from './ProductionReport.js';
 import { Formulas } from '../Formulas/formulas.js';
 
 Meteor.methods({
-    'production.log': function(formula, qty) {
+    'production.log': function(formulaId, qty) {
         console.log(Formulas.find().fetch())
-        if (ProductionReport.find({ formula : formula }).fetch().length === 0) {
-            formula = Formulas.find({ _id : formula}).fetch()[0]
+        if (ProductionReport.find({ formula : formulaId }).fetch().length === 0) {
+            var formula = Formulas.find({ _id : formulaId}).fetch()[0]
             ingList = []
             for (var i = 0; i < formula.ingList.length; i++) {
+                var ing = IngredientsList.find({ _id : formula.ingList[i].ingredient}).fetch()[0]
                 ingList.push({
                     ingredient: formula.ingList[i].ingredient,
-                    totalNativeUnitsConsumed: formula.ingList[i].amount
+                    totalCost: (((formula.ingList[i].amount * qty)/ing.nativeInfo.numNativeUnitsPerPackage) * ing.spendingInfo.avgPrice),
+                    totalUnitsConsumed: (formula.ingList[i].amount * qty)
                 })
             }
             ProductionReport.insert({
@@ -21,10 +23,10 @@ Meteor.methods({
             });  
         }
         else {
-            ProductionReport.update( {formula : formula}, {$inc : { total : qty}})
-            ingList = Formulas.find({ _id : formula}).fetch()[0]
+            ProductionReport.update( {formula : formulaId}, {$inc : { totalProduced : qty}})
+            ingList = Formulas.find({ _id : formulaId}).fetch()[0]
             for (var i = 0; i < ingList.length; i++) {
-                ProductionReport.update({formula:formula, 'ingredientsUsed.ingredient':ingList[i].id}, {$inc : {'ingredientsUsed.$.totalNativeUnitsConsumed' : ingList[i].amount}})
+                ProductionReport.update({formula:formulaId, 'ingredientsUsed.ingredient':ingList[i].id}, {$inc : {'ingredientsUsed.$.totalUnitsConsumed' : ingList[i].amount}})
             }
         }
     }

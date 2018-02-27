@@ -166,9 +166,17 @@ IngredientProdInfoSchema = new SimpleSchema({
     type: String,
     min: 1
   },
-  totalNativeUnitsConsumed: {
+  totalCost: {
     type: Number,
-    decimal: true
+    decimal: true,
+    min: 0,
+    defaultValue: 0
+  },
+  totalUnitsConsumed: {
+    type: Number,
+    decimal: true,
+    min: 0,
+    defaultValue: 0
   }
 })
 
@@ -178,10 +186,14 @@ ProdReportSchema = new SimpleSchema({
     min: 1
    },
    totalProduced: {
-    type: Number
+    type: Number,
+    decimal: true,
+    min: 0,
+    defaultValue: 0
    },
    ingredientsUsed: {
-    type: [IngredientProdInfoSchema]
+    type: [IngredientProdInfoSchema],
+    min: 1
    }
 })
 

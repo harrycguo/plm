@@ -3,7 +3,7 @@ import { IngredientSchema, PackageInfoSchema, NativeInfoSchema, VendorInfoSchema
 import { Vendors } from '../Vendors/vendors.js';
 
 IngredientsList = new Mongo.Collection('ingredients');
-// IngredientsList.remove({}); // remove every ingredient from the collection
+// IngredientsList.remove({}); // remove every ingredient from the collectionadsa
 
 //Attach a schema to the collection for automatic validation on insert/update operations
 IngredientsList.attachSchema(IngredientSchema);
