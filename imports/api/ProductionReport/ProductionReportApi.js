@@ -16,7 +16,7 @@ Meteor.methods({
                 var ing = IngredientsList.find({ _id : formula.ingredientsList[i].id}).fetch()[0]
                 ingList.push({
                     ingredient: formula.ingredientsList[i].id,
-                    totalCost: ((formula.ingredientsList[i].amount * (qty/formula.productUnits))/ing.nativeInfo.numNativeUnitsPerPackage) * ing.spendingInfo.avgPrice,
+                    totalCost: ing.spendingInfo.totalProdSpending,
                     totalUnitsConsumed: formula.ingredientsList[i].amount * (qty/formula.productUnits)
                 })
                 costArr.push(((formula.ingredientsList[i].amount * (qty/formula.productUnits))/ing.nativeInfo.numNativeUnitsPerPackage) * ing.spendingInfo.avgPrice)
@@ -40,7 +40,7 @@ Meteor.methods({
                     if (rep.ingredientsUsed[j].ingredient == ingList[i].id) {
                         ProductionReport.update({formula:formulaId, 'ingredientsUsed.ingredient':ingList[i].id}, {$inc : {'ingredientsUsed.$.totalUnitsConsumed' : ingList[i].amount * (qty/formula.productUnits)}})
                         var consumedTotal = ProductionReport.find({formula:formulaId}).fetch()[0].ingredientsUsed[j].totalUnitsConsumed 
-                        ProductionReport.update({formula:formulaId, 'ingredientsUsed.ingredient':ingList[i].id}, {$set : {'ingredientsUsed.$.totalCost' : ing.spendingInfo.avgPrice * (consumedTotal/ing.nativeInfo.numNativeUnitsPerPackage)}})
+                        ProductionReport.update({formula:formulaId, 'ingredientsUsed.ingredient':ingList[i].id}, {$set : {'ingredientsUsed.$.totalCost' : ing.spendingInfo.totalProdSpending}})
                         var costTotal = ProductionReport.find({formula:formulaId}).fetch()[0].ingredientsUsed[j].totalCost
                         ProductionReport.update({formula:formulaId},{$inc : {totalSpent : costTotal}})
                     }
@@ -48,5 +48,8 @@ Meteor.methods({
             }
         }
         console.log(ProductionReport.find().fetch())
+    },
+    'production.remove': function(formulaId) {
+        ProductionReport.deleteMany({formula:formulaId})
     }
 });
