@@ -65,7 +65,8 @@ class Table extends Component {
 	renderButtons(_this, row) {
 		if(TableData.canEdit) {
 			return (<div>
-				<button
+				<Button
+				bsStyle="danger"
 				//onClick={this.remove.bind(row)}
 				onClick={e => {
 					
@@ -84,7 +85,7 @@ class Table extends Component {
 					}
 					
 				}}
-				>Remove Ingredient</button> 
+				>Remove Ingredient</Button> 
 				</div>
 			)
 		}else {
@@ -135,7 +136,8 @@ class Table extends Component {
 					edit={TableData.canEdit}
 				/>
 				<td> 
-					<button
+					<Button
+						bsStyle="danger"
 						onClick={e=> {
 							var message = "Delete the vendor: "
 							message = message.concat(vendor.name).concat(" from this ingredient?")
@@ -153,7 +155,7 @@ class Table extends Component {
 							}
 						}}
 						title= "Remove Vendor"
-					>Delete Vendor</button>
+					>Delete Vendor</Button>
 				</td>
 			</tr>
 		));
@@ -270,7 +272,8 @@ class Table extends Component {
 					}}/>
 				</td>
 				<td>
-				<button
+				<Button
+					bsStyle="success"
 					onClick={e => {
 						if(recentVendor === vendor) {
 							console.log(row.original.fullIng)
@@ -284,7 +287,7 @@ class Table extends Component {
 	                        				console.log("something goes wrong with the following error message " + error.reason )
 	               	  						Bert.alert(error.reason, 'danger');
 	                  				} else {
-											Bert.alert('Successfully added ' + qty +' ' + row.original.fullIng.nativeInfo.nativeUnit + ' to Cart!', 'success')
+											Bert.alert('Added ' + qty +' ' + row.original.fullIng.packageInfo.packageType + ' to Cart!', 'success')
 									}
 								}
 							);
@@ -293,7 +296,7 @@ class Table extends Component {
 					}}
 				>
 					Add Packages To Cart
-				</button>
+				</Button>
 				</td>
 				</>
 			) : null;

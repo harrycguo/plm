@@ -4,12 +4,11 @@ import { Link } from 'react-router-dom';
 import { Navbar, NavItem, Nav } from 'react-bootstrap';
 import UserManagementNavBar from '../../components/UserManagementNavBar/UserManagementNavBar.js'
 import ReactTable from 'react-table';
-import { Button } from 'react-bootstrap';
+import { Button , ButtonToolbar } from 'react-bootstrap';
 import UserManagementData from './UserManagementData.js'
 import { Accounts } from 'meteor/accounts-base';
 import { Users } from '../../../api/Users/users.js'
 
-// App component - represents the whole app
 class UserManagement extends Component {
     constructor(props) {
         super(props);
@@ -18,7 +17,13 @@ class UserManagement extends Component {
     edit() {
 		UserManagementData.toggleEditable()
 		this.forceUpdate()
-	}
+    }
+    
+    deleteUser(row) {
+        if (confirm("Delete this User?")) {
+            Meteor.call('users.deleteUser', row.original.fullUser._id)
+        }
+    }
 
     renderUserTable() {
 
@@ -39,6 +44,26 @@ class UserManagement extends Component {
                 data={data}
                 columns={UserManagementData.HeaderValues}
                 noDataText="Loading..." 
+                SubComponent={row => {
+
+                    return UserManagementData.canEdit && row.original.username != 'admin'? (
+                        <div className="container-nav">
+                            <ButtonToolbar>
+                            <Button 
+                                bsStyle="danger"
+                                onClick={() => this.deleteUser(row)}
+                            >
+                            Delete User
+                            </Button>
+                            </ButtonToolbar>
+
+                        </div>
+
+                    ) : null
+                
+                
+                
+                }}
             />
         )
     }

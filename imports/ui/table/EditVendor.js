@@ -52,7 +52,8 @@ export class EditVendor extends Component {
 	renderButton(){
 		return this.props.noButton && !this.state.edit ? null : (
 		<td>
-		<button
+		<Button
+			bsStyle="success"
 			onClick={e => {
 				if(this.props.source == "table") {
 					if(confirm("Update vendor?")) {
@@ -79,7 +80,7 @@ export class EditVendor extends Component {
 				this.forceUpdate()
 			}}
 			title= "Edit Vendor"
-		>{!this.state.edit && this.props.source == "cart" ? "Edit" : "Submit Edits"}</button>
+		>{!this.state.edit && this.props.source == "cart" ? "Edit" : "Submit Edits"}</Button>
 		</td>)
 	}
 	render() {
