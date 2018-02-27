@@ -48,6 +48,7 @@ class SpendingReport extends Component {
           		<h1>Spending Report</h1>
         	</header>
 			<InventoryManagementNavBar/>
+			<p></p>
        		<ReactTable
 	    		data={this.renderRows(this)}
 	    		filterable
