@@ -93,8 +93,10 @@ Meteor.methods({
             var ing = IngredientsList.find({ _id : ingCartInfo.ingredient}).fetch()[0]
             newAmount = ing.nativeInfo.totalQuantity + ingCartInfo.amount * ing.nativeInfo.numNativeUnitsPerPackage;
             Meteor.call('editTotalNumNativeUnits',ingCartInfo.ingredient,Number(newAmount));
-            Meteor.call('logProductionInReport',ing,Number(ingCartInfo.amount),Number(ingCartInfo.vendorInfo.price));
+            Meteor.call('ingredients.updateTotalSpending',ingCartInfo.ingredient,ingCartInfo.vendorInfo.vendor,ingCartInfo.amount)
+            // Meteor.call('logProductionInReport',ing,Number(ingCartInfo.amount),Number(ingCartInfo.vendorInfo.price));
         });
+
         Carts.update({ user : Meteor.userId()}, {$set : {ingredients : []}});
         console.log("finished");
     }

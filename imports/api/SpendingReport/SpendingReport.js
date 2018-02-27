@@ -1,6 +1,5 @@
 import { Mongo } from 'meteor/mongo';
 import { ReportSchema } from '../Ingredients/Schemas.js';
-//Cart Database
 
 Report = new Mongo.Collection('report');
 Report.attachSchema(ReportSchema);
