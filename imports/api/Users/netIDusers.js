@@ -5,6 +5,9 @@ export const NetIDusers = new Mongo.Collection('netIDusers');
 
 Meteor.methods({
     'netIDusers.insert'(netID){
+    	Meteor.call('systemlog.insert',
+      		"User", netID, netID, 
+        "Added", netID);
         NetIDusers.insert({
             user: netID,
           });

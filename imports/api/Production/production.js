@@ -39,6 +39,7 @@ Meteor.methods({
             }
             Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, numUnitsProduce * numNativeUnitsPerProductUnit)
         }
+        Meteor.call('systemlog.insert',"Production", "Produced", null, "Event", "");
         Meteor.call('production.log',formulaID,numUnitsProduce)
     },
     'production.addToCart'(ingList) {

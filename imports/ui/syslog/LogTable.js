@@ -42,7 +42,6 @@ class LogTable extends Component {
 			type: logItem.type, 
 			name: logItem.name,
 			change: logItem.change,
-			from: logItem.from,
 			to: logItem.to,
 			user: logItem.user,
 			time: timeString,
@@ -98,6 +97,9 @@ class LogTable extends Component {
 			        <option value="all">All</option>
 			        <option value="Ingredient">Ingredient</option>
 			        <option value="Formula">Formula</option>
+					<option value="Vendor">Vendor</option>
+			        <option value="Storage Capacities">Storage Capacities</option>
+					<option value="Cart">Cart</option>
 					<option value="User">User</option>
 			      </select>,
 			}, 
@@ -132,25 +134,12 @@ class LogTable extends Component {
 			        value={filter ? filter.value : 'all'}
 			      >
 			        <option value="all">All</option>
-			        <option value="created">Created</option>
-			        <option value="modified">Modified</option>
-			        <option value="removed">Removed</option>
+			        <option value="Added">Added</option>
+			        <option value="Modified">Modified</option>
+			        <option value="Removed">Removed</option>
+			        <option value="Event">Event</option>
 			      </select>,
 			},
-			{
-				Header: 'From',
-				accessor: 'from',
-				Filter: ({ filter, onChange }) => (
-			      
-			      <input
-			        type="text"
-			        onChange={event => onChange(event.target.value)}
-			        style={{ width: '100%', height: '100%'}}
-			        value={filter ? filter.value : ''}
-			        placeholder="Filter by old value"
-			      />
-			      )
-			}, 
 			{
 				Header: 'To',
 				accessor: 'to',
@@ -219,6 +208,12 @@ class LogTable extends Component {
 				Cell: _this.displayLink,
 			},
 		]}
+		defaultSorted={[
+            {
+              id: "time",
+              desc: true
+            }
+          ]}
 		  />
 		);
 	}

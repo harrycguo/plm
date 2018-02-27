@@ -23,6 +23,8 @@ Meteor.methods({
         throw new Meteor.Error('vendor already in system', 'Vendor Freight Code Already In System');
       }
 
+      Meteor.call('systemlog.insert',"Vendor", name, FCC, "Added", name);
+
       Vendors.insert({
         vendor: name,
         contact: contact,
@@ -35,6 +37,9 @@ Meteor.methods({
       if (! this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
         throw new Meteor.Error('not-authorized', 'not-authorized');
       }
+      var myVendor = Vendors.findOne({_id: vendorID})
+      Meteor.call('systemlog.insert',"Vendor", myVendor.vendor, myVendor.FCC, "Removed", "")
+
       Vendors.remove(vendorID);
     },
     
@@ -54,6 +59,11 @@ Meteor.methods({
         throw new Meteor.Error('vendor already in system', 'Vendor Freight Code Already In System');
       }
 
+      Meteor.call('systemlog.insert',"Vendor", oldName, FCC, "Modified - Name", name)
+      Meteor.call('systemlog.insert',"Vendor", name, FCC, "Modified - Contact", contact)
+      Meteor.call('systemlog.insert',"Vendor", name, FCC, "Modified - FCC", FCC)
+
+    
       Vendors.update({_id: id}, { $set: { 
         vendor: name, 
         contact: contact,
@@ -61,7 +71,6 @@ Meteor.methods({
       }})
     },
     'getVendorById'(vendorID) {
-
         return Vendors.findOne({_id: vendorID})
     }
   });

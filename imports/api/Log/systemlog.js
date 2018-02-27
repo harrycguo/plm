@@ -7,20 +7,19 @@ import { Accounts } from 'meteor/accounts-base';
 export const SystemLog = new Mongo.Collection('log');
 
 Meteor.methods({
-    'systemlog.insert'(type, name, _id, change, _from, to) {
-
+    'systemlog.insert'(type, name, _id, change, to) {
       let user = Meteor.users.findOne(this.userId)
-
+      console.log("logging")
+      console.log(type)
       SystemLog.insert({
         type: type,
         name: name,
         change: change,
-        from: _from,
         to: to,
         user: user.username,
         time: Date.now(),
         id: _id,
-      });
+      })
     },
   });
 

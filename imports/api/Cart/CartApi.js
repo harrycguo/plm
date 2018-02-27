@@ -19,13 +19,6 @@ Meteor.methods({
 		});
 	},
     'addIngredientToCart': function(selectedIngredient, numPackages, vendor) {
-        // if(Meteor.userId()){
-        //     if (Roles.userIsInRole(Meteor.userId(), ['admin','manager'])){
-        //        throw new Meteor.Error('not-authorized', 'not-authorized')
-        //     }sdfsdfsdf
-        // }
-        console.log(Carts.find().fetch())
-        console.log(Vendors.find().fetch())
 
         if (Carts.find({user: Meteor.userId()}).fetch()[0] === undefined) {
             Meteor.call('createUserCart')
@@ -41,14 +34,12 @@ Meteor.methods({
             vendorList = IngredientsList.find({ _id : selectedIngredient._id }).fetch()[0].vendorInfo
             for (var i = 0; i < vendorList.length; i++) {
                 if (vendorList[i].vendor == vendor) {
-                    console.log('We setting!')
                     vendorInfo = vendorList[i]
                 }
             }
         }
 
         if (cartContainsIng(selectedIngredient._id)) {
-            console.log('CHANGING QTY')
             Meteor.call('cart.changeQuantity',selectedIngredient._id, numPackages)
         } else {
             Carts.update({ user : Meteor.userId()}, {$push : { ingredients : {
@@ -57,30 +48,48 @@ Meteor.methods({
                 vendorInfo: vendorInfo
             }}});
         }
+        Meteor.call('systemlog.insert', "Cart", selectedIngredient.name,  selectedIngredient._id, "Added", "");
     },
     'removeIngredientFromCart': function(selectedIngredient) {
     	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { ingredient : selectedIngredient}}});
+        
+        Meteor.call('systemlog.insert', 
+            "Cart", 
+            IngredientsList.find({_id:selectedIngredient}).fetch()[0].name,  
+            selectedIngredient, 
+            "Removed", 
+            ""
+        );
     },
     'cart.changeQuantity': function(selectedIngredient, numPackages){
         addToCartCheck(selectedIngredient,numPackages)
-        console.log("LETS GET IT")
+        Meteor.call('systemlog.insert', 
+            "Cart", 
+            IngredientsList.find({_id:selectedIngredient}).fetch()[0].name,  
+            selectedIngredient, 
+            "Modified - Package Count", 
+            numPackages
+        );
         Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.amount' : numPackages }});
     },
     'cart.changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement
         // checkCartExists()
-        console.log(vendor)
         vendorInfoArr = IngredientsList.find({ _id : selectedIngredient }).fetch()[0].vendorInfo
         vendorInfo = {}
-        console.log(vendorInfoArr)
-        console.log(vendor)
         for (var i=0; i<vendorInfoArr.length; i++) {
             if (vendorInfoArr[i].vendor == vendor) {
-                console.log(Carts.find().fetch())
                 vendorInfo = vendorInfoArr[i];
             }
         }
-        console.log(vendorInfo)
+        console.log(Vendors.find({_id : vendorInfo.vendor}).fetch()[0])
+        Meteor.call('systemlog.insert', 
+            "Cart", 
+            IngredientsList.find({_id:selectedIngredient}).fetch()[0].name,  
+            selectedIngredient._id, 
+            "Modified - Vendor", 
+            Vendors.find({_id : vendorInfo.vendor}).fetch()[0].vendor
+        );
         Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient}, {$set : { 'ingredients.$.vendorInfo' : vendorInfo }});
     },
     'checkoutIngredients': function() { //Allow adding to inentory instead of just remove
@@ -135,16 +144,13 @@ Meteor.methods({
 
         //This is where the magic happens
         var diff;
-        console.log(ings);
         ings.forEach(function(ingCartInfo){
-            console.log(ingCartInfo.ingredient)
             var ing = IngredientsList.find({ _id : ingCartInfo.ingredient}).fetch()[0]
             newAmount = ing.nativeInfo.totalQuantity + ingCartInfo.numPackages * ing.nativeInfo.numNativeUnitsPerPackage;
             Meteor.call('editTotalNumNativeUnits',ingCartInfo.ingredient,Number(newAmount));
             Meteor.call('ingredients.updateTotalSpending',ingCartInfo.ingredient,ingCartInfo.vendorInfo.vendor,ingCartInfo.numPackages)
         });
-
+        Meteor.call('systemlog.insert', "Cart", "Checked Out",  null, "Event", "");
         Carts.update({ user : Meteor.userId()}, {$set : {ingredients : []}});
-        console.log("finished");
     }
 });
