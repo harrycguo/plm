@@ -412,7 +412,7 @@ Meteor.methods({
 
         // if (!isInt(newStorage)) {
         //     throw new Meteor.Error('Storage must be an Integer', 'Storage must be an Integer');
-        // }
+        // }jlkjkjhlk
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
@@ -586,7 +586,12 @@ Meteor.methods({
         console.log('Num native units mah dude: '+numNativeUnits)
         var ing = IngredientsList.find({ _id : selectedIngredient}).fetch()[0]
         let packagesUsedInProd = numNativeUnits/ing.nativeInfo.numNativeUnitsPerPackage
-        let newProdSpendingTotal = packagesUsedInProd * ing.spendingInfo.avgPrice
+        var newProdSpendingTotal = packagesUsedInProd * ing.spendingInfo.avgPrice
+
+        if (newProdSpendingTotal > ing.spendingInfo.totalSpending) {
+            newProdSpendingTotal = ing.spendingInfo.totalSpending
+        }
+
         console.log('Production spending: '+newProdSpendingTotal)
         console.log('packages used in prod'+packagesUsedInProd)
         console.log('Avg Price'+ing.spendingInfo.avgPrice)
