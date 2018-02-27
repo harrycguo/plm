@@ -581,8 +581,11 @@ Meteor.methods({
         IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.totalSpending' : newTotalSpending}})
         IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.avgPrice' : newPrice}})
         IngredientsList.update({ _id : selectedIngredient},{$inc : {'spendingInfo.numPackagesOrdered' : numPackages}})
+    },
+    'ingredients.updateTotalProdSpending': function(selectedIngredient, numNativeUnits) {
+        var ing = IngredientsList.find({ _id : selectedIngredient}).fetch()[0]
+        let packagesUsedInProd = numNativeUnits/ing.nativeInfo.numNativeUnitsPerPackage
+        let newProdSpendingTotal = packagesUsedInProd * ing.spendingInfo.avgPrice
+        IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.totalProdSpending' : newProdSpendingTotal}})
     }
-    // 'ingredients.updateTotalProductionSpending': function(selectedIngredient, vendor, numPackages) {
-//sfdffdsdfdfsdf
-    // }
 });
