@@ -5,7 +5,7 @@ import { Vendors } from '../../api/Vendors/vendors.js';
 
 export var canEdit = false;
 var nativeUnitSwitch = {cellInfo: null, target: null, toggled: false};
-
+var boxLocked = false;
 export function toggleEditable() {
 	canEdit = !canEdit;
 }
@@ -16,10 +16,13 @@ function renderEditable(cellInfo) {
 			type="text" 
 			defaultValue={cellInfo.value}
 			onBlur = {e => {
+				if(!boxLocked) {
 				e.persist()
 				if(cellInfo.column.id === 'name'){	
 					var message = "Edit Name\nFrom "
 					message = message.concat(cellInfo.original.name).concat(" to ").concat(e.target.value);
+					boxLocked = true;
+					console.log(boxLocked)
 					if(confirm(message)) {
 						Meteor.call('editName', 
 							cellInfo.original.fullIng._id, 
@@ -37,6 +40,7 @@ function renderEditable(cellInfo) {
 				} else if (cellInfo.column.id === 'qty') {
 					var message = "Edit Quantity\nFrom "
 					message = message.concat(cellInfo.original.qty).concat(" to ").concat(e.target.value);
+					boxLocked = true;
 					if(confirm(message)) {
 						var entry = parseInt(e.target.value)
 						if(entry >= 0) {
@@ -57,6 +61,7 @@ function renderEditable(cellInfo) {
 				} else if (cellInfo.column.id === 'numNativeUnitsPerPackage') {
 					var message = "Edit Number of Native Units Per Package\nFrom "
 					message = message.concat(cellInfo.original.numNativeUnitsPerPackage).concat(" to ").concat(e.target.value);
+					boxLocked = true;
 					if(confirm(message)) {
 						var entry = parseInt(e.target.value)
 						if(entry >= 0) {
@@ -74,7 +79,17 @@ function renderEditable(cellInfo) {
 					} else {
 						e.target.value = cellInfo.original.numNativeUnitsPerPackage;
 					}
-				} 
+				}
+				} else {
+					boxLocked = false;
+					if(cellInfo.column.id === 'name'){	
+						e.target.value = cellInfo.original.name;
+					} else if (cellInfo.column.id === 'qty') {
+						e.target.value = cellInfo.original.qty;
+					} else if (cellInfo.column.id === 'numNativeUnitsPerPackage') {
+						e.target.value = cellInfo.original.numNativeUnitsPerPackage;
+					}
+				}
 			}}
 			/>); 
 
@@ -97,6 +112,7 @@ function renderCustomField(cellInfo) {
 				name="customNativeUnit"
 				defaultValue={defVal}
 				onBlur={ e => {
+					if(!boxLocked) {
 					var result = false;
 					if(cellInfo === nativeUnitSwitch.cellInfo && nativeUnitSwitch.toggled) {
 						console.log(cellInfo)
@@ -108,6 +124,11 @@ function renderCustomField(cellInfo) {
 						result = editNativeUnits(e.target, cellInfo, cellInfo.value, e.target.value);
 					}
 					if(!result){
+						e.target.value = (cellInfo.original.unit == "Gallons" ||
+							cellInfo.original.unit == "Pounds") ? "" : cellInfo.original.unit;
+					}
+					} else {
+						boxLocked = false;
 						e.target.value = (cellInfo.original.unit == "Gallons" ||
 							cellInfo.original.unit == "Pounds") ? "" : cellInfo.original.unit;
 					}
@@ -161,6 +182,7 @@ function editNativeUnits(target, cellInfo, currUnits, newUnits) {
 	var message = "Edit Native Units\nFrom "
 	message = message.concat(currUnits).concat(" to ").concat(newUnits);
 	console.log(target)
+	boxLocked = true
 	if(confirm(message)) {
 		var success = Meteor.call('editNativeUnit', 
 			cellInfo.original.fullIng._id, 
@@ -196,6 +218,7 @@ function renderEditableDropdown(cellInfo) {
 			onChange={ e=> {
 				var message = "Edit Temperature State\nFrom "
 				message = message.concat(cellInfo.original.temp).concat(" to ").concat(e.target.value);
+				boxLocked = true;
 				if(confirm(message)) {
 					Meteor.call('editTemperatureState', 
 						cellInfo.original.fullIng._id, 
@@ -224,6 +247,7 @@ function renderEditableDropdown(cellInfo) {
 			onChange={ e=> {
 				var message = "Edit Packaging\nFrom "
 				message = message.concat(cellInfo.original.pkg).concat(" to ").concat(e.target.value);
+				boxLocked = true;
 				if(confirm(message)) {
 					Meteor.call('editPackage', 
 						cellInfo.original.fullIng._id, 
