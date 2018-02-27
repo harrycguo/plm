@@ -635,7 +635,7 @@ Meteor.methods({
         vendorInfoArr = ing.vendorInfo
         for (var i = 0; i < vendorInfoArr.length; i++) {
             if (vendorInfoArr[i].vendor == vendor) {
-                price = vendorInfoArr[i].price
+                price = vendorInfoArr[i].price//sdfdfdsf
             }
         }
         let newPrice = Number((price * numPackages + ing.spendingInfo.totalSpending) / (numPackages +ing.spendingInfo.numPackagesOrdered))
@@ -646,7 +646,9 @@ Meteor.methods({
     },
     'ingredients.updateTotalProdSpending': function(selectedIngredient, numNativeUnits) {
         var ing = IngredientsList.find({ _id : selectedIngredient}).fetch()[0]
-        let totalPackagesUsedInProd = numNativeUnits/ing.nativeInfo.numNativeUnitsPerPackage
+        var newNumNativeUnitsProduced = numNativeUnits + ing.spendingInfo.numNativeUnitsProduced
+        console.log('New: '+newNumNativeUnitsProduced)
+        let totalPackagesUsedInProd = newNumNativeUnitsProduced/ing.nativeInfo.numNativeUnitsPerPackage 
         var newProdSpendingTotal = totalPackagesUsedInProd * ing.spendingInfo.avgPrice
 
         if (newProdSpendingTotal > ing.spendingInfo.totalSpending) {
@@ -654,8 +656,9 @@ Meteor.methods({
         }
 
         console.log('Production spending: '+newProdSpendingTotal)
-        console.log('packages used in prod'+packagesUsedInProd)
+        // console.log('packages used in prod'+packagesUsedInProd)
         console.log('Avg Price'+ing.spendingInfo.avgPrice)
         IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.totalProdSpending' : newProdSpendingTotal}})
+        IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.numNativeUnitsProduced' : newNumNativeUnitsProduced}})
     }
 });
