@@ -325,7 +325,7 @@ export const HeaderValues = [
 	      </select>,
 	},
 	{
-		Header: 'Number of Packages',
+		Header: 'Storage',
 		accessor: 'numpkg',
 		Filter: ({ filter, onChange }) =>
 	      <input
@@ -391,7 +391,6 @@ export function convertToFrontend(ingredient, ingredientsList, vendors) {
 		}
 	});
 	
-	var numPackagesWithFloorspace = ingredient.packageInfo.numPackages.toString().concat(" (")
 	var floorSpace = null
 	switch(ingredient.packageInfo.packageType) {
         case "sack":
@@ -411,8 +410,8 @@ export function convertToFrontend(ingredient, ingredientsList, vendors) {
         	floorSpace = 0;
         	break;
 	}
-	numPackagesWithFloorspace = numPackagesWithFloorspace.concat(floorSpace*ingredient.packageInfo.numPackages).concat(" Sq. Ft.)");
-
+	var numPackagesWithFloorspace = floorSpace*ingredient.packageInfo.numPackages;
+	numPackagesWithFloorspace = numPackagesWithFloorspace.toString().concat(" Sq. Ft. (").concat(ingredient.packageInfo.numPackages.toString()).concat(" pkg(s))")
 	return {
 			name: ingredient.name, 
 			temp: ingredient.temperatureState, 

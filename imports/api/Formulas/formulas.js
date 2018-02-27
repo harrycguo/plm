@@ -65,7 +65,7 @@ Meteor.methods({
         }
       })
 
-      Meteor.call('systemlog.insert', "Formula", name, 0, "Created", "Nothing", "Something")
+      Meteor.call('systemlog.insert', "Formula", name, 0, "Added", "")
     
   },
 
