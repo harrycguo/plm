@@ -6,6 +6,7 @@ import { Row, Col, FormGroup, ControlLabel, Button, FormControl, ButtonToolbar }
 import validate from '../../../modules/validate';
 import FormulaManagementNavBar from '../../components/FormulaManagementNavBar/FormulaManagementNavBar.js'
 import ProductionRunItem from '../../components/ProductionRunItem/ProductionRunItem.js'
+import { Vendors } from '../../../api/Vendors/vendors.js'
 
 // App component - represents the whole app
 class ProductionRun extends Component {
@@ -158,8 +159,6 @@ class ProductionRun extends Component {
             })
         }
 
-        console.log(ingListArray)
-
         Meteor.call('production.addToCart',
             ingListArray,
             function (error, result) {
@@ -167,7 +166,7 @@ class ProductionRun extends Component {
                     Bert.alert(error.reason, 'danger')
                 } else {
                     Bert.alert("Added Missing Ingredients To Cart", 'success')
-                    //history.push('/cart')
+                    history.push('/cart')
                 }
             })
     }
@@ -277,12 +276,12 @@ class ProductionRun extends Component {
                             Add Missing Ingredients To Cart (if applicable)
                         </Button>
 
-                        <Button
+                        {/* <Button
                             bsStyle="warning" 
                             onClick={this.goToCart}
                         >
                             Go To Cart
-                        </Button>
+                        </Button> */}
 
 
                     </ButtonToolbar>
@@ -295,8 +294,10 @@ class ProductionRun extends Component {
 
 export default withTracker(() => {
     Meteor.subscribe('formulas');
+    Meteor.subscribe('vendors');
     return {
         formulas: Formulas.find({}).fetch(),
+        vendors: Vendors.find({}).fetch(),
     };
 })(ProductionRun);
 

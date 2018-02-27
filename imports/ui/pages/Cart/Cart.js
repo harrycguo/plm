@@ -37,13 +37,15 @@ class IngredientCart extends Component {
 		var vendorMap = new Map();
 		var ingMap = new Map();
 
+		this.props.vendors.forEach(function (vend) {
+			vendorMap.set(vend._id, vend);
+		});
+
 		this.props.ingredients.forEach(function(ing) {
 			ingMap.set(ing._id, ing);
 		});
 
-		this.props.vendors.forEach(function (vend) {
-			vendorMap.set(vend._id, vend);
-		});
+		
 
 		this.props.carts.forEach(function(ingredients) {
 			ingredients.ingredients.forEach(function(ing) {
@@ -171,6 +173,8 @@ class IngredientCart extends Component {
 	}
 
 	render() {
+
+		console.log(this.props.vendors)
 		return (
 			<div className="container">
 

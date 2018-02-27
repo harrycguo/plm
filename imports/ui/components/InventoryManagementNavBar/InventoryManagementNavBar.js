@@ -36,8 +36,8 @@ class InventoryManagementNavBar extends Component {
 
                 <Link
                     className="container-nav"
-                    to="/bulkImportIngredients">
-                    Bulk Import Ingredients
+                    to="/inventoryManagement">
+                    Inventory Management
                 </Link>
 
                 <Link
