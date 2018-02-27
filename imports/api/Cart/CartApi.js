@@ -70,7 +70,7 @@ Meteor.methods({
             "Modified - Package Count", 
             numPackages
         );
-        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.amount' : numPackages }});
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.numPackages' : numPackages }});
     },
     'cart.changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement

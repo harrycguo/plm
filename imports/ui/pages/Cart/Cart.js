@@ -37,6 +37,9 @@ class IngredientCart extends Component {
 		var vendorMap = new Map();
 		var ingMap = new Map();
 
+		console.log(this.props.ingredients)
+		console.log(this.props.carts)
+
 		this.props.vendors.forEach(function (vend) {
 			vendorMap.set(vend._id, vend);
 		});
@@ -45,13 +48,13 @@ class IngredientCart extends Component {
 			ingMap.set(ing._id, ing);
 		});
 
-		
 
 		this.props.carts.forEach(function(ingredients) {
+			console.log(ingredients)
 			ingredients.ingredients.forEach(function(ing) {
-
+				console.log(ing)
 				frontEndCart.push(
-					{key: keyCount, fullIng: ing, amt: ing.amount}
+					{key: keyCount, fullIng: ing, amt: ing.numPackages}
 				)
 				keyCount++;
 			})
@@ -80,6 +83,8 @@ class IngredientCart extends Component {
 	}
 
 	getNativeUnits(ingMap, ingredient){
+		console.log(ingMap)
+		console.log(ingredient)
 		var totalNum = ingMap.get(ingredient.fullIng.ingredient).nativeInfo.numNativeUnitsPerPackage * ingredient.amt
 		return (totalNum.toString().concat(" ").concat(ingMap.get(ingredient.fullIng.ingredient).nativeInfo.nativeUnit))
 	}
