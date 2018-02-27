@@ -60,6 +60,12 @@ SpendingInfoSchema = new SimpleSchema({
     type: Number,
     min: 0,
     defaultValue: 0
+  },
+  numNativeUnitsProduced: {
+    type: Number,
+    min: 0,
+    decimal: true,
+    defaultValue: 0
   }
 })
 

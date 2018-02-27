@@ -50,6 +50,9 @@ Meteor.methods({
         console.log(ProductionReport.find().fetch())
     },
     'production.remove': function(formulaId) {
-        ProductionReport.deleteMany({formula:formulaId})
+
+        ProductionReport.remove({formula: formulaId})
+
+       
     }
 });

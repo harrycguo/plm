@@ -645,10 +645,9 @@ Meteor.methods({
         IngredientsList.update({ _id : selectedIngredient},{$inc : {'spendingInfo.numPackagesOrdered' : numPackages}})
     },
     'ingredients.updateTotalProdSpending': function(selectedIngredient, numNativeUnits) {
-        console.log('Num native units mah dude: '+numNativeUnits)
         var ing = IngredientsList.find({ _id : selectedIngredient}).fetch()[0]
-        let packagesUsedInProd = numNativeUnits/ing.nativeInfo.numNativeUnitsPerPackage
-        var newProdSpendingTotal = packagesUsedInProd * ing.spendingInfo.avgPrice
+        let totalPackagesUsedInProd = numNativeUnits/ing.nativeInfo.numNativeUnitsPerPackage
+        var newProdSpendingTotal = totalPackagesUsedInProd * ing.spendingInfo.avgPrice
 
         if (newProdSpendingTotal > ing.spendingInfo.totalSpending) {
             newProdSpendingTotal = ing.spendingInfo.totalSpending
