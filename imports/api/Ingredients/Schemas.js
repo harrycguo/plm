@@ -32,7 +32,8 @@ NativeInfoSchema = new SimpleSchema({
    },
    totalQuantity: {
     type: Number,
-    min: 0
+    min: 0,
+    decimal: true
    } 
 });
 

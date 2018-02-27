@@ -16,7 +16,7 @@ Meteor.methods({
 
         let formula = Formulas.findOne({_id: formulaID})
         
-        //check to see we hit min num units to produce
+        //check to see we hit min num units to producejnm,mnn
         if (numUnitsProduce < formula.productUnits){
             throw new Meteor.Error('Must Produce At Least Minimum Product Units', 'Must Produce At Least Minimum Product Units');
         }
@@ -30,9 +30,14 @@ Meteor.methods({
 
         //Consume!!!
         for (let i = 0; i < ingList.length; i++) {
-            let ingredient = IngredientsList.findOne({_id: ingList[i].ingredient})
             Meteor.call('editTotalNumNativeUnits', ingList[i].ingredient, ingList[i].newStock)
-            Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, numUnitsProduce * ingList[i].amount)
+            var numNativeUnitsPerProductUnit = 0
+            for (var j = 0; j < formula.ingredientsList.length; j++) {
+                if (formula.ingredientsList[i].id == ingList[i].ingredient) {
+                    numNativeUnitsPerProductUnit = formula.ingredientsList[i].amount
+                }
+            }
+            Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, numUnitsProduce * numNativeUnitsPerProductUnit)
         }
         Meteor.call('production.log',formulaID,numUnitsProduce)
     },
