@@ -266,7 +266,7 @@ class Table extends Component {
 			|| Roles.userIsInRole(Meteor.user()._id, 'admin'))) ? 
 			(<>
 				<td>
-					<input type="text" onChange={ e=> {
+					<input type="number" step="1" onChange={ e=> {
 						qty = e.target.value;
 						recentVendor = vendor;
 					}}/>

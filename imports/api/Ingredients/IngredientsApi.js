@@ -609,7 +609,7 @@ Meteor.methods({
         console.log(vendor)
         checkUndefined(vendor,'vendor');
         if(containsVendor(vendor._id, ing.vendorInfo)) {
-            throw new Meteor.Error('Already has vendor','this vendor is already associated with this ingredient');
+            throw new Meteor.Error('Already has vendor','Vendor is already associated with this Ingredient');
         }
         var newVendor = {
             vendor: vendor._id,

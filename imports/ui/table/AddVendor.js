@@ -32,7 +32,7 @@ export class AddVendor extends Component {
 						<VendorSelect ref="vendorSel"/>
 					</td>
 					<td>
-						<input type="text" placeholder="Price Per Pound" onChange= {e=> {
+						<input type="number" placeholder="Price Per Pound" onChange= {e=> {
 						}} ref="price"/>
 					</td>
 					<td>

@@ -222,7 +222,7 @@ class IngredientCart extends Component {
 		if(this.state.edit) {
 			return(
 			<input
-				type="text"
+				type="number"
 				defaultValue={ingredient.amt}
 				ref="numPacks"
 				onBlur={ e => {

@@ -91,42 +91,45 @@ class ProductionRun extends Component {
     }
 
     setFormulaInfo = () => {
+        console.log(this.formula.value)
+        if (this.formula.value != true) {
 
-        let formulaID = this.formula.value
-        let formula = null
-        let numUnitsProduce = Number(this.numUnitsProduce.value)
+            let formulaID = this.formula.value
+            let formula = null
+            let numUnitsProduce = Number(this.numUnitsProduce.value)
 
-        for (let i = 0; i < this.props.formulas.length; i++) {
-            if (formulaID == this.props.formulas[i]._id) {
-                formula = this.props.formulas[i]
+            for (let i = 0; i < this.props.formulas.length; i++) {
+                if (formulaID == this.props.formulas[i]._id) {
+                    formula = this.props.formulas[i]
+                }
             }
-        }
 
-        let stockDifference = []
-        let ingList = []
-        let unitsMultiplier = formula != null ? Number(numUnitsProduce) / Number(formula.productUnits) : 0
+            let stockDifference = []
+            let ingList = []
+            let unitsMultiplier = formula != null ? Number(numUnitsProduce) / Number(formula.productUnits) : 0
 
-        for (let i = 0; i < formula.ingredientsList.length; i++) {
+            for (let i = 0; i < formula.ingredientsList.length; i++) {
 
-            stockDifference.push(<ProductionRunItem
-                key={i}
-                index={i}
-                ingredient={formula.ingredientsList[i]}
-                unitsMultiplier={unitsMultiplier}
-                onChange={this.onChangeItem.bind(this)}
-            />)
-            ingList.push({
-                ingredient: null
+                stockDifference.push(<ProductionRunItem
+                    key={i}
+                    index={i}
+                    ingredient={formula.ingredientsList[i]}
+                    unitsMultiplier={unitsMultiplier}
+                    onChange={this.onChangeItem.bind(this)}
+                />)
+                ingList.push({
+                    ingredient: null
+                })
+
+            }
+
+            this.setState({
+                ingList: ingList,
+                minUnits: Number(formula.productUnits),
+                stockDifference: stockDifference,
+                numUnitsToProduce: Number(numUnitsProduce)
             })
-
         }
-
-        this.setState({
-            ingList: ingList,
-            minUnits: Number(formula.productUnits),
-            stockDifference: stockDifference,
-            numUnitsToProduce: Number(numUnitsProduce)
-        })
     }
 
     onChangeItem(index, component) {
@@ -237,7 +240,7 @@ class ProductionRun extends Component {
                                 //style={{ width: '100%', height: '100%' }}
                                 onChange={this.setFormulaInfo}
                             >
-                                <option disabled selected value> -- select a formula -- </option>
+                                <option disabled selected value='undefined'> -- select a formula -- </option>
                                 {this.renderFormulas()}
                             </select></p>
                     </FormGroup>

@@ -28,7 +28,7 @@ export class EditVendor extends Component {
 			return this.props.source == "table" ? 
 			(
 				<td> 
-					<input type="text"  
+					<input type="number"  
 					defaultValue={this.props.vendor.price}
 					onBlur = {e=> {
 						var message = "Change price from "
