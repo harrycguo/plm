@@ -9,7 +9,7 @@ if (Meteor.isClient) {
     Meteor.subscribe('storageCapacities'); 
 }
 
-//IngredientsList API suh
+//IngredientsList API suhhhhhhhhh
 Meteor.methods({
     'addIngredient': function (ingName, ingTemperatureState, ingPackage, numPackages, ingStorage, ingTotalNumNativeUnits , ingNativeUnit, ingNumNativeUnitsPerPackage, ingVendor, ingPrice) {
 
@@ -68,6 +68,9 @@ Meteor.methods({
             vendorInfo: vendorInfoArr,
             formulaInfo: []
         });
+
+        // IngredientsList.simpleSchema().clean()
+        console.log(IngredientsList.find().fetch())
     },
     //This method will check to see if the ingredient already exists. If not, then call addIngredient.
     'addToExistingIngredient': function (ingName, ingTemperatureState, ingPackage, numPackages, ingStorage, ingTotalNumNativeUnits , ingNativeUnit, ingNumNativeUnitsPerPackage, ingVendor, ingPrice) {
@@ -160,6 +163,7 @@ Meteor.methods({
                 ingPrice
             );
         }
+        // IngredientsList.simpleSchema().clean()
     },
     'addToExistingIngredientBulk': function (ingName, ingTemperatureState, ingPackage, numPackages, ingStorage, ingTotalNumNativeUnits , ingNativeUnit, ingNumNativeUnitsPerPackage, ingVendor, ingPrice) {
         
@@ -562,5 +566,23 @@ Meteor.methods({
     'removeVendor': function(selectedIngredient, vendor) {
         //This comment only exists just so that I can minimize the method
         IngredientsList.update({ _id : selectedIngredient._id} , {$pull : { vendorInfo : { vendor : vendor._id}}});
+    },
+    'ingredients.updateTotalSpending': function(selectedIngredient, vendor, numPackages) {
+        var ing = IngredientsList.find({ _id : selectedIngredient}).fetch()[0]
+        price = 0
+        vendorInfoArr = ing.vendorInfo
+        for (var i = 0; i < vendorInfoArr.length; i++) {
+            if (vendorInfoArr[i].vendor == vendor) {
+                price = vendorInfoArr[i].price
+            }
+        }
+        let newPrice = Number((price * numPackages + ing.spendingInfo.totalSpending) / (numPackages +ing.spendingInfo.numPackagesOrdered))
+        let newTotalSpending = newPrice * (numPackages + ing.spendingInfo.numPackagesOrdered)
+        IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.totalSpending' : newTotalSpending}})
+        IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.avgPrice' : newPrice}})
+        IngredientsList.update({ _id : selectedIngredient},{$inc : {'spendingInfo.numPackagesOrdered' : numPackages}})
     }
+    // 'ingredients.updateTotalProductionSpending': function(selectedIngredient, vendor, numPackages) {
+//sfdffdsdfdfsdf
+    // }
 });
