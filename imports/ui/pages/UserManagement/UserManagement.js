@@ -70,7 +70,7 @@ class UserManagement extends Component {
 
     render() {
 
-        let buttonText = UserManagementData.canEdit ? "Finished Editing" : "Edit User Permissions"
+        let buttonText = UserManagementData.canEdit ? "Finished Editing" : "Edit Users"
 
         let user = Meteor.user();
         let button = null
