@@ -10,8 +10,6 @@ class Authenticated extends Component {
       loggingIn, authenticated, component, path, exact, ...rest
     } = this.props;
 
-    console.log(this.props)
-
     return (
       <Route
         path={path}

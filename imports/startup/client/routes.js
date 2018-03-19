@@ -27,12 +27,12 @@ import InventoryManagement from '../../ui/pages/InventoryManagement/InventoryMan
 import AddIngredient from '../../ui/pages/AddIngredient/AddIngredient.js';
 import IngredientCart from '../../ui/pages/Cart/Cart.js';
 import SpendingReport from '../../ui/pages/SpendingReport/SpendingReport.js';
-import UserManagement from '../../ui/pages/UserManagement/UserManagement';
+import UserManagementHome from '../../ui/pages/UserManagement/UserManagementHome.js';
 import ManagerHomepage from '../../ui/pages/ManagerHomepage/ManagerHomepage';
 import FormulaManagement from '../../ui/pages/FormulaManagement/FormulaManagement';
 import AddFormula from '../../ui/pages/AddFormula/AddFormula';
 import LogTable from '../../ui/syslog/LogTable.js';
-import ViewLog from '../../ui/pages/ViewLog/ViewLog';
+import ViewLogHome from '../../ui/pages/ViewLog/ViewLogHome.js';
 import EditFormula from '../../ui/pages/EditFormula/EditFormula.js'
 import ViewFormula from '../../ui/pages/ViewFormula/ViewFormula.js'
 import ProductionRun from '../../ui/pages/ProductionRun/ProductionRun.js'
@@ -55,12 +55,16 @@ class App extends Component {
         <Route exact name="index" path="/" component={Index} />
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
-        <Authenticated exact path="/adminHomepage" component={AdminHomepage} {...props}/>
+
+        {/* <Authenticated exact path="/adminHomepage" component={AdminHomepage} {...props}/>
         <Authenticated exact path="/managerHomepage" component={ManagerHomepage} {...props}/>
-        <Authenticated exact path="/userHomepage" component={UserHomepage} {...props}/>
+        <Authenticated exact path="/userHomepage" component={UserHomepage} {...props}/> */}
+
         <Authenticated exact path="/homepage" component={Homepage} {...props}/>
-        <Authenticated exact path="/userManagement" component={UserManagement} {...props}/>
-        <Authenticated exact path="/createUser" component={CreateUser} {...props}/>
+        <Authenticated exact path="/userManagement" component={UserManagementHome} {...props}/>
+
+        {/* <Authenticated exact path="/createUser" component={CreateUser} {...props}/> */}
+
         <Authenticated exact path="/vendorManagement" component={VendorManagement} {...props}/>
         <Authenticated exact path="/addVendor" component={AddVendor} {...props}/>
         <Authenticated exact path="/editVendor/:vendorID" component={EditVendor} {...props}/>
@@ -79,7 +83,9 @@ class App extends Component {
         <Authenticated exact path='/viewFormula/:formulaID' component={ViewFormula} {...props}/> 
         <Authenticated exact path='/bulkImportFormulas' component={BulkImportFormulas} {...props}/>
         <Authenticated exact path='/log' component={LogTable} {...props}/>
-        <Authenticated exact path='/viewLog' component={ViewLog} {...props}/>
+
+        <Authenticated exact path='/viewLog' component={ViewLogHome} {...props}/>
+
         <Authenticated exact path='/productionRun' component={ProductionRun} {...props}/>
         <Authenticated exact path='/productionReport' component={ProductionReportPage} {...props}/>
         </Switch>

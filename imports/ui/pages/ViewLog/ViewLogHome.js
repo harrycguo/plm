@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import LogTable from '../../syslog/LogTable.js'
 import LogNavBar from '../../components/LogNavBar/LogNavBar.js'
 
-
-class ViewLog extends Component {
+class ViewLogHome extends Component {
   constructor(props) {
     super(props);
     
@@ -12,14 +10,19 @@ class ViewLog extends Component {
 
   render() {
     return (
-      <div>
-        <LogTable />
+      <div className="container">
+        <header>
+            <h1>View Log</h1>
+        </header>
+        
+        <LogNavBar />
+
       </div>
     );
   }
 }
 
-export default ViewLog;
+export default ViewLogHome;
 
 
 

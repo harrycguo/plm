@@ -2,6 +2,11 @@ import React, { Component } from 'react';
 import { Nav, NavItem, NavDropdown, MenuItem, Navbar } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Redirect } from 'react-router'
+import { withTracker } from 'meteor/react-meteor-data';
+import { Users } from '../../../api/Users/users.js'
+import { Accounts } from 'meteor/accounts-base';
+
+
  
 class Homepage extends Component {
   constructor(props) {
@@ -13,7 +18,6 @@ class Homepage extends Component {
   render() {
 
     let user = Meteor.user();
-    console.log(Meteor.user());
 
     //admin
     if (Roles.userIsInRole(user, ['admin'])) {
@@ -73,4 +77,10 @@ class Homepage extends Component {
 }
 }
 
-export default Homepage;
+export default withTracker(() => {
+  const subscription = Meteor.subscribe('users')
+  return {
+      loading1: subscription.ready(),
+      users1s: Meteor.users.find({}).fetch()
+  };
+})(Homepage);
