@@ -19,7 +19,7 @@ class VendorManagementNavBar extends Component {
 
                     <Link
                         className="container-nav"
-                        to="/adminHomepage">
+                        to="/homepage">
                         Admin Homepage
                                 </Link>
                     <Link
@@ -44,7 +44,7 @@ class VendorManagementNavBar extends Component {
 
                 <Link
                     className="container-nav"
-                    to="/managerHomepage">
+                    to="/homepage">
                     Manager Homepage
                             </Link>
                 <Link

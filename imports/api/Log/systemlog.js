@@ -9,8 +9,8 @@ export const SystemLog = new Mongo.Collection('log');
 Meteor.methods({
     'systemlog.insert'(type, name, _id, change, to) {
       let user = Meteor.users.findOne(this.userId)
-      console.log("logging")
-      console.log(type)
+      // console.log("logging")
+      // console.log(type)
       SystemLog.insert({
         type: type,
         name: name,

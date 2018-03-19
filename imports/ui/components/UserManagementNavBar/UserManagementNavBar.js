@@ -19,7 +19,7 @@ class UserManagementNavBar extends Component {
 
                     <Link
                         className="container-nav"
-                        to="/adminHomepage">
+                        to="/homepage">
                         Admin Homepage
                     </Link>
                     <Link
@@ -43,7 +43,7 @@ class UserManagementNavBar extends Component {
                 <div className="topContainer">
                     <Link
                         className="container-nav"
-                        to="/managerHomepage">
+                        to="/homepage">
                         Manager Homepage
                     </Link>
                     <Link
@@ -64,14 +64,10 @@ class UserManagementNavBar extends Component {
                 <div className="topContainer">
                     <Link
                         className="container-nav"
-                        to="/managerHomepage">
-                        Manager Homepage
+                        to="/homepage">
+                        User Homepage
                     </Link>
-                    <Link
-                        className="container-nav"
-                        to="/userManagement">
-                        User Management
-                    </Link>
+                   
                 </div>
             )
 

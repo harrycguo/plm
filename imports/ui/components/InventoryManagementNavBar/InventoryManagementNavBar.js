@@ -30,7 +30,7 @@ class InventoryManagementNavBar extends Component {
 
                 <Link
                     className="container-nav"
-                    to="/adminHomepage">
+                    to="/homepage">
                     Admin Homepage
                 </Link>
 
@@ -63,7 +63,7 @@ class InventoryManagementNavBar extends Component {
 
                 <Link
                     className="container-nav"
-                    to="/managerHomepage">
+                    to="/homepage">
                     Manager Homepage
                 </Link>
 
@@ -96,7 +96,7 @@ class InventoryManagementNavBar extends Component {
 
                 <Link
                     className="container-nav"
-                    to="/userHomepage">
+                    to="/homepage">
                     User Homepage
                 </Link>
 

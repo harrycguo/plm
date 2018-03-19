@@ -79,18 +79,20 @@ class Login extends Component {
               Meteor.call('createUserCart');
             }
 
-            //admin login
-            if (Roles.userIsInRole(user, ['admin'])) {
-              history.push('/adminHomepage');
-            }
-            //manager login
-            else if (Roles.userIsInRole(user, ['manager'])) {
-              history.push('/managerHomepage')
-            }
-            //user login
-            else {
-              history.push('/userHomepage');
-            }
+            // //admin login
+            // if (Roles.userIsInRole(user, ['admin'])) {
+            //   history.push('/adminHomepage');
+            // }
+            // //manager login
+            // else if (Roles.userIsInRole(user, ['manager'])) {
+            //   history.push('/managerHomepage')
+            // }
+            // //user login
+            // else {
+            //   history.push('/userHomepage');
+            // }
+            history.push('/homepage')
+           
           }
         });
     })
@@ -138,7 +140,7 @@ class Login extends Component {
       Meteor.loginWithPassword({ username: this.username.value }, this.password.value,
         (error) => {
           if (error) {
-            Bert.alert(error.reason, 'danger');
+            Bert.alert('Incorrect Username and/or Password', 'danger');
           } else {
 
             Bert.alert('Welcome!', 'success');
@@ -150,18 +152,20 @@ class Login extends Component {
               Meteor.call('createUserCart');
             }
 
-            //admin login
-            if (Roles.userIsInRole(user, ['admin'])) {
-              history.push('/adminHomepage');
-            }
-            //manager login
-            else if (Roles.userIsInRole(user, ['manager'])) {
-              history.push('/managerHomepage')
-            }
-            //user login
-            else {
-              history.push('/userHomepage');
-            }
+            // //admin login
+            // if (Roles.userIsInRole(user, ['admin'])) {
+            //   history.push('/adminHomepage');
+            // }
+            // //manager login
+            // else if (Roles.userIsInRole(user, ['manager'])) {
+            //   history.push('/managerHomepage')
+            // }
+            // //user login
+            // else {
+            //   history.push('/userHomepage');
+            // }
+            history.push('/homepage')
+           
           }
         });
       } else {
@@ -199,11 +203,11 @@ class Login extends Component {
           <div className="form-group">
             <Button type="submit" bsStyle="success">Login</Button>
             <p></p>
-            {/* <a href="https://oauth.oit.duke.edu/oauth/authorize.php?client_id=production-lifecycle-management&client_secret=FatQCXrMNx5EyBq!ms=i=%FJSSjMMFafJClHKTv*4WqC%dvmBt&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Flogin&response_type=token&state=1327&scope=basic"> */}
+            <a href="https://oauth.oit.duke.edu/oauth/authorize.php?client_id=production-lifecycle-management&client_secret=FatQCXrMNx5EyBq!ms=i=%FJSSjMMFafJClHKTv*4WqC%dvmBt&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Flogin&response_type=token&state=1327&scope=basic">
               
             {/* Net Id Stuff for Server */}
-            <a href="https://oauth.oit.duke.edu/oauth/authorize.php?client_id=production-lifecycle-management--prod-&client_secret=AD7H7eJp+736dhhj$yRSat*QeLEIIXKMj9p=SuCV4zFbWnMLbm&redirect_uri=https%3A%2F%2Fvcm-3160.vm.duke.edu%2Flogin&response_type=token&state=1327&scope=basic">
- 
+            {/* <a href="https://oauth.oit.duke.edu/oauth/authorize.php?client_id=production-lifecycle-management--prod-&client_secret=AD7H7eJp+736dhhj$yRSat*QeLEIIXKMj9p=SuCV4zFbWnMLbm&redirect_uri=https%3A%2F%2Fvcm-3160.vm.duke.edu%2Flogin&response_type=token&state=1327&scope=basic">
+  */}
               <Button
               bsStyle="primary"
               >
