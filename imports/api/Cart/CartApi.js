@@ -45,7 +45,8 @@ Meteor.methods({
             Carts.update({ user : Meteor.userId()}, {$push : { ingredients : {
                 ingredient : selectedIngredient._id,
                 numPackages: numPackages,
-                vendorInfo: vendorInfo
+                vendorInfo: vendorInfo,
+                lotsSelected: false
             }}});
         }
         Meteor.call('systemlog.insert', "Cart", selectedIngredient.name,  selectedIngredient._id, "Added", "");
@@ -70,7 +71,7 @@ Meteor.methods({
             "Modified - Package Count", 
             numPackages
         );
-        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.numPackages' : numPackages }});
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.numPackages' : numPackages, lotsSelected: false }});
     },
     'cart.changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement

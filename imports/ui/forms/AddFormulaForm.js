@@ -134,7 +134,7 @@ export class AddFormulaForm extends Component {
                 ingredient: null,
                 valid: true,
             } })
-        }));
+        }))
     }
 
     onChangeInput(index, componentToBeUpdated, valid) {

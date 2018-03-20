@@ -117,6 +117,9 @@ CartIngredientSchema = new SimpleSchema({
   vendorInfo: {
     type: VendorInfoSchema,
     min: 1
+  },
+  lotsSelected: {
+    type: Boolean,
   }
 })
 

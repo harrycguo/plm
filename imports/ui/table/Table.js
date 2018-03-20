@@ -308,7 +308,7 @@ class Table extends Component {
 	                        				console.log("something goes wrong with the following error message " + error.reason )
 	               	  						Bert.alert(error.reason, 'danger');
 	                  				} else {
-											Bert.alert('Added ' + qty +' ' + row.original.fullIng.packageInfo.packageType + ' to Cart!', 'success')
+											Bert.alert('Added ' + qty +' ' + row.original.fullIng.packageInfo.packageType + '(s) to Cart!', 'success')
 									}
 								}
 							);
