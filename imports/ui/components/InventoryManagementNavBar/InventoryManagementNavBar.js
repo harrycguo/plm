@@ -1,8 +1,16 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, NavItem, Nav } from 'react-bootstrap';
 import { withTracker } from 'meteor/react-meteor-data';
 import Carts from '../../../api/Cart/Cart.js';
+import IngredientsList from '../../../api/Ingredients/IngredientList.js';
+import { Vendors } from '../../../api/Vendors/vendors.js';
+
+import { Navbar, NavItem, Nav, NavDropdown, MenuItem, Row, Col, Tabs, Tab, TabContainer, TabContent, TabPane } from 'react-bootstrap';
+import InventoryManagement from '../../pages/InventoryManagement/InventoryManagement.js'
+import AddIngredient from '../../pages/AddIngredient/AddIngredient.js'
+import BulkImportIngredients from '../../pages/BulkImportIngredients/BulkImportIngredients.js'
+import SpendingReport from '../../pages/SpendingReport/SpendingReport.js'
+import Cart from '../../pages/Cart/Cart.js'
 
 class InventoryManagementNavBar extends Component {
     constructor(props) {
@@ -43,31 +51,30 @@ class InventoryManagementNavBar extends Component {
 
 
                                     </NavDropdown>
-                                    <NavItem eventKey="1">Formula Management</NavItem>
-                                    <NavItem eventKey="2">Add New Formula</NavItem>
-                                    <NavItem eventKey="4">Bulk Import Formula</NavItem>
-                                    <NavItem eventKey="5">Produce Formula</NavItem>
-                                    <NavItem eventKey="6">Production Report</NavItem>
+                                    <NavItem eventKey="1">Inventory Management</NavItem>
+                                    <NavItem eventKey="2">Add New Ingredient</NavItem>
+                                    <NavItem eventKey="4">Bulk Import Ingredients</NavItem>
+                                    <NavItem eventKey="5">Spending Report</NavItem>
+                                  
+                                    
 
                                 </Nav>
                             </Col>
                             <Col sm={12}>
                                 <Tab.Content>
                                     <Tab.Pane eventKey="1">
-                                        <FormulaManagement />
+                                        <InventoryManagement hist = {this.props.hist} />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="2">
-                                        <AddFormula />
+                                        <AddIngredient />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="4">
-                                        <BulkImportFormulas />
+                                        <BulkImportIngredients />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
-                                        <ProductionRun hist={this.props.hist} />
+                                        <SpendingReport />
                                     </Tab.Pane>
-                                    <Tab.Pane eventKey="6">
-                                        <ProductionReportPage />
-                                    </Tab.Pane>
+                                   
                                 </Tab.Content>
                             </Col>
                         </Row>
@@ -75,32 +82,7 @@ class InventoryManagementNavBar extends Component {
                 </div>
 
 
-                <div className="topContainer">
-
-                <Link
-                    className="container-nav"
-                    to="/homepage">
-                    Admin Homepage
-                </Link>
-
-                <Link
-                    className="container-nav"
-                    to="/inventoryManagement">
-                    Inventory Management
-                </Link>
-
-                <Link
-                    className="container-nav"
-                    to="/report">
-                    Spending Report
-                </Link>
              
-                <Link
-                    className="container-nav-right"
-                    to="/cart">
-                    Cart({cartNum})
-                </Link>    
-            </div>
             )
 
         }
@@ -170,11 +152,15 @@ class InventoryManagementNavBar extends Component {
 }
 
 export default withTracker(() => {
+	Meteor.subscribe('ingredients')
+	Meteor.subscribe('vendors')
 	Meteor.subscribe('carts');
 	return {
+		ingredients: IngredientsList.find({}).fetch(),
+		vendors: Vendors.find({}).fetch(),
 		carts: Carts.find({}).fetch(),
 	};
-})(InventoryManagementNavBar)
+})(InventoryManagementNavBar);
 
 
 

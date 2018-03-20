@@ -188,7 +188,6 @@ class IngredientCart extends Component {
 			<header>
           		<h1>Cart</h1>
         	</header>
-			<InventoryManagementNavBar/>
 			<p></p>
 			<Button
 				bsStyle="primary"
@@ -208,7 +207,11 @@ class IngredientCart extends Component {
 	    				{this.renderCartItems()}
 	    			</tbody>
 	       		</table>
-	       		{this.checkoutButton()}
+				   {this.checkoutButton()}
+
+				   <div className="container-keepLeft">
+                    <Link to='/inventoryManagement'>Return to Inventory Management</Link>
+                </div>
 			</div>
 		)
 	}

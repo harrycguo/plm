@@ -162,7 +162,9 @@ class BulkImportIngredients extends Component {
         }
       }
       Bert.alert("Successfully Bulk Imported Ingredients!", 'success');
-      history.push('/inventoryManagement')
+      this.setState({ errorMessage: "" })
+      document.getElementById("form").reset();
+      document.getElementById("myInput").value = "";
     }
   }
 
@@ -404,11 +406,8 @@ class BulkImportIngredients extends Component {
 
   render() {
     return (
-      <div className="container">
-        <header>
-          <h1>Bulk Import Ingredients</h1>
-        </header>
-        <InventoryManagementNavBar />
+      <div>
+
         <p></p>
         <b>Format:</b>
         <p>The bulk import ingredients feature only supports .csv files. You can make your spreadsheet in Excel and when saving, simply "Save As" a ".csv" file. </p>
@@ -435,10 +434,11 @@ class BulkImportIngredients extends Component {
         <p>
           <input type="file"
             name="myFile"
-            onChange={this.uploadFile} />
+            onChange={this.uploadFile}
+            id='myInput' />
         </p>
 
-        <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
+        <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()} id='form'>
           <Button type="submit" bsStyle="success">Import</Button>
         </form>
 

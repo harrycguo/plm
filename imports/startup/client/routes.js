@@ -23,7 +23,7 @@ import BulkImportIngredients from '../../ui/pages/BulkImportIngredients/BulkImpo
 import AdminHomepage from '../../ui/pages/AdminHomepage/AdminHomepage.js';
 import UserHomepage from '../../ui/pages/UserHomepage/UserHomepage.js';
 import Homepage from '../../ui/pages/Homepage/Homepage.js'
-import InventoryManagement from '../../ui/pages/InventoryManagement/InventoryManagement.js';
+import InventoryManagementHome from '../../ui/pages/InventoryManagement/InventoryManagementHome.js';
 import AddIngredient from '../../ui/pages/AddIngredient/AddIngredient.js';
 import IngredientCart from '../../ui/pages/Cart/Cart.js';
 import SpendingReport from '../../ui/pages/SpendingReport/SpendingReport.js';
@@ -56,11 +56,18 @@ class App extends Component {
         <Route path="/login" component={Login} />
         <Route path="/logout" component={Logout} />
 
-        {/* <Authenticated exact path="/adminHomepage" component={AdminHomepage} {...props}/>
-        <Authenticated exact path="/managerHomepage" component={ManagerHomepage} {...props}/>
-        <Authenticated exact path="/userHomepage" component={UserHomepage} {...props}/> */}
-
         <Authenticated exact path="/homepage" component={Homepage} {...props}/>
+
+        <Authenticated exact path='/inventoryManagement' component={InventoryManagementHome} {...props}/>
+
+
+
+
+
+
+
+
+
 
         <Authenticated exact path="/userManagement" component={UserManagementHome} {...props}/>
         {/* <Authenticated exact path="/createUser" component={CreateUser} {...props}/> */}
@@ -68,6 +75,8 @@ class App extends Component {
         <Authenticated exact path="/vendorManagement" component={VendorManagementHome} {...props}/>
         {/* <Authenticated exact path="/addVendor" component={AddVendor} {...props}/> */}
         <Authenticated exact path="/editVendor/:vendorID" component={EditVendor} {...props}/>
+
+        
         
         
         <Authenticated exact path="/editCapacity/:capacityID" component={EditCapacity} {...props}/>
@@ -76,24 +85,23 @@ class App extends Component {
         <Authenticated exact path="/bulkImportIngredients" component={BulkImportIngredients} {...props}/>
   
         <Authenticated exact path="/addingredient" component={AddIngredient} {...props}/>
-        <Authenticated exact path='/inventoryManagement' component={InventoryManagement} {...props}/>
+        
         <Authenticated exact path="/cart" component={IngredientCart} {...props}/>
         <Authenticated exact path="/report" component={SpendingReport} {...props}/>
        
+
         <Authenticated exact path='/formulaManagement' component={FormulaManagementHome} {...props}/>
-        
-        
-        <Authenticated exact path='/addFormula' component={AddFormula} {...props}/>
         <Authenticated exact path='/editFormula/:formulaID' component={EditFormula} {...props}/>
         <Authenticated exact path='/viewFormula/:formulaID' component={ViewFormula} {...props}/> 
-        <Authenticated exact path='/bulkImportFormulas' component={BulkImportFormulas} {...props}/>
         
+        
+        {/* <Authenticated exact path='/addFormula' component={AddFormula} {...props}/>
+        <Authenticated exact path='/bulkImportFormulas' component={BulkImportFormulas} {...props}/>
         <Authenticated exact path='/log' component={LogTable} {...props}/>
-
         <Authenticated exact path='/viewLog' component={ViewLogHome} {...props}/>
-
         <Authenticated exact path='/productionRun' component={ProductionRun} {...props}/>
-        <Authenticated exact path='/productionReport' component={ProductionReportPage} {...props}/>
+        <Authenticated exact path='/productionReport' component={ProductionReportPage} {...props}/> */}
+
         </Switch>
            
       </div>

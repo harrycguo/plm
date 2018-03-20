@@ -16,6 +16,14 @@ class StorageCapacityWrapper extends Component {
           <StorageCapacity key={sc._id} sc={sc} />
         ));
       }
+
+      goToEditCapacities(){
+        const { history } = this.props.hist
+        history.push({
+          pathname: '/editCapacities',
+          state: { capacities: this.props.sc}
+        })
+      }
   
     render() {
       
@@ -23,18 +31,30 @@ class StorageCapacityWrapper extends Component {
       let editButton = null;
         
       if (Roles.userIsInRole(user, ['admin'])) {
-        editButton = <Link to={{
-          pathname: '/editCapacities', 
-          state: {
-            capacities: this.props.sc,
-            hist: this.props.hist
-          }}}>
-            <Button
-            bsStyle="info" 
-          >
-            Edit Capacities
-        </Button>
-          </Link>
+        editButton = 
+
+      <Button
+				bsStyle="info"
+				onClick={this.goToEditCapacities.bind(this)}
+				title= "Cart"
+				>Edit Capacities
+				
+			</Button>
+        
+        
+        
+        // <Link to={{
+        //   pathname: '/editCapacities', 
+        //   state: {
+        //     capacities: this.props.sc,
+        //     hist: this.props.hist
+        //   }}}>
+        //     <Button
+        //     bsStyle="info" 
+        //   >
+        //     Edit Capacities
+        // </Button>
+        //   </Link>
             
       } 
       
