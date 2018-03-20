@@ -59,48 +59,21 @@ class App extends Component {
         <Authenticated exact path="/homepage" component={Homepage} {...props}/>
 
         <Authenticated exact path='/inventoryManagement' component={InventoryManagementHome} {...props}/>
-
-
-
-
-
-
-
-
-
-
-        <Authenticated exact path="/userManagement" component={UserManagementHome} {...props}/>
-        {/* <Authenticated exact path="/createUser" component={CreateUser} {...props}/> */}
-
-        <Authenticated exact path="/vendorManagement" component={VendorManagementHome} {...props}/>
-        {/* <Authenticated exact path="/addVendor" component={AddVendor} {...props}/> */}
-        <Authenticated exact path="/editVendor/:vendorID" component={EditVendor} {...props}/>
-
-        
-        
-        
-        <Authenticated exact path="/editCapacity/:capacityID" component={EditCapacity} {...props}/>
         <Authenticated exact path="/editCapacities" component={EditCapacities} {...props}/>
-      
-        <Authenticated exact path="/bulkImportIngredients" component={BulkImportIngredients} {...props}/>
-  
-        <Authenticated exact path="/addingredient" component={AddIngredient} {...props}/>
-        
         <Authenticated exact path="/cart" component={IngredientCart} {...props}/>
-        <Authenticated exact path="/report" component={SpendingReport} {...props}/>
-       
 
         <Authenticated exact path='/formulaManagement' component={FormulaManagementHome} {...props}/>
         <Authenticated exact path='/editFormula/:formulaID' component={EditFormula} {...props}/>
         <Authenticated exact path='/viewFormula/:formulaID' component={ViewFormula} {...props}/> 
-        
-        
-        {/* <Authenticated exact path='/addFormula' component={AddFormula} {...props}/>
-        <Authenticated exact path='/bulkImportFormulas' component={BulkImportFormulas} {...props}/>
-        <Authenticated exact path='/log' component={LogTable} {...props}/>
+
+        <Authenticated exact path="/vendorManagement" component={VendorManagementHome} {...props}/>
+        <Authenticated exact path="/editVendor/:vendorID" component={EditVendor} {...props}/>
+
+        <Authenticated exact path="/userManagement" component={UserManagementHome} {...props}/>
+
+
         <Authenticated exact path='/viewLog' component={ViewLogHome} {...props}/>
-        <Authenticated exact path='/productionRun' component={ProductionRun} {...props}/>
-        <Authenticated exact path='/productionReport' component={ProductionReportPage} {...props}/> */}
+
 
         </Switch>
            

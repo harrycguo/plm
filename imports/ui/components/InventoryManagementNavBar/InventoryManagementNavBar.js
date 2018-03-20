@@ -90,32 +90,41 @@ class InventoryManagementNavBar extends Component {
         //manager
         else if (Roles.userIsInRole(user, ['manager'])) {
             return (
-                <div className="topContainer">
+                 <div>
 
-                <Link
-                    className="container-nav"
-                    to="/homepage">
-                    Manager Homepage
-                </Link>
+                    <Tab.Container id="tabs-with-dropdown" defaultActiveKey="1">
+                        <Row className="clearfix">
+                            <Col sm={12}>
+                                <Nav bsStyle="tabs">
+                                    <NavDropdown eventKey="3" title="Home + More" >
+                                        <MenuItem eventKey="3.1"><Link to="/homepage"> Manager Homepage </Link></MenuItem>
+                                        <MenuItem eventKey="3.3"><Link to="/formulaManagement"> Formula Management </Link></MenuItem>
+                                        <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
+                                        <MenuItem eventKey="3.5"><Link to="/userManagement"> User Management </Link></MenuItem>
+                                        <MenuItem eventKey="3.6"><Link to="/viewLog"> View Global Log </Link></MenuItem>
+                                        <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
 
-                <Link
-                    className="container-nav"
-                    to="/inventoryManagement">
-                    Inventory Management
-                </Link>
 
-                <Link
-                    className="container-nav"
-                    to="/report">
-                    Spending Report
-                </Link>
-             
-                <Link
-                    className="container-nav-right"
-                    to="/cart">
-                    Cart({cartNum})
-                </Link>    
-            </div>
+                                    </NavDropdown>
+                                    <NavItem eventKey="1">Inventory Management</NavItem>
+                                    <NavItem eventKey="5">Spending Report</NavItem>
+                                  
+                                </Nav>
+                            </Col>
+                            <Col sm={12}>
+                                <Tab.Content>
+                                    <Tab.Pane eventKey="1">
+                                        <InventoryManagement hist = {this.props.hist} />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="5">
+                                        <SpendingReport />
+                                    </Tab.Pane>
+                                   
+                                </Tab.Content>
+                            </Col>
+                        </Row>
+                    </Tab.Container>
+                </div>
             )
 
         }
@@ -123,26 +132,38 @@ class InventoryManagementNavBar extends Component {
         //user
         else {
             return (
-            <div className="topContainer">
+                <div>
 
-                <Link
-                    className="container-nav"
-                    to="/homepage">
-                    User Homepage
-                </Link>
+                <Tab.Container id="tabs-with-dropdown" defaultActiveKey="1">
+                    <Row className="clearfix">
+                        <Col sm={12}>
+                            <Nav bsStyle="tabs">
+                                <NavDropdown eventKey="3" title="Home + More" >
+                                    <MenuItem eventKey="3.1"><Link to="/homepage"> User Homepage </Link></MenuItem>
+                                    <MenuItem eventKey="3.3"><Link to="/formulaManagement"> Formula Management </Link></MenuItem>
+                                    <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
+                                    <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
 
-                <Link
-                    className="container-nav"
-                    to="/inventoryManagement">
-                    Inventory Management
-                </Link>
 
-                <Link
-                    className="container-nav"
-                    to="/report">
-                    Spending Report
-                </Link>
-   
+                                </NavDropdown>
+                                <NavItem eventKey="1">Inventory Management</NavItem>
+                                <NavItem eventKey="5">Spending Report</NavItem>
+                              
+                            </Nav>
+                        </Col>
+                        <Col sm={12}>
+                            <Tab.Content>
+                                <Tab.Pane eventKey="1">
+                                    <InventoryManagement hist = {this.props.hist} />
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="5">
+                                    <SpendingReport />
+                                </Tab.Pane>
+                               
+                            </Tab.Content>
+                        </Col>
+                    </Row>
+                </Tab.Container>
             </div>
             )
 

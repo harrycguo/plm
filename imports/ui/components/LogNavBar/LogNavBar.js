@@ -99,6 +99,8 @@ class LogNavBar extends Component {
         return (
 
             <div>
+                <p></p>
+                <b>***User does not have permission to access this***</b>
 
                 <Tab.Container id="tabs-with-dropdown" defaultActiveKey="first">
                     <Row className="clearfix">
@@ -106,23 +108,12 @@ class LogNavBar extends Component {
                             <Nav bsStyle="tabs">
                                 <NavDropdown eventKey="3" title="Home + More" >
                                     <MenuItem eventKey="3.1"><Link to="/homepage"> User Homepage </Link></MenuItem>
-                                    <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
-                                    <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
                                     <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
-
-
                                     </NavDropdown>
-                                    <NavItem eventKey="first">View Log</NavItem>
-                                   
-    
                                 </Nav>
                             </Col>
                             <Col sm={12}>
                                 <Tab.Content>
-                                    <Tab.Pane eventKey="first">
-                                        <ViewLog />
-                                    </Tab.Pane>
-
                             </Tab.Content>
                         </Col>
                     </Row>

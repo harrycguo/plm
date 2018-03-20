@@ -216,18 +216,6 @@ class Table extends Component {
 		);
 	}
 	render() {
-		if (!Meteor.user() || !Roles.userIsInRole(Meteor.user()._id, 'admin')) {
-			if(TableData.canEdit) {
-				TableData.toggleEditable()
-				this.forceUpdate()
-			}
-			return (
-			<div>
-			{this.renderTable(this)}
-		   	</div>
-			);
-		}
-
 		let user = Meteor.user()
         let carts = this.props.carts
         let cartNum = 0;
@@ -236,7 +224,32 @@ class Table extends Component {
             if (carts[i].user == user._id){
                 cartNum = carts[i].ingredients.length
             }
-        }
+		}
+		
+		if (!Meteor.user() || !Roles.userIsInRole(Meteor.user()._id, 'admin')) {
+			if(TableData.canEdit) {
+				TableData.toggleEditable()
+				this.forceUpdate()
+			}
+			return (
+			<div>
+				<ButtonToolbar>		
+			<Button
+				bsStyle="success"
+				onClick={this.goToCart.bind(this)}
+				title= "Cart"
+				>Go To Cart({cartNum})
+				
+			</Button>
+
+			</ButtonToolbar>
+				<p></p>
+			{this.renderTable(this)}
+		   	</div>
+			);
+		}
+
+		
 
 		return (
 			<div>

@@ -78,7 +78,6 @@ class UserManagementNavBar extends Component {
 
                                     </NavDropdown>
                                     <NavItem eventKey="first">User Management</NavItem>
-                                    <NavItem eventKey="second">Create New User</NavItem>
 
                                 </Nav>
                             </Col>
@@ -87,10 +86,6 @@ class UserManagementNavBar extends Component {
                                     <Tab.Pane eventKey="first">
                                         <UserManagement />
                                     </Tab.Pane>
-                                    <Tab.Pane eventKey="second">
-                                        <CreateUser />
-                                    </Tab.Pane>
-
                                 </Tab.Content>
                             </Col>
                         </Row>
@@ -108,32 +103,22 @@ class UserManagementNavBar extends Component {
 
                 <div>
 
+                <p></p>
+                <b>***User does not have permission to access this***</b>
+
                     <Tab.Container id="tabs-with-dropdown" defaultActiveKey="first">
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
                                     <NavDropdown eventKey="3" title="Home + More" >
                                         <MenuItem eventKey="3.1"><Link to="/homepage"> User Homepage </Link></MenuItem>
-                                        <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
                                         <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
-
-
                                     </NavDropdown>
-                                    <NavItem eventKey="first">User Management</NavItem>
-                                    <NavItem eventKey="second">Create New User</NavItem>
-
+                                   
                                 </Nav>
                             </Col>
                             <Col sm={12}>
                                 <Tab.Content>
-                                    <Tab.Pane eventKey="first">
-                                        <UserManagement />
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="second">
-                                        <CreateUser />
-                                    </Tab.Pane>
-
                                 </Tab.Content>
                             </Col>
                         </Row>

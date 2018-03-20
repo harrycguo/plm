@@ -126,17 +126,13 @@ class FormulaManagementNavBar extends Component {
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
                                     <NavDropdown eventKey="3" title="Home + More" >
-                                        <MenuItem eventKey="3.1"><Link to="/homepage"> Manager Homepage </Link></MenuItem>
+                                        <MenuItem eventKey="3.1"><Link to="/homepage"> User Homepage </Link></MenuItem>
                                         <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
                                         <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.5"><Link to="/userManagement"> User Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.6"><Link to="/viewLog"> View Global Log </Link></MenuItem>
                                         <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
-
 
                                     </NavDropdown>
                                     <NavItem eventKey="1">Formula Management</NavItem>
-                                    <NavItem eventKey="5">Produce Formula</NavItem>
                                     <NavItem eventKey="6">Production Report</NavItem>
 
                                 </Nav>
