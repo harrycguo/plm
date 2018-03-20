@@ -38,13 +38,13 @@ export class IngredientForm extends Component {
 					required: true,
 				},
 				numPackages: {
-					required: true,
 					number: true,
 				},
 				ingredientPrice: {
 					number: true
 				},
-				numNativeUnits: {
+				numNativeUnitsPerPackage: {
+					required: true,
 					number: true,
 				},
 			},
@@ -65,7 +65,8 @@ export class IngredientForm extends Component {
 				ingredientPrice: {
 					number: 'Must be a decimal'
 				},
-				numNativeUnits: {
+				numNativeUnitsPerPackage: {
+					required: 'Specify Number of Native Units Per Package',
 					number: 'Must be an integer',
 				},
 			},
@@ -80,13 +81,12 @@ export class IngredientForm extends Component {
 		let name = this.ingredientName.value
 		let packaging = this.packaging.value
 		let temperatureState = this.temperatureState.value
-		let numPackages = this.numPackages.value
-		let numNativeUnitsPerPackage = this.numNativeUnits.value
+		let numPackages = 0
+		let numNativeUnitsPerPackage = this.numNativeUnitsPerPackage.value
 		let nativeUnit = this.customNativeUnitInput.nativeUnit.value == 'custom' ? this.customNativeUnitInput.customNativeUnit.value : this.customNativeUnitInput.nativeUnit.value
 		let vendorId = this.refs.vendorSel.vendor.value
 		let ingredientPrice = this.ingredientPrice.value
 		
-
 		//Calculate total number of native units
 		let totalNumNativeUnits = Number(numPackages) * Number(numNativeUnitsPerPackage)
 
@@ -205,7 +205,8 @@ export class IngredientForm extends Component {
 						<p><select id="selPackaging"
 							ref={packaging => (this.packaging = packaging)}
 							name="packaging"
-							onChange={this.calculateCapacityUsed}>
+							//onChange={this.calculateCapacityUsed}
+							>
 							<option value="Sack">Sack (0.5 Sq. Ft.)</option>
 							<option value="Pail">Pail (1.5 Sq. Ft.)</option>
 							<option value="Drum">Drum (3 Sq. Ft.)</option>
@@ -224,7 +225,7 @@ export class IngredientForm extends Component {
 							<option value="room temperature">Room Temperature</option>
 						</select></p>
 					</FormGroup>
-					<FormGroup>
+					{/* <FormGroup>
 						<ControlLabel>Number Of Packages</ControlLabel>
 						<p><input
 							type="number"
@@ -237,22 +238,22 @@ export class IngredientForm extends Component {
 						/></p>
 					</FormGroup>
 
-					{this.renderUsedCapacity()}
+					{this.renderUsedCapacity()} */}
 
 					<FormGroup>
 						<ControlLabel>Number Of Native Units Per Package</ControlLabel>
 						<p><input
 							type="number"
 							step="1"
-							ref={numNativeUnits => (this.numNativeUnits = numNativeUnits)}
-							onChange={this.calculateCapacityUsed}
-							name="numNativeUnits"
+							ref={numNativeUnitsPerPackage => (this.numNativeUnitsPerPackage = numNativeUnitsPerPackage)}
+							//onChange={this.calculateCapacityUsed}
+							name="numNativeUnitsPerPackage"
 							placeholder="# of Native Units Per Package"
 							className="form-control"
 						/></p>
 					</FormGroup>
 
-					{this.renderTotalNumNativeUnits()}
+					{/* {this.renderTotalNumNativeUnits()} */}
 
 					<CustomNativeUnitInput ref={customNativeUnitInput => (this.customNativeUnitInput = customNativeUnitInput)}/>
 

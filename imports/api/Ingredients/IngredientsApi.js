@@ -83,7 +83,7 @@ Meteor.methods({
         }
 
         // Storage must be positive no matter what
-        if (Number(numPackages) <= 0){
+        if (Number(numPackages) < 0){
             throw new Meteor.Error('storage must be positive', 'Number of Packages Must Be Greater Than 0');
         }
 

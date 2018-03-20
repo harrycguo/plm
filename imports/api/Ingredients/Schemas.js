@@ -171,7 +171,7 @@ LogSchema = new SimpleSchema({
 IngredientProdInfoSchema = new SimpleSchema({
   ingredient: {
     type: String,
-    min: 1
+    min: 0
   },
   totalCost: {
     type: Number,
