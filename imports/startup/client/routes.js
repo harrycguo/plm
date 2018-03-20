@@ -16,7 +16,7 @@ import AddVendor from '../../ui/pages/AddVendor/AddVendor.js'
 import EditVendor from '../../ui/pages/EditVendor/EditVendor.js';
 import EditCapacity from '../../ui/pages/EditCapacity/EditCapacity.js'
 import EditCapacities from '../../ui/pages/EditCapacities/EditCapacities.js'
-import VendorManagement from '../../ui/pages/VendorManagement/VendorManagement.js'
+import VendorManagementHome from '../../ui/pages/VendorManagement/VendorManagementHome.js'
 import IngredientForm from '../../ui/forms/IngredientForm.js'
 import Table from '../../ui/table/Table.js';
 import BulkImportIngredients from '../../ui/pages/BulkImportIngredients/BulkImportIngredients.js';
@@ -29,7 +29,7 @@ import IngredientCart from '../../ui/pages/Cart/Cart.js';
 import SpendingReport from '../../ui/pages/SpendingReport/SpendingReport.js';
 import UserManagementHome from '../../ui/pages/UserManagement/UserManagementHome.js';
 import ManagerHomepage from '../../ui/pages/ManagerHomepage/ManagerHomepage';
-import FormulaManagement from '../../ui/pages/FormulaManagement/FormulaManagement';
+import FormulaManagementHome from '../../ui/pages/FormulaManagement/FormulaManagementHome.js';
 import AddFormula from '../../ui/pages/AddFormula/AddFormula';
 import LogTable from '../../ui/syslog/LogTable.js';
 import ViewLogHome from '../../ui/pages/ViewLog/ViewLogHome.js';
@@ -61,27 +61,33 @@ class App extends Component {
         <Authenticated exact path="/userHomepage" component={UserHomepage} {...props}/> */}
 
         <Authenticated exact path="/homepage" component={Homepage} {...props}/>
-        <Authenticated exact path="/userManagement" component={UserManagementHome} {...props}/>
 
+        <Authenticated exact path="/userManagement" component={UserManagementHome} {...props}/>
         {/* <Authenticated exact path="/createUser" component={CreateUser} {...props}/> */}
 
-        <Authenticated exact path="/vendorManagement" component={VendorManagement} {...props}/>
-        <Authenticated exact path="/addVendor" component={AddVendor} {...props}/>
+        <Authenticated exact path="/vendorManagement" component={VendorManagementHome} {...props}/>
+        {/* <Authenticated exact path="/addVendor" component={AddVendor} {...props}/> */}
         <Authenticated exact path="/editVendor/:vendorID" component={EditVendor} {...props}/>
+        
+        
         <Authenticated exact path="/editCapacity/:capacityID" component={EditCapacity} {...props}/>
         <Authenticated exact path="/editCapacities" component={EditCapacities} {...props}/>
-        <Authenticated exact path="/successLoginUser" component={Table} {...props}/>
+      
         <Authenticated exact path="/bulkImportIngredients" component={BulkImportIngredients} {...props}/>
-        <Authenticated exact path="/table" component={Table} {...props}/>
+  
         <Authenticated exact path="/addingredient" component={AddIngredient} {...props}/>
         <Authenticated exact path='/inventoryManagement' component={InventoryManagement} {...props}/>
         <Authenticated exact path="/cart" component={IngredientCart} {...props}/>
         <Authenticated exact path="/report" component={SpendingReport} {...props}/>
-        <Authenticated exact path='/formulaManagement' component={FormulaManagement} {...props}/>
+       
+        <Authenticated exact path='/formulaManagement' component={FormulaManagementHome} {...props}/>
+        
+        
         <Authenticated exact path='/addFormula' component={AddFormula} {...props}/>
         <Authenticated exact path='/editFormula/:formulaID' component={EditFormula} {...props}/>
         <Authenticated exact path='/viewFormula/:formulaID' component={ViewFormula} {...props}/> 
         <Authenticated exact path='/bulkImportFormulas' component={BulkImportFormulas} {...props}/>
+        
         <Authenticated exact path='/log' component={LogTable} {...props}/>
 
         <Authenticated exact path='/viewLog' component={ViewLogHome} {...props}/>

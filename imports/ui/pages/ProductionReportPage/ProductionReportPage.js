@@ -53,12 +53,7 @@ class ProductionReportPage extends Component {
 
   render() {
     return (
-      <div className="container">
-        <header>
-          <h1>Production Report</h1>
-        </header>
-        <FormulaManagementNavBar />
-        <p></p>
+      <div>
         <ReactTable
           data={this.renderRows(this)}
           filterable

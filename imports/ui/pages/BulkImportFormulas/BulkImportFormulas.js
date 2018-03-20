@@ -99,7 +99,10 @@ class BulkImportFormulas extends Component {
       }
 
       Bert.alert("Successfully Bulk Imported Formulas!", 'success');
-      history.push('/formulaManagement')
+      this.setState({ errorMessage: "" })
+      document.getElementById("form").reset();
+      document.getElementById("myInput").value = "";
+      
 
     }
   }
@@ -304,11 +307,7 @@ class BulkImportFormulas extends Component {
 
   render() {
     return (
-      <div className="container">
-        <header>
-          <h1>Bulk Import Formulas</h1>
-        </header>
-        <FormulaManagementNavBar />
+      <div>
         <p></p>
         <b>Format:</b>
         <p>The bulk import formulas feature only supports .csv files. You can make your spreadsheet in Excel and when saving, simply "Save As" a ".csv" file. </p>
@@ -330,13 +329,13 @@ class BulkImportFormulas extends Component {
         <p></p>
         <b>Upload File Below</b>
 
-        <p>
-          <input type="file"
-            name="myFile"
-            onChange={this.uploadFile} />
-        </p>
 
-        <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
+        <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()} id='form'>
+        <input type="file"
+            name="myFile"
+            onChange={this.uploadFile}
+            id='myInput' />
+            <p></p>
           <Button type="submit" bsStyle="success">Import</Button>
         </form>
 

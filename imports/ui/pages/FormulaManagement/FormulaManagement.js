@@ -21,12 +21,7 @@ renderFormulas() {
 
   render() {
     return (
-      <div className="container">
-        <header>
-          <h1>Formula Management</h1>
-        </header>
-        <FormulaManagementNavBar/>
-        <p></p>
+      <div>
 
         <h2>List of Formulas</h2>
         <hr className='divider'></hr>

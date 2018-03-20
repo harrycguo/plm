@@ -115,7 +115,7 @@ class UserManagementNavBar extends Component {
                                     <NavDropdown eventKey="3" title="Home + More" >
                                         <MenuItem eventKey="3.1"><Link to="/homepage"> User Homepage </Link></MenuItem>
                                         <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.3"><Link to="/formulaManagement"> Formula Management </Link></MenuItem>
+                                        <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
                                         <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
 
 

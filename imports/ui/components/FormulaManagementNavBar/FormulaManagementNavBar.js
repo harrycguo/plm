@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, NavItem, Nav } from 'react-bootstrap';
+import { Navbar, NavItem, Nav, NavDropdown, MenuItem, Row, Col, Tabs, Tab, TabContainer, TabContent, TabPane } from 'react-bootstrap';
+import FormulaManagement from '../../pages/FormulaManagement/FormulaManagement.js'
+import AddFormula from '../../pages/AddFormula/AddFormula.js'
+import BulkImportFormulas from '../../pages/BulkImportFormulas/BulkImportFormulas.js'
+import ProductionRun from '../../pages/ProductionRun/ProductionRun.js'
+import ProductionReportPage from '../../pages/ProductionReportPage/ProductionReportPage.js'
 
-// App component - represents the whole app
 class FormulaManagementNavBar extends Component {
     constructor(props) {
         super(props);
@@ -14,105 +18,143 @@ class FormulaManagementNavBar extends Component {
         //admin
         if (Roles.userIsInRole(user, ['admin'])) {
             return (
-            <div className="topContainer">
+                <div>
 
-                <Link
-                    className="container-nav"
-                    to="/adminHomepage">
-                    Admin Homepage
-                </Link>
-                <Link
-                    className="container-nav"
-                    to="/formulaManagement">
-                    Formula Management
-                </Link>
+                    <Tab.Container id="tabs-with-dropdown" defaultActiveKey="1">
+                        <Row className="clearfix">
+                            <Col sm={12}>
+                                <Nav bsStyle="tabs">
+                                    <NavDropdown eventKey="3" title="Home + More" >
+                                        <MenuItem eventKey="3.1"><Link to="/homepage"> Admin Homepage </Link></MenuItem>
+                                        <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
+                                        <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
+                                        <MenuItem eventKey="3.5"><Link to="/userManagement"> User Management </Link></MenuItem>
+                                        <MenuItem eventKey="3.6"><Link to="/viewLog"> View Global Log </Link></MenuItem>
+                                        <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
 
-                <Link
-                    className="container-nav"
-                    to="/addFormula">
-                    Add New Formula
-                    </Link>
 
-                    <Link
-                    className="container-nav"
-                    to="/bulkImportFormulas">
-                    Bulk Import Formula
-                    </Link>  
-                
+                                    </NavDropdown>
+                                    <NavItem eventKey="1">Formula Management</NavItem>
+                                    <NavItem eventKey="2">Add New Formula</NavItem>
+                                    <NavItem eventKey="4">Bulk Import Formula</NavItem>
+                                    <NavItem eventKey="5">Produce Formula</NavItem>
+                                    <NavItem eventKey="6">Production Report</NavItem>
 
-                    <Link
-                        className="container-nav"
-                        to="/productionRun">
-                        Produce Formula
-                    </Link>
+                                </Nav>
+                            </Col>
+                            <Col sm={12}>
+                                <Tab.Content>
+                                    <Tab.Pane eventKey="1">
+                                        <FormulaManagement />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="2">
+                                        <AddFormula />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="4">
+                                        <BulkImportFormulas />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="5">
+                                        <ProductionRun hist={this.props.hist} />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="6">
+                                        <ProductionReportPage />
+                                    </Tab.Pane>
+                                </Tab.Content>
+                            </Col>
+                        </Row>
+                    </Tab.Container>
+                </div>
 
-                    <Link
-                        className="container-nav"
-                        to="/productionReport">
-                        Production Report
-                    </Link>
-            </div>
             )
 
-        } 
-        
+        }
+
         //manager
         else if (Roles.userIsInRole(user, ['manager'])) {
             return (
-                <div className="topContainer">
-    
-                    <Link
-                        className="container-nav"
-                        to="/managerHomepage">
-                        Manager Homepage
-                    </Link>
-                    <Link
-                        className="container-nav"
-                        to="/formulaManagement">
-                        Formula Management
-                    </Link>
-    
-                    <Link
-                        className="container-nav"
-                        to="/productionRun">
-                        Produce Formula
-                    </Link>
 
-                    <Link
-                        className="container-nav"
-                        to="/productionReport">
-                        Production Report
-                    </Link>
+                <div>
+
+                    <Tab.Container id="tabs-with-dropdown" defaultActiveKey="1">
+                        <Row className="clearfix">
+                            <Col sm={12}>
+                                <Nav bsStyle="tabs">
+                                    <NavDropdown eventKey="3" title="Home + More" >
+                                        <MenuItem eventKey="3.1"><Link to="/homepage"> Manager Homepage </Link></MenuItem>
+                                        <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
+                                        <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
+                                        <MenuItem eventKey="3.5"><Link to="/userManagement"> User Management </Link></MenuItem>
+                                        <MenuItem eventKey="3.6"><Link to="/viewLog"> View Global Log </Link></MenuItem>
+                                        <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
+
+
+                                    </NavDropdown>
+                                    <NavItem eventKey="1">Formula Management</NavItem>
+                                    <NavItem eventKey="5">Produce Formula</NavItem>
+                                    <NavItem eventKey="6">Production Report</NavItem>
+
+                                </Nav>
+                            </Col>
+                            <Col sm={12}>
+                                <Tab.Content>
+                                    <Tab.Pane eventKey="1">
+                                        <FormulaManagement />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="5">
+                                        <ProductionRun hist={this.props.hist} />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="6">
+                                        <ProductionReportPage />
+                                    </Tab.Pane>
+                                </Tab.Content>
+                            </Col>
+                        </Row>
+                    </Tab.Container>
                 </div>
-                )
 
-        } 
-        
+            )
+
+        }
+
         //user
         else {
             return (
-                <div className="topContainer">
-    
-                    <Link
-                        className="container-nav"
-                        to="/userHomepage">
-                        User Homepage
-                    </Link>
+                <div>
 
-                    <Link
-                        className="container-nav"
-                        to="/formulaManagement">
-                        Formula Management
-                    </Link>
+                    <Tab.Container id="tabs-with-dropdown" defaultActiveKey="1">
+                        <Row className="clearfix">
+                            <Col sm={12}>
+                                <Nav bsStyle="tabs">
+                                    <NavDropdown eventKey="3" title="Home + More" >
+                                        <MenuItem eventKey="3.1"><Link to="/homepage"> Manager Homepage </Link></MenuItem>
+                                        <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
+                                        <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
+                                        <MenuItem eventKey="3.5"><Link to="/userManagement"> User Management </Link></MenuItem>
+                                        <MenuItem eventKey="3.6"><Link to="/viewLog"> View Global Log </Link></MenuItem>
+                                        <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
 
-                    <Link
-                        className="container-nav"
-                        to="/productionReport">
-                        Production Report
-                    </Link>
-    
+
+                                    </NavDropdown>
+                                    <NavItem eventKey="1">Formula Management</NavItem>
+                                    <NavItem eventKey="5">Produce Formula</NavItem>
+                                    <NavItem eventKey="6">Production Report</NavItem>
+
+                                </Nav>
+                            </Col>
+                            <Col sm={12}>
+                                <Tab.Content>
+                                    <Tab.Pane eventKey="1">
+                                        <FormulaManagement />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="6">
+                                        <ProductionReportPage />
+                                    </Tab.Pane>
+                                </Tab.Content>
+                            </Col>
+                        </Row>
+                    </Tab.Container>
                 </div>
-                )
+            )
 
         }
     }
