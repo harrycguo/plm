@@ -210,4 +210,18 @@ ProdReportSchema = new SimpleSchema({
    }
 })
 
+// LotIngredientSchema = new SimpleSchema({
+  
+// })
+
+// LotsSchema = new SimpleSchema({
+//   ingID: {
+//     type: String,
+//     min: 1
+//   },
+//   queue: {
+//     type: [LotIngredientSchema]
+//   }
+// })
+
 export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema };
