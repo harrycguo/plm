@@ -653,9 +653,9 @@ Meteor.methods({
         }
         let newPrice = Number((price * numPackages + ing.spendingInfo.totalSpending) / (numPackages +ing.spendingInfo.numPackagesOrdered))
         let newTotalSpending = newPrice * (numPackages + ing.spendingInfo.numPackagesOrdered)
-        IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.totalSpending' : newTotalSpending}})
-        IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.avgPrice' : newPrice}})
-        IngredientsList.update({ _id : selectedIngredient},{$inc : {'spendingInfo.numPackagesOrdered' : numPackages}})
+        IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.totalSpending' : Number(newTotalSpending).toFixed(2)}})
+        IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.avgPrice' : Number(newPrice).toFixed(2)}})
+        IngredientsList.update({ _id : selectedIngredient},{$inc : {'spendingInfo.numPackagesOrdered' : Number(numPackages).toFixed(2)}})
     },
     'ingredients.updateTotalProdSpending': function(selectedIngredient, numNativeUnits) {
         var ing = IngredientsList.find({ _id : selectedIngredient}).fetch()[0]
@@ -671,7 +671,7 @@ Meteor.methods({
         console.log('Production spending: '+newProdSpendingTotal)
         // console.log('packages used in prod'+packagesUsedInProd)
         console.log('Avg Price'+ing.spendingInfo.avgPrice)
-        IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.totalProdSpending' : newProdSpendingTotal}})
-        IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.numNativeUnitsProduced' : newNumNativeUnitsProduced}})
+        IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.totalProdSpending' : Number(newProdSpendingTotal).toFixed(2)}})
+        IngredientsList.update({ _id : selectedIngredient},{$set : {'spendingInfo.numNativeUnitsProduced' : Number(newNumNativeUnitsProduced).toFixed(2)}})
     }
 });

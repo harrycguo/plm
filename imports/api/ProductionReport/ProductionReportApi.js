@@ -16,8 +16,8 @@ Meteor.methods({
                 var ing = IngredientsList.find({ _id : formula.ingredientsList[i].id}).fetch()[0]
                 ingList.push({
                     ingredient: formula.ingredientsList[i].id,
-                    totalCost: ing.spendingInfo.totalProdSpending,
-                    totalUnitsConsumed: formula.ingredientsList[i].amount * (qty/formula.productUnits)
+                    totalCost: Number(ing.spendingInfo.totalProdSpending).toFixed(2),
+                    totalUnitsConsumed: Number(formula.ingredientsList[i].amount * (qty/formula.productUnits)).toFixed(2)
                 })
                 costArr.push(((formula.ingredientsList[i].amount * (qty/formula.productUnits))/ing.nativeInfo.numNativeUnitsPerPackage) * ing.spendingInfo.avgPrice)
             }
@@ -25,7 +25,7 @@ Meteor.methods({
               formula: formulaId,
               totalProduced: qty,
               ingredientsUsed: ingList,
-              totalSpent: costArr.reduce(function(a,b,) {return a + b;},0)
+              totalSpent: Number(costArr.reduce(function(a,b,) {return a + b;},0)).toFixed(2)
             });  
         }
         else {
@@ -38,11 +38,11 @@ Meteor.methods({
                 var rep = ProductionReport.find({formula:formulaId}).fetch()[0]
                 for (var j = 0; j < rep.ingredientsUsed.length; j++) {
                     if (rep.ingredientsUsed[j].ingredient == ingList[i].id) {
-                        ProductionReport.update({formula:formulaId, 'ingredientsUsed.ingredient':ingList[i].id}, {$inc : {'ingredientsUsed.$.totalUnitsConsumed' : ingList[i].amount * (qty/formula.productUnits)}})
+                        ProductionReport.update({formula:formulaId, 'ingredientsUsed.ingredient':ingList[i].id}, {$inc : {'ingredientsUsed.$.totalUnitsConsumed' : Number(ingList[i].amount * (qty/formula.productUnits)).toFixed(2)}})
                         var consumedTotal = ProductionReport.find({formula:formulaId}).fetch()[0].ingredientsUsed[j].totalUnitsConsumed 
-                        ProductionReport.update({formula:formulaId, 'ingredientsUsed.ingredient':ingList[i].id}, {$set : {'ingredientsUsed.$.totalCost' : ing.spendingInfo.totalProdSpending}})
+                        ProductionReport.update({formula:formulaId, 'ingredientsUsed.ingredient':ingList[i].id}, {$set : {'ingredientsUsed.$.totalCost' : Number(ing.spendingInfo.totalProdSpending).toFixed(2)}})
                         var costTotal = ProductionReport.find({formula:formulaId}).fetch()[0].ingredientsUsed[j].totalCost
-                        ProductionReport.update({formula:formulaId},{$inc : {totalSpent : costTotal}})
+                        ProductionReport.update({formula:formulaId},{$inc : {totalSpent : Number(costTotal).toFixed(2)}})
                     }
                 }
             }
