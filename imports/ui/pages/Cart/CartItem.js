@@ -94,13 +94,10 @@ class CartItem extends Component {
 	}
 
 	//doesn't work but doesn't do anything
-	shouldComponentUpdate(nextProps, nextState){
+	componentDidUpdate(nextProps, nextState){
 		
-
 		const component = this;
 
-		if (component.form == null || component.form == undefined) {
-			
 			validate(component.form, {
 				rules: {
 					numberOfPackages: {
@@ -125,11 +122,9 @@ class CartItem extends Component {
 				},
 				submitHandler() { 
 					console.log('sdflj')
-					component.handleSubmit(); },
+					component.handleSubmitModal(); },
 			})
-		} 
-
-		return true
+		 
 	}
 
 	handleClose() {
@@ -138,10 +133,6 @@ class CartItem extends Component {
 
 	handleShow() {
 		this.setState({ show: true });
-	}
-
-	handleSubmit(){
-		this.handleSubmitModal()
 	}
 
 	handleSubmitModal() {
