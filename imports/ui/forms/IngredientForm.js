@@ -69,7 +69,9 @@ export class IngredientForm extends Component {
 					number: 'Must be an integer',
 				},
 			},
-			submitHandler() { component.handleSubmit(); },
+			submitHandler() { 
+				console.log('hanling dumb')
+				component.handleSubmit(); },
 		});
 	}
 

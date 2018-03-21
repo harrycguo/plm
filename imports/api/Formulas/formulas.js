@@ -17,7 +17,7 @@ Meteor.methods({
 
     //Formula name must be unique
     if (Formulas.find({ name: name.trim() }).count() > 0) {
-      throw new Meteor.Error('formula already in system', 'Formula Name Must Be Unique');
+      throw new Meteor.Error('formula already in system', 'Final Product Name Must Be Unique');
     }
 
     //no ingredients check

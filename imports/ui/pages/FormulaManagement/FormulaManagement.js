@@ -9,6 +9,9 @@ import FormulaListItem from '../../components/Formula/FormulaListItem.js'
 class FormulaManagement extends Component {
   constructor(props) {
     super(props);   
+    this.state = {
+      radioState: true
+    };
 }
 
 renderFormulas() {
