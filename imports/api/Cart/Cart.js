@@ -1,5 +1,5 @@
 import { Mongo } from 'meteor/mongo';
-import { CartSchema, CartIngredientSchema, VendorInfoSchema } from '../Ingredients/Schemas.js';
+import { CartSchema, CartIngredientSchema, VendorInfoSchema , LotSchema} from '../Ingredients/Schemas.js';
 import IngredientsList from '../Ingredients/IngredientList.js';
 //Cart Database
 
@@ -15,7 +15,6 @@ export default Carts;
 var cursor = IngredientsList.find();
 const handle = cursor.observeChanges({
     'removed': function(id, ing) {
-       console.log("removing");
        Carts.update({},{$pull : {ingredients : { ingredient : id}}});
     }
 });

@@ -29,7 +29,8 @@ export class AddFormulaForm extends Component {
     }
 
     componentDidMount() {
-
+        console.log(this)
+        console.log(this.form)
         const component = this;
 
         validate(component.form, {

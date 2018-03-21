@@ -7,7 +7,6 @@ ProductionReport.attachSchema(ProdReportSchema);
 export default ProductionReport;
 
 if(Meteor.isServer) {
-	console.log('publishing production report');
 	Meteor.publish('prodReport', function() {
 		return ProductionReport.find();
 	});

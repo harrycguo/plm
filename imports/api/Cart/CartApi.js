@@ -46,7 +46,8 @@ Meteor.methods({
                 ingredient : selectedIngredient._id,
                 numPackages: numPackages,
                 vendorInfo: vendorInfo,
-                lotsSelected: false
+                lotsSelected: false,
+                lots: []
             }}});
         }
         Meteor.call('systemlog.insert', "Cart", selectedIngredient.name,  selectedIngredient._id, "Added", "");
@@ -83,7 +84,7 @@ Meteor.methods({
                 vendorInfo = vendorInfoArr[i];
             }
         }
-        console.log(Vendors.find({_id : vendorInfo.vendor}).fetch()[0])
+      
         Meteor.call('systemlog.insert', 
             "Cart", 
             IngredientsList.find({_id:selectedIngredient}).fetch()[0].name,  
@@ -92,6 +93,11 @@ Meteor.methods({
             Vendors.find({_id : vendorInfo.vendor}).fetch()[0].vendor
         );
         Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient}, {$set : { 'ingredients.$.vendorInfo' : vendorInfo }});
+    },
+    'cart.changeLots': function(selectedIngredient, lots){
+       
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient}, {$set : { 'ingredients.$.lots' : lots }});
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient}, {$set : { 'ingredients.$.lotsSelected' : true }});
     },
     'checkoutIngredients': function() { //Allow adding to inentory instead of just remove
         let cart = Carts.find({ user : Meteor.userId()}).fetch()[0];

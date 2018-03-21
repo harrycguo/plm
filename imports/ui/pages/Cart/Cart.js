@@ -7,6 +7,7 @@ import { Vendors } from '../../../api/Vendors/vendors.js';
 import { Button , Label} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import CartItem from './CartItem.js'
+import Timer from './Timer.js'
 
 class Cart extends Component {
 	
@@ -14,9 +15,11 @@ class Cart extends Component {
 		super(props);
 
 		this.state = {
-			totalCost: Number(0)
+			totalCost: Number(0),
 		}
 	}
+
+	
 
 	renderCartItems() {
 
@@ -25,9 +28,9 @@ class Cart extends Component {
 		var totalCost = 0
 
 		this.props.carts.forEach(function(ingredients) {
-			console.log(ingredients)
+			//console.log(ingredients)
 			ingredients.ingredients.forEach(function(ing) {
-				console.log(ing)
+				//console.log(ing)
 				frontEndCart.push(
 					{key: keyCount, fullIng: ing, amt: ing.numPackages}
 				)
@@ -46,7 +49,7 @@ class Cart extends Component {
 	}
 
 	checkoutButton() {
-
+		const { history } = this.props
 		return (<Button
 				bsStyle="success"
 				onClick={e => {
@@ -56,6 +59,7 @@ class Cart extends Component {
                	  			Bert.alert(error.reason, 'danger');
                 		} else {
 							Bert.alert('Successfully Checked Out!', 'success');
+							history.push('/inventoryManagement')
 						}
 					});
 				}}
@@ -109,6 +113,7 @@ class Cart extends Component {
 				   <p></p>
 				   <p><b>Total Cost: </b> ${totalCost.toFixed(2)}</p>
 				   <p></p>
+				   <Timer />
 				   {this.checkoutButton()}
 
 				   <div className="container-keepLeft">

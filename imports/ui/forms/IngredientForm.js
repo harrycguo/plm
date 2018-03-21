@@ -11,7 +11,6 @@ import validate from '../../modules/validate.js';
 import { VendorSelect } from './VendorSelect.js';
 import CustomNativeUnitInput from './CustomNativeUnitInput.js'
 
-// Task component - represents a single todo item
 export class IngredientForm extends Component {
 	constructor(props) {
 		super(props);

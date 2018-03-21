@@ -69,6 +69,12 @@ body {
     padding: 5px 5px 5px 15px;
   }
 
+  .side-containerLeft{
+    display: flex;
+    flex-direction: row;
+    padding: 5px 5px 5px 0px;
+  }
+
   .side-container-zero{
     display: flex;
     flex-direction: row;
