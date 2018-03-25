@@ -1,12 +1,12 @@
 import { Mongo } from 'meteor/mongo';
-import { IngredientSchema, PackageInfoSchema, NativeInfoSchema, VendorInfoSchema, FormulaInfoSchema, SpendingInfoSchema } from './Schemas.js';
+import { LotsSchema, LotIngredientSchema } from './Schemas.js';
 import { Vendors } from '../Vendors/vendors.js';
 
 Lots = new Mongo.Collection('lots');
-// IngredientsList.remove({}); // remove every ingredient from the collectionadsa
+// IngredientsList.remove({}); // remove every ingredient from the collection
 
 //Attach a schema to the collection for automatic validation on insert/update operations
-// Lots.attachSchema(IngredientSchema);
+Lots.attachSchema(LotsSchema);
 
 //Update vendors for each ingredient when a vendor is edited
 // var cursor = Vendors.find();
