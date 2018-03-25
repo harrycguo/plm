@@ -12,12 +12,7 @@ class ViewLog extends Component {
 
   render() {
     return (
-      <div className="container">
-        <header>
-          <h1>Global Log</h1>
-        </header>
-        <LogNavBar/>
-        <p></p>
+      <div>
         <LogTable />
       </div>
     );

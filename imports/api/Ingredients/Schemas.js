@@ -104,6 +104,17 @@ IngredientSchema = new SimpleSchema({
   }
 });
 
+LotSchema = new SimpleSchema({
+  lotNumber: {
+    type: Number,
+    min: 1,
+  },
+  lotStuff: {
+    type: Number,
+    min: 1,
+  }
+})
+
 //Schema for individual ingredient entries in the cart
 CartIngredientSchema = new SimpleSchema({
 	ingredient: {
@@ -117,8 +128,16 @@ CartIngredientSchema = new SimpleSchema({
   vendorInfo: {
     type: VendorInfoSchema,
     min: 1
+  },
+  lotsSelected: {
+    type: Boolean,
+  },
+  lots: {
+    type: [LotSchema]
   }
 })
+
+
 
 // //Cart schema. Each user has their own mini database of ingredients.
 CartSchema = new SimpleSchema({
@@ -171,7 +190,7 @@ LogSchema = new SimpleSchema({
 IngredientProdInfoSchema = new SimpleSchema({
   ingredient: {
     type: String,
-    min: 1
+    min: 0
   },
   totalCost: {
     type: Number,

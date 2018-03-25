@@ -11,7 +11,6 @@ import validate from '../../modules/validate.js';
 import { VendorSelect } from './VendorSelect.js';
 import CustomNativeUnitInput from './CustomNativeUnitInput.js'
 
-// Task component - represents a single todo item
 export class IngredientForm extends Component {
 	constructor(props) {
 		super(props);
@@ -38,13 +37,13 @@ export class IngredientForm extends Component {
 					required: true,
 				},
 				numPackages: {
-					required: true,
 					number: true,
 				},
 				ingredientPrice: {
 					number: true
 				},
-				numNativeUnits: {
+				numNativeUnitsPerPackage: {
+					required: true,
 					number: true,
 				},
 			},
@@ -65,7 +64,8 @@ export class IngredientForm extends Component {
 				ingredientPrice: {
 					number: 'Must be a decimal'
 				},
-				numNativeUnits: {
+				numNativeUnitsPerPackage: {
+					required: 'Specify Number of Native Units Per Package',
 					number: 'Must be an integer',
 				},
 			},
@@ -80,13 +80,12 @@ export class IngredientForm extends Component {
 		let name = this.ingredientName.value
 		let packaging = this.packaging.value
 		let temperatureState = this.temperatureState.value
-		let numPackages = this.numPackages.value
-		let numNativeUnitsPerPackage = this.numNativeUnits.value
+		let numPackages = 0
+		let numNativeUnitsPerPackage = this.numNativeUnitsPerPackage.value
 		let nativeUnit = this.customNativeUnitInput.nativeUnit.value == 'custom' ? this.customNativeUnitInput.customNativeUnit.value : this.customNativeUnitInput.nativeUnit.value
 		let vendorId = this.refs.vendorSel.vendor.value
 		let ingredientPrice = this.ingredientPrice.value
-		const { history } = this.props.hist;
-
+		
 		//Calculate total number of native units
 		let totalNumNativeUnits = Number(numPackages) * Number(numNativeUnitsPerPackage)
 
@@ -133,9 +132,13 @@ export class IngredientForm extends Component {
 					}
 					else {
 						Bert.alert('Added Ingredient!', 'success');
-						history.push('/inventoryManagement')
+						document.getElementById("form").reset();
+						this.setState({
+							usedCap: Number(0),
+							totalNumNativeUnits: Number(0)
+						});
 					}
-				});
+				}.bind(this));
 		}
 
 	}
@@ -184,8 +187,8 @@ export class IngredientForm extends Component {
 	render() {
 		
 		return (
-			<div className="container">
-				<form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
+			<div>
+				<form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()} id='form'>
 					<FormGroup>
 						<ControlLabel>Ingredient Name</ControlLabel>
 						<input
@@ -201,7 +204,8 @@ export class IngredientForm extends Component {
 						<p><select id="selPackaging"
 							ref={packaging => (this.packaging = packaging)}
 							name="packaging"
-							onChange={this.calculateCapacityUsed}>
+							//onChange={this.calculateCapacityUsed}
+							>
 							<option value="Sack">Sack (0.5 Sq. Ft.)</option>
 							<option value="Pail">Pail (1.5 Sq. Ft.)</option>
 							<option value="Drum">Drum (3 Sq. Ft.)</option>
@@ -220,7 +224,7 @@ export class IngredientForm extends Component {
 							<option value="room temperature">Room Temperature</option>
 						</select></p>
 					</FormGroup>
-					<FormGroup>
+					{/* <FormGroup>
 						<ControlLabel>Number Of Packages</ControlLabel>
 						<p><input
 							type="number"
@@ -233,22 +237,22 @@ export class IngredientForm extends Component {
 						/></p>
 					</FormGroup>
 
-					{this.renderUsedCapacity()}
+					{this.renderUsedCapacity()} */}
 
 					<FormGroup>
 						<ControlLabel>Number Of Native Units Per Package</ControlLabel>
 						<p><input
 							type="number"
 							step="1"
-							ref={numNativeUnits => (this.numNativeUnits = numNativeUnits)}
-							onChange={this.calculateCapacityUsed}
-							name="numNativeUnits"
+							ref={numNativeUnitsPerPackage => (this.numNativeUnitsPerPackage = numNativeUnitsPerPackage)}
+							//onChange={this.calculateCapacityUsed}
+							name="numNativeUnitsPerPackage"
 							placeholder="# of Native Units Per Package"
 							className="form-control"
 						/></p>
 					</FormGroup>
 
-					{this.renderTotalNumNativeUnits()}
+					{/* {this.renderTotalNumNativeUnits()} */}
 
 					<CustomNativeUnitInput ref={customNativeUnitInput => (this.customNativeUnitInput = customNativeUnitInput)}/>
 

@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Link } from 'react-router-dom';
-import { Navbar, NavItem, Nav } from 'react-bootstrap';
+import { Navbar, NavItem, Nav, NavDropdown, MenuItem, Row, Col, Tabs, Tab, TabContainer, TabContent, TabPane } from 'react-bootstrap';
 import UserManagementNavBar from '../../components/UserManagementNavBar/UserManagementNavBar.js'
 import ReactTable from 'react-table';
-import { Button , ButtonToolbar } from 'react-bootstrap';
+import { Button, ButtonToolbar } from 'react-bootstrap';
 import UserManagementData from './UserManagementData.js'
 import { Accounts } from 'meteor/accounts-base';
 import { Users } from '../../../api/Users/users.js'
+import CreateUser from '../CreateUser/CreateUser.js'
 
 class UserManagement extends Component {
     constructor(props) {
@@ -15,10 +16,10 @@ class UserManagement extends Component {
     }
 
     edit() {
-		UserManagementData.toggleEditable()
-		this.forceUpdate()
+        UserManagementData.toggleEditable()
+        this.forceUpdate()
     }
-    
+
     deleteUser(row) {
         if (confirm("Delete this User?")) {
             Meteor.call('users.deleteUser', row.original.fullUser._id)
@@ -26,46 +27,54 @@ class UserManagement extends Component {
     }
 
     renderUserTable() {
-
+        
         let users = Meteor.users.find({}).fetch()
         let data = new Array();
 
-        for (let i = 0; i < users.length; i++){
+        for (let i = 0; i < users.length; i++) {
+            if (users[i].roles == undefined) {
+                data.push({
+                    username: users[i].username,
+                    permissionLevel: 'admin',
+                    permissionLevelDisplay: UserManagementData.rolesMap.get('admin'),
+                    fullUser: users[i]
+                })
+
+            } else {
             data.push({
                 username: users[i].username,
                 permissionLevel: users[i].roles[0],
                 permissionLevelDisplay: UserManagementData.rolesMap.get(users[i].roles[0]),
                 fullUser: users[i]
-            })
+            })}
         }
-        
+     
         return (
+            
             <ReactTable
                 data={data}
                 columns={UserManagementData.HeaderValues}
-                noDataText="Loading..." 
+                noDataText="Loading..."
                 SubComponent={row => {
 
-                    return UserManagementData.canEdit && row.original.username != 'admin'? (
+                    return UserManagementData.canEdit && row.original.username != 'admin' ? (
                         <div className="container-nav">
                             <ButtonToolbar>
-                            <Button 
-                                bsStyle="danger"
-                                onClick={() => this.deleteUser(row)}
-                            >
-                            Delete User
+                                <Button
+                                    bsStyle="danger"
+                                    onClick={() => this.deleteUser(row)}
+                                >
+                                    Delete User
                             </Button>
                             </ButtonToolbar>
 
                         </div>
 
                     ) : null
-                
-                
-                
                 }}
             />
         )
+    
     }
 
     render() {
@@ -78,43 +87,37 @@ class UserManagement extends Component {
         //admin
         if (Roles.userIsInRole(user, ['admin'])) {
             button = <Button bsStyle="primary"
-            onClick={this.edit.bind(this)}
-            title= "Edit"
+                onClick={this.edit.bind(this)}
+                title="Edit"
             >{buttonText}</Button>
         } else {
             button = <div className="containerNone"></div>
         }
 
-
         return (
-            <div className="container">
-                <header>
-                    <h1>User Management</h1>
-                </header>
-                <UserManagementNavBar/>
+            <div>
                 <p></p>
                 <p><b>Administrator:</b>
-                <br></br>
-                A user with the “administrator permission” has all manager
+                    <br></br>
+                    A user with the “administrator permission” has all manager
                 rights plus the ability to override system rules to directly correct data, input new ingredients
                 and formulas, and perform other core configuration operations.
                 </p>
 
                 <p><b>Manager:</b>
-                <br></br>
-                A user with with the “manager permission” is able to order ingredients and
+                    <br></br>
+                    A user with with the “manager permission” is able to order ingredients and
                 perform production runs.</p>
 
                 <p><b>Unprivileged User:</b>
-                <br></br>
-                A user with neither of the above two permissions. Still able to read
+                    <br></br>
+                    A user with neither of the above two permissions. Still able to read
                 inventory status, read reports, etc.</p>
-                
+
                 <p></p>
-                {button}
+                    {button}
                 <p></p>
 
-                
                 {this.renderUserTable()}
             </div>
         );
@@ -122,10 +125,11 @@ class UserManagement extends Component {
 }
 
 export default withTracker(() => {
-	Meteor.subscribe('users')
-	return {
-		users: Meteor.users.find({}).fetch()
-	};
+    const subscription = Meteor.subscribe('users')
+    return {
+        loading: subscription.ready(),
+        users: Meteor.users.find({}).fetch()
+    };
 })(UserManagement);
 
 

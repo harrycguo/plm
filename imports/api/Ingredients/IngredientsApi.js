@@ -83,7 +83,7 @@ Meteor.methods({
         }
 
         // Storage must be positive no matter what
-        if (Number(numPackages) <= 0){
+        if (Number(numPackages) < 0){
             throw new Meteor.Error('storage must be positive', 'Number of Packages Must Be Greater Than 0');
         }
 
@@ -482,7 +482,9 @@ Meteor.methods({
         Meteor.call('systemlog.insert',
             "Ingredient", existingIng.name, existingIng._id, 
             "Modified - Native Units per Package", newNumNativeUnitsPerPackage);
+    
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
+
 
         //update number of native units per package
         IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.numNativeUnitsPerPackage" : Number(newNumNativeUnitsPerPackage)}});
@@ -508,14 +510,25 @@ Meteor.methods({
         Meteor.call('systemlog.insert',
             "Ingredient", existingIng.name, existingIng._id, 
             "Modified - Total Native Units", newTotalNumNativeUnits);
-        IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.totalQuantity" : Number(newTotalNumNativeUnits)}});
+        
 
         //re-calculate footprint
         let remainingPackages = Math.ceil(Number(newTotalNumNativeUnits) / Number(existingIng.nativeInfo.numNativeUnitsPerPackage))
-        Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
+        
+        let packagingMap = new Map();
+		packagingMap.set('sack', 0.5);
+		packagingMap.set('pail', 1.5);
+		packagingMap.set('drum', 3);
+		packagingMap.set('supersack', 16);
+		packagingMap.set('truckload', 0);
+        packagingMap.set('railcar', 0);
 
+        let newStorage = remainingPackages * packagingMap.get(existingIng.packageInfo.packageType)
+        Meteor.call('editStorage', selectedIngredient, Number(newStorage))
+        Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
         IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.totalQuantity" : Number(newTotalNumNativeUnits)}});
-    },
+
+        },
     'editNativeUnit': function(selectedIngredient, newNativeUnit){
         
         if (!this.userId) {

@@ -13,14 +13,9 @@ class InventoryManagement extends Component {
  
   render() {
     return (
-      <div className="container">
-        <header>
-          <h1>Inventory Management</h1>
-        </header>
-        <InventoryManagementNavBar/>
-        <StorageCapacityWrapper/>
-        <Table hist = {this.props} />
-
+      <div>
+        <StorageCapacityWrapper hist = {this.props.hist}/>
+        <Table hist = {this.props.hist} />
       </div>
     );
   }

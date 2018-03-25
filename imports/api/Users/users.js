@@ -61,23 +61,31 @@ Meteor.methods({
       throw new Meteor.Error('not-authorized', 'not-authorized');
     }
 
-    const user = Accounts.createUser({
-      email: emailAddress,
-      password: password,
-      username: username,
-      profile: {
-        name: {
-          first: firstName,
-          last: lastName,
-          username: username,
+    try {
+      const user = Accounts.createUser({
+        email: emailAddress,
+        password: password,
+        username: username,
+        profile: {
+          name: {
+            first: firstName,
+            last: lastName,
+            username: username,
+          },
         },
-      },
-    });
-    Meteor.call('systemlog.insert',
-      "User", username, Meteor.users.findOne({username: username})._id, 
-        "Added", username);
-
-    Roles.addUsersToRoles(user, [permissionLevel]);
+      });
+      if (user) {
+        console.log('success')
+        Meteor.call('systemlog.insert',
+        "User", username, Meteor.users.findOne({username: username})._id, 
+          "Added", username);
+        Roles.addUsersToRoles(user, [permissionLevel]);
+      }
+    
+    } catch (err) {
+      console.log('fail')
+      return err
+    }
   },
 
 
@@ -97,7 +105,6 @@ Meteor.methods({
 
   'users.deleteUser'(userID) {
     var myUser = Meteor.users.findOne({_id: userID})
-    console.log(myUser)
     Meteor.call('systemlog.insert',"User", myUser.username, "", "Removed", "")
     Meteor.users.remove(userID)
   }

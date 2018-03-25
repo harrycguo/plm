@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { Row, Col, Container, FormGroup, ControlLabel, Button } from 'react-bootstrap';
 
 
@@ -21,7 +21,7 @@ class Vendor extends Component {
     let user = Meteor.user()
 
     if (Roles.userIsInRole(user, ['admin'])) {
-      editButton = <Link to={{
+      editButton = < Link to={{
         pathname: '/editVendor/'+this.props.vendor._id, 
         state: {
           name: this.props.vendor.vendor,

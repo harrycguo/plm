@@ -45,7 +45,9 @@ Meteor.methods({
             Carts.update({ user : Meteor.userId()}, {$push : { ingredients : {
                 ingredient : selectedIngredient._id,
                 numPackages: numPackages,
-                vendorInfo: vendorInfo
+                vendorInfo: vendorInfo,
+                lotsSelected: false,
+                lots: []
             }}});
         }
         Meteor.call('systemlog.insert', "Cart", selectedIngredient.name,  selectedIngredient._id, "Added", "");
@@ -70,7 +72,7 @@ Meteor.methods({
             "Modified - Package Count", 
             numPackages
         );
-        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.numPackages' : numPackages }});
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient }, {$set : { 'ingredients.$.numPackages' : numPackages, lotsSelected: false }});
     },
     'cart.changeVendor': function(selectedIngredient, vendor) {
         //TODO: Implement
@@ -82,7 +84,7 @@ Meteor.methods({
                 vendorInfo = vendorInfoArr[i];
             }
         }
-        console.log(Vendors.find({_id : vendorInfo.vendor}).fetch()[0])
+      
         Meteor.call('systemlog.insert', 
             "Cart", 
             IngredientsList.find({_id:selectedIngredient}).fetch()[0].name,  
@@ -91,6 +93,11 @@ Meteor.methods({
             Vendors.find({_id : vendorInfo.vendor}).fetch()[0].vendor
         );
         Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient}, {$set : { 'ingredients.$.vendorInfo' : vendorInfo }});
+    },
+    'cart.changeLots': function(selectedIngredient, lots){
+       
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient}, {$set : { 'ingredients.$.lots' : lots }});
+        Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient}, {$set : { 'ingredients.$.lotsSelected' : true }});
     },
     'checkoutIngredients': function() { //Allow adding to inentory instead of just remove
         let cart = Carts.find({ user : Meteor.userId()}).fetch()[0];

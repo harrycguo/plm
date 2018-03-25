@@ -14,10 +14,6 @@ class EditCapacities extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        
-        console.log("User = ")
-        console.log(Meteor.user()); 
-                    
       }
 
       componentDidMount() {    
@@ -59,7 +55,7 @@ class EditCapacities extends Component {
     handleSubmit() {
        
         const { history } = this.props;
-        let capacities = this.props.location.state.capacities
+        let capacities = this.props.capacities
 
         let capacitiesMap = new Map()
         let capacitiesIDArray = []
@@ -96,8 +92,12 @@ class EditCapacities extends Component {
     }
 
     render() {
+        console.log('asldkjf')
+        console.log(this.props.capacities)
 
-        let capacities = this.props.location.state.capacities
+
+        let capacities = this.props.capacities
+        
         let capacitiesMap = new Map()
 
         for(let i = 0; i < capacities.length; i++){
@@ -110,17 +110,17 @@ class EditCapacities extends Component {
             if (capacities[i].name == 'Warehouse'){
                 capacitiesMap.set('Warehouse', Number(capacities[i].capacity))
             }
-
         }
         
+        console.log(capacitiesMap)
+
         return (
             
             <div className="container">
                 <header>
                     <h1>Edit Capacities</h1>
                 </header>
-                <InventoryManagementNavBar/>
-
+           
                 <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
 
                 <FormGroup>
@@ -165,6 +165,11 @@ class EditCapacities extends Component {
               <Button type="submit" bsStyle="success">Submit</Button>
 
             </form>
+
+            <p></p>
+            <div className="container-keepLeft">
+                    <Link to='/inventoryManagement'>Return to Inventory Management</Link>
+                </div>
             </div>
         );
  

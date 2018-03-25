@@ -12,15 +12,8 @@ class AddFormula extends Component {
   render() {
     
     return (
-      <div className="container">
-        <header>
-          <h1>Add New Formula</h1>
-        </header>
-        <FormulaManagementNavBar/>
-        <AddFormulaForm hist = {this.props}/>
-        <p></p>
-				<p><Link to='/formulaManagement'>Return to Formula Management</Link></p>
-          
+      <div>
+        <AddFormulaForm hist = {this.props}/>          
       </div>
     );
   }

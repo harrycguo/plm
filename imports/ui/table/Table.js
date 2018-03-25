@@ -8,11 +8,12 @@ import TableData from './TableData.js';
 import ReactTable from 'react-table';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
-import { Button , ButtonToolbar } from 'react-bootstrap';
+import { Button , ButtonToolbar, Glyphicon } from 'react-bootstrap';
 import { Vendors } from '../../api/Vendors/vendors.js';
 import AddVendor from './AddVendor.js';
 import EditVendor from './EditVendor.js';
 import CartApi from '../../api/Cart/CartApi.js';
+import Carts from '../../api/Cart/Cart.js';
 
 class Table extends Component {
 	
@@ -120,9 +121,9 @@ class Table extends Component {
 		history.push('/addingredient')
 	}
 
-	bulkImport(){
+	goToCart(){
 		const { history } = this.props.hist
-		history.push('/bulkImportIngredients')
+		history.push('/cart')
 	}
 
 	renderEditableVendorRows(row) {
@@ -211,11 +212,20 @@ class Table extends Component {
                 );
 		    }}
 		  />
-		  <span>Click on a header to sort that column!</span>
 		  </div>
 		);
 	}
 	render() {
+		let user = Meteor.user()
+        let carts = this.props.carts
+        let cartNum = 0;
+
+        for (let i = 0; i < carts.length; i++){
+            if (carts[i].user == user._id){
+                cartNum = carts[i].ingredients.length
+            }
+		}
+		
 		if (!Meteor.user() || !Roles.userIsInRole(Meteor.user()._id, 'admin')) {
 			if(TableData.canEdit) {
 				TableData.toggleEditable()
@@ -223,10 +233,24 @@ class Table extends Component {
 			}
 			return (
 			<div>
+				<ButtonToolbar>		
+			<Button
+				bsStyle="success"
+				onClick={this.goToCart.bind(this)}
+				title= "Cart"
+				>Go To Cart({cartNum})
+				
+			</Button>
+
+			</ButtonToolbar>
+				<p></p>
 			{this.renderTable(this)}
 		   	</div>
 			);
 		}
+
+		
+
 		return (
 			<div>
 				<ButtonToolbar>
@@ -236,18 +260,15 @@ class Table extends Component {
 				title= "Edit"
 				>{this.editButtonText()}
 			</Button>
+		
 			<Button
 				bsStyle="success"
-				onClick={this.addNewIng.bind(this)}
-				title= "AddIng"
-				>Add New Ingredient
+				onClick={this.goToCart.bind(this)}
+				title= "Cart"
+				>Go To Cart({cartNum})
+				
 			</Button>
-			<Button
-				bsStyle="success"
-				onClick={this.bulkImport.bind(this)}
-				title= "Bulk Import"
-				>Bulk Import Ingredients
-			</Button>
+
 			</ButtonToolbar>
 				<p></p>
 			{this.renderTable(this)}
@@ -287,7 +308,7 @@ class Table extends Component {
 	                        				console.log("something goes wrong with the following error message " + error.reason )
 	               	  						Bert.alert(error.reason, 'danger');
 	                  				} else {
-											Bert.alert('Added ' + qty +' ' + row.original.fullIng.packageInfo.packageType + ' to Cart!', 'success')
+											Bert.alert('Added ' + qty +' ' + row.original.fullIng.packageInfo.packageType + '(s) to Cart!', 'success')
 									}
 								}
 							);
@@ -307,8 +328,10 @@ class Table extends Component {
 export default withTracker(() => {
 	Meteor.subscribe('ingredients')
 	Meteor.subscribe('vendors')
+	Meteor.subscribe('carts');
 	return {
 		ingredients: IngredientsList.find({}).fetch(),
 		vendors: Vendors.find({}).fetch(),
+		carts: Carts.find({}).fetch(),
 	};
 })(Table);

@@ -91,9 +91,7 @@ class EditVendor extends Component {
                 <header>
                     <h1>Edit Vendor</h1>
                 </header>
-                <VendorManagementNavBar/>
-                <p></p>
-
+  
                 <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
             
                 <FormGroup>

@@ -71,7 +71,6 @@ class ViewFormula extends Component {
                 <header>
                     <h1>View Formula</h1>
                 </header>
-                <FormulaManagementNavBar />
                 <h2>{this.props.location.state.formula.name}</h2>
                 <hr className="divider"></hr>
                 <p></p>

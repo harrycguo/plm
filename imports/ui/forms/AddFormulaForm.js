@@ -29,7 +29,8 @@ export class AddFormulaForm extends Component {
     }
 
     componentDidMount() {
-
+        console.log(this)
+        console.log(this.form)
         const component = this;
 
         validate(component.form, {
@@ -109,9 +110,14 @@ export class AddFormulaForm extends Component {
                     Bert.alert(error.reason, 'danger');
                 } else {
                     Bert.alert('Added Formula!', 'success');
-                    history.push('/formulaManagement')
+                    document.getElementById("form").reset();
+                    this.setState({
+                        inputs: [],
+                        ingList: []
+                    })
+                    console.log(this.state)
                 }
-            })
+            }.bind(this))
         
     }
 
@@ -129,7 +135,7 @@ export class AddFormulaForm extends Component {
                 ingredient: null,
                 valid: true,
             } })
-        }));
+        }))
     }
 
     onChangeInput(index, componentToBeUpdated, valid) {
@@ -160,9 +166,9 @@ export class AddFormulaForm extends Component {
     render() {
 
         return (
-            <div className="container">
+            <div>
 
-                <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
+                <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()} id='form'>
             
                     <FormGroup>
                         <ControlLabel>Formula Name</ControlLabel>

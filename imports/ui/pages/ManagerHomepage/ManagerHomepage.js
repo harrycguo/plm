@@ -3,7 +3,6 @@ import { Nav, NavItem, NavDropdown, MenuItem } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
  
-// App component - represents the whole app
 class ManagerHomepage extends Component {
   constructor(props) {
     super(props);

@@ -146,7 +146,7 @@ class ProductionRun extends Component {
     addToCart = () => {
         console.log("adding to cart")
 
-        const { history } = this.props
+        const { history } = this.props.hist;
 
         let ingList = this.state.ingList
         let ingListArray = []
@@ -214,22 +214,27 @@ class ProductionRun extends Component {
                     Bert.alert(error.reason, 'danger')
                 } else {
                     Bert.alert("Successfully Produced Formula!", 'success')
-                    history.push('/formulaManagement')
+                    document.getElementById("form").reset();
+                    document.getElementById("input").value = "";
+                    document.getElementById("select").value = 'undefined';
+                    this.setState({
+                        ingList: [],
+                        minUnits: Number(0),
+                        numUnitsToProduce: Number(0),
+                        stockDifference: null,
+                        notEnough: false
+                    })
                 }
-            })
+            }.bind(this))
 
     }
 
     render() {
 
         return (
-            <div className="container">
-                <header>
-                    <h1>Production Run</h1>
-                </header>
-                <FormulaManagementNavBar />
+            <div>
 
-                <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
+                <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()} id='form'>
 
                     <FormGroup>
                         <ControlLabel>Formula To Make:</ControlLabel>
@@ -239,6 +244,7 @@ class ProductionRun extends Component {
                                 name="formula"
                                 //style={{ width: '100%', height: '100%' }}
                                 onChange={this.setFormulaInfo}
+                                id='select'
                             >
                                 <option disabled selected value='undefined'> -- select a formula -- </option>
                                 {this.renderFormulas()}
@@ -258,6 +264,7 @@ class ProductionRun extends Component {
                             name="numUnitsProduce"
                             placeholder={this.state.minUnits}
                             className="form-control"
+                            id='input'
                         /></p>
                     </FormGroup>
 

@@ -11,8 +11,6 @@ class AddVendor extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        console.log("User = ")
-        console.log(Meteor.user());
       }
 
       componentDidMount() {
@@ -68,7 +66,8 @@ class AddVendor extends Component {
                 Bert.alert(error.reason, 'danger');
               } else {
                 Bert.alert('Added Vendor!', 'success');
-                history.push('/vendorManagement')
+                document.getElementById("form").reset();
+               
               }
             }) 
           
@@ -78,15 +77,10 @@ class AddVendor extends Component {
     render() {
         return (
             
-            <div className="container">
-                <header>
-                    <h1>Add Vendor</h1>
-                </header>
-
-                <VendorManagementNavBar/>
-                <p></p>
+            <div>
+                
           
-                <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
+                <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()} id='form'>
             
                 <FormGroup>
                     <ControlLabel>Vendor Name</ControlLabel>
@@ -122,8 +116,7 @@ class AddVendor extends Component {
 
   
               <Button type="submit" bsStyle="success">Add Vendor</Button>
-              <p></p>
-					    <p><Link to='/vendorManagement'>Return to Vendor Management</Link></p>
+    
 
             </form>
             </div>

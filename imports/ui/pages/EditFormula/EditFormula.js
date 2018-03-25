@@ -216,8 +216,7 @@ class EditFormula extends Component {
                 <header>
                     <h1>Edit Formula: {this.props.location.state.formula.name}</h1>
                 </header>
-                <FormulaManagementNavBar />
-
+      
                 <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
 
                     <FormGroup>

@@ -12,13 +12,8 @@ class AddIngredient extends Component {
   render() {
     
     return (
-      <div className="container">
-        <header>
-          <h1>Add Ingredient</h1>
-        </header>
-        <InventoryManagementNavBar/>
-        <IngredientForm hist = {this.props}/>
-          
+      <div>
+        <IngredientForm hist = {this.props.hist}/>
       </div>
     );
   }

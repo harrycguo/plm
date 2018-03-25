@@ -25,6 +25,11 @@ Meteor.methods({
       throw new Meteor.Error('No ingredients', 'No Ingredients in Formula');
     }
 
+    //product Units must be positive
+    if (productUnits <= 0){
+      throw new Meteor.Error('Product Units must be greater than 0', 'Product Units must be greater than 0')
+    }
+
     //any null entries
     for (let i = 0; i < ingredientsList.length; i++) {
       if (ingredientsList[i].id == null) {

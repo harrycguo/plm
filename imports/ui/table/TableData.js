@@ -49,6 +49,7 @@ function renderEditable(cellInfo) {
 	                   			if(error){
 	                        		console.log("something goes wrong with the following error message " + error.reason )
 	               	  				Bert.alert(error.reason, 'danger');
+									e.target.value = cellInfo.original.qty;
 	                  			}
 							});
 						} else {
@@ -149,7 +150,7 @@ function renderEditableUnits(cellInfo) {
 				<select
 					ref={nativeUnit => (this.nativeUnit = nativeUnit)}
 					name="nativeUnit"
-					placeholder="# of Native Units Per Package"
+					placeholder="Native Unit"
 					defaultValue={defaultValue}
 					onChange={ e => {
 						nativeUnitSwitch.cellInfo = cellInfo;

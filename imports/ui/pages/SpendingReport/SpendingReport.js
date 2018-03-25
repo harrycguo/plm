@@ -39,11 +39,8 @@ class SpendingReport extends Component {
 
 	render() {
 		return (
-			<div className="container" >
-			<header>
-          		<h1>Spending Report</h1>
-        	</header>
-			<InventoryManagementNavBar/>
+			<div >
+
 			<p></p>
        		<ReactTable
 	    		data={this.renderRows(this)}

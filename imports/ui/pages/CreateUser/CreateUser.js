@@ -11,8 +11,6 @@ class CreateUser extends Component {
   constructor(props) {
     super(props);
     this.handleSubmit = this.handleSubmit.bind(this);
-    console.log("User = ")
-    console.log(Meteor.user());
   }
 
   componentDidMount() {
@@ -64,12 +62,18 @@ class CreateUser extends Component {
           required: 'Need to assign a permission Level',
         },
       },
-      submitHandler() { component.handleSubmit(); },
+      submitHandler() { component.handleSubmit(event); },
     });
   }
 
 
-  handleSubmit() {
+  handleSubmit(event) {
+
+    event.preventDefault()
+    
+
+    console.log('handling submit!!!')
+    console.log(this.form)
 
     const { history } = this.props;
 
@@ -85,22 +89,17 @@ class CreateUser extends Component {
             Bert.alert(error.reason, 'danger');
           } else {
             Bert.alert('Created User!', 'success');
-            history.push('/userManagement')
+            document.getElementById("form").reset();
           }
         })
-    
   }
 
   render() {
     return (
 
-      <div className="container">
-        <header>
-          <h1>Create User</h1>
-        </header>
-        <UserManagementNavBar/>
-
-        <form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()}>
+      <div>
+      
+        <form ref={form => (this.form = form)} onSubmit={event => this.handleSubmit(event)} id='form'>
 
           <FormGroup>
             <ControlLabel>First Name</ControlLabel>
@@ -164,10 +163,7 @@ class CreateUser extends Component {
           <Button type="submit" bsStyle="success">Create User</Button>
 
           <p></p>
-				  <p><Link to='/userManagement'>Return to User Management</Link></p>
-
-         
-
+				
         </form>
       </div>
     );
