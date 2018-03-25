@@ -18,7 +18,10 @@ import Cart from '../../ui/pages/Cart/Cart.js'
 
 import FormulaManagementHome from '../../ui/pages/FormulaManagement/FormulaManagementHome.js';
 import EditFormula from '../../ui/pages/EditFormula/EditFormula.js'
+import EditIntermediate from '../../ui/pages/EditIntermediate/EditIntermediate.js'
+import EditIntermediateQuantity from '../../ui/pages/EditIntermediate/EditIntermediateQuantity'
 import ViewFormula from '../../ui/pages/ViewFormula/ViewFormula.js'
+import ViewIntermediate from '../../ui/pages/ViewIntermediate/ViewIntermediate.js'
 
 import VendorManagementHome from '../../ui/pages/VendorManagement/VendorManagementHome.js'
 import EditVendor from '../../ui/pages/EditVendor/EditVendor.js';
@@ -52,7 +55,10 @@ class App extends Component {
           <Authenticated exact path='/formulaManagement' component={FormulaManagementHome} {...props}/>
           <Authenticated exact path='/editFormula/:formulaID' component={EditFormula} {...props}/>
           <Authenticated exact path='/viewFormula/:formulaID' component={ViewFormula} {...props}/> 
-
+          <Authenticated exact path='/editIntermediate/:formulaID' component={EditIntermediate} {...props}/>
+          <Authenticated exact path='/editIntermediateQuantity/:formulaID' component={EditIntermediateQuantity} {...props}/>
+          <Authenticated exact path='/viewIntermediate/:formulaID' component={ViewIntermediate} {...props}/> 
+          
           <Authenticated exact path="/vendorManagement" component={VendorManagementHome} {...props}/>
           <Authenticated exact path="/editVendor/:vendorID" component={EditVendor} {...props}/>
 

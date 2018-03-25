@@ -103,12 +103,22 @@ IntermediateSchema = new SimpleSchema({
     min: 1,
     unique: true 
   },
-  packageInfo: {
-    type: PackageInfoSchema,
+  description: {
+    type: String
+  },
+  productUnits: {
+    type: Number,
+    min: 1
+  },
+  ingredientsList: {
+    type: [IngredientFormulaSchema]
   },
   temperatureState: {
     type: String,
     allowedValues: ['frozen','refrigerated','room temperature']
+  },
+  packageInfo: {
+    type: PackageInfoSchema,
   },
   storage: {
     type: Number,

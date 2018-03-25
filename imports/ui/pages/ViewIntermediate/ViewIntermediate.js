@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Intermediates } from '../../../api/Intermediates/intermediates' 
 
-class ViewFormula extends Component {
+class ViewIntermediate extends Component {
     constructor(props) {
         super(props);
     }
@@ -58,10 +58,6 @@ class ViewFormula extends Component {
         return ingList
     }
 
-
-
-
-
     renderHeaders() {
         return (
             <div>
@@ -81,6 +77,11 @@ class ViewFormula extends Component {
     }
 
     render() {
+        
+        let tempState = this.props.location.state.formula.temperatureState.charAt(0).toUpperCase().concat(this.props.location.state.formula.temperatureState.substr(1))
+        let packaging = this.props.location.state.formula.packageInfo.packageType.charAt(0).toUpperCase().concat(this.props.location.state.formula.packageInfo.packageType.substr(1))
+
+
         return (
             <div className="container">
                 <header>
@@ -92,6 +93,12 @@ class ViewFormula extends Component {
                 <p> <b>Formula Name:</b> {this.props.location.state.formula.name}</p>
                 <p> <b>Description:</b> {this.props.location.state.formula.description}</p>
                 <p> <b>Product Units:</b> {this.props.location.state.formula.productUnits}</p>
+                <p> <b>Temperature State:</b> {tempState}</p>
+                <p> <b>Packaging:</b> {packaging}</p>
+                <p> <b>Number of Native Units Per Package:</b> {this.props.location.state.formula.nativeInfo.numNativeUnitsPerPackage}</p>
+                <p> <b>Total Quantity:</b> {this.props.location.state.formula.nativeInfo.totalQuantity}</p>
+                <p> <b>Native Units:</b> {this.props.location.state.formula.nativeInfo.nativeUnit}</p>
+                <p> <b>Used In Formulas:</b> ***TO BE FILLED OUT***</p>
                 <p></p>
 
                 {this.renderHeaders()}
@@ -113,7 +120,7 @@ export default withTracker(() => {
         ingredients: IngredientsList.find({}).fetch(),
         intermediates: Intermediates.find({}).fetch()
     };
-})(ViewFormula);
+})(ViewIntermediate);
 
 
 

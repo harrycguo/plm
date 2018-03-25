@@ -3,6 +3,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Link, BrowserRouter } from 'react-router-dom'
 import { Bert } from 'meteor/themeteorchef:bert';
 import { Vendors } from '../../api/Vendors/vendors.js';
+import { Intermediates } from '../../api/Intermediates/intermediates.js'
 import { isExistingIngredient } from '../../utils/checks.js';
 import { createContainer } from 'meteor/react-meteor-data'
 import { selectStyle, inputStyle } from './Styles.js';
@@ -33,7 +34,6 @@ export class AddFormulaForm extends Component {
     componentDidMount() {
 
         const component = this;
-        console.log(component)
 
         validate(component.form, {
             rules: {
@@ -169,7 +169,7 @@ export class AddFormulaForm extends Component {
     }
 
     handleSubmitIntermediate() {
-        console.log('creating intermedaite!')
+
         let name = this.formulaInterName.value
         let description = this.formulaInterDescription.value
         let productUnits = this.intermediateProductUnits.value
@@ -203,9 +203,6 @@ export class AddFormulaForm extends Component {
                 }
             }
         }
-
-        console.log('ingListArray')
-        console.log(ingListArray)
 
         Meteor.call("intermediates.insert",
                 name,
@@ -471,7 +468,9 @@ export class AddFormulaForm extends Component {
 
 export default withTracker(() => {
     Meteor.subscribe('vendors');
+    Meteor.subscribe('intermediates')
     return {
         vendors: Vendors.find({}).fetch(),
+        intermediates: Intermediates.find({}).fetch()
     };
 })(AddFormulaForm);

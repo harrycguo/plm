@@ -7,8 +7,9 @@ import validate from '../../modules/validate.js';
 export class CustomNativeUnitsInput extends Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
-			showCustomField: false,
+			showCustomField: this.props.defaultValue == undefined || this.props.defaultValue == 'Pounds' || this.props.defaultValue == 'Gallons' ? false : true
 		};
     }
 
@@ -35,6 +36,8 @@ export class CustomNativeUnitsInput extends Component {
 		let nativeUnit = this.nativeUnit.value
 		if (nativeUnit == 'custom') {
 			this.setState({ showCustomField: true })
+		} else {
+			this.setState({ showCustomField: false })
 		}
     }
     
@@ -44,6 +47,7 @@ export class CustomNativeUnitsInput extends Component {
 							type="text"
 							ref={customNativeUnit => (this.customNativeUnit = customNativeUnit)}
 							name="customNativeUnit"
+							defaultValue={ (this.props.defaultValue != undefined && this.props.defaultValue != 'Pounds' && this.props.defaultValue != 'Gallons') ? this.props.defaultValue : "" }
 							placeholder="Native Unit"
 							className="form-control"
 						/></p>
@@ -61,9 +65,9 @@ export class CustomNativeUnitsInput extends Component {
 							placeholder="# of Native Units Per Package"
 							onChange={this.renderCustomFieldTrigger}
 							className="form-control">
-							<option value="Pounds">Pounds</option>
-							<option value="Gallons">Gallons</option>
-							<option value="custom">Custom...</option>
+							<option value="Pounds" selected={this.props.defaultValue == 'Pounds'}>Pounds</option>
+							<option value="Gallons" selected={this.props.defaultValue == 'Gallons'}>Gallons</option>
+							<option value="custom" selected={this.props.defaultValue != undefined && this.props.defaultValue != 'Pounds' && this.props.defaultValue != 'Gallons'}>Custom...</option>
 						</select></p>
 					</FormGroup>
 

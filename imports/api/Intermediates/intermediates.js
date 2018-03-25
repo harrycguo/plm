@@ -4,6 +4,7 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
 import { Formulas } from '../Formulas/formulas.js'
 import IngredientsList from '../Ingredients/IngredientList.js';
+import { IngredientFormulaSchema, PackageInfoSchema, NativeInfoSchema, VendorInfoSchema, FormulaInfoSchema, SpendingInfoSchema, IntermediateSchema} from '../Ingredients/Schemas.js';
 
 export const Intermediates = new Mongo.Collection('intermediates');
 
@@ -13,15 +14,14 @@ if (Meteor.isClient) {
 
 Meteor.methods({
   'intermediates.insert'(name, description, productUnits, ingredientsList, temperatureState, ingPackage, numPackages, ingStorage, totalNumNativeUnits, nativeUnit, numNativeUnitsPerPackage) {
-    console.log("inseringeinf intermedd")
-
+ 
     // Make sure the user is logged in before inserting a task
     if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('not-authorized', 'not-authorized');
     }
 
     //Formula name must be unique
-    if (Intermediates.find({ name: name.trim() }).count() > 0) {
+    if (Formulas.find({ name: name.trim() }).count() > 0 || Intermediates.find({ name: name.trim() }).count() > 0) {
       throw new Meteor.Error('formula already in system', 'Formula Name Must Be Unique');
     }
 
@@ -30,7 +30,7 @@ Meteor.methods({
       throw new Meteor.Error('Product Units must be greater than 0', 'Product Units must be greater than 0')
     }
 
-    //product Units must be positive
+    //num native units per package must be positive
     if (numNativeUnitsPerPackage <= 0) {
       throw new Meteor.Error('Product Units must be greater than 0', 'Number of Native Units per package must be greater than 0')
     }
@@ -42,7 +42,6 @@ Meteor.methods({
 
     //any null entries
     for (let i = 0; i < ingredientsList.length; i++) {
-      console.log(ingredientsList[i])
       if (ingredientsList[i].id == null) {
         throw new Meteor.Error('Null Entries', 'Null Entries in Ingredient Selection');
       }
@@ -93,6 +92,123 @@ Meteor.methods({
     })
 
   },
+  'intermediates.edit'(id, name, description, productUnits, ingredientsList, temperatureState, packageType, numPackages, ingStorage, totalNumNativeUnits, nativeUnit, numNativeUnitsPerPackage) {
+    console.log('editingggg')
+    // Make sure the user is logged in before inserting a task
+    if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+      throw new Meteor.Error('not-authorized', 'not-authorized');
+    }
+
+    Meteor.call('intermediates.editName', id, name)
+    Meteor.call('intermediates.editDescription', id, description)
+    Meteor.call('intermediates.editProductUnits', id, productUnits)
+    Meteor.call('intermediates.editTemperatureState', id, temperatureState)
+    Meteor.call('intermediates.editPackageType', id, packageType.toLowerCase())
+    Meteor.call('intermediates.editNumNativeUnitsPerPackage', id, numNativeUnitsPerPackage)
+    Meteor.call('intermediates.editNativeUnit', id, nativeUnit)
+  
+  },
+  'intermediates.editName'(id, name){
+    // Make sure the user is logged in before inserting a task
+    if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+      throw new Meteor.Error('not-authorized', 'not-authorized');
+    }
+
+    let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
+
+    console.log(existingFormula)
+
+    //Formula name must be unique
+    if ((Formulas.find({ name: name.trim() }).count() > 0 || Intermediates.find({ name: name.trim() }).count() > 0) && !(existingFormula.name == name)) {
+      throw new Meteor.Error('formula already in system', 'Formula Name Must Be Unique');
+    }
+
+    Intermediates.update({ _id: id }, {
+      $set: {
+        name: name,
+      }
+    });
+  },
+  'intermediates.editDescription'(id, description){
+    Intermediates.update({ _id: id }, {
+      $set: {
+        description: description,
+      }
+    });
+  },
+  'intermediates.editProductUnits'(id, productUnits){
+    //product Units must be positive
+    if (productUnits <= 0){
+      throw new Meteor.Error('Product Units must be greater than 0', 'Product Units must be greater than 0')
+    }
+
+    Intermediates.update({ _id: id }, {
+      $set: {
+        productUnits: productUnits,
+      }
+    });
+  },
+  'intermediates.editTemperatureState'(id, temperatureState){
+       
+        //moving temperature states would change quantities
+     
+        check(temperatureState, String);
+    
+        Intermediates.update({ _id: id }, {
+          $set: {
+            temperatureState: temperatureState,
+          }
+        });
+  },
+  'intermediates.editPackageType'(id, packageType){
+
+    check(packageType, String);
+
+    Intermediates.update({ _id: id }, {
+      $set: {
+        'packageInfo.packageType': packageType,
+      }
+    });
+
+  },
+  'intermediates.editNumNativeUnitsPerPackage'(id, numNativeUnitsPerPackage){
+    
+    //num native units per package must be positive
+    if (numNativeUnitsPerPackage <= 0) {
+      throw new Meteor.Error('Product Units must be greater than 0', 'Number of Native Units per package must be greater than 0')
+    }
+
+    Intermediates.update({ _id: id }, {
+      $set: {
+        'nativeInfo.numNativeUnitsPerPackage': numNativeUnitsPerPackage,
+      }
+    });
+    
+  },
+  'intermediates.editNativeUnit'(id, nativeUnit){
+    Intermediates.update({ _id: id }, {
+      $set: {
+        'nativeInfo.nativeUnit': nativeUnit,
+      }
+    });
+  },
+
+
+
+
+
+
+
+
+  'intermediates.remove'(intermediateID){
+
+    //check to see if in other formulas
+    //detach all ingredients associated with it
+
+    Meteor.call('production.remove', intermediateID)
+    Intermediates.remove(intermediateID)
+  },
+
 
 
 
