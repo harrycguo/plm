@@ -8,6 +8,7 @@ import { Formulas } from '../Formulas/formulas.js'
 
 if (Meteor.isClient) {
     Meteor.subscribe('storageCapacities'); 
+    Meteor.subscribe('lots');
 }
 
 //IngredientsList API suhhhhhhhhh

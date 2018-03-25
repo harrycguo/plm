@@ -1,13 +1,17 @@
 import { Mongo } from 'meteor/mongo';
+import { Meteor } from 'meteor/meteor';
 import Carts from './Cart.js';
 import IngredientsList from '../Ingredients/IngredientList.js';
+import Lots from '../Lots/Lots.js'
 import '../Ingredients/IngredientsApi.js';
+import '../Lots/LotsApi.js';
 import { Vendors } from '../Vendors/vendors.js';
 import { containsVendor, indexOfVendorWithId, isInt, checkUndefined, checkIngExists, checkGreaterThanZero, cartContainsIng, cartExists, addToCartCheck, checkCartExists } from '../../utils/checks.js';
 import { StorageCapacities } from '../StorageCapacities/storageCapacities';
 
 if(Meteor.isClient) {
     Meteor.subscribe('ingredients');
+    Meteor.subscribe('lots');
 }
 
 //Cart api
@@ -162,6 +166,10 @@ Meteor.methods({
             newAmount = ing.nativeInfo.totalQuantity + ingCartInfo.numPackages * ing.nativeInfo.numNativeUnitsPerPackage;
             Meteor.call('editTotalNumNativeUnits',ingCartInfo.ingredient,Number(newAmount));
             Meteor.call('ingredients.updateTotalSpending',ingCartInfo.ingredient,ingCartInfo.vendorInfo.vendor,ingCartInfo.numPackages)
+            ingCartInfo.lots.forEach(function(lotInfo) {
+                console.log("Lot number: "+lotInfo.lotNumber)
+                Meteor.call('lots.add',ingCartInfo.ingredient, lotInfo.lotStuff * ing.nativeInfo.numNativeUnitsPerPackage, lotInfo.lotNumber, ingCartInfo.vendorInfo.vendor, ingCartInfo.vendorInfo.price, new Date())
+            })
         });
         Meteor.call('systemlog.insert', "Cart", "Checked Out",  null, "Event", "");
         Carts.update({ user : Meteor.userId()}, {$set : {ingredients : []}});

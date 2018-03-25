@@ -313,7 +313,7 @@ LotIngredientSchema = new SimpleSchema({
     decimal: true
   },
   time: {
-    type: String,
+    type: Date,
     min: 1
   }
 })
