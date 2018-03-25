@@ -21,37 +21,6 @@ class CartItem extends Component {
 			lotFields: []
 		};
 	}
-
-	componentDidMount() {
-
-		const component = this;
-
-		validate(component.form, {
-			rules: {
-				numberOfPackages: {
-					required: true,
-					number: true
-				},
-				vendor: {
-					required: true,
-
-				},
-			},
-			messages: {
-				numberOfPackages: {
-					required: 'Specify Number Of Packages To Order',
-					number: 'Must be a number',
-				},
-				vendor: {
-					required: 'Specify A Vendor',
-
-				},
-
-			},
-			submitHandler() { component.handleSubmitModal(); },
-		});
-	}
-
 	componentWillMount() {
 		let lots = this.props.ingredient.fullIng.lots
 		let startingArray = new Array()
@@ -124,6 +93,40 @@ class CartItem extends Component {
 		})
 	}
 
+	//doesn't work but doesn't do anything
+	componentDidUpdate(nextProps, nextState){
+		
+		const component = this;
+
+			validate(component.form, {
+				rules: {
+					numberOfPackages: {
+						required: true,
+						number: true
+					},
+					vendor: {
+						required: true,
+
+					},
+				},
+				messages: {
+					numberOfPackages: {
+						required: 'Specify Number Of Packages To Order',
+						number: 'Must be a number',
+					},
+					vendor: {
+						required: 'Specify A Vendor',
+
+					},
+
+				},
+				submitHandler() { 
+					console.log('sdflj')
+					component.handleSubmitModal(); },
+			})
+		 
+	}
+
 	handleClose() {
 		this.setState({ show: false });
 	}
@@ -136,7 +139,7 @@ class CartItem extends Component {
 
 		let ingredient = this.props.ingredient
 		let numPackages = this.numberOfPackages.value
-
+		
 		if (numPackages % 1 === 0) {
 
 			let lotsArray = new Array()
@@ -155,6 +158,13 @@ class CartItem extends Component {
 					lotErrorReason = 'Null entries when defining Lots'
 					break
 				} 
+
+				//lot number not integer
+				else if (lot % 1 !== 0) {
+					lotError = true
+					lotErrorReason = 'Lot number(s) not integer'
+					break
+				}
 
 				//if negative values
 				else if (lot <= 0 || lotStuff <= 0) {

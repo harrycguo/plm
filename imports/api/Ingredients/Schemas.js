@@ -69,6 +69,71 @@ SpendingInfoSchema = new SimpleSchema({
   }
 })
 
+IngredientFormulaSchema = new SimpleSchema({
+  id: {
+    type: String
+  },
+  amount: {
+    type: Number,
+    min: 1
+  }
+})
+
+FormulaSchema = new SimpleSchema({
+  name: {
+    type: String,
+    min: 1,
+    unique: true 
+  },
+  description: {
+    type: String
+  },
+  productUnits: {
+    type: Number,
+    min: 1
+  },
+  ingredientsList: {
+    type: [IngredientFormulaSchema]
+  }
+})
+
+IntermediateSchema = new SimpleSchema({
+  name: {
+    type: String,
+    min: 1,
+    unique: true 
+  },
+  description: {
+    type: String
+  },
+  productUnits: {
+    type: Number,
+    min: 1
+  },
+  ingredientsList: {
+    type: [IngredientFormulaSchema]
+  },
+  temperatureState: {
+    type: String,
+    allowedValues: ['frozen','refrigerated','room temperature']
+  },
+  packageInfo: {
+    type: PackageInfoSchema,
+  },
+  storage: {
+    type: Number,
+    min: 0,
+    decimal: true
+  },
+  nativeInfo: {
+    type: NativeInfoSchema
+  },
+  formulaInfo: {
+    type: [String],
+    optional: true
+  },
+});
+
 //Specifies ingredient field type constraints
 IngredientSchema = new SimpleSchema({
   name: {

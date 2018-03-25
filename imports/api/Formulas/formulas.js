@@ -4,6 +4,7 @@ import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import IngredientsList from '../Ingredients/IngredientList.js';
 import ProductionReport from '../ProductionReport/ProductionReport.js';
+import { Intermediates } from '../Intermediates/intermediates'
 
 export const Formulas = new Mongo.Collection('formulas');
 
@@ -16,7 +17,7 @@ Meteor.methods({
     }
 
     //Formula name must be unique
-    if (Formulas.find({ name: name.trim() }).count() > 0) {
+    if (Formulas.find({ name: name.trim() }).count() > 0 || Intermediates.find({ name: name.trim() }).count() > 0) {
       throw new Meteor.Error('formula already in system', 'Formula Name Must Be Unique');
     }
 
@@ -110,12 +111,16 @@ Meteor.methods({
       throw new Meteor.Error('not-authorized', 'not-authorized');
     }
 
-    let existingFormula = Formulas.findOne({ _id: id })
-    //console.log(existingFormula)
+    let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
 
     //Formula name must be unique
-    if (Formulas.find({ name: name.trim() }).count() > 0 && !(existingFormula.name == name)) {
+    if ( (Formulas.find({ name: name.trim() }).count() > 0 || Intermediates.find({ name: name.trim() }).count() > 0) && !(existingFormula.name == name)) {
       throw new Meteor.Error('formula already in system', 'Formula Name Must Be Unique');
+    }
+
+    //product Units must be positive
+    if (productUnits <= 0){
+      throw new Meteor.Error('Product Units must be greater than 0', 'Product Units must be greater than 0')
     }
 
     //no ingredients check
@@ -158,6 +163,8 @@ Meteor.methods({
         })
       }  
     }
+
+
 
     var oldFormula = Formulas.findOne({_id: id})
     Meteor.call('systemlog.insert', "Formula", oldFormula.name, id, "Modified - Name", name)

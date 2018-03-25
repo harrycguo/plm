@@ -130,7 +130,6 @@ Meteor.methods({
         for (let i = 0; i < ings.length; i++){
             let existingIng = IngredientsList.findOne({ _id: ings[i].ingredient })
           
-            
             let packageType = existingIng.packageInfo.packageType
         
             let numPackages = ings[i].numPackages
@@ -151,6 +150,13 @@ Meteor.methods({
 
         //This is where the magic happens
         var diff;
+
+        ings.forEach( (ing) => {
+            if (!ing.lotsSelected){
+                throw new Meteor.Error('not all lots selected', 'Not all Lots have been selected')
+            }
+        })
+
         ings.forEach(function(ingCartInfo){
             var ing = IngredientsList.find({ _id : ingCartInfo.ingredient}).fetch()[0]
             newAmount = ing.nativeInfo.totalQuantity + ingCartInfo.numPackages * ing.nativeInfo.numNativeUnitsPerPackage;

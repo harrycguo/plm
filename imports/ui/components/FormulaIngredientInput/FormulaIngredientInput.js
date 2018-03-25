@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import IngredientSelect from '../../forms/IngredientSelect.js'
 import { Row, Col, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import { Intermediates } from '../../../api/Intermediates/intermediates'
 
 class FormulaIngredientInput extends Component {
 
@@ -18,11 +19,20 @@ class FormulaIngredientInput extends Component {
 
     renderOptions() {
         let items = [];
+        let j = 0
         for (i = 0; i < this.props.ingredients.length; i++) {
-            items.push(<option key={i} value={this.props.ingredients[i]._id}>{this.props.ingredients[i].name}</option>);
+            items.push(<option key={j} value={this.props.ingredients[i]._id}>{this.props.ingredients[i].name}</option>);
+            j++
+        }
+        items.push(<option disabled value> -- select an intermediate -- </option>)
+        for (i = 0; i < this.props.intermediates.length; i++) {
+            items.push(<option key={j} value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);
+            j++
         }
         return items;
     }
+
+
 
     setIngredientInfo = (event, key) => {
 
@@ -31,6 +41,12 @@ class FormulaIngredientInput extends Component {
         for (i = 0; i < this.props.ingredients.length; i++) {
             if (this.ingredient.value == this.props.ingredients[i]._id) {
                 existingIng = this.props.ingredients[i]
+            }
+        }
+
+        for (i = 0; i < this.props.intermediates.length; i++) {
+            if (this.ingredient.value == this.props.intermediates[i]._id) {
+                existingIng = this.props.intermediates[i]
             }
         }
 
@@ -78,6 +94,8 @@ class FormulaIngredientInput extends Component {
                     >
                         <option disabled selected value> -- select an ingredient -- </option>
                         {this.renderOptions()}
+                        
+                     
                     </select>
                 </div>
 
@@ -115,7 +133,9 @@ class FormulaIngredientInput extends Component {
 
 export default withTracker(() => {
     Meteor.subscribe('ingredients');
+    Meteor.subscribe('intermediates')
     return {
-        ingredients: IngredientsList.find({}).fetch()
+        ingredients: IngredientsList.find({}).fetch(),
+        intermediates: Intermediates.find({}).fetch()
     };
 })(FormulaIngredientInput);

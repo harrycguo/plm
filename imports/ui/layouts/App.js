@@ -14,7 +14,6 @@ import Index from '../../ui/pages/Index/Index.js'
 import CreateUser from '../../ui/pages/CreateUser/CreateUser.js'
 import AddVendor from '../../ui/pages/AddVendor/AddVendor.js'
 import EditVendor from '../../ui/pages/EditVendor/EditVendor.js';
-import EditCapacity from '../../ui/pages/EditCapacity/EditCapacity.js'
 import EditCapacities from '../../ui/pages/EditCapacities/EditCapacities.js'
 import VendorManagement from '../../ui/pages/VendorManagement/VendorManagement.js'
 import IngredientForm from '../../ui/forms/IngredientForm.js'
@@ -67,7 +66,6 @@ class App extends Component {
         <Authenticated exact path="/vendorManagement" component={VendorManagement}/>
         <Authenticated exact path="/addVendor" component={AddVendor}/>
         <Authenticated exact path="/editVendor/:vendorID" component={EditVendor}/>
-        <Authenticated exact path="/editCapacity/:capacityID" component={EditCapacity}/>
         <Authenticated exact path="/editCapacities" component={EditCapacities}/>
         <Authenticated exact path="/successLoginUser" component={Table}/>
         <Authenticated exact path="/bulkImportIngredients" component={BulkImportIngredients}/>

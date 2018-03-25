@@ -45,7 +45,7 @@ class ProductionReportPage extends Component {
       reportRows.push({
         formulaName: formulaNameMap.get(formula.formula),
         numUnitsProduced: formula.totalProduced,
-        totalSpending: formula.totalSpent,
+        totalSpending: Number(formula.totalSpent).toFixed(2),
       })
     });
     return reportRows;
