@@ -93,7 +93,7 @@ Meteor.methods({
 
   },
   'intermediates.edit'(id, name, description, productUnits, ingredientsList, temperatureState, packageType, numPackages, ingStorage, totalNumNativeUnits, nativeUnit, numNativeUnitsPerPackage) {
-    console.log('editingggg')
+
     // Make sure the user is logged in before inserting a task
     if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('not-authorized', 'not-authorized');
@@ -115,8 +115,6 @@ Meteor.methods({
     }
 
     let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
-
-    console.log(existingFormula)
 
     //Formula name must be unique
     if ((Formulas.find({ name: name.trim() }).count() > 0 || Intermediates.find({ name: name.trim() }).count() > 0) && !(existingFormula.name == name)) {

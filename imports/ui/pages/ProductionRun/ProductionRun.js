@@ -7,8 +7,8 @@ import validate from '../../../modules/validate';
 import FormulaManagementNavBar from '../../components/FormulaManagementNavBar/FormulaManagementNavBar.js'
 import ProductionRunItem from '../../components/ProductionRunItem/ProductionRunItem.js'
 import { Vendors } from '../../../api/Vendors/vendors.js'
+import { Intermediates } from '../../../api/Intermediates/intermediates.js';
 
-// App component - represents the whole app
 class ProductionRun extends Component {
     constructor(props) {
         super(props);
@@ -53,9 +53,18 @@ class ProductionRun extends Component {
 
     renderFormulas() {
         let items = [];
-        for (i = 0; i < this.props.formulas.length; i++) {
-            items.push(<option key={i} value={this.props.formulas[i]._id}>{this.props.formulas[i].name}</option>);
+        items.push(<option key={-1} disabled selected value='undefined'> -- select a formula -- </option>)
+        j = 0
+        for (let i = 0; i < this.props.formulas.length; i++) {
+            items.push(<option key={j} value={this.props.formulas[i]._id}>{this.props.formulas[i].name}</option>);
+            j++
         }
+        items.push(<option key={-2} disabled value> -- select an intermediate -- </option>)
+        for (i = 0; i < this.props.intermediates.length; i++) {
+            items.push(<option key={j} value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);
+            j++
+        }
+
         return items;
     }
 
@@ -104,6 +113,12 @@ class ProductionRun extends Component {
                 }
             }
 
+            for (let i = 0; i < this.props.intermediates.length; i++) {
+                if (formulaID == this.props.intermediates[i]._id) {
+                    formula = this.props.intermediates[i]
+                }
+            }
+
             let stockDifference = []
             let ingList = []
             let unitsMultiplier = formula != null ? Number(numUnitsProduce) / Number(formula.productUnits) : 0
@@ -122,6 +137,8 @@ class ProductionRun extends Component {
                 })
 
             }
+
+            console.log(stockDifference)
 
             this.setState({
                 ingList: ingList,
@@ -246,7 +263,6 @@ class ProductionRun extends Component {
                                 onChange={this.setFormulaInfo}
                                 id='select'
                             >
-                                <option disabled selected value='undefined'> -- select a formula -- </option>
                                 {this.renderFormulas()}
                             </select></p>
                     </FormGroup>
@@ -305,9 +321,11 @@ class ProductionRun extends Component {
 export default withTracker(() => {
     Meteor.subscribe('formulas');
     Meteor.subscribe('vendors');
+    Meteor.subscribe('intermediates')
     return {
         formulas: Formulas.find({}).fetch(),
         vendors: Vendors.find({}).fetch(),
+        intermediates: Intermediates.find({}).fetch(),
     };
 })(ProductionRun);
 

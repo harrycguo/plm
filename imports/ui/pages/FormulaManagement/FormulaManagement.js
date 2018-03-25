@@ -80,8 +80,8 @@ onChangeRadio(){
       <p></p>
       <ButtonToolbar>
           <ToggleButtonGroup type="radio" name="options" ref={radio => (this.radio) = radio} defaultValue={1} onChange={this.onChangeRadio.bind(this)}>
-              <ToggleButton value={1}>Final Product</ToggleButton>
-              <ToggleButton value={2}>Intermediate</ToggleButton>
+              <ToggleButton value={1}>Final Products</ToggleButton>
+              <ToggleButton value={2}>Intermediates</ToggleButton>
           </ToggleButtonGroup>
       </ButtonToolbar>
       <p></p>

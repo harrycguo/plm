@@ -112,7 +112,6 @@ class EditIntermediate extends Component {
 
         for (let i = 0; i < ingList.length; i++) {
 
-            console.log(ingList[i].ingredient.ingredient)
             let objIng = ingList[i].ingredient.ingredient
         
             if (ingList[i].ingredient.valid) {
@@ -139,9 +138,6 @@ class EditIntermediate extends Component {
                 }
             }
         }
-
-        console.log('ingListArray')
-        console.log(ingListArray)
 
         Meteor.call('intermediates.edit',
             this.props.location.state.formula._id,

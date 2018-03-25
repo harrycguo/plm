@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Link } from 'react-router-dom'
 import { Row, Col, Container, FormGroup, ControlLabel, Button } from 'react-bootstrap';
+import { Intermediates } from '../../../api/Intermediates/intermediates'
 
 class ProductionRunItem extends Component {
   constructor(props) {
@@ -24,6 +25,22 @@ componentWillMount() {
             });
         }
     }
+    
+    for (i = 0; i < this.props.intermediates.length; i++) {
+      if (this.props.intermediates[i]._id == this.props.ingredient.id) {
+
+        let usage = Number(this.props.ingredient.amount) * Number(this.props.unitsMultiplier)
+        let newStock = Number(this.props.intermediates[i].nativeInfo.totalQuantity) - usage
+
+        this.setState({
+            ingredientName: this.props.intermediates[i].name,
+            amountToBeUsed: usage,
+            currenStock: Number(this.props.intermediates[i].nativeInfo.totalQuantity),
+            stockAfterProduction: newStock,
+            notEnough: newStock < 0 ? true: false
+        });
+      }
+    }
 
     this.props.onChange(this.props.index, this)
 }
@@ -43,6 +60,22 @@ componentWillReceiveProps(nextProps){
               stockAfterProduction: newStock,
               notEnough: newStock < 0 ? true: false
           });
+      }
+    }
+
+    for (i = 0; i < this.props.intermediates.length; i++) {
+      if (nextProps.intermediates[i]._id == this.props.ingredient.id) {
+
+        let usage = Number(nextProps.ingredient.amount) * Number(nextProps.unitsMultiplier)
+        let newStock = Number(nextProps.intermediates[i].nativeInfo.totalQuantity) - usage
+
+        this.setState({
+            ingredientName: nextProps.intermediates[i].name,
+            amountToBeUsed: usage,
+            currenStock: Number(nextProps.intermediates[i].nativeInfo.totalQuantity),
+            stockAfterProduction: newStock,
+            notEnough: newStock < 0 ? true: false
+        });
       }
     }
 
@@ -87,7 +120,9 @@ componentWillReceiveProps(nextProps){
 
 export default withTracker(() => {
   Meteor.subscribe('ingredients');
+  Meteor.subscribe('intermediates')
   return {
-      ingredients: IngredientsList.find({}).fetch()
+      ingredients: IngredientsList.find({}).fetch(),
+      intermediates: Intermediates.find({}).fetch()
   };
 })(ProductionRunItem);
