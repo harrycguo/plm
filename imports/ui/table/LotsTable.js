@@ -29,7 +29,7 @@ class LotsTable extends Component {
 	renderRows(ingredient, vendors) {
 		var lotsList = new Array()
 		console.log(ingredient._id)
-		var lot = Lots.find({ingID: ingredient._id}).fetch()[0]
+		var lot = Lots.find({inventoryID: ingredient._id}).fetch()[0]
 		console.log(lot)
 		if(lot) {
 			lot.queue.forEach(function(lot) {

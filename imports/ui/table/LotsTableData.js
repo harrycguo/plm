@@ -51,17 +51,88 @@ function renderEditableVendor(cellInfo) {
 	}
 }
 
-function renderEditable(cellInfo){
-	return(
-		<div 
-			style = {{ backgroundColor: "#ffffff" }}
+function renderEditable(cellInfo) {
+	if(TableData.canEdit) {
+		return(<input 
+			type="text" 
+			defaultValue={cellInfo.value}
+			onChange = {e=> {
+				boxLocked = false
+			}}
+			onBlur = {e => {
+				console.log(cellInfo)
+				if(!boxLocked) {
+				e.persist()
+				if(cellInfo.column.id === 'num'){	
+					var message = "Edit Lot Number\nFrom "
+					message = message.concat(cellInfo.original.num).concat(" to ").concat(e.target.value);
+					boxLocked = true;
+					console.log(boxLocked)
+					if(confirm(message)) {
+						Meteor.call('lots.editLotNumber', 
+							cellInfo.original.ingredient._id,
+							cellInfo.original.num, 
+							e.target.value,
+							new Date(cellInfo.original.time),
+							function(error,result){
+	                   			if(error){
+	                        		console.log("something goes wrong with the following error message " + error.reason )
+	               	  				Bert.alert(error.reason, 'danger');
+									e.target.value = cellInfo.original.name;
+								}
+							}
+						);
+					} else {
+						e.target.value = cellInfo.original.num;
+					}
+				} else if (cellInfo.column.id === 'qty') {
+					var message = "Edit Quantity\nFrom "
+					message = message.concat(cellInfo.original.qty).concat(" to ").concat(e.target.value);
+					boxLocked = true;
+					if(confirm(message)) {
+						var entry = parseInt(e.target.value)
+						if(entry >= 0) {
+							Meteor.call('lots.editLotQty', 
+								cellInfo.original.ingredient._id, 
+								cellInfo.original.num,
+								e.target.value,
+								new Date(cellInfo.original.time),
+								function(error,result){
+	                   			if(error){
+	                        		console.log("something goes wrong with the following error message " + error.reason )
+	               	  				Bert.alert(error.reason, 'danger');
+									e.target.value = cellInfo.original.qty;
+	                  			}
+							});
+						} else {
+							Bert.alert('Must be greater than or equal to zero', 'danger');
+							e.target.value = cellInfo.original.qty;
+						}
+					} else {
+						e.target.value = cellInfo.original.qty;
+					}
+				}
+				} else {
+					boxLocked = false;
+					if(cellInfo.column.id === 'name'){	
+						e.target.value = cellInfo.original.name;
+					} else if (cellInfo.column.id === 'qty') {
+						e.target.value = cellInfo.original.qty;
+					} else if (cellInfo.column.id === 'numNativeUnitsPerPackage') {
+						e.target.value = cellInfo.original.numNativeUnitsPerPackage;
+					}
+				}
+			}}
+			/>); 
+
+	} else {
+		return(<div style = {{ backgroundColor: "#ffffff" }}
 			dangerouslySetInnerHTML={{
 				__html: cellInfo.value
 			}}
-		/>
-	);
+		/>);
+	}
 }
-
 export const HeaderValues = [
 	{
 		Header: 'Lot Number',
