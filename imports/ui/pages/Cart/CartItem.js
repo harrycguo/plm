@@ -93,7 +93,6 @@ class CartItem extends Component {
 		})
 	}
 
-	//doesn't work but doesn't do anything
 	componentDidUpdate(nextProps, nextState){
 		
 		const component = this;
@@ -395,7 +394,7 @@ class CartItem extends Component {
 								type="number"
 								step="1"
 								name="numberOfPackages"
-								placeholder="Enter Formula Name"
+								placeholder="Enter # of Packages"
 								ref={numberOfPackages => (this.numberOfPackages = numberOfPackages)}
 								defaultValue={ingredient.amt}
 								className="form-control"

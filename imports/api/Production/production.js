@@ -3,10 +3,11 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import IngredientsList from '../Ingredients/IngredientList.js'
-import { Formulas } from '../Formulas/formulas.js'
+import  Formulas  from '../Formulas/formulas.js'
 import { Intermediates } from '../Intermediates/intermediates.js'
 import '../ProductionReport/ProductionReportApi.js';
 import ProductionReport from '../ProductionReport/ProductionReport.js'
+import { LotNumberSystem } from '../../api/Lots/LotNumberSystem'
 
 Meteor.methods({
     'production.produce'(formulaID, numUnitsProduce, ingList) {
@@ -32,25 +33,45 @@ Meteor.methods({
             }
         }
 
+        if (intermediate != undefined){
+            let newTotal = numUnitsProduce + intermediate.nativeInfo.totalQuantity
+            Meteor.call('intermediates.editTotalNumNativeUnits', formulaID, newTotal)
+        } else {
+            Formulas.update({_id: formulaID}, {$inc: { quantity: numUnitsProduce}})
+        }
+        
         //Consume!!!
         for (let i = 0; i < ingList.length; i++) {
-            Meteor.call('editTotalNumNativeUnits', ingList[i].ingredient, ingList[i].newStock)
+            let ing = IngredientsList.findOne({_id: ingList[i].ingredient})
+            let int = Intermediates.findOne({_id: ingList[i].ingredient})
+            
+            if (ing != undefined){
+                Meteor.call('editTotalNumNativeUnits', ingList[i].ingredient, ingList[i].newStock)
+            } else {
+                Meteor.call('intermediates.editTotalNumNativeUnits', ingList[i].ingredient, ingList[i].newStock)
+            }
+
             var numNativeUnitsPerProductUnit = 0
             var formulaProductUnits = 0
-            for (var j = 0; j < formula.ingredientsList.length; j++) {
-                if (formula.ingredientsList[i].id == ingList[i].ingredient) {
-                    numNativeUnitsPerProductUnit = formula.ingredientsList[i].amount
-                    formulaProductUnits = formula.productUnits
+            for (var j = 0; j < item.ingredientsList.length; j++) {
+                if (item.ingredientsList[i].id == ingList[i].ingredient) {
+                    numNativeUnitsPerProductUnit = item.ingredientsList[i].amount
+                    formulaProductUnits = item.productUnits
                     break
                 }
             }
             var totalIngProdAmt = (numUnitsProduce * numNativeUnitsPerProductUnit)/formulaProductUnits
-            Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, totalIngProdAmt)
+            
+            if (ing != undefined) { Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, totalIngProdAmt) }
+            
             Meteor.call('lots.remove', ingList[i].ingredient, totalIngProdAmt)
+
         }
-        
+
+        let lotNumber = LotNumberSystem.findOne({name: 'system'})
+        Meteor.call('lots.addFormula', item._id, numUnitsProduce, lotNumber.lotNumber, new Date())
         Meteor.call('systemlog.insert',"Production", "Produced", null, "Event", "");
-        Meteor.call('production.log',formulaID,numUnitsProduce)
+        //Meteor.call('production.log',formulaID,numUnitsProduce)
     },
     'production.addToCart'(ingList) {
         if (! this.userId || !Roles.userIsInRole(this.userId, ['admin', 'manager'])) {

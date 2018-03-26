@@ -94,6 +94,10 @@ FormulaSchema = new SimpleSchema({
   },
   ingredientsList: {
     type: [IngredientFormulaSchema]
+  },
+  quantity: {
+    type: Number,
+
   }
 })
 
@@ -306,11 +310,13 @@ LotIngredientSchema = new SimpleSchema({
   },
   vendor: {
     type: String,
-    min: 1
+    min: 1,
+    optional: true
   },
   price: {
     type: Number,
-    decimal: true
+    decimal: true,
+    optional: true
   },
   time: {
     type: Date,
@@ -319,7 +325,7 @@ LotIngredientSchema = new SimpleSchema({
 })
 
 LotsSchema = new SimpleSchema({
-  ingID: {
+  inventoryID: {
     type: String,
     min: 1
   },

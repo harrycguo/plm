@@ -54,6 +54,7 @@ Meteor.methods({
                 lots: []
             }}});
         }
+       
         Meteor.call('systemlog.insert', "Cart", selectedIngredient.name,  selectedIngredient._id, "Added", "");
     },
     'removeIngredientFromCart': function(selectedIngredient) {
@@ -163,8 +164,8 @@ Meteor.methods({
 
         ings.forEach(function(ingCartInfo){
             var ing = IngredientsList.find({ _id : ingCartInfo.ingredient}).fetch()[0]
-            newAmount = ing.nativeInfo.totalQuantity + ingCartInfo.numPackages * ing.nativeInfo.numNativeUnitsPerPackage;
-            Meteor.call('editTotalNumNativeUnits',ingCartInfo.ingredient,Number(newAmount));
+            // newAmount = ing.nativeInfo.totalQuantity + ingCartInfo.numPackages * ing.nativeInfo.numNativeUnitsPerPackage;
+            // Meteor.call('editTotalNumNativeUnits',ingCartInfo.ingredient,Number(newAmount));
             Meteor.call('ingredients.updateTotalSpending',ingCartInfo.ingredient,ingCartInfo.vendorInfo.vendor,ingCartInfo.numPackages)
             ingCartInfo.lots.forEach(function(lotInfo) {
                 console.log("Lot number: "+lotInfo.lotNumber)
