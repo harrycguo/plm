@@ -32,23 +32,39 @@ Meteor.methods({
             }
         }
 
-        //Consume!!!
-        for (let i = 0; i < ingList.length; i++) {
-            Meteor.call('editTotalNumNativeUnits', ingList[i].ingredient, ingList[i].newStock)
-            var numNativeUnitsPerProductUnit = 0
-            var formulaProductUnits = 0
-            for (var j = 0; j < formula.ingredientsList.length; j++) {
-                if (formula.ingredientsList[i].id == ingList[i].ingredient) {
-                    numNativeUnitsPerProductUnit = formula.ingredientsList[i].amount
-                    formulaProductUnits = formula.productUnits
-                    break
-                }
-            }
-            var totalIngProdAmt = (numUnitsProduce * numNativeUnitsPerProductUnit)/formulaProductUnits
-            Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, totalIngProdAmt)
-            Meteor.call('lots.remove', ingList[i].ingredient, totalIngProdAmt)
+        console.log(ingList)
+
+        if (intermediate != undefined){
+            let newTotal = numUnitsProduce + intermediate.nativeInfo.totalQuantity
+            Meteor.call('intermediates.editTotalNumNativeUnits', formulaID, newTotal)
         }
         
+        //Consume!!!
+        for (let i = 0; i < ingList.length; i++) {
+            let ing = IngredientsList.findOne({_id: ingList[i].ingredient})
+            let int = Intermediates.findOne({_id: ingList[i].ingredient})
+            
+            if (ing != undefined){
+                Meteor.call('editTotalNumNativeUnits', ingList[i].ingredient, ingList[i].newStock)
+
+                var numNativeUnitsPerProductUnit = 0
+                var formulaProductUnits = 0
+                for (var j = 0; j < item.ingredientsList.length; j++) {
+                    if (item.ingredientsList[i].id == ingList[i].ingredient) {
+                        numNativeUnitsPerProductUnit = item.ingredientsList[i].amount
+                        formulaProductUnits = item.productUnits
+                        break
+                    }
+                }
+                var totalIngProdAmt = (numUnitsProduce * numNativeUnitsPerProductUnit)/formulaProductUnits
+                Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, totalIngProdAmt)
+                Meteor.call('lots.remove', ingList[i].ingredient, totalIngProdAmt)
+
+            } else {
+                Meteor.call('intermediates.editTotalNumNativeUnits', ingList[i].ingredient, ingList[i].newStock)
+            }
+        }
+
         Meteor.call('systemlog.insert',"Production", "Produced", null, "Event", "");
         Meteor.call('production.log',formulaID,numUnitsProduce)
     },

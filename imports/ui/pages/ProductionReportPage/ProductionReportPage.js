@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Formulas } from '../../../api/Formulas/formulas.js'
+import { Intermediates } from '../../../api/Intermediates/intermediates.js'
 import  ProductionReport   from '../../../api/ProductionReport/ProductionReport.js'
-import FormulaManagementNavBar from '../../components/FormulaManagementNavBar/FormulaManagementNavBar.js'
 
 class ProductionReportPage extends Component {
   constructor(props) {
@@ -35,9 +35,14 @@ class ProductionReportPage extends Component {
 
     let formulaNameMap = new Map()
     let formulas = this.props.formulas
+    let intermediates = this.props.intermediates
   
     for (let i = 0; i < formulas.length; i++){
       formulaNameMap.set(formulas[i]._id, formulas[i].name)
+    }
+
+    for (let i = 0; i < intermediates.length; i++){
+      formulaNameMap.set(intermediates[i]._id, intermediates[i].name)
     }
 
     this.props.prodReport.forEach(function (formula) {
@@ -72,9 +77,11 @@ class ProductionReportPage extends Component {
 export default withTracker(() => {
   Meteor.subscribe('formulas')
   Meteor.subscribe('prodReport')
+  Meteor.subscribe('intermediates')
   return {
     formulas: Formulas.find({}).fetch(),
-    prodReport: ProductionReport.find({}).fetch()
+    prodReport: ProductionReport.find({}).fetch(),
+    intermediates: Intermediates.find({}).fetch()
   };
 })(ProductionReportPage)
 

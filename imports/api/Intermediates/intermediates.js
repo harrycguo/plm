@@ -5,6 +5,7 @@ import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
 import { Formulas } from '../Formulas/formulas.js'
 import IngredientsList from '../Ingredients/IngredientList.js';
 import { IngredientFormulaSchema, PackageInfoSchema, NativeInfoSchema, VendorInfoSchema, FormulaInfoSchema, SpendingInfoSchema, IntermediateSchema } from '../Ingredients/Schemas.js';
+import isInt from '../../utils/checks.js';
 
 export const Intermediates = new Mongo.Collection('intermediates');
 
@@ -131,7 +132,7 @@ Meteor.methods({
     Meteor.call('intermediates.editProductUnits', id, productUnits)
     Meteor.call('intermediates.editTemperatureState', id, temperatureState)
     Meteor.call('intermediates.editPackageType', id, packageType.toLowerCase())
-    Meteor.call('intermediates.editNumNativeUnitsPerPackage', id, numNativeUnitsPerPackage)
+    Meteor.call('intermediates.editNumNativeUnitsPerPackage', id, Number(numNativeUnitsPerPackage))
     Meteor.call('intermediates.editNativeUnit', id, nativeUnit)
     Meteor.call('intermediates.editIngredientsList', id, ingredientsList)
 
@@ -180,22 +181,97 @@ Meteor.methods({
 
     check(temperatureState, String);
 
+    //moving temperature states would change quantities
+    let existingInt = Intermediates.findOne({ _id: id });
+
+    if (!(existingInt.package == 'truckload' || existingInt.package == 'railcar')) {
+        let oldContainer = StorageCapacities.findOne({ type: existingInt.temperatureState });
+        let newContainer = StorageCapacities.findOne({ type: temperatureState.toLowerCase() });
+        let oldUsed = Number(oldContainer.used) - Number(existingInt.storage);
+        let newUsed = Number(newContainer.used) + Number(existingInt.storage);
+        Meteor.call('sc.editUsed', newContainer._id, Number(newUsed));
+        Meteor.call('sc.editUsed', oldContainer._id, Number(oldUsed));
+    }
+
     Intermediates.update({ _id: id }, {
       $set: {
         temperatureState: temperatureState,
       }
     });
   },
-  'intermediates.editPackageType'(id, packageType) {
+  'intermediates.editPackageType'(id, newPackage) {
 
-    check(packageType, String);
+    check(newPackage, String);
+
+    //if it is going from truckload or railcar to something else, we have to make sure enough room in storage
+    let existingInt = Intermediates.findOne({ _id: id});
+    let container = StorageCapacities.findOne({ type: existingInt.temperatureState });
+
+    let packagingMap = new Map();
+    packagingMap.set('sack', 0.5);
+    packagingMap.set('pail', 1.5);
+    packagingMap.set('drum', 3);
+    packagingMap.set('supersack', 16);
+    packagingMap.set('truckload', 0);
+    packagingMap.set('railcar', 0);
+    
+    //update storage and container
+    let newStorage = Number(packagingMap.get(newPackage.toLowerCase())) * Number(existingInt.packageInfo.numPackages)
+    let newUsed = 0;
+    
+    //truck or rail to physical, put in inventory
+    if ((existingInt.packageInfo.packageType == 'truckload' || existingInt.packageInfo.packageType == 'railcar') &&
+        !(newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar')) {
+        console.log("rail/truck to phyiscal: put in storage")
+        newUsed = Number(container.used) + Number(newStorage)
+    } 
+    
+    // truck to rail or vice versa, no change
+    else if ((existingInt.packageInfo.packageType == 'truckload' || existingInt.packageInfo.packageType == 'railcar') &&
+        (newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar')) {
+        console.log('rail/truck to rail/car: nothing')
+    }
+    
+    //going to truckload, take out of inventory
+    else if (newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar') {
+        newUsed = Number(container.used) - Number(existingInt.storage)
+        console.log("physical to rail/truck")
+    } 
+    
+    //regular 
+    else {
+        newUsed = Number(container.used) - Number(existingInt.storage) + Number(newStorage)
+        console.log("physical to physical")
+    }
+
+    Meteor.call('sc.editUsed', container._id, Number(newUsed))
+
+    Intermediates.update({ _id: id}, { $set: { storage:  Number(newStorage)} });  
 
     Intermediates.update({ _id: id }, {
       $set: {
-        'packageInfo.packageType': packageType,
-      }
+        'packageInfo.packageType': newPackage,
+      },
+
     });
 
+  },
+  'intermediates.editNumPackages'(id, numPackages){
+    
+    check(numPackages, Number);
+    let existingInt = Intermediates.findOne({ _id: id });
+
+    let packagingMap = new Map();
+    packagingMap.set('sack', 0.5);
+    packagingMap.set('pail', 1.5);
+    packagingMap.set('drum', 3);
+    packagingMap.set('supersack', 16);
+    packagingMap.set('truckload', 0);
+    packagingMap.set('railcar', 0);
+
+    let newStorage = numPackages * packagingMap.get(existingInt.packageInfo.packageType)
+    Meteor.call('intermediates.editStorage', id, Number(newStorage))
+    Intermediates.update({ _id: id}, { $set: { "packageInfo.numPackages": Number(numPackages) } });
   },
   'intermediates.editNumNativeUnitsPerPackage'(id, numNativeUnitsPerPackage) {
 
@@ -204,12 +280,64 @@ Meteor.methods({
       throw new Meteor.Error('Product Units must be greater than 0', 'Number of Native Units per package must be greater than 0')
     }
 
+    if (typeof numNativeUnitsPerPackage != 'number') {
+      throw new Meteor.Error('Number of Native Units Per Package must be an integer', 'Number of Native Units Per Package must be an Integer');
+    }
+
+    let existingInt = Intermediates.findOne({ _id: id });
+
+    //edit packages
+    let remainingPackages = Math.ceil(Number(existingInt.nativeInfo.totalQuantity) / Number(numNativeUnitsPerPackage))
+
+    Meteor.call('intermediates.editNumPackages', id, Number(remainingPackages))
+
     Intermediates.update({ _id: id }, {
       $set: {
         'nativeInfo.numNativeUnitsPerPackage': numNativeUnitsPerPackage,
       }
     });
 
+  },
+  'intermediates.editTotalNumNativeUnits'(id, totalNumNativeUnits){
+    
+    //total native units per package must be positive
+    if (totalNumNativeUnits <= 0) {
+      throw new Meteor.Error('Number of Total Native Units must be greater than 0', 'Number of Total Native Units must be greater than 0');
+    }
+    let intermediate = Intermediates.findOne({ _id: id });
+        
+    //re-calculate footprint
+    let remainingPackages = Math.ceil(Number(totalNumNativeUnits) / Number(intermediate.nativeInfo.numNativeUnitsPerPackage))
+        
+    let packagingMap = new Map();
+    packagingMap.set('sack', 0.5);
+    packagingMap.set('pail', 1.5);
+    packagingMap.set('drum', 3);
+    packagingMap.set('supersack', 16);
+    packagingMap.set('truckload', 0);
+    packagingMap.set('railcar', 0);
+
+    let newStorage = remainingPackages * packagingMap.get(intermediate.packageInfo.packageType)
+    Meteor.call('intermediates.editStorage', id, Number(newStorage))
+    Meteor.call('intermediates.editNumPackages', id, Number(remainingPackages))
+
+    Intermediates.update({ _id: id }, {
+      $set: {
+        'nativeInfo.totalQuantity': totalNumNativeUnits,
+      }
+    });
+  },
+  'intermediates.editStorage'(id, storage){
+ 
+    let intermediate = Intermediates.findOne({ _id: id });
+
+    if (!(intermediate.packageInfo.packageType == 'truckload' || intermediate.packageInfo.packageType == 'railcar')) {
+        let container = StorageCapacities.findOne({ type: intermediate.temperatureState });
+        let newUsed = Number(container.used) - Number(intermediate.storage) + Number(storage)
+        Meteor.call('sc.editUsed', container._id, Number(newUsed));
+    }
+  
+    Intermediates.update({ _id: id }, { $set: { storage : Number(storage) } });
   },
   'intermediates.editNativeUnit'(id, nativeUnit) {
     Intermediates.update({ _id: id }, {
@@ -321,6 +449,7 @@ Meteor.methods({
     })
 
   }
+
 
 })
 

@@ -47,22 +47,22 @@ class FormulaManagementNavBar extends Component {
                             <Col sm={12}>
                                 <Tab.Content>
                                     <Tab.Pane eventKey="1">
-                                        <FormulaManagement />
+                                        <FormulaManagement hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="7">
-                                        <IntermediatesDatabase />
+                                        <IntermediatesDatabase hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="2">
-                                        <AddFormula />
+                                        <AddFormula hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="4">
-                                        <BulkImportFormulas />
+                                        <BulkImportFormulas hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
                                         <ProductionRun hist={this.props.hist} />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
-                                        <ProductionReportPage />
+                                        <ProductionReportPage hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>
@@ -104,16 +104,16 @@ class FormulaManagementNavBar extends Component {
                             <Col sm={12}>
                                 <Tab.Content>
                                     <Tab.Pane eventKey="1">
-                                        <FormulaManagement />
+                                        <FormulaManagement hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="7">
-                                        <IntermediatesDatabase />
+                                        <IntermediatesDatabase hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
                                         <ProductionRun hist={this.props.hist} />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
-                                        <ProductionReportPage />
+                                        <ProductionReportPage hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>
@@ -150,13 +150,13 @@ class FormulaManagementNavBar extends Component {
                             <Col sm={12}>
                                 <Tab.Content>
                                     <Tab.Pane eventKey="1">
-                                        <FormulaManagement />
+                                        <FormulaManagement hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="7">
-                                        <IntermediatesDatabase />
+                                        <IntermediatesDatabase hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
-                                        <ProductionReportPage />
+                                        <ProductionReportPage hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>

@@ -95,7 +95,7 @@ class IntermediatesDatabase extends Component {
   render() {
     return (
       <div>
-        <StorageCapacityWrapper />
+        <StorageCapacityWrapper hist = {this.props.hist}/>
         {this.renderTable()}
       </div>
     );

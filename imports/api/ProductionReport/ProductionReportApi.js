@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import ProductionReport from './ProductionReport.js';
 import { Formulas } from '../Formulas/formulas.js';
+import { Intermediates } from '../Intermediates/intermediates'
 
 if (Meteor.isClient) {
     Meteor.subscribe('prodReport')
@@ -9,7 +10,12 @@ if (Meteor.isClient) {
 Meteor.methods({
     'production.log': function(formulaId, qty) {
         if (ProductionReport.find({ formula : formulaId }).fetch().length === 0) {
-            var formula = Formulas.find({ _id : formulaId}).fetch()[0]
+            
+            
+            var item1 = Formulas.find({ _id : formulaId}).fetch()[0]
+            var item2 = Intermediates.findOne({_id: formulaId})
+            let formula = item1 != undefined ? item1 : item2
+
             ingList = []
             costArr = []
             for (var i = 0; i < formula.ingredientsList.length; i++) {
@@ -30,7 +36,9 @@ Meteor.methods({
         }
         else {
             ProductionReport.update( {formula : formulaId}, {$inc : { totalProduced : qty}})
-            var formula = Formulas.find({ _id : formulaId}).fetch()[0]
+            var item1 = Formulas.find({ _id : formulaId}).fetch()[0]
+            var item2 = Intermediates.findOne({_id: formulaId})
+            let formula = item1 != undefined ? item1 : item2
             ingList = formula.ingredientsList
             ProductionReport.update({formula:formulaId},{$set : {totalSpent : 0}})
             for (var i = 0; i < ingList.length; i++) {
