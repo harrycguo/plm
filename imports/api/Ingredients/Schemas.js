@@ -306,11 +306,13 @@ LotIngredientSchema = new SimpleSchema({
   },
   vendor: {
     type: String,
-    min: 1
+    min: 1,
+    optional: true
   },
   price: {
     type: Number,
-    decimal: true
+    decimal: true,
+    optional: true
   },
   time: {
     type: Date,
