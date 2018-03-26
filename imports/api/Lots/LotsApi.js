@@ -56,6 +56,9 @@ Meteor.methods({
         // var curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
         // Meteor.call('editTotalNumNativeUnits',id,curTotalNativeUnits + qty)
     },
+    'lots.addArray': function(id, arr) {
+        //TODO: Implement
+    },
     'lots.remove': function(id, qty) {
         console.log('Removing '+qty+' native units from lots')
         var lot = Lots.find({inventoryID : id}).fetch()
