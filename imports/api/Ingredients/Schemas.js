@@ -321,7 +321,7 @@ LotIngredientSchema = new SimpleSchema({
 })
 
 LotsSchema = new SimpleSchema({
-  ingID: {
+  inventoryID: {
     type: String,
     min: 1
   },

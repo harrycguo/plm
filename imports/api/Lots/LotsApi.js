@@ -5,11 +5,13 @@ import Lots from './Lots.js';
 if (Meteor.isClient) {
     Meteor.subscribe('lots')
     Meteor.subscribe('ingredients')
+    Meteor.subscribe('intermediates')
 }
 
 Meteor.methods({
-    'lots.add': function(ingID, qty, lotNumber, vendor, price, time) { //Handle case for intermediates and products
-        var lot = Lots.find({ingID : ingID}).fetch()
+    'lots.add': function(ingID, qty, lotNumber, vendor, price, time) {
+        //Make it so that editing lot uantities is the only way that ingredient stock quantity total is able to be edited
+        var lot = Lots.find({inventoryID : ingID}).fetch()
         var entry = {
             qty: qty,
             lot: lotNumber,
@@ -21,17 +23,19 @@ Meteor.methods({
         console.log(entry)
 
         if(lot.length != 0) {
-            Lots.update({ingID : ingID}, {$push : {queue : entry}})
+            Lots.update({inventoryID : ingID}, {$push : {queue : entry}})
         }
         else {
             Lots.insert({
-                ingID: ingID,
+                inventoryID: ingID,
                 queue: [entry]
             })
         }
+        var curTotalNativeUnits = IngredientsList.find({ _id : ingID}).fetch()[0].nativeInfo.totalQuantity
+        Meteor.call('editTotalNumNativeUnits',ingID,curTotalNativeUnits + qty)
     },
     'lots.addFormula': function(id, qty, lotNumber, time) {
-        var lot = Lots.find({ingID : id}).fetch()
+        var lot = Lots.find({inventoryID : id}).fetch()
         var entry = {
             qty: qty,
             lot: lotNumber,
@@ -41,18 +45,20 @@ Meteor.methods({
         console.log(entry)
 
         if(lot.length != 0) {
-            Lots.update({ingID : id}, {$push : {queue : entry}})
+            Lots.update({inventoryID : id}, {$push : {queue : entry}})
         }
         else {
             Lots.insert({
-                ingID: id,
+                inventoryID: id,
                 queue: [entry]
             })
         }
+        // var curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
+        // Meteor.call('editTotalNumNativeUnits',id,curTotalNativeUnits + qty)
     },
-    'lots.remove': function(ingID, qty) {
+    'lots.remove': function(id, qty) {
         console.log('Removing '+qty+' native units from lots')
-        var lot = Lots.find({ingID : ingID}).fetch()
+        var lot = Lots.find({inventoryID : id}).fetch()
         console.log(lot[0])
         var q = lot[0].queue
         while (true) {
@@ -65,33 +71,38 @@ Meteor.methods({
                 break
             }
         }
-        Lots.update({ingID : ingID}, {$set : {queue : q}})
+        Lots.update({inventoryID : id}, {$set : {queue : q}})
     },
-    'lots.editLotNumber': function(ingID, oldLot, newLot) {
-        var lot = Lots.find({ ingID : ingID}).fetch()[0]
+    'lots.editLotNumber': function(id, oldLot, newLot, date) {
+        var lot = Lots.find({ inventoryID : id}).fetch()[0]
         var q = lot.queue
         q.forEach(function(lotEntry) {
-            if (lotEntry.lot == oldLot) {
+            if (lotEntry.time.getTime() === date.getTime() && lotEntry.lot == oldLot) {
                 lotEntry.lot = newLot
             }
         })
-        Lots.update({ ingID : ingID },{$set : {queue : q}})
+        Lots.update({ inventoryID : id },{$set : {queue : q}})
     },
-    'lots.editLotQty': function(ingID, lotNumber, newQty) {
-        var lot = Lots.find({ ingID : ingID}).fetch()[0]
+    'lots.editLotQty': function(id, lotNumber, newQty, date) {
+        var lot = Lots.find({ inventoryID : id}).fetch()[0]
         var q = lot.queue
         var diff = 0
-        q.forEach(function(lotEntry) {
-            if (lotEntry.lot == lotNumber) {
-                diff = lotEntry.qty - newQty
-                lotEntry.qty = newQty
-                console.log('difference is: '+diff)
+        var index = 0
+        for (var i = 0; i < q.length; i++) {
+            if (q[i].time.getTime() === date.getTime() && q[i].lot == lotNumber) {
+                index = i
+                diff = q[i].qty - newQty
+                q[i].qty = newQty
+                break
             }
-        })
-        Lots.update({ ingID : ingID},{$set : {queue : q}})
-        var curTotalNativeUnits = IngredientsList.find({ _id : ingID}).fetch()[0].nativeInfo.totalQuantity
+        }
+        if (newQty == 0) {
+            q.splice(index,1)
+        }
+        Lots.update({ inventoryID : id},{$set : {queue : q}})
+        var curTotalNativeUnits = IngredientsList.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
         console.log('total # native units: '+curTotalNativeUnits)
         console.log('inventory difference is: '+(curTotalNativeUnits - diff))
-        Meteor.call('editTotalNumNativeUnits',ingID,curTotalNativeUnits - diff)
+        Meteor.call('editTotalNumNativeUnits',id,curTotalNativeUnits - diff)
     }
 });
