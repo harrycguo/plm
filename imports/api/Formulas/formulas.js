@@ -62,13 +62,27 @@ Meteor.methods({
         //attach formulaID
         for (let ingID of set) {
           let ing = IngredientsList.findOne({ _id: ingID })
-          let newFormulaInfo = ing.formulaInfo.concat(result)
+          let int = Intermediates.findOne({_id: ingID})
+          
+          if (ing != undefined){
+            console.log('attaching ID to ing')
+            let newFormulaInfo = ing.formulaInfo.concat(result)
 
-          IngredientsList.update({ _id: ingID }, {
-            $set: {
-              formulaInfo: newFormulaInfo
-            }
-          })
+            IngredientsList.update({ _id: ingID }, {
+              $set: {
+                formulaInfo: newFormulaInfo
+              }
+            })
+          } else {
+            console.log('attaching ID to formula')
+            let newFormulaInfo = int.formulaInfo.concat(result)
+
+            Intermediates.update({ _id: ingID }, {
+              $set: {
+                formulaInfo: newFormulaInfo
+              }
+            })
+          }          
         }
       })
 
@@ -87,16 +101,33 @@ Meteor.methods({
 
     for (let i = 0; i < ingList.length; i++){
       let ing = IngredientsList.findOne({ _id: ingList[i].id })
-      let formulaInfo = ing.formulaInfo
+      let int = Intermediates.findOne({_id: ingList[i].id })
 
-      let index = formulaInfo.indexOf(formulaID)
-      formulaInfo.splice(index, 1);
+      if (ing != undefined){
+        let formulaInfo = ing.formulaInfo
+    
+        let index = formulaInfo.indexOf(formulaID)
+        formulaInfo.splice(index, 1);
+  
+        IngredientsList.update({ _id: ingList[i].id }, {
+          $set: {
+            formulaInfo: formulaInfo
+          }
+        })
+      } else {
+        let formulaInfo = int.formulaInfo
+    
+        let index = formulaInfo.indexOf(formulaID)
+        formulaInfo.splice(index, 1);
 
-      IngredientsList.update({ _id: ingList[i].id }, {
-        $set: {
-          formulaInfo: formulaInfo
-        }
-      })
+        Intermediates.update({ _id: ingList[i].id }, {
+          $set: {
+            formulaInfo: formulaInfo
+          }
+        })
+      }
+
+      
     }
     Meteor.call('systemlog.insert', "Formula", existingFormula.name, formulaID, "Removed", "")
     Meteor.call('production.remove',formulaID)
@@ -152,16 +183,31 @@ Meteor.methods({
     //attach id to ingredient
     for (let ingID of set) {
       let ing = IngredientsList.findOne({ _id: ingID })
-      let formulaInfo = ing.formulaInfo
+      let int = Intermediates.findOne({_id: ingID})
 
-      if (!formulaInfo.includes(id)){
-        formulaInfo = formulaInfo.concat(id)
-        IngredientsList.update({ _id: ingID }, {
-          $set: {
-            formulaInfo: formulaInfo
-          }
-        })
-      }  
+      if (ing != undefined){
+        let formulaInfo = ing.formulaInfo
+
+        if (!formulaInfo.includes(id)){
+          formulaInfo = formulaInfo.concat(id)
+          IngredientsList.update({ _id: ingID }, {
+            $set: {
+              formulaInfo: formulaInfo
+            }
+          })
+        }  
+      } else {
+        let formulaInfo = int.formulaInfo
+
+        if (!formulaInfo.includes(id)){
+          formulaInfo = formulaInfo.concat(id)
+          Intermediates.update({ _id: ingID }, {
+            $set: {
+              formulaInfo: formulaInfo
+            }
+          })
+        }  
+      }
     }
 
 

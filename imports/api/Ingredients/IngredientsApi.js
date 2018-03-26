@@ -1,10 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Vendors } from '../Vendors/vendors.js';
+import { Carts } from '../Cart/Cart'
 import { Bert } from 'meteor/themeteorchef:bert';
 import { containsVendor, indexOfVendorWithId, isInt, checkUndefined, checkIngExists, checkGreaterThanZero } from '../../utils/checks.js';
 import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
 import { Formulas } from '../Formulas/formulas.js'
+import { Intermediates } from '../Intermediates/intermediates.js'
 
 if (Meteor.isClient) {
     Meteor.subscribe('storageCapacities'); 
@@ -276,15 +278,50 @@ Meteor.methods({
 
         let existingIng = IngredientsList.findOne({ _id: selectedIngredient });
 
-        if (existingIng.formulaInfo.length > 0) {
-            let formulas = ""
-            for (let i = 0; i < existingIng.formulaInfo.length; i++){
-                let existingFormula = Formulas.findOne({_id: existingIng.formulaInfo[i]})
-                formulas += existingFormula.name + ", "
-            }
-            formulas = formulas.substring(0, formulas.length - 2)
+        let formulasError = ""
+        let removeArr = []
+        let formulaInfo = existingIng.formulaInfo
 
-            throw new Meteor.Error('Ingredient used in a formulas','Cannot delete, Ingredient used in Formula(s): ' + formulas);
+        if (formulaInfo.length > 0){
+            for (let i = 0; i < existingIng.formulaInfo.length; i++){
+              let existingFP = Formulas.findOne({_id: formulaInfo[i]})
+              let existingInt = Intermediates.findOne({_id: formulaInfo[i]})
+              
+              if (existingFP == undefined && existingInt == undefined){
+                removeArr.push(i)
+              } else {
+                let item = existingFP != undefined ? existingFP : existingInt
+                let ingList = item.ingredientsList
+                let ingListSet = new Set()
+                for (let k = 0; k < ingList.length; k++){
+                  ingListSet.add(ingList[k].id)
+                }
+                if (!ingListSet.has(selectedIngredient)){
+                  removeArr.push(i)
+                }
+                else {
+                    formulasError += item.name + ", "
+                }
+              }
+            }
+      
+            if (removeArr.length > 0){
+              for (let j = 0; j < removeArr.length; j++){
+                  let index = removeArr[j] - j
+                  formulaInfo.splice(index, 1);
+              }
+            }
+      
+            IngredientsList.update({ _id: selectedIngredient }, {
+              $set: {
+                formulaInfo: formulaInfo
+              }
+            })
+          }
+
+        if (formulasError.length > 0){
+            formulasError = formulasError.substring(0, formulasError.length - 2)
+            throw new Meteor.Error('Ingredient used in a formulas','Cannot delete, Ingredient used in Formula(s): ' + formulasError);
         }
 
         if (!(existingIng.package == 'truckload' || existingIng.package == 'railcar')) {
@@ -293,6 +330,10 @@ Meteor.methods({
             let newUsed = Number(container.used) - Number(existingIng.storage)
             Meteor.call('sc.editUsed', container._id, Number(newUsed));
         }
+
+        //check to see if it's in cart
+        Meteor.call('removeIngredientFromCart', selectedIngredient)
+
 
         IngredientsList.remove({ _id: selectedIngredient });
         Meteor.call('systemlog.insert',
@@ -528,7 +569,7 @@ Meteor.methods({
         Meteor.call('editNumPackages', selectedIngredient, Number(remainingPackages))
         IngredientsList.update({ _id : selectedIngredient}, {$set : {"nativeInfo.totalQuantity" : Number(newTotalNumNativeUnits)}});
 
-        },
+    },
     'editNativeUnit': function(selectedIngredient, newNativeUnit){
         
         if (!this.userId) {

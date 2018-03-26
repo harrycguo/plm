@@ -21,11 +21,12 @@ componentWillMount() {
                 amountToBeUsed: usage,
                 currenStock: Number(this.props.ingredients[i].nativeInfo.totalQuantity),
                 stockAfterProduction: newStock,
-                notEnough: newStock < 0 ? true: false
+                notEnough: newStock < 0 ? true: false,
+                type: 'Ingredient'
             });
         }
     }
-    
+
     for (i = 0; i < this.props.intermediates.length; i++) {
       if (this.props.intermediates[i]._id == this.props.ingredient.id) {
 
@@ -37,11 +38,13 @@ componentWillMount() {
             amountToBeUsed: usage,
             currenStock: Number(this.props.intermediates[i].nativeInfo.totalQuantity),
             stockAfterProduction: newStock,
-            notEnough: newStock < 0 ? true: false
+            notEnough: newStock < 0 ? true: false,
+            type: 'Intermediate'
+            
         });
       }
     }
-
+    
     this.props.onChange(this.props.index, this)
 }
 
@@ -58,7 +61,8 @@ componentWillReceiveProps(nextProps){
               amountToBeUsed: usage,
               currenStock: Number(nextProps.ingredients[i].nativeInfo.totalQuantity),
               stockAfterProduction: newStock,
-              notEnough: newStock < 0 ? true: false
+              notEnough: newStock < 0 ? true: false,
+              type: 'Ingredient'
           });
       }
     }
@@ -74,7 +78,8 @@ componentWillReceiveProps(nextProps){
             amountToBeUsed: usage,
             currenStock: Number(nextProps.intermediates[i].nativeInfo.totalQuantity),
             stockAfterProduction: newStock,
-            notEnough: newStock < 0 ? true: false
+            notEnough: newStock < 0 ? true: false,
+            type: 'Intermediate'
         });
       }
     }
@@ -93,6 +98,9 @@ componentWillReceiveProps(nextProps){
             <div className="side-container-zero">
                 <div className="side-spacingInput">
                     {this.state.ingredientName}
+                </div>
+                <div className="side-spacingInput">
+                    {this.state.type}
                 </div>
 
                 <div className="side-spacingInput">

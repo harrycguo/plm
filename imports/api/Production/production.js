@@ -4,6 +4,7 @@ import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import IngredientsList from '../Ingredients/IngredientList.js'
 import { Formulas } from '../Formulas/formulas.js'
+import { Intermediates } from '../Intermediates/intermediates.js'
 import '../ProductionReport/ProductionReportApi.js';
 import ProductionReport from '../ProductionReport/ProductionReport.js'
 
@@ -15,16 +16,19 @@ Meteor.methods({
         }
 
         let formula = Formulas.findOne({_id: formulaID})
+        let intermediate = Intermediates.findOne({_id: formulaID})
+
+        let item = formula != undefined ? formula : intermediate
         
         //check to see we hit min num units to produce
-        if (numUnitsProduce < formula.productUnits){
+        if (numUnitsProduce < item.productUnits){
             throw new Meteor.Error('Must Produce At Least Minimum Product Units', 'Must Produce At Least Minimum Product Units');
         }
 
         //check to see if we have enough
         for (let i = 0; i < ingList.length; i++) {
             if (ingList[i].notEnough == true) {
-                throw new Meteor.Error('Not Enough Stock', 'Not Enough Stock. Please Add Missing Ingredients to Cart and Checkout');
+                throw new Meteor.Error('Not Enough Stock', 'Not Enough Stock. Please Add Missing Ingredients to Cart and Checkout and / or Produce Intermediates ');
             }
         }
 
@@ -39,6 +43,7 @@ Meteor.methods({
             }
             Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, numUnitsProduce * numNativeUnitsPerProductUnit)
         }
+        
         Meteor.call('systemlog.insert',"Production", "Produced", null, "Event", "");
         Meteor.call('production.log',formulaID,numUnitsProduce)
     },
@@ -59,8 +64,24 @@ Meteor.methods({
             throw new Meteor.Error('Enough Stock', 'Enough Stock. Please produce Formula!');
         }
 
-        
-        //if not enough
+        //if not enough first check: make sure we have intermediates
+        let notEnoughInter = ''
+        for (let i = 0; i < ingList.length; i++) {
+            if (ingList[i].notEnough == true) {
+                let intermediate = Intermediates.findOne({_id: ingList[i].ingredient})
+                
+                if (intermediate != undefined){
+                    notEnoughInter += intermediate.name + ', '
+                }
+            }
+        }
+
+        if (notEnoughInter.length > 0){
+            notEnoughInter = notEnoughInter.substring(0, notEnoughInter.length - 2)
+            throw new Meteor.Error('Not Enough of Intermediate', 'Please produce more of Intermediate(s) first: ' + notEnoughInter)
+        }
+
+        //now add to cart
         for (let i = 0; i < ingList.length; i++) {
             if (ingList[i].notEnough == true) {
                 

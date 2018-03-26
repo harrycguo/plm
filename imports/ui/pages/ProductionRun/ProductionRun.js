@@ -77,10 +77,13 @@ class ProductionRun extends Component {
     renderStockDifferenceHeaders() {
         return (
             <div>
-                <p><b>Ingredient Consumption: </b></p>
+                <p><b>Ingredient / Intermediate Consumption: </b></p>
                 <div className="side-container-zero">
                     <div className="side-spacingInput">
-                        <b>Ingredient</b>
+                        <b>Item</b>
+                    </div>
+                    <div className="side-spacingInput">
+                        <b>Type</b>
                     </div>
 
                     <div className="side-spacingInput">
@@ -93,6 +96,9 @@ class ProductionRun extends Component {
 
                     <div className="side-spacingInput">
                         <b>Stock After Production</b>
+                    </div>
+                    <div className="side-spacingInput">
+                        <b></b>
                     </div>
                 </div>
             </div>
@@ -138,8 +144,6 @@ class ProductionRun extends Component {
 
             }
 
-            console.log(stockDifference)
-
             this.setState({
                 ingList: ingList,
                 minUnits: Number(formula.productUnits),
@@ -178,6 +182,8 @@ class ProductionRun extends Component {
                 notEnough: state.notEnough
             })
         }
+
+        console.log(ingListArray)
 
         Meteor.call('production.addToCart',
             ingListArray,
@@ -219,8 +225,6 @@ class ProductionRun extends Component {
                 notEnough: state.notEnough
             })
         }
-
-        console.log(ingListArray)
 
         Meteor.call('production.produce',
             formulaID,

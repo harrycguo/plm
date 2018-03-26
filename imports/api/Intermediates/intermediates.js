@@ -4,7 +4,7 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
 import { Formulas } from '../Formulas/formulas.js'
 import IngredientsList from '../Ingredients/IngredientList.js';
-import { IngredientFormulaSchema, PackageInfoSchema, NativeInfoSchema, VendorInfoSchema, FormulaInfoSchema, SpendingInfoSchema, IntermediateSchema} from '../Ingredients/Schemas.js';
+import { IngredientFormulaSchema, PackageInfoSchema, NativeInfoSchema, VendorInfoSchema, FormulaInfoSchema, SpendingInfoSchema, IntermediateSchema } from '../Ingredients/Schemas.js';
 
 export const Intermediates = new Mongo.Collection('intermediates');
 
@@ -14,7 +14,7 @@ if (Meteor.isClient) {
 
 Meteor.methods({
   'intermediates.insert'(name, description, productUnits, ingredientsList, temperatureState, ingPackage, numPackages, ingStorage, totalNumNativeUnits, nativeUnit, numNativeUnitsPerPackage) {
- 
+
     // Make sure the user is logged in before inserting a task
     if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('not-authorized', 'not-authorized');
@@ -89,6 +89,33 @@ Meteor.methods({
       storage: Number(ingStorage),
       nativeInfo: nativeInfoArr,
       formulaInfo: []
+    },
+    function (error, result) {
+      //attach formulaID
+      for (let ingID of set) {
+        let ing = IngredientsList.findOne({ _id: ingID })
+        let int = Intermediates.findOne({_id: ingID})
+        
+        if (ing != undefined){
+          console.log('attaching ID to ing')
+          let newFormulaInfo = ing.formulaInfo.concat(result)
+
+          IngredientsList.update({ _id: ingID }, {
+            $set: {
+              formulaInfo: newFormulaInfo
+            }
+          })
+        } else {
+          console.log('attaching ID to formula')
+          let newFormulaInfo = int.formulaInfo.concat(result)
+
+          Intermediates.update({ _id: ingID }, {
+            $set: {
+              formulaInfo: newFormulaInfo
+            }
+          })
+        }          
+      }
     })
 
   },
@@ -106,9 +133,10 @@ Meteor.methods({
     Meteor.call('intermediates.editPackageType', id, packageType.toLowerCase())
     Meteor.call('intermediates.editNumNativeUnitsPerPackage', id, numNativeUnitsPerPackage)
     Meteor.call('intermediates.editNativeUnit', id, nativeUnit)
-  
+    Meteor.call('intermediates.editIngredientsList', id, ingredientsList)
+
   },
-  'intermediates.editName'(id, name){
+  'intermediates.editName'(id, name) {
     // Make sure the user is logged in before inserting a task
     if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('not-authorized', 'not-authorized');
@@ -127,16 +155,16 @@ Meteor.methods({
       }
     });
   },
-  'intermediates.editDescription'(id, description){
+  'intermediates.editDescription'(id, description) {
     Intermediates.update({ _id: id }, {
       $set: {
         description: description,
       }
     });
   },
-  'intermediates.editProductUnits'(id, productUnits){
+  'intermediates.editProductUnits'(id, productUnits) {
     //product Units must be positive
-    if (productUnits <= 0){
+    if (productUnits <= 0) {
       throw new Meteor.Error('Product Units must be greater than 0', 'Product Units must be greater than 0')
     }
 
@@ -146,19 +174,19 @@ Meteor.methods({
       }
     });
   },
-  'intermediates.editTemperatureState'(id, temperatureState){
-       
-        //moving temperature states would change quantities
-     
-        check(temperatureState, String);
-    
-        Intermediates.update({ _id: id }, {
-          $set: {
-            temperatureState: temperatureState,
-          }
-        });
+  'intermediates.editTemperatureState'(id, temperatureState) {
+
+    //moving temperature states would change quantities
+
+    check(temperatureState, String);
+
+    Intermediates.update({ _id: id }, {
+      $set: {
+        temperatureState: temperatureState,
+      }
+    });
   },
-  'intermediates.editPackageType'(id, packageType){
+  'intermediates.editPackageType'(id, packageType) {
 
     check(packageType, String);
 
@@ -169,8 +197,8 @@ Meteor.methods({
     });
 
   },
-  'intermediates.editNumNativeUnitsPerPackage'(id, numNativeUnitsPerPackage){
-    
+  'intermediates.editNumNativeUnitsPerPackage'(id, numNativeUnitsPerPackage) {
+
     //num native units per package must be positive
     if (numNativeUnitsPerPackage <= 0) {
       throw new Meteor.Error('Product Units must be greater than 0', 'Number of Native Units per package must be greater than 0')
@@ -181,35 +209,118 @@ Meteor.methods({
         'nativeInfo.numNativeUnitsPerPackage': numNativeUnitsPerPackage,
       }
     });
-    
+
   },
-  'intermediates.editNativeUnit'(id, nativeUnit){
+  'intermediates.editNativeUnit'(id, nativeUnit) {
     Intermediates.update({ _id: id }, {
       $set: {
         'nativeInfo.nativeUnit': nativeUnit,
       }
-    });
+    })
   },
+  'intermediates.remove'(id) {
+    // Make sure the user is logged in before inserting a task
+    if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+      throw new Meteor.Error('not-authorized', 'not-authorized');
+    }
 
+    let existingIntermediate = Intermediates.findOne({ _id: id });
+    let formulasError = ""
+    let removeArr = []
+    let formulaInfo = existingIntermediate.formulaInfo
 
+    if (formulaInfo.length > 0) {
+      for (let i = 0; i < formulaInfo.length; i++) {
+        let existingFP = Formulas.findOne({ _id: formulaInfo[i] })
+        let existingInt = Intermediates.findOne({ _id: formulaInfo[i] })
 
+        if (existingFP == undefined && existingInt == undefined) {
+          removeArr.push(i)
+        } else {
+          let item = existingFP != undefined ? existingFP : existingInt
+          let ingList = item.ingredientsList
+          let ingListSet = new Set()
+          for (let k = 0; k < ingList.length; k++) {
+            ingListSet.add(ingList[k].id)
+          }
+          if (!ingListSet.has(id)) {
+            removeArr.push(i)
+          }
+          else {
+            formulasError += item.name + ", "
+          }
+        }
+      }
 
+      if (removeArr.length > 0) {
+        for (let j = 0; j < removeArr.length; j++) {
+          let index = removeArr[j] - j
+          formulaInfo.splice(index, 1);
+        }
+      }
 
+      Intermediates.update({ _id: id }, {
+        $set: {
+          formulaInfo: formulaInfo
+        }
+      })
+    }
 
-
-
-  'intermediates.remove'(intermediateID){
-
-    //check to see if in other formulas
-    //detach all ingredients associated with it
-
-    Meteor.call('production.remove', intermediateID)
-    Intermediates.remove(intermediateID)
+    if (formulasError.length > 0) {
+      formulasError = formulasError.substring(0, formulasError.length - 2)
+      throw new Meteor.Error('Intermediate used in a formulas', 'Cannot delete, Intermediate used in Formula(s): ' + formulasError);
+    }
+    Meteor.call('production.remove', id)
+    Intermediates.remove({ _id: id });
   },
+  'intermediates.editIngredientsList'(id, ingredientsList){
+    let set = new Set()
 
+    for (let i = 0; i < ingredientsList.length; i++) {
+      if (!set.has(ingredientsList[i].id)) {
+        set.add(ingredientsList[i].id)
+      } else {
+        throw new Meteor.Error('multiple same ingredients added', 'Ingredient(s) shows up twice on Add Ingredients portion');
+      }
+    }
 
+    //attach id to ingredient
+    for (let ingID of set) {
+      let ing = IngredientsList.findOne({ _id: ingID })
+      let int = Intermediates.findOne({_id: ingID})
 
+      if (ing != undefined){
+        let formulaInfo = ing.formulaInfo
 
+        if (!formulaInfo.includes(id)){
+          formulaInfo = formulaInfo.concat(id)
+          IngredientsList.update({ _id: ingID }, {
+            $set: {
+              formulaInfo: formulaInfo
+            }
+          })
+        }  
+      } else {
+        let formulaInfo = int.formulaInfo
+
+        if (!formulaInfo.includes(id)){
+          formulaInfo = formulaInfo.concat(id)
+          Intermediates.update({ _id: ingID }, {
+            $set: {
+              formulaInfo: formulaInfo
+            }
+          })
+        }  
+      }
+    }
+
+    Intermediates.update({ _id: id }, {
+      $set: {
+        ingredientsList: ingredientsList
+      }
+    })
+
+  }
 
 })
 

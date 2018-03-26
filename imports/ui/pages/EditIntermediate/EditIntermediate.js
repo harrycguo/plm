@@ -39,6 +39,7 @@ class EditIntermediate extends Component {
                         ref={input => (this[`input${i}`] = input)}
                         defaultQuantity={formula.ingredientsList[i].amount}
                         defaultIngredient={formula.ingredientsList[i].id}
+                        defaultFormula={formula}
                         onChange={this.onChangeInput.bind(this)}
                     /></div>),
                 ingList: prevState.ingList.concat({
@@ -172,6 +173,8 @@ class EditIntermediate extends Component {
                     index={inputs.length}
                     ref={input => (this[`input${inputs.length}`] = input)}
                     onChange={this.onChangeInput.bind(this)}
+                    defaultFormula={this.props.location.state.formula}
+
                 /></div>),
             ingList: prevState.ingList.concat({
                 ingredient: {
