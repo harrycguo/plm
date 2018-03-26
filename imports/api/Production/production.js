@@ -36,12 +36,17 @@ Meteor.methods({
         for (let i = 0; i < ingList.length; i++) {
             Meteor.call('editTotalNumNativeUnits', ingList[i].ingredient, ingList[i].newStock)
             var numNativeUnitsPerProductUnit = 0
+            var formulaProductUnits = 0
             for (var j = 0; j < formula.ingredientsList.length; j++) {
                 if (formula.ingredientsList[i].id == ingList[i].ingredient) {
                     numNativeUnitsPerProductUnit = formula.ingredientsList[i].amount
+                    formulaProductUnits = formula.productUnits
+                    break
                 }
             }
-            Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, numUnitsProduce * numNativeUnitsPerProductUnit)
+            var totalIngProdAmt = (numUnitsProduce * numNativeUnitsPerProductUnit)/formulaProductUnits
+            Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, totalIngProdAmt)
+            Meteor.call('lots.remove', ingList[i].ingredient, totalIngProdAmt)
         }
         
         Meteor.call('systemlog.insert',"Production", "Produced", null, "Event", "");

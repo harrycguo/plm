@@ -294,18 +294,38 @@ ProdReportSchema = new SimpleSchema({
    }
 })
 
-// LotIngredientSchema = new SimpleSchema({
-  
-// })
+LotIngredientSchema = new SimpleSchema({
+  qty: {
+    type: Number,
+    decimal: true,
+    min: 0
+  },
+  lot: {
+    type: Number,
+    min: 1
+  },
+  vendor: {
+    type: String,
+    min: 1
+  },
+  price: {
+    type: Number,
+    decimal: true
+  },
+  time: {
+    type: Date,
+    min: 1
+  }
+})
 
-// LotsSchema = new SimpleSchema({
-//   ingID: {
-//     type: String,
-//     min: 1
-//   },
-//   queue: {
-//     type: [LotIngredientSchema]
-//   }
-// })
+LotsSchema = new SimpleSchema({
+  ingID: {
+    type: String,
+    min: 1
+  },
+  queue: {
+    type: [LotIngredientSchema]
+  }
+})
 
-export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema };
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema };
