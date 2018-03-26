@@ -12,6 +12,7 @@ if (Meteor.isClient) {
 Meteor.methods({
     'lots.add': function(ingID, qty, lotNumber, vendor, price, time) {
         //Make it so that editing lot uantities is the only way that ingredient stock quantity total is able to be edited
+        time.setMilliseconds(0)
         var lot = Lots.find({inventoryID : ingID}).fetch()
         var entry = {
             qty: qty,
@@ -62,6 +63,9 @@ Meteor.methods({
     'lots.addArray': function(id, arr) {
         //TODO: Implement
     },
+    'lots.editLots': function(id, arr) {
+
+    },
     'lots.remove': function(id, qty) {
         console.log('Removing '+qty+' native units from lots')
         var lot = Lots.find({inventoryID : id}).fetch()
@@ -90,12 +94,15 @@ Meteor.methods({
         Lots.update({ inventoryID : id },{$set : {queue : q}})
     },
     'lots.editLotQty': function(id, lotNumber, newQty, date) {
+        date.setMilliseconds(0)
         var lot = Lots.find({ inventoryID : id}).fetch()[0]
         var q = lot.queue
         var diff = 0
         var index = 0
         for (var i = 0; i < q.length; i++) {
+            q[i].time.setMilliseconds(0)
             if (q[i].time.getTime() === date.getTime() && q[i].lot == lotNumber) {
+                console.log('Goal condition reached!')
                 index = i
                 diff = q[i].qty - newQty
                 q[i].qty = newQty
