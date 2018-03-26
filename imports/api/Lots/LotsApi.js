@@ -84,9 +84,11 @@ Meteor.methods({
         Lots.update({inventoryID : id}, {$set : {queue : q}})
     },
     'lots.editLotNumber': function(id, oldLot, newLot, date) {
+        date.setMilliseconds(0)
         var lot = Lots.find({ inventoryID : id}).fetch()[0]
         var q = lot.queue
         q.forEach(function(lotEntry) {
+            lotEntry.time.setMilliseconds(0)
             if (lotEntry.time.getTime() === date.getTime() && lotEntry.lot == oldLot) {
                 lotEntry.lot = newLot
             }
