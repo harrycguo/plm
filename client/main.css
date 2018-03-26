@@ -108,6 +108,10 @@ body {
     padding: 0px 5px 0px 0px;
   }
 
+  .container-button2{
+    padding: 0px 0px 5px 5px;
+  }
+
   .container-nav-right{
     padding: 5px 5px 5px 5px;
     float: right;

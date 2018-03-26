@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import { withTracker } from 'meteor/react-meteor-data';
-import { Formulas } from '../../../api/Formulas/formulas.js'
+import Formulas  from '../../../api/Formulas/formulas.js'
 import { Intermediates } from '../../../api/Intermediates/intermediates.js'
 import  ProductionReport   from '../../../api/ProductionReport/ProductionReport.js'
 

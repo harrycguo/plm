@@ -36,7 +36,7 @@ class FormulaManagementNavBar extends Component {
 
                                     </NavDropdown>
                                     <NavItem eventKey="1">Formula Management</NavItem>
-                                    <NavItem eventKey="7">Intermediates Database</NavItem>
+                                    <NavItem eventKey="7">Formula Database</NavItem>
                                     <NavItem eventKey="2">Add New Formula</NavItem>
                                     <NavItem eventKey="4">Bulk Import Formula</NavItem>
                                     <NavItem eventKey="5">Produce Formula</NavItem>
@@ -95,7 +95,7 @@ class FormulaManagementNavBar extends Component {
 
                                     </NavDropdown>
                                     <NavItem eventKey="1">Formula Management</NavItem>
-                                    <NavItem eventKey="7">Intermediates Database</NavItem>
+                                    <NavItem eventKey="7">Formula Database</NavItem>
                                     <NavItem eventKey="5">Produce Formula</NavItem>
                                     <NavItem eventKey="6">Production Report</NavItem>
 
@@ -142,7 +142,7 @@ class FormulaManagementNavBar extends Component {
 
                                     </NavDropdown>
                                     <NavItem eventKey="1">Formula Management</NavItem>
-                                    <NavItem eventKey="7">Intermediates Database</NavItem>
+                                    <NavItem eventKey="7">Formula Database</NavItem>
                                     <NavItem eventKey="6">Production Report</NavItem>
 
                                 </Nav>

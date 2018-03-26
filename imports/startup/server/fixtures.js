@@ -1,8 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { StorageCapacities } from '../../api/StorageCapacities/storageCapacities.js'
-import Carts from '../../api/Cart/Cart.js';
-
-// Meteor.subscribe('carts');
+import { LotNumberSystem } from '../../api/Lots/LotNumberSystem.js'
 
 //Create default admin
 if ( Meteor.users.find({username: 'admin'}).count() === 0 ) {
@@ -52,6 +50,16 @@ if (StorageCapacities.find({name: "Warehouse"}).count() === 0){
       capacity: Number(0),
       used: Number(0)
     })
+}
+
+//create default System Lot Number
+if (LotNumberSystem.find({name: 'system'}).count() === 0){
+  LotNumberSystem.insert(
+    {
+      name: 'system',
+      lotNumber: 1,
+    }
+  )
 }
 
 

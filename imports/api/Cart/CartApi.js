@@ -54,8 +54,7 @@ Meteor.methods({
                 lots: []
             }}});
         }
-        var date = Lots.find({ inventoryID : 'Cw8k8FrFQtMm3CRzN'}).fetch()[0].queue[1].time
-        Meteor.call('lots.editLotQty','Cw8k8FrFQtMm3CRzN',1,0,date)
+       
         Meteor.call('systemlog.insert', "Cart", selectedIngredient.name,  selectedIngredient._id, "Added", "");
     },
     'removeIngredientFromCart': function(selectedIngredient) {

@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
-import { Formulas } from '../Formulas/formulas.js'
+import  Formulas  from '../Formulas/formulas.js'
 import IngredientsList from '../Ingredients/IngredientList.js';
 import { IngredientFormulaSchema, PackageInfoSchema, NativeInfoSchema, VendorInfoSchema, FormulaInfoSchema, SpendingInfoSchema, IntermediateSchema } from '../Ingredients/Schemas.js';
 import isInt from '../../utils/checks.js';

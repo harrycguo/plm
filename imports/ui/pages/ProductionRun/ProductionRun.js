@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Formulas } from '../../../api/Formulas/formulas.js'
+import  Formulas  from '../../../api/Formulas/formulas.js'
 import { withTracker } from 'meteor/react-meteor-data';
 import { Row, Col, FormGroup, ControlLabel, Button, FormControl, ButtonToolbar } from 'react-bootstrap';
 import validate from '../../../modules/validate';

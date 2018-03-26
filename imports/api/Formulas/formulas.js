@@ -3,10 +3,12 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 import { Roles } from 'meteor/alanning:roles';
 import IngredientsList from '../Ingredients/IngredientList.js';
+import { IngredientFormulaSchema, FormulaSchema } from '../Ingredients/Schemas.js';
 import ProductionReport from '../ProductionReport/ProductionReport.js';
 import { Intermediates } from '../Intermediates/intermediates'
 
-export const Formulas = new Mongo.Collection('formulas');
+Formulas = new Mongo.Collection('formulas');
+Formulas.attachSchema(FormulaSchema)
 
 Meteor.methods({
   'formulas.insert'(name, description, productUnits, ingredientsList) {
@@ -56,7 +58,8 @@ Meteor.methods({
       name: name,
       description: description,
       productUnits: Number(productUnits),
-      ingredientsList: ingredientsList
+      ingredientsList: ingredientsList,
+      quantity: 0
     },
       function (error, result) {
         //attach formulaID
@@ -230,10 +233,13 @@ Meteor.methods({
 
 });
 
+export default Formulas;
+
 if (Meteor.isServer) {
   Meteor.publish('formulas', function () {
     return Formulas.find();
   });
 }
+
 
 

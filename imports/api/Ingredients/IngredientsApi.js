@@ -5,7 +5,7 @@ import { Carts } from '../Cart/Cart'
 import { Bert } from 'meteor/themeteorchef:bert';
 import { containsVendor, indexOfVendorWithId, isInt, checkUndefined, checkIngExists, checkGreaterThanZero } from '../../utils/checks.js';
 import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
-import { Formulas } from '../Formulas/formulas.js'
+import  Formulas  from '../Formulas/formulas.js'
 import { Intermediates } from '../Intermediates/intermediates.js'
 
 if (Meteor.isClient) {

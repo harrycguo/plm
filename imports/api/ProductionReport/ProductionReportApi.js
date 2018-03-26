@@ -1,6 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import ProductionReport from './ProductionReport.js';
-import { Formulas } from '../Formulas/formulas.js';
+import  Formulas  from '../Formulas/formulas.js';
 import { Intermediates } from '../Intermediates/intermediates'
 
 if (Meteor.isClient) {

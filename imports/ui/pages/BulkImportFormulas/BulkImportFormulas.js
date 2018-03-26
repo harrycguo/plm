@@ -6,7 +6,7 @@ import Papa from 'papaparse'
 import { Bert } from 'meteor/themeteorchef:bert';
 import { withTracker } from 'meteor/react-meteor-data';
 import IngredientList from '../../../api/Ingredients/IngredientList.js';
-import { Formulas } from '../../../api/Formulas/formulas.js'
+import  Formulas  from '../../../api/Formulas/formulas.js'
 import { check } from 'meteor/check';
 import FormulaManagementNavBar from '../../components/FormulaManagementNavBar/FormulaManagementNavBar.js'
 

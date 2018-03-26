@@ -94,6 +94,10 @@ FormulaSchema = new SimpleSchema({
   },
   ingredientsList: {
     type: [IngredientFormulaSchema]
+  },
+  quantity: {
+    type: Number,
+
   }
 })
 

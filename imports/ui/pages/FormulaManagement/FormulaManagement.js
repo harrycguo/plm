@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import FormulaManagementNavBar from '../../components/FormulaManagementNavBar/FormulaManagementNavBar.js'
-import { Formulas } from '../../../api/Formulas/formulas.js'
+import  Formulas  from '../../../api/Formulas/formulas.js'
 import { Intermediates } from '../../../api/Intermediates/intermediates.js'
 import IngredientList from '../../../api/Ingredients/IngredientList.js'
 import FormulaListItem from '../../components/Formula/FormulaListItem.js'
