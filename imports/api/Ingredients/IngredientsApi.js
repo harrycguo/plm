@@ -169,7 +169,8 @@ Meteor.methods({
                 ingPrice
             );
         }
-        // IngredientsList.simpleSchema().clean()
+
+        Lots.find({ ingID : ingName.trim()})
     },
     'addToExistingIngredientBulk': function (ingName, ingTemperatureState, ingPackage, numPackages, ingStorage, ingTotalNumNativeUnits , ingNativeUnit, ingNumNativeUnitsPerPackage, ingVendor, ingPrice) {
         
@@ -337,6 +338,7 @@ Meteor.methods({
 
 
         IngredientsList.remove({ _id: selectedIngredient });
+        Lots.remove({ ingID : selectedIngredient});
         Meteor.call('systemlog.insert',
             "Ingredient", existingIng.name, existingIng._id, 
             "Removed", "");
