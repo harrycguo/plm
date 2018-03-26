@@ -2,9 +2,10 @@ import { Meteor } from 'meteor/meteor';
 import { check } from 'meteor/check';
 import { Bert } from 'meteor/themeteorchef:bert';
 import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
-import { Formulas } from '../Formulas/formulas.js'
+import  Formulas  from '../Formulas/formulas.js'
 import IngredientsList from '../Ingredients/IngredientList.js';
-import { IngredientFormulaSchema, PackageInfoSchema, NativeInfoSchema, VendorInfoSchema, FormulaInfoSchema, SpendingInfoSchema, IntermediateSchema} from '../Ingredients/Schemas.js';
+import { IngredientFormulaSchema, PackageInfoSchema, NativeInfoSchema, VendorInfoSchema, FormulaInfoSchema, SpendingInfoSchema, IntermediateSchema } from '../Ingredients/Schemas.js';
+import isInt from '../../utils/checks.js';
 
 export const Intermediates = new Mongo.Collection('intermediates');
 
@@ -14,7 +15,7 @@ if (Meteor.isClient) {
 
 Meteor.methods({
   'intermediates.insert'(name, description, productUnits, ingredientsList, temperatureState, ingPackage, numPackages, ingStorage, totalNumNativeUnits, nativeUnit, numNativeUnitsPerPackage) {
- 
+
     // Make sure the user is logged in before inserting a task
     if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('not-authorized', 'not-authorized');
@@ -89,11 +90,38 @@ Meteor.methods({
       storage: Number(ingStorage),
       nativeInfo: nativeInfoArr,
       formulaInfo: []
+    },
+    function (error, result) {
+      //attach formulaID
+      for (let ingID of set) {
+        let ing = IngredientsList.findOne({ _id: ingID })
+        let int = Intermediates.findOne({_id: ingID})
+        
+        if (ing != undefined){
+          console.log('attaching ID to ing')
+          let newFormulaInfo = ing.formulaInfo.concat(result)
+
+          IngredientsList.update({ _id: ingID }, {
+            $set: {
+              formulaInfo: newFormulaInfo
+            }
+          })
+        } else {
+          console.log('attaching ID to formula')
+          let newFormulaInfo = int.formulaInfo.concat(result)
+
+          Intermediates.update({ _id: ingID }, {
+            $set: {
+              formulaInfo: newFormulaInfo
+            }
+          })
+        }          
+      }
     })
 
   },
   'intermediates.edit'(id, name, description, productUnits, ingredientsList, temperatureState, packageType, numPackages, ingStorage, totalNumNativeUnits, nativeUnit, numNativeUnitsPerPackage) {
-    console.log('editingggg')
+
     // Make sure the user is logged in before inserting a task
     if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('not-authorized', 'not-authorized');
@@ -104,19 +132,18 @@ Meteor.methods({
     Meteor.call('intermediates.editProductUnits', id, productUnits)
     Meteor.call('intermediates.editTemperatureState', id, temperatureState)
     Meteor.call('intermediates.editPackageType', id, packageType.toLowerCase())
-    Meteor.call('intermediates.editNumNativeUnitsPerPackage', id, numNativeUnitsPerPackage)
+    Meteor.call('intermediates.editNumNativeUnitsPerPackage', id, Number(numNativeUnitsPerPackage))
     Meteor.call('intermediates.editNativeUnit', id, nativeUnit)
-  
+    Meteor.call('intermediates.editIngredientsList', id, ingredientsList)
+
   },
-  'intermediates.editName'(id, name){
+  'intermediates.editName'(id, name) {
     // Make sure the user is logged in before inserting a task
     if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('not-authorized', 'not-authorized');
     }
 
     let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
-
-    console.log(existingFormula)
 
     //Formula name must be unique
     if ((Formulas.find({ name: name.trim() }).count() > 0 || Intermediates.find({ name: name.trim() }).count() > 0) && !(existingFormula.name == name)) {
@@ -129,16 +156,16 @@ Meteor.methods({
       }
     });
   },
-  'intermediates.editDescription'(id, description){
+  'intermediates.editDescription'(id, description) {
     Intermediates.update({ _id: id }, {
       $set: {
         description: description,
       }
     });
   },
-  'intermediates.editProductUnits'(id, productUnits){
+  'intermediates.editProductUnits'(id, productUnits) {
     //product Units must be positive
-    if (productUnits <= 0){
+    if (productUnits <= 0) {
       throw new Meteor.Error('Product Units must be greater than 0', 'Product Units must be greater than 0')
     }
 
@@ -148,69 +175,280 @@ Meteor.methods({
       }
     });
   },
-  'intermediates.editTemperatureState'(id, temperatureState){
-       
-        //moving temperature states would change quantities
-     
-        check(temperatureState, String);
-    
-        Intermediates.update({ _id: id }, {
-          $set: {
-            temperatureState: temperatureState,
-          }
-        });
-  },
-  'intermediates.editPackageType'(id, packageType){
+  'intermediates.editTemperatureState'(id, temperatureState) {
 
-    check(packageType, String);
+    //moving temperature states would change quantities
+
+    check(temperatureState, String);
+
+    //moving temperature states would change quantities
+    let existingInt = Intermediates.findOne({ _id: id });
+
+    if (!(existingInt.package == 'truckload' || existingInt.package == 'railcar')) {
+        let oldContainer = StorageCapacities.findOne({ type: existingInt.temperatureState });
+        let newContainer = StorageCapacities.findOne({ type: temperatureState.toLowerCase() });
+        let oldUsed = Number(oldContainer.used) - Number(existingInt.storage);
+        let newUsed = Number(newContainer.used) + Number(existingInt.storage);
+        Meteor.call('sc.editUsed', newContainer._id, Number(newUsed));
+        Meteor.call('sc.editUsed', oldContainer._id, Number(oldUsed));
+    }
 
     Intermediates.update({ _id: id }, {
       $set: {
-        'packageInfo.packageType': packageType,
+        temperatureState: temperatureState,
       }
+    });
+  },
+  'intermediates.editPackageType'(id, newPackage) {
+
+    check(newPackage, String);
+
+    //if it is going from truckload or railcar to something else, we have to make sure enough room in storage
+    let existingInt = Intermediates.findOne({ _id: id});
+    let container = StorageCapacities.findOne({ type: existingInt.temperatureState });
+
+    let packagingMap = new Map();
+    packagingMap.set('sack', 0.5);
+    packagingMap.set('pail', 1.5);
+    packagingMap.set('drum', 3);
+    packagingMap.set('supersack', 16);
+    packagingMap.set('truckload', 0);
+    packagingMap.set('railcar', 0);
+    
+    //update storage and container
+    let newStorage = Number(packagingMap.get(newPackage.toLowerCase())) * Number(existingInt.packageInfo.numPackages)
+    let newUsed = 0;
+    
+    //truck or rail to physical, put in inventory
+    if ((existingInt.packageInfo.packageType == 'truckload' || existingInt.packageInfo.packageType == 'railcar') &&
+        !(newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar')) {
+        console.log("rail/truck to phyiscal: put in storage")
+        newUsed = Number(container.used) + Number(newStorage)
+    } 
+    
+    // truck to rail or vice versa, no change
+    else if ((existingInt.packageInfo.packageType == 'truckload' || existingInt.packageInfo.packageType == 'railcar') &&
+        (newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar')) {
+        console.log('rail/truck to rail/car: nothing')
+    }
+    
+    //going to truckload, take out of inventory
+    else if (newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar') {
+        newUsed = Number(container.used) - Number(existingInt.storage)
+        console.log("physical to rail/truck")
+    } 
+    
+    //regular 
+    else {
+        newUsed = Number(container.used) - Number(existingInt.storage) + Number(newStorage)
+        console.log("physical to physical")
+    }
+
+    Meteor.call('sc.editUsed', container._id, Number(newUsed))
+
+    Intermediates.update({ _id: id}, { $set: { storage:  Number(newStorage)} });  
+
+    Intermediates.update({ _id: id }, {
+      $set: {
+        'packageInfo.packageType': newPackage,
+      },
+
     });
 
   },
-  'intermediates.editNumNativeUnitsPerPackage'(id, numNativeUnitsPerPackage){
+  'intermediates.editNumPackages'(id, numPackages){
     
+    check(numPackages, Number);
+    let existingInt = Intermediates.findOne({ _id: id });
+
+    let packagingMap = new Map();
+    packagingMap.set('sack', 0.5);
+    packagingMap.set('pail', 1.5);
+    packagingMap.set('drum', 3);
+    packagingMap.set('supersack', 16);
+    packagingMap.set('truckload', 0);
+    packagingMap.set('railcar', 0);
+
+    let newStorage = numPackages * packagingMap.get(existingInt.packageInfo.packageType)
+    Meteor.call('intermediates.editStorage', id, Number(newStorage))
+    Intermediates.update({ _id: id}, { $set: { "packageInfo.numPackages": Number(numPackages) } });
+  },
+  'intermediates.editNumNativeUnitsPerPackage'(id, numNativeUnitsPerPackage) {
+
     //num native units per package must be positive
     if (numNativeUnitsPerPackage <= 0) {
       throw new Meteor.Error('Product Units must be greater than 0', 'Number of Native Units per package must be greater than 0')
     }
+
+    if (typeof numNativeUnitsPerPackage != 'number') {
+      throw new Meteor.Error('Number of Native Units Per Package must be an integer', 'Number of Native Units Per Package must be an Integer');
+    }
+
+    let existingInt = Intermediates.findOne({ _id: id });
+
+    //edit packages
+    let remainingPackages = Math.ceil(Number(existingInt.nativeInfo.totalQuantity) / Number(numNativeUnitsPerPackage))
+
+    Meteor.call('intermediates.editNumPackages', id, Number(remainingPackages))
 
     Intermediates.update({ _id: id }, {
       $set: {
         'nativeInfo.numNativeUnitsPerPackage': numNativeUnitsPerPackage,
       }
     });
-    
+
   },
-  'intermediates.editNativeUnit'(id, nativeUnit){
+  'intermediates.editTotalNumNativeUnits'(id, totalNumNativeUnits){
+    
+    //total native units per package must be positive
+    if (totalNumNativeUnits <= 0) {
+      throw new Meteor.Error('Number of Total Native Units must be greater than 0', 'Number of Total Native Units must be greater than 0');
+    }
+    let intermediate = Intermediates.findOne({ _id: id });
+        
+    //re-calculate footprint
+    let remainingPackages = Math.ceil(Number(totalNumNativeUnits) / Number(intermediate.nativeInfo.numNativeUnitsPerPackage))
+        
+    let packagingMap = new Map();
+    packagingMap.set('sack', 0.5);
+    packagingMap.set('pail', 1.5);
+    packagingMap.set('drum', 3);
+    packagingMap.set('supersack', 16);
+    packagingMap.set('truckload', 0);
+    packagingMap.set('railcar', 0);
+
+    let newStorage = remainingPackages * packagingMap.get(intermediate.packageInfo.packageType)
+    Meteor.call('intermediates.editStorage', id, Number(newStorage))
+    Meteor.call('intermediates.editNumPackages', id, Number(remainingPackages))
+
+    Intermediates.update({ _id: id }, {
+      $set: {
+        'nativeInfo.totalQuantity': totalNumNativeUnits,
+      }
+    });
+  },
+  'intermediates.editStorage'(id, storage){
+ 
+    let intermediate = Intermediates.findOne({ _id: id });
+
+    if (!(intermediate.packageInfo.packageType == 'truckload' || intermediate.packageInfo.packageType == 'railcar')) {
+        let container = StorageCapacities.findOne({ type: intermediate.temperatureState });
+        let newUsed = Number(container.used) - Number(intermediate.storage) + Number(storage)
+        Meteor.call('sc.editUsed', container._id, Number(newUsed));
+    }
+  
+    Intermediates.update({ _id: id }, { $set: { storage : Number(storage) } });
+  },
+  'intermediates.editNativeUnit'(id, nativeUnit) {
     Intermediates.update({ _id: id }, {
       $set: {
         'nativeInfo.nativeUnit': nativeUnit,
       }
-    });
+    })
   },
+  'intermediates.remove'(id) {
+    // Make sure the user is logged in before inserting a task
+    if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+      throw new Meteor.Error('not-authorized', 'not-authorized');
+    }
 
+    let existingIntermediate = Intermediates.findOne({ _id: id });
+    let formulasError = ""
+    let removeArr = []
+    let formulaInfo = existingIntermediate.formulaInfo
 
+    if (formulaInfo.length > 0) {
+      for (let i = 0; i < formulaInfo.length; i++) {
+        let existingFP = Formulas.findOne({ _id: formulaInfo[i] })
+        let existingInt = Intermediates.findOne({ _id: formulaInfo[i] })
 
+        if (existingFP == undefined && existingInt == undefined) {
+          removeArr.push(i)
+        } else {
+          let item = existingFP != undefined ? existingFP : existingInt
+          let ingList = item.ingredientsList
+          let ingListSet = new Set()
+          for (let k = 0; k < ingList.length; k++) {
+            ingListSet.add(ingList[k].id)
+          }
+          if (!ingListSet.has(id)) {
+            removeArr.push(i)
+          }
+          else {
+            formulasError += item.name + ", "
+          }
+        }
+      }
 
+      if (removeArr.length > 0) {
+        for (let j = 0; j < removeArr.length; j++) {
+          let index = removeArr[j] - j
+          formulaInfo.splice(index, 1);
+        }
+      }
 
+      Intermediates.update({ _id: id }, {
+        $set: {
+          formulaInfo: formulaInfo
+        }
+      })
+    }
 
-
-
-  'intermediates.remove'(intermediateID){
-
-    //check to see if in other formulas
-    //detach all ingredients associated with it
-
-    Meteor.call('production.remove', intermediateID)
-    Intermediates.remove(intermediateID)
+    if (formulasError.length > 0) {
+      formulasError = formulasError.substring(0, formulasError.length - 2)
+      throw new Meteor.Error('Intermediate used in a formulas', 'Cannot delete, Intermediate used in Formula(s): ' + formulasError);
+    }
+    Meteor.call('production.remove', id)
+    Intermediates.remove({ _id: id });
   },
+  'intermediates.editIngredientsList'(id, ingredientsList){
+    let set = new Set()
 
+    for (let i = 0; i < ingredientsList.length; i++) {
+      if (!set.has(ingredientsList[i].id)) {
+        set.add(ingredientsList[i].id)
+      } else {
+        throw new Meteor.Error('multiple same ingredients added', 'Ingredient(s) shows up twice on Add Ingredients portion');
+      }
+    }
 
+    //attach id to ingredient
+    for (let ingID of set) {
+      let ing = IngredientsList.findOne({ _id: ingID })
+      let int = Intermediates.findOne({_id: ingID})
 
+      if (ing != undefined){
+        let formulaInfo = ing.formulaInfo
+
+        if (!formulaInfo.includes(id)){
+          formulaInfo = formulaInfo.concat(id)
+          IngredientsList.update({ _id: ingID }, {
+            $set: {
+              formulaInfo: formulaInfo
+            }
+          })
+        }  
+      } else {
+        let formulaInfo = int.formulaInfo
+
+        if (!formulaInfo.includes(id)){
+          formulaInfo = formulaInfo.concat(id)
+          Intermediates.update({ _id: ingID }, {
+            $set: {
+              formulaInfo: formulaInfo
+            }
+          })
+        }  
+      }
+    }
+
+    Intermediates.update({ _id: id }, {
+      $set: {
+        ingredientsList: ingredientsList
+      }
+    })
+
+  }
 
 
 })

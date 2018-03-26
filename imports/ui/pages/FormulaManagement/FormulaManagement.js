@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import FormulaManagementNavBar from '../../components/FormulaManagementNavBar/FormulaManagementNavBar.js'
-import { Formulas } from '../../../api/Formulas/formulas.js'
+import  Formulas  from '../../../api/Formulas/formulas.js'
 import { Intermediates } from '../../../api/Intermediates/intermediates.js'
 import IngredientList from '../../../api/Ingredients/IngredientList.js'
 import FormulaListItem from '../../components/Formula/FormulaListItem.js'
@@ -80,8 +80,8 @@ onChangeRadio(){
       <p></p>
       <ButtonToolbar>
           <ToggleButtonGroup type="radio" name="options" ref={radio => (this.radio) = radio} defaultValue={1} onChange={this.onChangeRadio.bind(this)}>
-              <ToggleButton value={1}>Final Product</ToggleButton>
-              <ToggleButton value={2}>Intermediate</ToggleButton>
+              <ToggleButton value={1}>Final Products</ToggleButton>
+              <ToggleButton value={2}>Intermediates</ToggleButton>
           </ToggleButtonGroup>
       </ButtonToolbar>
       <p></p>

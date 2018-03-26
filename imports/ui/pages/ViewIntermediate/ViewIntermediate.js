@@ -96,9 +96,7 @@ class ViewIntermediate extends Component {
                 <p> <b>Temperature State:</b> {tempState}</p>
                 <p> <b>Packaging:</b> {packaging}</p>
                 <p> <b>Number of Native Units Per Package:</b> {this.props.location.state.formula.nativeInfo.numNativeUnitsPerPackage}</p>
-                <p> <b>Total Quantity:</b> {this.props.location.state.formula.nativeInfo.totalQuantity}</p>
                 <p> <b>Native Units:</b> {this.props.location.state.formula.nativeInfo.nativeUnit}</p>
-                <p> <b>Used In Formulas:</b> ***TO BE FILLED OUT***</p>
                 <p></p>
 
                 {this.renderHeaders()}

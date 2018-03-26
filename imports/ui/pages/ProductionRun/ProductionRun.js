@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Formulas } from '../../../api/Formulas/formulas.js'
+import  Formulas  from '../../../api/Formulas/formulas.js'
 import { withTracker } from 'meteor/react-meteor-data';
 import { Row, Col, FormGroup, ControlLabel, Button, FormControl, ButtonToolbar } from 'react-bootstrap';
 import validate from '../../../modules/validate';
 import FormulaManagementNavBar from '../../components/FormulaManagementNavBar/FormulaManagementNavBar.js'
 import ProductionRunItem from '../../components/ProductionRunItem/ProductionRunItem.js'
 import { Vendors } from '../../../api/Vendors/vendors.js'
+import { Intermediates } from '../../../api/Intermediates/intermediates.js';
 
-// App component - represents the whole app
 class ProductionRun extends Component {
     constructor(props) {
         super(props);
@@ -53,9 +53,18 @@ class ProductionRun extends Component {
 
     renderFormulas() {
         let items = [];
-        for (i = 0; i < this.props.formulas.length; i++) {
-            items.push(<option key={i} value={this.props.formulas[i]._id}>{this.props.formulas[i].name}</option>);
+        items.push(<option key={-1} disabled selected value='undefined'> -- select a formula -- </option>)
+        j = 0
+        for (let i = 0; i < this.props.formulas.length; i++) {
+            items.push(<option key={j} value={this.props.formulas[i]._id}>{this.props.formulas[i].name}</option>);
+            j++
         }
+        items.push(<option key={-2} disabled value> -- select an intermediate -- </option>)
+        for (i = 0; i < this.props.intermediates.length; i++) {
+            items.push(<option key={j} value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);
+            j++
+        }
+
         return items;
     }
 
@@ -68,10 +77,13 @@ class ProductionRun extends Component {
     renderStockDifferenceHeaders() {
         return (
             <div>
-                <p><b>Ingredient Consumption: </b></p>
+                <p><b>Ingredient / Intermediate Consumption: </b></p>
                 <div className="side-container-zero">
                     <div className="side-spacingInput">
-                        <b>Ingredient</b>
+                        <b>Item</b>
+                    </div>
+                    <div className="side-spacingInput">
+                        <b>Type</b>
                     </div>
 
                     <div className="side-spacingInput">
@@ -84,6 +96,9 @@ class ProductionRun extends Component {
 
                     <div className="side-spacingInput">
                         <b>Stock After Production</b>
+                    </div>
+                    <div className="side-spacingInput">
+                        <b></b>
                     </div>
                 </div>
             </div>
@@ -101,6 +116,12 @@ class ProductionRun extends Component {
             for (let i = 0; i < this.props.formulas.length; i++) {
                 if (formulaID == this.props.formulas[i]._id) {
                     formula = this.props.formulas[i]
+                }
+            }
+
+            for (let i = 0; i < this.props.intermediates.length; i++) {
+                if (formulaID == this.props.intermediates[i]._id) {
+                    formula = this.props.intermediates[i]
                 }
             }
 
@@ -162,6 +183,8 @@ class ProductionRun extends Component {
             })
         }
 
+        console.log(ingListArray)
+
         Meteor.call('production.addToCart',
             ingListArray,
             function (error, result) {
@@ -202,8 +225,6 @@ class ProductionRun extends Component {
                 notEnough: state.notEnough
             })
         }
-
-        console.log(ingListArray)
 
         Meteor.call('production.produce',
             formulaID,
@@ -246,7 +267,6 @@ class ProductionRun extends Component {
                                 onChange={this.setFormulaInfo}
                                 id='select'
                             >
-                                <option disabled selected value='undefined'> -- select a formula -- </option>
                                 {this.renderFormulas()}
                             </select></p>
                     </FormGroup>
@@ -305,9 +325,11 @@ class ProductionRun extends Component {
 export default withTracker(() => {
     Meteor.subscribe('formulas');
     Meteor.subscribe('vendors');
+    Meteor.subscribe('intermediates')
     return {
         formulas: Formulas.find({}).fetch(),
         vendors: Vendors.find({}).fetch(),
+        intermediates: Intermediates.find({}).fetch(),
     };
 })(ProductionRun);
 

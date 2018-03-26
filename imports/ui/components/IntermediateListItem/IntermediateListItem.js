@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { withTracker } from 'meteor/react-meteor-data';
 import { Row, Col, FormGroup, ControlLabel, Button, ButtonToolbar } from 'react-bootstrap';
 
+
 class IntermediateListItem extends Component {
   constructor(props) {
     super(props);
@@ -11,7 +12,12 @@ class IntermediateListItem extends Component {
 
   deleteThisFormula() {
     if (confirm('Delete the Intermediate?')) {
-      Meteor.call('intermediates.remove', this.props.intermediate._id)
+      Meteor.call('intermediates.remove', this.props.intermediate._id,
+      function(error, result) {
+        if (error){
+          Bert.alert(error.reason, 'danger')
+        }
+      })
     };
   }
 

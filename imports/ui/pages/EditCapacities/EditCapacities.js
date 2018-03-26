@@ -87,7 +87,7 @@ class EditCapacities extends Component {
         }
 
         Bert.alert('Edited Capacities!', 'success');
-        history.push('/inventoryManagement')
+        //history.push('/inventoryManagement')
         
     }
 
@@ -170,7 +170,11 @@ class EditCapacities extends Component {
             <div className="container-keepLeft">
                     <Link to='/inventoryManagement'>Return to Inventory Management</Link>
                 </div>
+            <div className="container-keepLeft">
+                    <Link to='/formulaManagement'>Return to Formula Management</Link>
+                </div>
             </div>
+            
         );
  
     }

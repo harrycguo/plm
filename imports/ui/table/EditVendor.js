@@ -20,7 +20,9 @@ export class EditVendor extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			edit: props.edit
+			edit: props.edit,
+			boxLock: false,
+			vendor: this.props.vendor,
 		}
 	}
 
@@ -30,15 +32,22 @@ export class EditVendor extends Component {
 				<td> 
 					<input type="number"  
 					defaultValue={this.props.vendor.price}
+					onChange = {e=> {
+						this.state.boxLock = false;
+					}}
 					onBlur = {e=> {
-						var message = "Change price from "
-						message = message.concat(this.props.vendor.price).concat(" to ").concat(e.target.value).concat("?\n")
-						message = message.concat("You will still need to submit changes!")
-
-						if(confirm(message=message)){
-							// Make the edit happen
-						}else{
-							e.target.value=this.props.vendor.price
+						if(!this.state.boxLock) {
+							var message = "Change price from "
+							message = message.concat(this.props.vendor.price).concat(" to ").concat(e.target.value).concat("?\n")
+							message = message.concat("You will still need to submit changes!")
+							this.state.boxLock = true
+							if(confirm(message=message)){
+								// Make the edit happen
+							}else{
+								e.target.value=this.props.vendor.price
+							}
+						} else {
+							this.state.boxLock = false
 						}
 					}} 
 					ref="price"/>
@@ -49,6 +58,7 @@ export class EditVendor extends Component {
 				</td>
 			);
 	}
+
 	renderButton(){
 		return this.props.noButton && !this.state.edit ? null : (
 		<td>
@@ -63,21 +73,23 @@ export class EditVendor extends Component {
 						console.log(this.refs.vendorSel.vendor.value)
 						// New price: 
 						console.log(this.refs.price.value)
-						Meteor.call('editPrice', 
-							this.props.ing._id, 
-							this.refs.vendorSel.vendor.value, 
+
+						Meteor.call('swapVendor',
+							this.props.ing, 
+							this.props.vendor,
+							this.refs.vendorSel.vendor.value,
 							Number(this.refs.price.value),
 							function(error, result) {
-								if (error){
-				                    Bert.alert(error.reason, 'danger');
-				                }
+								if(error) {
+									Bert.alert(error.reason, 'danger');
+								}
 							}
 						)
 					}
 				}
-				var success = false;
 				this.state.edit = !this.state.edit
 				this.forceUpdate()
+				this.props.parent()
 			}}
 			title= "Edit Vendor"
 		>{!this.state.edit && this.props.source == "cart" ? "Edit" : "Submit Edits"}</Button>
@@ -101,7 +113,9 @@ export class EditVendor extends Component {
 
 export default withTracker(() => {
 	Meteor.subscribe('vendors');
+	Meteor.subscribe('ingredients');
 	return {
 		vendors: Vendors.find({}).fetch(),
+		ingredients: IngredientsList.find({}).fetch(),
 	};
 })(EditVendor);

@@ -1,6 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import Lots from './Lots.js';
+import { LotNumberSystem } from './LotNumberSystem.js'
 
 if (Meteor.isClient) {
     Meteor.subscribe('lots')
@@ -43,6 +44,8 @@ Meteor.methods({
         }
 
         console.log(entry)
+
+        Meteor.call('lots.increaseSystemLot')
 
         if(lot.length != 0) {
             Lots.update({inventoryID : id}, {$push : {queue : entry}})
@@ -107,5 +110,8 @@ Meteor.methods({
         console.log('total # native units: '+curTotalNativeUnits)
         console.log('inventory difference is: '+(curTotalNativeUnits - diff))
         Meteor.call('editTotalNumNativeUnits',id,curTotalNativeUnits - diff)
+    },
+    'lots.increaseSystemLot'(){
+        LotNumberSystem.update({ name : 'system'},{$inc : {lotNumber : 1}})
     }
 });

@@ -15,6 +15,9 @@ function renderEditable(cellInfo) {
 		return(<input 
 			type="text" 
 			defaultValue={cellInfo.value}
+			onChange = {e=> {
+				boxLocked = false
+			}}
 			onBlur = {e => {
 				if(!boxLocked) {
 				e.persist()
@@ -112,6 +115,9 @@ function renderCustomField(cellInfo) {
 				ref={customNativeUnit => (this.customNativeUnit = customNativeUnit)}
 				name="customNativeUnit"
 				defaultValue={defVal}
+				onChange = {e=> {
+					boxLocked = false
+				}}
 				onBlur={ e => {
 					if(!boxLocked) {
 					var result = false;
@@ -377,7 +383,6 @@ export const HeaderValues = [
 	{
 		Header: 'Quantity',
 		accessor: 'qty',
-		Cell: renderEditable,
 		Filter: ({ filter, onChange }) =>
 	      <input
 	        type="text"

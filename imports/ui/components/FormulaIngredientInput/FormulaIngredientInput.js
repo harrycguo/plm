@@ -20,14 +20,19 @@ class FormulaIngredientInput extends Component {
     renderOptions() {
         let items = [];
         let j = 0
+
+        let defaultFormula = this.props.defaultFormula != undefined ? this.props.defaultFormula._id : '0'
+
         for (i = 0; i < this.props.ingredients.length; i++) {
             items.push(<option key={j} value={this.props.ingredients[i]._id}>{this.props.ingredients[i].name}</option>);
             j++
         }
         items.push(<option disabled value> -- select an intermediate -- </option>)
         for (i = 0; i < this.props.intermediates.length; i++) {
-            items.push(<option key={j} value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);
-            j++
+            if (defaultFormula != this.props.intermediates[i]._id){
+                items.push(<option key={j} value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);
+                j++
+            }
         }
         return items;
     }

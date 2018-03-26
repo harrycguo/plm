@@ -19,7 +19,7 @@ class Timer extends Component {
     }
       
       render() {
-          return <p><b>Time of Checkout: </b> {this.state.currTime}</p>
+          return <p><b>Current Time: </b> {this.state.currTime}</p>
       }
     }
 

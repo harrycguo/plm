@@ -55,11 +55,10 @@ class FormulaIngredientInputWithDefault extends Component {
 
     renderOptions() {
         let items = [];
+        let defaultFormula = this.props.defaultFormula != undefined ? this.props.defaultFormula._id : '0'
         j = 0
         for (i = 0; i < this.props.ingredients.length; i++) {
-            
             if (this.props.ingredients[i]._id == this.props.defaultIngredient) {
-
                 items.push(<option selected key={j} value={this.props.ingredients[i]._id}>{this.props.ingredients[i].name}</option>);
             } else {
                 items.push(<option key={j} value={this.props.ingredients[i]._id}>{this.props.ingredients[i].name}</option>);
@@ -68,10 +67,14 @@ class FormulaIngredientInputWithDefault extends Component {
         }
         items.push(<option disabled value> -- select an intermediate -- </option>)
         for (i = 0; i < this.props.intermediates.length; i++) {
-            
+
             if (this.props.intermediates[i]._id == this.props.defaultIngredient) {
                 items.push(<option selected key={j} value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);
-            } else {
+            } 
+            else if (this.props.intermediates[i]._id == defaultFormula){
+
+            }
+            else {
                 items.push(<option key={j} value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);
             }
             j++
