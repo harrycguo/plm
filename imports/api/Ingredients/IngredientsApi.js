@@ -589,7 +589,8 @@ Meteor.methods({
         var vendorInfo = ingredient[0].vendorInfo;
         check(vendorInfo, Array);
         check(newPrice, Number);
-
+        console.log("updating price")
+        console.log(newPrice)
         //Perhaps I should return an error if the ingredient price cannot be changed because the vendor
         //specified doesn't exist.
 
@@ -676,6 +677,42 @@ Meteor.methods({
         ing.vendorInfo.push(newVendor)
         ing.vendorInfo.sort(function(a,b) {return (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0);})
         IngredientsList.update({ _id : selectedIngredient._id}, {$set : {vendorInfo : ing.vendorInfo}});
+    },
+    'swapVendor': function(selectedIngredient, oldVendor, newVendor, price) {
+        if (newVendor === "null" || !price) {
+            throw new Meteor.Error("Missing fields","Vendor and/or price unspecified");
+        }
+        console.log("swap")
+        console.log(oldVendor)
+        console.log(newVendor)
+        console.log(price)
+        if(newVendor == oldVendor._id) {
+            console.log("price edit")
+            Meteor.call('editPrice',
+                selectedIngredient._id, newVendor, price)
+        } else {
+            var ing = IngredientsList.findOne({ _id : selectedIngredient._id });
+            var vendor = Vendors.findOne({ _id : newVendor}); 
+            checkUndefined(vendor,'vendor');
+            if(containsVendor(vendor._id, ing.vendorInfo)) {
+                throw new Meteor.Error('Already has vendor','Vendor is already associated with this Ingredient');
+            }
+            var newVendor = {
+                vendor: vendor._id,
+                price: price
+            };
+            Meteor.call('systemlog.insert',
+                "Ingredient", selectedIngredient.name, selectedIngredient._id, 
+                "Modified - New Price Option", price);
+            ing.vendorInfo.push(newVendor)
+            ing.vendorInfo.sort(function(a,b) {return (a.price > b.price) ? 1 : ((b.price > a.price) ? -1 : 0);})
+            IngredientsList.update({ _id : selectedIngredient._id}, {$set : {vendorInfo : ing.vendorInfo}});
+            
+            Meteor.call('systemlog.insert',
+                "Ingredient", selectedIngredient.name, selectedIngredient._id, 
+                "Modified - Removed Vendor", oldVendor.name);
+            IngredientsList.update({ _id : selectedIngredient._id} , {$pull : { vendorInfo : { vendor : oldVendor._id}}});
+        }
     },
     'removeVendor': function(selectedIngredient, vendor) {
         //This comment only exists just so that I can minimize the method
