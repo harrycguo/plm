@@ -5,7 +5,7 @@ import FormulaManagement from '../../pages/FormulaManagement/FormulaManagement.j
 import AddFormula from '../../pages/AddFormula/AddFormula.js'
 import BulkImportFormulasHome from '../../pages/BulkImportFormulas/BulkImportFormulasHome.js'
 import ProductionRun from '../../pages/ProductionRun/ProductionRun.js'
-import ProductionReportPage from '../../pages/ProductionReportPage/ProductionReportPage.js'
+import ProductionReportPageHome from '../../pages/ProductionReportPage/ProductionReportPageHome.js'
 import IntermediatesDatabase from '../../pages/IntermediatesDatabase/IntermediatesDatabase.js'
 
 class FormulaManagementNavBar extends Component {
@@ -40,7 +40,7 @@ class FormulaManagementNavBar extends Component {
                                     <NavItem eventKey="2">Add New Formula</NavItem>
                                     <NavItem eventKey="4">Bulk Import Formula</NavItem>
                                     <NavItem eventKey="5">Produce Formula</NavItem>
-                                    <NavItem eventKey="6">Production Report</NavItem>
+                                    <NavItem eventKey="6">Reports</NavItem>
 
                                 </Nav>
                             </Col>
@@ -62,7 +62,7 @@ class FormulaManagementNavBar extends Component {
                                         <ProductionRun hist={this.props.hist} />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
-                                        <ProductionReportPage hist={this.props.hist}/>
+                                        <ProductionReportPageHome hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>
@@ -97,7 +97,7 @@ class FormulaManagementNavBar extends Component {
                                     <NavItem eventKey="1">Formula Management</NavItem>
                                     <NavItem eventKey="7">Formula Database</NavItem>
                                     <NavItem eventKey="5">Produce Formula</NavItem>
-                                    <NavItem eventKey="6">Production Report</NavItem>
+                                    <NavItem eventKey="6">Reports</NavItem>
 
                                 </Nav>
                             </Col>
@@ -113,7 +113,7 @@ class FormulaManagementNavBar extends Component {
                                         <ProductionRun hist={this.props.hist} />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
-                                        <ProductionReportPage hist={this.props.hist}/>
+                                        <ProductionReportPageHome hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>
@@ -143,7 +143,7 @@ class FormulaManagementNavBar extends Component {
                                     </NavDropdown>
                                     <NavItem eventKey="1">Formula Management</NavItem>
                                     <NavItem eventKey="7">Formula Database</NavItem>
-                                    <NavItem eventKey="6">Production Report</NavItem>
+                                    <NavItem eventKey="6">Reports</NavItem>
 
                                 </Nav>
                             </Col>
@@ -156,7 +156,7 @@ class FormulaManagementNavBar extends Component {
                                         <IntermediatesDatabase hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
-                                        <ProductionReportPage hist={this.props.hist}/>
+                                        <ProductionReportPageHome hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>

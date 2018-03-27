@@ -8,6 +8,9 @@ import { Intermediates } from '../Intermediates/intermediates.js'
 import '../ProductionReport/ProductionReportApi.js';
 import ProductionReport from '../ProductionReport/ProductionReport.js'
 import { LotNumberSystem } from '../../api/Lots/LotNumberSystem'
+import Lots from '../../api/Lots/Lots.js'
+
+export const ProductionHistory = new Mongo.Collection('productionHistory');
 
 Meteor.methods({
     'production.produce'(formulaID, numUnitsProduce, ingList) {
@@ -41,6 +44,8 @@ Meteor.methods({
         }
         
         //Consume!!!
+        let lotsData = []
+
         for (let i = 0; i < ingList.length; i++) {
             let ing = IngredientsList.findOne({_id: ingList[i].ingredient})
             let int = Intermediates.findOne({_id: ingList[i].ingredient})
@@ -64,14 +69,49 @@ Meteor.methods({
             
             if (ing != undefined) { Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, totalIngProdAmt) }
             
+            //set the lot numbers
+            let lots = []
+            let ingLot = Lots.findOne({inventoryID: ingList[i].ingredient})
+            let q = ingLot.queue
+            let k = 0
+
+            while (totalIngProdAmt > 0){
+                lots.push({
+                    lotNumber: q[k].lot,
+                    time: q[k].time
+                })
+                let quantityInLot = q[k].qty
+                if (quantityInLot - totalIngProdAmt < 0){
+                    totalIngProdAmt -= quantityInLot
+                    k++
+                } else {
+                    break
+                }
+            }
+
+            lotsData.push({
+                ingredient: ingList[i].ingredient,
+                lots: lots
+            })
+
             Meteor.call('lots.removeQty', ingList[i].ingredient, totalIngProdAmt)
 
         }
 
         let lotNumber = LotNumberSystem.findOne({name: 'system'})
+        console.log(lotNumber)
+        
+        ProductionHistory.insert({
+            name: item.name,
+            lotNumber: lotNumber.lotNumber,
+            unitsProduced: numUnitsProduce,
+            time: new Date(),
+            lotsData: lotsData
+        })
+
         Meteor.call('lots.addFormula', item._id, numUnitsProduce, lotNumber.lotNumber, new Date())
         Meteor.call('systemlog.insert',"Production", "Produced", null, "Event", "");
-        //Meteor.call('production.log',formulaID,numUnitsProduce)
+        Meteor.call('production.log',formulaID,numUnitsProduce)
     },
     'production.addToCart'(ingList) {
         if (! this.userId || !Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
@@ -121,7 +161,6 @@ Meteor.methods({
 
                 let packagesNeeded = Math.ceil( Number(ingList[i].newStock) / Number(numPerPackage) * -1 ) 
 
-                console.log('adding things')
                 Meteor.call('addIngredientToCart',
                         ingredient,
                         packagesNeeded,
@@ -132,3 +171,9 @@ Meteor.methods({
     },
 
 })
+
+if (Meteor.isServer) {
+    Meteor.publish('productionHistory', function () {
+      return ProductionHistory.find();
+    });
+  }

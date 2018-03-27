@@ -11,22 +11,29 @@ Meteor.methods({
     'production.log': function(formulaId, qty) {
         if (ProductionReport.find({ formula : formulaId }).fetch().length === 0) {
             
-            
+            console.log('first if')
             var item1 = Formulas.find({ _id : formulaId}).fetch()[0]
             var item2 = Intermediates.findOne({_id: formulaId})
             let formula = item1 != undefined ? item1 : item2
 
             ingList = []
             costArr = []
+
+
             for (var i = 0; i < formula.ingredientsList.length; i++) {
                 var ing = IngredientsList.find({ _id : formula.ingredientsList[i].id}).fetch()[0]
-                ingList.push({
-                    ingredient: formula.ingredientsList[i].id,
-                    totalCost: Number(ing.spendingInfo.totalProdSpending).toFixed(2),
-                    totalUnitsConsumed: Number(formula.ingredientsList[i].amount * (qty/formula.productUnits)).toFixed(2)
-                })
-                costArr.push(((formula.ingredientsList[i].amount * (qty/formula.productUnits))/ing.nativeInfo.numNativeUnitsPerPackage) * ing.spendingInfo.avgPrice)
+                let int = Intermediates.findOne({_id: formula.ingredientsList[i].id})
+
+                if (ing != undefined) {
+                    ingList.push({
+                        ingredient: formula.ingredientsList[i].id,
+                        totalCost: Number(ing.spendingInfo.totalProdSpending).toFixed(2),
+                        totalUnitsConsumed: Number(formula.ingredientsList[i].amount * (qty/formula.productUnits)).toFixed(2)
+                    })
+                    costArr.push(((formula.ingredientsList[i].amount * (qty/formula.productUnits))/ing.nativeInfo.numNativeUnitsPerPackage) * ing.spendingInfo.avgPrice)
+                }
             }
+
             ProductionReport.insert({
               formula: formulaId,
               totalProduced: qty,
@@ -35,15 +42,20 @@ Meteor.methods({
             });  
         }
         else {
+            console.log('second if')
             ProductionReport.update( {formula : formulaId}, {$inc : { totalProduced : qty}})
             var item1 = Formulas.find({ _id : formulaId}).fetch()[0]
             var item2 = Intermediates.findOne({_id: formulaId})
             let formula = item1 != undefined ? item1 : item2
-            ingList = formula.ingredientsList
+
+            let ingList = formula.ingredientsList
             ProductionReport.update({formula:formulaId},{$set : {totalSpent : 0}})
+            
             for (var i = 0; i < ingList.length; i++) {
+                
                 var ing = IngredientsList.find({ _id : ingList[i].id}).fetch()[0]
                 var rep = ProductionReport.find({formula:formulaId}).fetch()[0]
+                
                 for (var j = 0; j < rep.ingredientsUsed.length; j++) {
                     if (rep.ingredientsUsed[j].ingredient == ingList[i].id) {
                         ProductionReport.update({formula:formulaId, 'ingredientsUsed.ingredient':ingList[i].id}, {$inc : {'ingredientsUsed.$.totalUnitsConsumed' : Number(ingList[i].amount * (qty/formula.productUnits)).toFixed(2)}})

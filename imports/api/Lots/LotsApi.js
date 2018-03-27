@@ -25,8 +25,6 @@ Meteor.methods({
             time: time 
         }
 
-        console.log(entry)
-
         if(lot.length != 0) {
             Lots.update({inventoryID : ingID}, {$push : {queue : entry}})
         }
@@ -70,12 +68,10 @@ Meteor.methods({
         Lots.find({inventoryID : id}).fetch()
     },
     'lots.removeQty': function(id, qty) {
-        console.log('Removing '+qty+' native units from lots')
         var lot = Lots.find({inventoryID : id}).fetch()
         if (lot.length === 0) {
             throw new Meteor.Error('no lots exist for ingredient','no lots exist for ingredient')
         }
-        console.log(lot[0])
         var q = lot[0].queue
         while (true) {
             if (qty >= q[0].qty) {
@@ -137,5 +133,8 @@ Meteor.methods({
     },
     'lots.increaseSystemLot'(){
         LotNumberSystem.update({ name : 'system'},{$inc : {lotNumber : 1}})
+    },
+    'lots.addToSystem'(number){
+        LotNumberSystem.insert({lot: number})
     }
 });

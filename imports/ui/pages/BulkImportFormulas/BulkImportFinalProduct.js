@@ -330,7 +330,7 @@ class BulkImportFinalProduct extends Component {
         <br></br>PRODUCT UNITS: Number of product units this formula will produce
         <br></br>DESCRIPTION: description of formula
         <br></br>INGREDIENT: name of ingredient used for formula
-        <br></br>UNITS: Number of ingredient native units used in the formula
+        <br></br>INGREDIENT UNITS: Number of ingredient native units used in the formula
         <br></br>*NAME, PRODUCT UNITS, DESCRIPTION are only specified once per formula. Also, no duplicates within a single file*
         </p>
 

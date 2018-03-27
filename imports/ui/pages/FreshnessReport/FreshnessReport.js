@@ -17,14 +17,38 @@ class FreshnessReport extends Component {
 			{
 				Header: 'Name',
 				accessor: 'name',
+				Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by name"
+	      />
 			}, 
 			{
 				Header: 'Average Time',
 				accessor: 'avgTime',
+				Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by Average Time"
+	      />
 			},
 			{
 				Header: 'Worst-case Time',
 				accessor: 'wcTime',
+				Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by Worst Time"
+	      />
 			},
 		];
 	}
@@ -67,12 +91,13 @@ class FreshnessReport extends Component {
 			<div>
 			<ControlLabel>Total: Average Time</ControlLabel>
 			<p></p>
-			{this.props.freshtotal[0] ? this.props.freshtotal[0].avgTimeString : ""}
+			<p><b>Average Time Overall Freshness</b>: {this.props.freshtotal[0] ? this.props.freshtotal[0].avgTimeString : ""}</p>
 			<p></p>
-			<p></p>
+			<p><b>Worst Time Overall Freshness</b>: {this.props.freshtotal[0] ? this.props.freshtotal[0].worstCaseString : ""}</p>
 			<ControlLabel>Total: Worst Case</ControlLabel>
 			<p></p>
 			{this.props.freshtotal[0] ? this.props.freshtotal[0].worstCaseString : ""}
+			<p>(Days: Hours: Minutes)</p>
 			</div>
 			<p></p>
        		<ReactTable
