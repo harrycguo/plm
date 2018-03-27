@@ -57,9 +57,7 @@ class InventoryManagementNavBar extends Component {
                                     <NavItem eventKey="2">Add New Ingredient</NavItem>
                                     <NavItem eventKey="4">Bulk Import Ingredients</NavItem>
                                     <NavItem eventKey="5">Spending Report</NavItem>
-                                    <NavItem eventKey="9">Freshness Report</NavItem>
-                                    <NavItem eventKey="10">Recall Report</NavItem>
-                                  
+                                    <NavItem eventKey="9">Freshness Report</NavItem>                                  
                                     
 
                                 </Nav>
@@ -80,11 +78,7 @@ class InventoryManagementNavBar extends Component {
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="9">
                                         <FreshnessReport />
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="10">
-                                        <RecallReportView />
-                                    </Tab.Pane>
-                                   
+                                    </Tab.Pane>                                   
                                 </Tab.Content>
                             </Col>
                         </Row>
