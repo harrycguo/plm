@@ -8,7 +8,7 @@ import ProductionReport from '../ProductionReport/ProductionReport.js';
 import { Intermediates } from '../Intermediates/intermediates'
 
 Formulas = new Mongo.Collection('formulas');
-//Formulas.attachSchema(FormulaSchema)
+// Formulas.attachSchema(FormulaSchema)
 
 Meteor.methods({
   'formulas.insert'(name, description, productUnits, ingredientsList) {

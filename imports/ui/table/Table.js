@@ -14,6 +14,9 @@ import AddVendor from './AddVendor.js';
 import EditVendor from './EditVendor.js';
 import CartApi from '../../api/Cart/CartApi.js';
 import Carts from '../../api/Cart/Cart.js';
+import Lots from '../../api/Lots/Lots.js'
+import LotsApi from '../../api/Lots/LotsApi.js'
+import LotsTable from './LotsTable.js'
 
 class Table extends Component {
 	
@@ -38,7 +41,7 @@ class Table extends Component {
 	renderHeader() {
 		return TableData.HeaderValues.map(element => (
 			<HeaderElement key={element._id} element={element}/>
-		));
+          ));
 	}
 
 	////////////////////////////////////////////////
@@ -54,12 +57,12 @@ class Table extends Component {
 	
 	remove() {
 		Meteor.call('removeIngredient', 
-		this.row._original.fullIng._id,
-		function(error, result){
-			if (error) {
-				Bert.alert(error.reason, 'danger')
-			} 
-		})
+          this.row._original.fullIng._id,
+          function(error, result){
+             if (error) {
+                Bert.alert(error.reason, 'danger')
+            } 
+        })
 		
 	}
 	
@@ -74,21 +77,21 @@ class Table extends Component {
 					if (confirm('Delete this Ingredient?')){
 
 						Meteor.call('removeIngredient', 
-						row.original.fullIng._id,
-						function(error, result){
-							if (error) {
-								Bert.alert(error.reason, 'danger')
-							} else {
-								_this.edit()
-								_this.edit()
-							}
-						})
+                          row.original.fullIng._id,
+                          function(error, result){
+                             if (error) {
+                                Bert.alert(error.reason, 'danger')
+                            } else {
+                                _this.edit()
+                                _this.edit()
+                            }
+                        })
 					}
 					
 				}}
 				>Remove Ingredient</Button> 
 				</div>
-			)
+             )
 		}else {
 			return null
 		}
@@ -106,14 +109,14 @@ class Table extends Component {
 			row.original.fullIng,
 			vendor,
 			function(error,result){
-                if(error){
-                   	console.log("something goes wrong with the following error message " + error.reason )
-               	  	Bert.alert(error.reason, 'danger');
-                } else {
+				if(error){
+					console.log("something goes wrong with the following error message " + error.reason )
+					Bert.alert(error.reason, 'danger');
+				} else {
 					Bert.alert('Successfully Removed Vendor', 'success');
 				}
 			}
-		);
+          );
 	}
 
 	addNewIng(){
@@ -129,37 +132,37 @@ class Table extends Component {
 	renderEditableVendorRows(row) {
 		return row.original.vendors.map(vendor => (
 			<tr key = {vendor.name}>
-				<EditVendor 
-					key={vendor.name} 
-					ing={row.original.fullIng}
-					source="table" 
-					vendor={vendor} 
-					edit={TableData.canEdit}
-				/>
-				<td> 
-					<Button
-						bsStyle="danger"
-						onClick={e=> {
-							var message = "Delete the vendor: "
-							message = message.concat(vendor.name).concat(" from this ingredient?")
-							if(confirm(message=message)) {
-								Meteor.call('removeVendor',
-									row.original.fullIng,
-									vendor,
-									function(error,result){
-						                if(error){
-						                   	console.log("something goes wrong with the following error message " + error.reason )
-						               	  	Bert.alert(error.reason, 'danger');
-						                }
-									}
-								);
-							}
-						}}
-						title= "Remove Vendor"
-					>Delete Vendor</Button>
-				</td>
-			</tr>
-		));
+            <EditVendor 
+            key={vendor.name} 
+            ing={row.original.fullIng}
+            source="table" 
+            vendor={vendor} 
+            edit={TableData.canEdit}
+            />
+            <td> 
+            <Button
+            bsStyle="danger"
+            onClick={e=> {
+             var message = "Delete the vendor: "
+             message = message.concat(vendor.name).concat(" from this ingredient?")
+             if(confirm(message=message)) {
+                Meteor.call('removeVendor',
+                   row.original.fullIng,
+                   vendor,
+                   function(error,result){
+                      if(error){
+                         console.log("something goes wrong with the following error message " + error.reason )
+                         Bert.alert(error.reason, 'danger');
+                     }
+                 }
+                 );
+            }
+        }}
+        title= "Remove Vendor"
+        >Delete Vendor</Button>
+        </td>
+        </tr>
+        ));
 	}
 	
 	renderVendorRows(row, _this) {
@@ -171,11 +174,11 @@ class Table extends Component {
 		var recentVendor = undefined
 		return row.original.vendors.map(vendor => (
 			<tr key={vendor.name}>
-				<td>{vendor.name}</td>
-				<td>{vendor.price}</td>
-				{this.renderOrderFields(row, vendor, _this)}
-			</tr>
-		));
+            <td>{vendor.name}</td>
+            <td>{vendor.price}</td>
+            {this.renderOrderFields(row, vendor)}
+            </tr>
+            ));
 	}
 
 
@@ -188,42 +191,50 @@ class Table extends Component {
 		return ( 
 			<div>
 			<ReactTable
-		    data={_this.renderRows(_this)}
-		    filterable
-		    defaultFilterMethod={ (filter, row) => 
-		    	String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase())
+			data={_this.renderRows(_this)}
+			filterable
+			defaultFilterMethod={ (filter, row) => 
+				String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase())
 			}
-		    columns={TableData.HeaderValues}
-		    SubComponent={row => {
-		    	return (
-		    		<div style={{ padding: "5px" }}>
-		    			<table>
-		    			<tbody>
-		    				<tr>
-		    					<th>Vendor</th>
-		    					<th>Price</th>
-		    				</tr>
-		    				{_this.renderVendorRows(row, _this)}
-		    				<AddVendor ing={row.original.fullIng} edit={TableData.canEdit}/>
-		    			</tbody>
-		    			</table>
-		    			{_this.renderButtons(_this, row)}
-                	</div>
-                );
-		    }}
-		  />
-		  </div>
-		);
+			columns={TableData.HeaderValues}
+			SubComponent={row => {
+				return (
+					<div style={{ padding: "5px" }}>
+                    <details>
+                    <summary>Vendors</summary>
+                    <table>
+                  <tbody>
+                  <tr>
+                  <th>Vendor</th>
+                  <th>Price</th>
+                  </tr>
+                  {_this.renderVendorRows(row, _this)}
+                  <AddVendor ing={row.original.fullIng} edit={TableData.canEdit}/>
+                  </tbody>
+                  </table>
+                  </details>
+                  <details><summary>Lots</summary>
+                    <LotsTable 
+                        ingredient={row.original.fullIng}
+                    />
+                  </details>
+                    {_this.renderButtons(_this, row)}
+                  </div>
+                  );
+			}}
+            />
+            </div>
+            );
 	}
 	render() {
 		let user = Meteor.user()
-        let carts = this.props.carts
-        let cartNum = 0;
+		let carts = this.props.carts
+		let cartNum = 0;
 
-        for (let i = 0; i < carts.length; i++){
-            if (carts[i].user == user._id){
-                cartNum = carts[i].ingredients.length
-            }
+		for (let i = 0; i < carts.length; i++){
+			if (carts[i].user == user._id){
+				cartNum = carts[i].ingredients.length
+			}
 		}
 		
 		if (!Meteor.user() || !Roles.userIsInRole(Meteor.user()._id, 'admin')) {
@@ -232,106 +243,107 @@ class Table extends Component {
 				this.forceUpdate()
 			}
 			return (
-			<div>
-				<ButtonToolbar>		
-			<Button
-				bsStyle="success"
-				onClick={this.goToCart.bind(this)}
-				title= "Cart"
-				>Go To Cart({cartNum})
-				
-			</Button>
+             <div>
+             <ButtonToolbar>		
+             <Button
+             bsStyle="success"
+             onClick={this.goToCart.bind(this)}
+             title= "Cart"
+             >Go To Cart({cartNum})
 
-			</ButtonToolbar>
-				<p></p>
-			{this.renderTable(this)}
-		   	</div>
-			);
+             </Button>
+
+             </ButtonToolbar>
+             <p></p>
+             {this.renderTable(this)}
+             </div>
+             );
 		}
 
 		
 
 		return (
 			<div>
-				<ButtonToolbar>
-			<Button
-				bsStyle="primary"
-				onClick={this.edit.bind(this)}
-				title= "Edit"
-				>{this.editButtonText()}
-			</Button>
-		
-			<Button
-				bsStyle="success"
-				onClick={this.goToCart.bind(this)}
-				title= "Cart"
-				>Go To Cart({cartNum})
-				
-			</Button>
+            <ButtonToolbar>
+            <Button
+            bsStyle="primary"
+            onClick={this.edit.bind(this)}
+            title= "Edit"
+            >{this.editButtonText()}
+            </Button>
 
-			</ButtonToolbar>
-				<p></p>
-			{this.renderTable(this)}
-		   	</div>
-		);
+            <Button
+            bsStyle="success"
+            onClick={this.goToCart.bind(this)}
+            title= "Cart"
+            >Go To Cart({cartNum})
+
+            </Button>
+
+            </ButtonToolbar>
+            <p></p>
+            {this.renderTable(this)}
+            </div>
+            );
 
 	}
 	editButtonText() {
 		return TableData.canEdit ? "Leave Edit Mode" : "Enter Edit Mode"
 	}
 
-	renderOrderFields(row,vendor, _this){
-
+	renderOrderFields(row,vendor){
 		return (Meteor.user() && ( 
 			Roles.userIsInRole(Meteor.user()._id, 'manager')
 			|| Roles.userIsInRole(Meteor.user()._id, 'admin'))) ? 
-			(<>
-				<td>
-					<input type="number" step="1" onChange={ e=> {
-						qty = e.target.value;
-						recentVendor = vendor;
-					}}/>
-				</td>
-				<td>
-				<Button
-					bsStyle="success"
-					onClick={e => {
-						if(recentVendor === vendor) {
-							console.log(row.original.fullIng)
-							console.log(vendor)
-							Meteor.call('addIngredientToCart',
-								row.original.fullIng,
-								qty, 
-								vendor._id,
-								function(error,result){
-									if(error){
-	                        				console.log("something goes wrong with the following error message " + error.reason )
-	               	  						Bert.alert(error.reason, 'danger');
-	                  				} else {
-											Bert.alert('Added ' + qty +' ' + row.original.fullIng.packageInfo.packageType + '(s) to Cart!', 'success')
-									}
-								}
-							);
-						}
+     (<>
+        <td>
+        <input type="number" step="1" onChange={ e=> {
+          qty = e.target.value;
+          recentVendor = vendor;
+      }}/>
+      </td>
+      <td>
+      <Button
+      bsStyle="success"
+      onClick={e => {
+          if(recentVendor === vendor) {
+             console.log(row.original.fullIng)
+             console.log(vendor)
+             Meteor.call('addIngredientToCart',
+                row.original.fullIng,
+                qty, 
+                vendor._id,
+                function(error,result){
+                   if(error){
+                     console.log("something goes wrong with the following error message " + error.reason )
+                     Bert.alert(error.reason, 'danger');
+                 } else {
+                     Bert.alert('Added ' + qty +' ' + row.original.fullIng.packageInfo.packageType + '(s) to Cart!', 'success')
+                 }
+             }
+             );
+         }
 
-					}}
-				>
-					Add Packages To Cart
-				</Button>
-				</td>
-				</>
-			) : null;
-	}
-	
+     }}
+     >
+     Add Packages To Cart
+     </Button>
+     </td>
+     < />
+     ) : null;
+ }
+
 }
 
 export default withTracker(() => {
 	Meteor.subscribe('ingredients')
 	Meteor.subscribe('vendors')
 	Meteor.subscribe('carts');
+	Meteor.subscribe('lots');
 	return {
 		ingredients: IngredientsList.find({}).fetch(),
 		vendors: Vendors.find({}).fetch(),
 		carts: Carts.find({}).fetch(),
+		lots: Lots.find({}).fetch()
 	};
 })(Table);
