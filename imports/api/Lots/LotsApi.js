@@ -72,7 +72,7 @@ Meteor.methods({
         console.log('Removing '+qty+' native units from lots')
         var lot = Lots.find({inventoryID : id}).fetch()
         if (lot.length === 0) {
-            throw new Meteor.Error('no lots fexist for ingredient','no lots exist for ingredient')
+            throw new Meteor.Error('no lots exist for ingredient','no lots exist for ingredient')
         }
         console.log(lot[0])
         var q = lot[0].queue
@@ -85,7 +85,7 @@ Meteor.methods({
             }
             else {
                 q[0].qty = q[0].qty - qty
-                Meteor.call('freshreport.updateAvgTime',id,q[0].qty)
+                Meteor.call('freshreport.updateAvgTime',id,qty)
                 Meteor.call('freshreport.updateWorstCase',id)
                 break
             }
@@ -113,7 +113,6 @@ Meteor.methods({
         for (var i = 0; i < q.length; i++) {
             q[i].time.setMilliseconds(0)
             if (q[i].time.getTime() === date.getTime() && q[i].lot == lotNumber) {
-                console.log('Goal condition reached!')
                 index = i
                 diff = q[i].qty - newQty
                 q[i].qty = newQty
@@ -125,8 +124,6 @@ Meteor.methods({
         }
         Lots.update({ inventoryID : id},{$set : {queue : q}})
         var curTotalNativeUnits = IngredientsList.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
-        console.log('total # native units: '+curTotalNativeUnits)
-        console.log('inventory difference is: '+(curTotalNativeUnits - diff))
         Meteor.call('editTotalNumNativeUnits',id,curTotalNativeUnits - diff)
     },
     'lots.increaseSystemLot'(){
