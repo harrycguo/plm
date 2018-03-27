@@ -3,6 +3,7 @@ import { Meteor } from 'meteor/meteor';
 import Lots from './Lots.js';
 import { LotNumberSystem } from './LotNumberSystem.js'
 import '../FreshReport/FreshReportApi.js'
+import { Intermediates } from '../Intermediates/intermediates.js'
 
 if (Meteor.isClient) {
     Meteor.subscribe('lots')
@@ -59,7 +60,7 @@ Meteor.methods({
                 queue: [entry]
             })
         }
-        // var curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity khjh
+        // var curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
         // Meteor.call('editTotalNumNativeUnits',id,curTotalNativeUnits + qty)
     },
     'lots.addArray': function(id, arr) {
@@ -123,8 +124,16 @@ Meteor.methods({
             q.splice(index,1)
         }
         Lots.update({ inventoryID : id},{$set : {queue : q}})
-        var curTotalNativeUnits = IngredientsList.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
-        Meteor.call('editTotalNumNativeUnits',id,curTotalNativeUnits - diff)
+        var curTotalNativeUnits = 0
+        console.log(lot.queue[0].vendor)
+        if (lot.queue[0].vendor !== undefined) {
+            curTotalNativeUnits = IngredientsList.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
+            Meteor.call('editTotalNumNativeUnits',id,curTotalNativeUnits - diff)
+        }
+        else {
+            curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
+            Meteor.call('intermediates.editTotalNumNativeUnits',id,curTotalNativeUnits - diff)
+        }
     },
     'lots.increaseSystemLot'(){
         LotNumberSystem.update({ name : 'system'},{$inc : {lotNumber : 1}})
