@@ -38,6 +38,8 @@ Meteor.methods({
         }
         console.log('created: '+time)
         var curTotalNativeUnits = IngredientsList.find({ _id : ingID}).fetch()[0].nativeInfo.totalQuantity
+
+        Meteor.call('systemlog.insert', "Lot", lotNumber, 0, "Added", "")
         Meteor.call('editTotalNumNativeUnits',ingID,curTotalNativeUnits + qty)
         Meteor.call('lotshistory.add', ingID, qty, lotNumber, vendor, price, time)
     },
@@ -63,12 +65,18 @@ Meteor.methods({
                 queue: [entry]
             })
         }
-        Meteor.call('lotshistory.addFormula', id, qty, lotNumber, time)
+        Meteor.call('systemlog.insert', "Lot", lotNumber, 0, "Added", "")
         // var curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
         // Meteor.call('editTotalNumNativeUnits',id,curTotalNativeUnits + qty)
     },
-    'lots.removeQty': function(id, qty, formulaID, formulaQty, time, lotNum, intermediate) {
-        console.log('Removing '+qty+' native units from lots')
+    'lots.addArray': function(id, arr) {
+        //TODO: Implement
+        Meteor.call('systemlog.insert', "Lot", "Multiple", 0, "Added", "")
+    },
+    'lots.editLots': function(id, arr) {
+        Lots.find({inventoryID : id}).fetch()
+    },
+    'lots.removeQty': function(id, qty) {
         var lot = Lots.find({inventoryID : id}).fetch()
         var entry = {}
         if (lot.length === 0) {
@@ -108,6 +116,7 @@ Meteor.methods({
             }
         }
         Lots.update({inventoryID : id}, {$set : {queue : q}})
+        Meteor.call('systemlog.insert', "Lot", lotNumber, 0, "Removed", qty)
     },
     'lots.editLotNumber': function(id, oldLot, newLot, date) {
         date.setMilliseconds(0)
@@ -126,6 +135,7 @@ Meteor.methods({
             }
         })
         Lots.update({ inventoryID : id },{$set : {queue : q}})
+        Meteor.call('systemlog.insert', "Lot", oldLot, 0, "Modified", newLot)
     },
     'lots.editLotQty': function(id, lotNumber, newQty, date) {
         date.setMilliseconds(0)
@@ -156,6 +166,7 @@ Meteor.methods({
             curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
             Meteor.call('intermediates.editTotalNumNativeUnits',id,curTotalNativeUnits - diff)
         }
+        Meteor.call('systemlog.insert', "Lot", lotNumber, 0, "Modified", newQty)
     },
     'lots.logProduction': function(lotID, id, qty, time, lot, intermediate) {
         var entry = {
