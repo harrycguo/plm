@@ -43,6 +43,8 @@ Meteor.methods({
             Formulas.update({_id: formulaID}, {$inc: { quantity: numUnitsProduce}})
         }
         
+        let lotNumber = LotNumberSystem.findOne({name: 'system'})
+
         //Consume!!!
         let lotsData = []
 

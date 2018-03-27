@@ -7,6 +7,7 @@ import { containsVendor, indexOfVendorWithId, isInt, checkUndefined, checkIngExi
 import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
 import  Formulas  from '../Formulas/formulas.js'
 import { Intermediates } from '../Intermediates/intermediates.js'
+// import FreshReportApi from '../FreshReport/FreshReportApi.js'
 
 if (Meteor.isClient) {
     Meteor.subscribe('storageCapacities'); 
@@ -169,8 +170,6 @@ Meteor.methods({
                 ingPrice
             );
         }
-
-        Lots.find({ ingID : ingName.trim()})
     },
     'addToExistingIngredientBulk': function (ingName, ingTemperatureState, ingPackage, numPackages, ingStorage, ingTotalNumNativeUnits , ingNativeUnit, ingNumNativeUnitsPerPackage, ingVendor, ingPrice) {
         
@@ -271,6 +270,7 @@ Meteor.methods({
                 ingPrice
             );
         }
+        // Meteor.call('freshreport.insert',)
     },
     'removeIngredient': function (selectedIngredient) {
         //Check if user can
@@ -338,7 +338,7 @@ Meteor.methods({
 
 
         IngredientsList.remove({ _id: selectedIngredient });
-        Lots.remove({ ingID : selectedIngredient});
+        Lots.remove({ inventoryID : selectedIngredient});
         Meteor.call('systemlog.insert',
             "Ingredient", existingIng.name, existingIng._id, 
             "Removed", "");

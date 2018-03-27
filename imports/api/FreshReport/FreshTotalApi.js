@@ -21,9 +21,9 @@ Meteor.methods({
             repArr = FreshTotal.find().fetch()
         }
         var rep = repArr[0]
-        console.log(rep)
-        var newAvgTime = (time + rep.totalTime)/(rep.totalConsumed + qtyConsumed)
-        console.log(rep.totalConsumed)
+        // console.log(rep)
+        var newAvgTime = (time * qtyConsumed + rep.totalTime)/(rep.totalConsumed + qtyConsumed)
+        // console.log(rep.totalConsumed)
         FreshTotal.update({},{$set : {avgTime : newAvgTime}})
         FreshTotal.update({},{$inc : {totalTime : time}})
         FreshTotal.update({},{$inc : {totalConsumed : qtyConsumed}})

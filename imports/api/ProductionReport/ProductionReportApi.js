@@ -9,11 +9,9 @@ if (Meteor.isClient) {
 
 Meteor.methods({
     'production.log': function(formulaId, qty) {
-        if (ProductionReport.find({ formula : formulaId }).fetch().length === 0) {
-            
-            console.log('first if')
+        if (ProductionReport.find({ formula : formulaId }).fetch().length === 0) {      
             var item1 = Formulas.find({ _id : formulaId}).fetch()[0]
-            var item2 = Intermediates.findOne({_id: formulaId})
+            var item2 = Intermediates.find({_id: formulaId}).fetch()[0]
             let formula = item1 != undefined ? item1 : item2
 
             ingList = []
@@ -45,7 +43,7 @@ Meteor.methods({
             console.log('second if')
             ProductionReport.update( {formula : formulaId}, {$inc : { totalProduced : qty}})
             var item1 = Formulas.find({ _id : formulaId}).fetch()[0]
-            var item2 = Intermediates.findOne({_id: formulaId})
+            var item2 = Intermediates.find({_id: formulaId}).fetch()[0]
             let formula = item1 != undefined ? item1 : item2
 
             let ingList = formula.ingredientsList
@@ -66,6 +64,7 @@ Meteor.methods({
                     }
                 }
             }
+                 
         }
         console.log(ProductionReport.find().fetch())
     },

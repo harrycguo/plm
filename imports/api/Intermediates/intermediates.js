@@ -4,6 +4,7 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import { StorageCapacities } from '../StorageCapacities/storageCapacities.js';
 import  Formulas  from '../Formulas/formulas.js'
 import IngredientsList from '../Ingredients/IngredientList.js';
+import Lots from '../Lots/Lots.js';
 import { IngredientFormulaSchema, PackageInfoSchema, NativeInfoSchema, VendorInfoSchema, FormulaInfoSchema, SpendingInfoSchema, IntermediateSchema } from '../Ingredients/Schemas.js';
 import isInt from '../../utils/checks.js';
 
@@ -11,6 +12,7 @@ export const Intermediates = new Mongo.Collection('intermediates');
 
 if (Meteor.isClient) {
   Meteor.subscribe('storageCapacities');
+  Meteor.subscribe('lots')
 }
 
 Meteor.methods({
@@ -92,7 +94,8 @@ Meteor.methods({
       packageInfo: packageInfoArr,
       storage: Number(ingStorage),
       nativeInfo: nativeInfoArr,
-      formulaInfo: []
+      formulaInfo: [],
+      totalIngSpending: 0
     },
     function (error, result) {
       //attach formulaID
@@ -438,7 +441,9 @@ Meteor.methods({
     }
     Meteor.call('production.remove', id)
     Intermediates.remove({ _id: id });
+    Lots.remove({ inventoryID : id});
   },
+  // 'intermediates.updateTotalSpendin'
   'intermediates.editIngredientsList'(id, ingredientsList){
     let set = new Set()
 
