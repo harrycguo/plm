@@ -99,7 +99,8 @@ Meteor.methods({
         }
 
         let lotNumber = LotNumberSystem.findOne({name: 'system'})
-        Meteor.call('lots.addFormula', item._id, numUnitsProduce, lotNumber.lotNumber, new Date())
+        console.log(lotNumber)
+        
         ProductionHistory.insert({
             name: item.name,
             lotNumber: lotNumber.lotNumber,
@@ -108,8 +109,9 @@ Meteor.methods({
             lotsData: lotsData
         })
 
+        Meteor.call('lots.addFormula', item._id, numUnitsProduce, lotNumber.lotNumber, new Date())
         Meteor.call('systemlog.insert',"Production", "Produced", null, "Event", "");
-        //Meteor.call('production.log',formulaID,numUnitsProduce)
+        Meteor.call('production.log',formulaID,numUnitsProduce)
     },
     'production.addToCart'(ingList) {
         if (! this.userId || !Roles.userIsInRole(this.userId, ['admin', 'manager'])) {

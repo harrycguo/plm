@@ -13,14 +13,38 @@ class SpendingReport extends Component {
 			{
 				Header: 'Ingredient',
 				accessor: 'ing',
+				Filter: ({ filter, onChange }) =>
+				<input
+					type="text"
+					onChange={event => onChange(event.target.value)}
+					style={{ width: '100%', height: '100%'}}
+					value={filter ? filter.value : ''}
+					placeholder="Filter by name"
+				/>
 			}, 
 			{
 				Header: 'Total Spending',
 				accessor: 'total',
+				Filter: ({ filter, onChange }) =>
+				<input
+					type="text"
+					onChange={event => onChange(event.target.value)}
+					style={{ width: '100%', height: '100%'}}
+					value={filter ? filter.value : ''}
+					placeholder="Filter by Total Spending"
+				/>
 			},
 			{
 				Header: 'Production Spending',
 				accessor: 'prod',
+				Filter: ({ filter, onChange }) =>
+				<input
+					type="text"
+					onChange={event => onChange(event.target.value)}
+					style={{ width: '100%', height: '100%'}}
+					value={filter ? filter.value : ''}
+					placeholder="Filter by Production Spending"
+				/>
 			},
 		];
 	}
