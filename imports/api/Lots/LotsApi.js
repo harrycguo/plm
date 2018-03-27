@@ -85,7 +85,7 @@ Meteor.methods({
             }
             else {
                 q[0].qty = q[0].qty - qty
-                Meteor.call('freshreport.updateAvgTime',id,q[0].qty)
+                Meteor.call('freshreport.updateAvgTime',id,qty)
                 Meteor.call('freshreport.updateWorstCase',id)
                 break
             }
