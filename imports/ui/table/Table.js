@@ -17,6 +17,7 @@ import Carts from '../../api/Cart/Cart.js';
 import Lots from '../../api/Lots/Lots.js'
 import LotsApi from '../../api/Lots/LotsApi.js'
 import LotsTable from './LotsTable.js'
+import {RecallChild} from '../recall/RecallChild.js'
 
 class Table extends Component {
 	
@@ -244,6 +245,7 @@ class Table extends Component {
 			}
 			return (
              <div>
+
              <ButtonToolbar>		
              <Button
              bsStyle="success"
@@ -256,6 +258,8 @@ class Table extends Component {
              </ButtonToolbar>
              <p></p>
              {this.renderTable(this)}
+
+
              </div>
              );
 		}
@@ -271,7 +275,6 @@ class Table extends Component {
             title= "Edit"
             >{this.editButtonText()}
             </Button>
-
             <Button
             bsStyle="success"
             onClick={this.goToCart.bind(this)}

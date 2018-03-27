@@ -8,6 +8,7 @@ import { Intermediates } from '../../../api/Intermediates/intermediates.js'
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import InventoryManagementNavBar from '../../components/InventoryManagementNavBar/InventoryManagementNavBar.js'
+import { Button , ButtonToolbar, ControlLabel, Glyphicon } from 'react-bootstrap';
 
 class FreshnessReport extends Component {
 
@@ -64,12 +65,12 @@ class FreshnessReport extends Component {
 		return (
 			<div>
 			<div>
-			{"Total: Average Time"}
+			<ControlLabel>Total: Average Time</ControlLabel>
 			<p></p>
 			{this.props.freshtotal[0] ? this.props.freshtotal[0].avgTimeString : ""}
 			<p></p>
 			<p></p>
-			{"Total: Worst Case"}
+			<ControlLabel>Total: Worst Case</ControlLabel>
 			<p></p>
 			{this.props.freshtotal[0] ? this.props.freshtotal[0].worstCaseString : ""}
 			</div>
