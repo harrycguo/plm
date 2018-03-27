@@ -81,6 +81,7 @@ Meteor.methods({
         }
         console.log(lotEntry)
         prodHist.push(entry)
+        
         LotsHistory.update({ inventoryID : id, 'queue.time': time},{$set : {'queue.$.productionHistory' : prodHist}})
     }
 });

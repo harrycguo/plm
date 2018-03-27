@@ -66,6 +66,7 @@ Meteor.methods({
             })
         }
         Meteor.call('systemlog.insert', "Lot", lotNumber, 0, "Added", "")
+        Meteor.call('lotshistory.addFormula', id, qty, lotNumber, time)
         // var curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
         // Meteor.call('editTotalNumNativeUnits',id,curTotalNativeUnits + qty)
     },
