@@ -23,6 +23,8 @@ import EditIntermediateQuantity from '../../ui/pages/EditIntermediate/EditInterm
 import ViewFormula from '../../ui/pages/ViewFormula/ViewFormula.js'
 import ViewIntermediate from '../../ui/pages/ViewIntermediate/ViewIntermediate.js'
 
+import FreshnessReport from '../../ui/pages/FreshnessReport/FreshnessReport.js'
+
 import VendorManagementHome from '../../ui/pages/VendorManagement/VendorManagementHome.js'
 import EditVendor from '../../ui/pages/EditVendor/EditVendor.js';
 
@@ -59,6 +61,8 @@ class App extends Component {
           <Authenticated exact path='/editIntermediateQuantity/:formulaID' component={EditIntermediateQuantity} {...props}/>
           <Authenticated exact path='/viewIntermediate/:formulaID' component={ViewIntermediate} {...props}/> 
           
+          <Authenticated exact path='/freshnessReport' component={FreshnessReport} {...props}/>
+
           <Authenticated exact path="/vendorManagement" component={VendorManagementHome} {...props}/>
           <Authenticated exact path="/editVendor/:vendorID" component={EditVendor} {...props}/>
 
