@@ -11,7 +11,7 @@ import AddIngredient from '../../pages/AddIngredient/AddIngredient.js'
 import BulkImportIngredients from '../../pages/BulkImportIngredients/BulkImportIngredients.js'
 import SpendingReport from '../../pages/SpendingReport/SpendingReport.js'
 import FreshnessReport from '../../pages/FreshnessReport/FreshnessReport.js'
-import RecallReport from '../../pages/RecallReport/RecallReport.js'
+import RecallReportView from '../../pages/RecallReport/RecallReport.js'
 import Cart from '../../pages/Cart/Cart.js'
 
 class InventoryManagementNavBar extends Component {
@@ -82,7 +82,7 @@ class InventoryManagementNavBar extends Component {
                                         <FreshnessReport />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="10">
-                                        <RecallReport />
+                                        <RecallReportView />
                                     </Tab.Pane>
                                    
                                 </Tab.Content>
@@ -135,7 +135,7 @@ class InventoryManagementNavBar extends Component {
                                         <FreshnessReport />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="10">
-                                    <RecallReport />
+                                    <RecallReportView />
                                     </Tab.Pane>
                                    
                                 </Tab.Content>
@@ -183,7 +183,7 @@ class InventoryManagementNavBar extends Component {
                                         <FreshnessReport />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="10">
-                                    <RecallReport />
+                                    <RecallReportView />
                                     </Tab.Pane>
                                
                             </Tab.Content>
