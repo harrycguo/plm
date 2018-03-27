@@ -375,4 +375,41 @@ FreshReportSchema = new SimpleSchema({
   }
 })
 
-export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema, FreshReportSchema };
+FreshTotalSchema = new SimpleSchema({
+  avgTime: {
+    type: Number,
+    decimal: true,
+    min: 0,
+    defaultValue: 0
+  },
+  avgTimeString: {
+    type: String,
+    defaultValue: '0:0:0',
+    min: 0
+  },
+  worstCase: {
+    type: Number,
+    decimal: true,
+    min: 0,
+    defaultValue: 0
+  },
+  worstCaseString: {
+    type: String,
+    defaultValue: '0:0:0',
+    min: 0
+  },
+  totalConsumed: {
+    type: Number,
+    decimal: true,
+    min: 0,
+    defaultValue: 0
+  },
+  totalTime: {
+    type: Number,
+    decimal: true,
+    min: 0,
+    defaultValue: 0 
+  }
+})
+
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema, FreshReportSchema, FreshTotalSchema };

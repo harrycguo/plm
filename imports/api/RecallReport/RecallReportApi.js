@@ -11,5 +11,7 @@ if (Meteor.isClient) {
 }
 
 Meteor.methods({
-
+    'recall.produceReport': function(id,lotNumber) {
+        
+    }
 });
