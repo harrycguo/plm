@@ -7,6 +7,8 @@ import StorageCapacityWrapper from '../../components/StorageCapacityWrapper/Stor
 import IntermediatesDatabaseData from './IntermediatesDatabaseData.js'
 import { Intermediates } from '../../../api/Intermediates/intermediates.js';
 import  Formulas  from '../../../api/Formulas/formulas'
+import LotsTable from '../../table/LotsTable.js'
+import TableData from '../../table/TableData.js'
 
 class IntermediatesDatabase extends Component {
   constructor(props) {
@@ -82,43 +84,30 @@ class IntermediatesDatabase extends Component {
         filterable
         noDataText="Loading..."
         SubComponent={row => {
-
+          console.log(row)
           let editQuantity = row.original.pkg != '' ? 
           <div className="container-button2">
-          <Link to={{
-            pathname: '/editIntermediateQuantity/'+row.original.fullIntermediate._id, 
-            state: {
-              name: row.original.name,
-              intermediate: row.original.fullIntermediate
-            }
-          
-          }}>
-            <Button bsStyle="info">
-            View Lots / Edit Quantity
+            <Button bsStyle="info"
+            onClick={e=>{
+              TableData.toggleEditable()
+              this.forceUpdate()
+            }}>
+            Edit Lots
             </Button>
-          </Link>
+          <details>
+          <summary>Lots</summary>
+                    <LotsTable 
+                        ingredient={row.original.fullIntermediate}
+                    />
+          </details>
           </div>
      
         : null
 
           return(
-            <div className="side-container-zero">
+            <div>
             {editQuantity}
             <div className="container-button2">
-            <Link to={{
-            pathname: '/editIntermediateQuantity/', 
-            }
-          
-            // state: {
-            //   name: this.props.sc.name,
-            //   capacity: this.props.sc.capacity,
-            //   }
-            // }
-            }>
-              <Button bsStyle="primary">
-              View Production History
-              </Button>
-            </Link>
             </div>
             
             </div> 

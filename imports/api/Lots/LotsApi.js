@@ -60,8 +60,8 @@ Meteor.methods({
                 queue: [entry]
             })
         }
-        var curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
-        Meteor.call('editTotalNumNativeUnits',id,curTotalNativeUnits + qty)
+        // var curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
+        // Meteor.call('editTotalNumNativeUnits',id,curTotalNativeUnits + qty)
     },
     'lots.addArray': function(id, arr) {
         //TODO: Implement

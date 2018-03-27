@@ -6,6 +6,9 @@ var boxLocked = false;
 
 function renderEditableVendor(cellInfo) {
 	console.log(cellInfo)
+	if(cellInfo.original.ingredient.vendorInfo == undefined) {
+		return (<div>Formula</div>)
+	}
 	if(TableData.canEdit) {
 		var vendors = cellInfo.original.ingredient.vendorInfo;
 		var oldVendorId = cellInfo.original.vendorID
@@ -232,7 +235,7 @@ export function convertToFrontend(lot, ingredient, vendors) {
 			vendorName = vendor.vendor
 		}
 	})
-
+	
 	return {
 		num: lot.lot, 
 		qty: lot.qty,
