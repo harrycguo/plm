@@ -176,7 +176,7 @@ class Table extends Component {
 		return row.original.vendors.map(vendor => (
 			<tr key={vendor.name}>
             <td>{vendor.name}</td>
-            <td>{vendor.price}</td>
+            <td>{vendor.price.toFixed(2)}</td>
             {this.renderOrderFields(row, vendor)}
             </tr>
             ));
@@ -242,29 +242,30 @@ class Table extends Component {
 			if(TableData.canEdit) {
 				TableData.toggleEditable()
 				this.forceUpdate()
-			}
+
+            }
+            
+            let cartButton = Roles.userIsInRole(Meteor.userId(), 'manager') ? 
+            <Button
+                bsStyle="success"
+                onClick={this.goToCart.bind(this)}
+                title= "Cart"
+                >Go To Cart({cartNum})
+                </Button>
+                :null
 			return (
-             <div>
+                <div>
+                <ButtonToolbar>		
+                
+                {cartButton}
 
-             <ButtonToolbar>		
-             <Button
-             bsStyle="success"
-             onClick={this.goToCart.bind(this)}
-             title= "Cart"
-             >Go To Cart({cartNum})
-
-             </Button>
-
-             </ButtonToolbar>
-             <p></p>
-             {this.renderTable(this)}
-
-
-             </div>
+                </ButtonToolbar>
+                <p></p>
+                {this.renderTable(this)}
+                </div>
              );
-		}
-
-		
+        }
+        		
 
 		return (
 			<div>
