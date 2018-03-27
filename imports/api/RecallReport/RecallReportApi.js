@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import RecallReport from './RecallReport.js';
-import { dhm } from '../../utils/conversions.js'
+import conversions from '../../utils/conversions.js'
 
 if (Meteor.isClient) {
     Meteor.subscribe('lots')

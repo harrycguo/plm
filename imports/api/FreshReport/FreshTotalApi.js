@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import FreshTotal from './FreshTotal.js';
-import { dhm } from '../../utils/conversions.js'
+import conversions from '../../utils/conversions.js'
 
 if (Meteor.isClient) {
     Meteor.subscribe('lots')
@@ -27,7 +27,7 @@ Meteor.methods({
         FreshTotal.update({},{$set : {avgTime : newAvgTime}})
         FreshTotal.update({},{$inc : {totalTime : time}})
         FreshTotal.update({},{$inc : {totalConsumed : qtyConsumed}})
-        FreshTotal.update({},{$set : {avgTimeString: dhm(newAvgTime)}})
+        FreshTotal.update({},{$set : {avgTimeString: conversions.dhm(newAvgTime)}})
     },
     'freshtotal.updateWorstCase': function(time) {
         var repArr = FreshTotal.find().fetch()
@@ -38,7 +38,7 @@ Meteor.methods({
         var rep = repArr[0]
         if (time > rep.worstCase) {
             FreshTotal.update({},{$set : {worstCase: time}})
-            FreshTotal.update({},{$set : {worstCaseString: dhm(time)}})
+            FreshTotal.update({},{$set : {worstCaseString: conversions.dhm(time)}})
         }
     }
 });

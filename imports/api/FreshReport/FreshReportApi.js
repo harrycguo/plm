@@ -1,7 +1,7 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import FreshReport from './FreshReport.js';
-import { dhm } from '../../utils/conversions.js'
+import conversions from '../../utils/conversions.js'
 import './FreshTotalApi.js'
 
 if (Meteor.isClient) {
@@ -37,7 +37,7 @@ Meteor.methods({
         FreshReport.update({ inventoryID : id},{$set : {avgTime : newAvgTime}})
         FreshReport.update({ inventoryID : id},{$inc : {totalTime : millisecondsDiff * qtyConsumed}})
         FreshReport.update({ inventoryID : id},{$inc : {totalQtyConsumed : qtyConsumed}})
-        FreshReport.update({ inventoryID : id},{$set : {avgTimeString: dhm(newAvgTime)}})
+        FreshReport.update({ inventoryID : id},{$set : {avgTimeString: conversions.dhm(newAvgTime)}})
         Meteor.call('freshtotal.updateAvgTime',qtyConsumed,millisecondsDiff)
     },
     'freshreport.updateWorstCase': function(id) {
@@ -51,7 +51,7 @@ Meteor.methods({
         var consumptionDate = new Date()
         if ((consumptionDate - startDate) > rep.worstCase) {
             FreshReport.update({ inventoryID : id},{$set : {worstCase: (consumptionDate - startDate)}})
-            FreshReport.update({ inventoryID : id},{$set : {worstCaseString: dhm(consumptionDate - startDate)}})
+            FreshReport.update({ inventoryID : id},{$set : {worstCaseString: conversions.dhm(consumptionDate - startDate)}})
         }
         Meteor.call('freshtotal.updateWorstCase', consumptionDate - startDate)
     }
