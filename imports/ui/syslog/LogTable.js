@@ -96,6 +96,7 @@ class LogTable extends Component {
 			      >
 			        <option value="all">All</option>
 			        <option value="Ingredient">Ingredient</option>
+			        <option value="Intermediate">Intermediate</option>
 			        <option value="Formula">Formula</option>
 					<option value="Vendor">Vendor</option>
 			        <option value="Storage Capacities">Storage Capacities</option>
