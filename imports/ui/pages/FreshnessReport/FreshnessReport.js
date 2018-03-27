@@ -89,14 +89,11 @@ class FreshnessReport extends Component {
 		return (
 			<div>
 			<div>
-			<ControlLabel>Total: Average Time</ControlLabel>
 			<p></p>
 			<p><b>Average Time Overall Freshness</b>: {this.props.freshtotal[0] ? this.props.freshtotal[0].avgTimeString : ""}</p>
 			<p></p>
 			<p><b>Worst Time Overall Freshness</b>: {this.props.freshtotal[0] ? this.props.freshtotal[0].worstCaseString : ""}</p>
-			<ControlLabel>Total: Worst Case</ControlLabel>
 			<p></p>
-			{this.props.freshtotal[0] ? this.props.freshtotal[0].worstCaseString : ""}
 			<p>(Days: Hours: Minutes)</p>
 			</div>
 			<p></p>
