@@ -2,11 +2,13 @@ import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import Lots from './Lots.js';
 import { LotNumberSystem } from './LotNumberSystem.js'
+import '../FreshReport/FreshReportApi.js'
 
 if (Meteor.isClient) {
     Meteor.subscribe('lots')
     Meteor.subscribe('ingredients')
     Meteor.subscribe('intermediates')
+    Meteor.subscribe('freshreport')
 }
 
 Meteor.methods({
@@ -57,27 +59,34 @@ Meteor.methods({
                 queue: [entry]
             })
         }
-        // var curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
+        // var curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity khjh
         // Meteor.call('editTotalNumNativeUnits',id,curTotalNativeUnits + qty)
     },
     'lots.addArray': function(id, arr) {
         //TODO: Implement
     },
     'lots.editLots': function(id, arr) {
-
+        Lots.find({inventoryID : id}).fetch()
     },
-    'lots.remove': function(id, qty) {
+    'lots.removeQty': function(id, qty) {
         console.log('Removing '+qty+' native units from lots')
         var lot = Lots.find({inventoryID : id}).fetch()
+        if (lot.length === 0) {
+            throw new Meteor.Error('no lots fexist for ingredient','no lots exist for ingredient')
+        }
         console.log(lot[0])
         var q = lot[0].queue
         while (true) {
             if (qty >= q[0].qty) {
                 qty -= q[0].qty
+                Meteor.call('freshreport.updateAvgTime',id,q[0].qty)
+                Meteor.call('freshreport.updateWorstCase',id)
                 q.shift()
             }
             else {
                 q[0].qty = q[0].qty - qty
+                Meteor.call('freshreport.updateAvgTime',id,q[0].qty)
+                Meteor.call('freshreport.updateWorstCase',id)
                 break
             }
         }

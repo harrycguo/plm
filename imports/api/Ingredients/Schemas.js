@@ -334,4 +334,45 @@ LotsSchema = new SimpleSchema({
   }
 })
 
-export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema };
+FreshReportSchema = new SimpleSchema({
+  inventoryID: {
+    type: String,
+    min: 1
+  },
+  totalTime: {
+    type: Number,
+    decimal: true,
+    min: 0,
+    defaultValue: 0
+  },
+  avgTime: {
+    type: Number,
+    min: 0,
+    decimal: true,
+    defaultValue: 0
+  },
+  avgTimeString: {
+    type: String,
+    defaultValue: '0:0:0',
+    min: 0
+  },
+  worstCase: {
+    type: Number,
+    min: 0,
+    decimal: true,
+    defaultValue: 0
+  },
+  worstCaseString: {
+    type: String,
+    defaultValue: '0:0:0',
+    min: 0
+  },
+  totalQtyConsumed: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  }
+})
+
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema, FreshReportSchema };

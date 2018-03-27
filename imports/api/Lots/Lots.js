@@ -1,7 +1,6 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import { LotsSchema, LotIngredientSchema } from '../Ingredients/Schemas.js';
-import { Vendors } from '../Vendors/vendors.js';
 
 Lots = new Mongo.Collection('lots');
 
