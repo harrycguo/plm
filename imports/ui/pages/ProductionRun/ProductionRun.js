@@ -205,7 +205,7 @@ class ProductionRun extends Component {
 
 
     handleSubmit() {
-        console.log("submitting production")
+        
         const { history } = this.props
 
         let formulaID = this.formula.value

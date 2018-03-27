@@ -27,8 +27,6 @@ Meteor.methods({
             time: time
         }
 
-        // console.log(entry)
-
         if(lot.length != 0) {
             Lots.update({inventoryID : ingID}, {$push : {queue : entry}})
         }
@@ -40,6 +38,8 @@ Meteor.methods({
         }
         console.log('created: '+time)
         var curTotalNativeUnits = IngredientsList.find({ _id : ingID}).fetch()[0].nativeInfo.totalQuantity
+
+        Meteor.call('systemlog.insert', "Lot", lotNumber, 0, "Added", "")
         Meteor.call('editTotalNumNativeUnits',ingID,curTotalNativeUnits + qty)
         Meteor.call('lotshistory.add', ingID, qty, lotNumber, vendor, price, time)
     },
@@ -76,7 +76,6 @@ Meteor.methods({
         if (lot.length === 0) {
             throw new Meteor.Error('no lots exist for ingredient','no lots exist for ingredient')
         }
-        // console.log(lot[0])
         var q = lot[0].queue
         while (true) {
             if (qty >= q[0].qty) {
@@ -86,12 +85,14 @@ Meteor.methods({
                 entry = {
                     inventoryID: formulaID,
                     qty: formulaQty,
+                    qtyConsumed: q[0].qty,
                     time: time,
                     lot:lotNum,
-                    intermediate: intermediate,
-                    qtyConsumed: q[0].qty
+                    intermediate: intermediate
+                    
                 }
                 Meteor.call('lotshistory.update',id,q[0].qty,q[0],entry)
+                Meteor.call('systemlog.insert', "Lot", q[0].lot, 0, "Removed", q[0].qty)
                 q.shift()
             }
             else {
@@ -101,12 +102,13 @@ Meteor.methods({
                 entry = {
                     inventoryID: formulaID,
                     qty: formulaQty,
+                    qtyConsumed: qty,
                     time: time,
                     lot:lotNum,
-                    intermediate: intermediate,
-                    qtyConsumed: qty
+                    intermediate: intermediate
                 }
                 Meteor.call('lotshistory.update',id,qty,q[0],entry)
+                Meteor.call('systemlog.insert', "Lot", q[0].lot, 0, "Removed", qty)
                 break
             }
         }
@@ -129,6 +131,7 @@ Meteor.methods({
             }
         })
         Lots.update({ inventoryID : id },{$set : {queue : q}})
+        Meteor.call('systemlog.insert', "Lot", oldLot, 0, "Modified", newLot)
     },
     'lots.editLotQty': function(id, lotNumber, newQty, date) {
         date.setMilliseconds(0)
@@ -159,6 +162,7 @@ Meteor.methods({
             curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
             Meteor.call('intermediates.editTotalNumNativeUnits',id,curTotalNativeUnits - diff)
         }
+        Meteor.call('systemlog.insert', "Lot", lotNumber, 0, "Modified", newQty)
     },
     'lots.logProduction': function(lotID, id, qty, time, lot, intermediate) {
         var entry = {
@@ -173,5 +177,8 @@ Meteor.methods({
     },
     'lots.increaseSystemLot'(){
         LotNumberSystem.update({ name : 'system'},{$inc : {lotNumber : 1}})
+    },
+    'lots.addToSystem'(number){
+        LotNumberSystem.insert({lot: number})
     }
 });

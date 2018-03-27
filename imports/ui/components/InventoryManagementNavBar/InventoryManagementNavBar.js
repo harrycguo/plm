@@ -10,6 +10,8 @@ import InventoryManagement from '../../pages/InventoryManagement/InventoryManage
 import AddIngredient from '../../pages/AddIngredient/AddIngredient.js'
 import BulkImportIngredients from '../../pages/BulkImportIngredients/BulkImportIngredients.js'
 import SpendingReport from '../../pages/SpendingReport/SpendingReport.js'
+import FreshnessReport from '../../pages/FreshnessReport/FreshnessReport.js'
+//import RecallReport from '../../pages/RecallReport/RecallReport.js
 import Cart from '../../pages/Cart/Cart.js'
 
 class InventoryManagementNavBar extends Component {
@@ -55,6 +57,8 @@ class InventoryManagementNavBar extends Component {
                                     <NavItem eventKey="2">Add New Ingredient</NavItem>
                                     <NavItem eventKey="4">Bulk Import Ingredients</NavItem>
                                     <NavItem eventKey="5">Spending Report</NavItem>
+                                    <NavItem eventKey="9">Freshness Report</NavItem>
+                                    <NavItem eventKey="10">Recall Report</NavItem>
                                   
                                     
 
@@ -73,6 +77,12 @@ class InventoryManagementNavBar extends Component {
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
                                         <SpendingReport />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="9">
+                                        <FreshnessReport />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="10">
+                                        
                                     </Tab.Pane>
                                    
                                 </Tab.Content>
@@ -108,6 +118,8 @@ class InventoryManagementNavBar extends Component {
                                     </NavDropdown>
                                     <NavItem eventKey="1">Inventory Management</NavItem>
                                     <NavItem eventKey="5">Spending Report</NavItem>
+                                    <NavItem eventKey="9">Freshness Report</NavItem>
+                                    <NavItem eventKey="10">Recall Report</NavItem>
                                   
                                 </Nav>
                             </Col>
@@ -118,6 +130,12 @@ class InventoryManagementNavBar extends Component {
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
                                         <SpendingReport />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="9">
+                                        <FreshnessReport />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="10">
+                                        
                                     </Tab.Pane>
                                    
                                 </Tab.Content>
@@ -148,6 +166,8 @@ class InventoryManagementNavBar extends Component {
                                 </NavDropdown>
                                 <NavItem eventKey="1">Inventory Management</NavItem>
                                 <NavItem eventKey="5">Spending Report</NavItem>
+                                <NavItem eventKey="9">Freshness Report</NavItem>
+                                <NavItem eventKey="10">Recall Report</NavItem>
                               
                             </Nav>
                         </Col>
@@ -159,6 +179,12 @@ class InventoryManagementNavBar extends Component {
                                 <Tab.Pane eventKey="5">
                                     <SpendingReport />
                                 </Tab.Pane>
+                                <Tab.Pane eventKey="9">
+                                        <FreshnessReport />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="10">
+                                        
+                                    </Tab.Pane>
                                
                             </Tab.Content>
                         </Col>

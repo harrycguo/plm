@@ -81,7 +81,7 @@ function renderEditable(cellInfo) {
 	                   			if(error){
 	                        		console.log("something goes wrong with the following error message " + error.reason )
 	               	  				Bert.alert(error.reason, 'danger');
-									e.target.value = cellInfo.original.name;
+									e.target.value = cellInfo.original.num;
 								}
 							}
 						);
@@ -117,13 +117,11 @@ function renderEditable(cellInfo) {
 				}
 				} else {
 					boxLocked = false;
-					if(cellInfo.column.id === 'name'){	
-						e.target.value = cellInfo.original.name;
+					if(cellInfo.column.id === 'num'){	
+						e.target.value = cellInfo.original.num;
 					} else if (cellInfo.column.id === 'qty') {
 						e.target.value = cellInfo.original.qty;
-					} else if (cellInfo.column.id === 'numNativeUnitsPerPackage') {
-						e.target.value = cellInfo.original.numNativeUnitsPerPackage;
-					}
+					} 
 				}
 			}}
 			/>); 
@@ -147,7 +145,7 @@ export const HeaderValues = [
 	        onChange={event => onChange(event.target.value)}
 	        style={{ width: '100%', height: '100%'}}
 	        value={filter ? filter.value : ''}
-	        placeholder="Filter by name"
+	        placeholder="Filter by lot number"
 	      />
 	}, 
 	{
@@ -210,7 +208,7 @@ export const HeaderValues = [
 	        onChange={event => onChange(event.target.value)}
 	        style={{ width: '100%', height: '100%'}}
 	        value={filter ? filter.value : ''}
-	        placeholder="Filter by number of packs"
+	        placeholder="Filter by price"
 	      />
 	}, 
 	{
@@ -222,7 +220,7 @@ export const HeaderValues = [
 	        onChange={event => onChange(event.target.value)}
 	        style={{ width: '100%', height: '100%'}}
 	        value={filter ? filter.value : ''}
-	        placeholder="Filter by Num of Native Units Per Pacakge"
+	        placeholder="Filter by Time"
 	      />
 	}, 
 ];

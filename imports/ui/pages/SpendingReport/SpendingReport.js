@@ -13,14 +13,38 @@ class SpendingReport extends Component {
 			{
 				Header: 'Ingredient',
 				accessor: 'ing',
+				Filter: ({ filter, onChange }) =>
+				<input
+					type="text"
+					onChange={event => onChange(event.target.value)}
+					style={{ width: '100%', height: '100%'}}
+					value={filter ? filter.value : ''}
+					placeholder="Filter by name"
+				/>
 			}, 
 			{
 				Header: 'Total Spending',
 				accessor: 'total',
+				Filter: ({ filter, onChange }) =>
+				<input
+					type="text"
+					onChange={event => onChange(event.target.value)}
+					style={{ width: '100%', height: '100%'}}
+					value={filter ? filter.value : ''}
+					placeholder="Filter by Total Spending"
+				/>
 			},
 			{
 				Header: 'Production Spending',
 				accessor: 'prod',
+				Filter: ({ filter, onChange }) =>
+				<input
+					type="text"
+					onChange={event => onChange(event.target.value)}
+					style={{ width: '100%', height: '100%'}}
+					value={filter ? filter.value : ''}
+					placeholder="Filter by Production Spending"
+				/>
 			},
 		];
 	}
@@ -30,8 +54,8 @@ class SpendingReport extends Component {
 		this.props.ingredients.forEach(function(ing) {
 			reportRows.push({
 				ing: ing.name,
-				total: ing.spendingInfo.totalSpending,
-				prod: ing.spendingInfo.totalProdSpending,
+				total: ing.spendingInfo.totalSpending.toFixed(2),
+				prod: ing.spendingInfo.totalProdSpending.toFixed(2),
 			})
 		});
 		return reportRows;

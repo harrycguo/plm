@@ -107,8 +107,6 @@ class IntermediatesDatabase extends Component {
           return(
             <div>
             {editQuantity}
-            <div className="container-button2">
-            </div>
             
             </div> 
           )}}
