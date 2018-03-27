@@ -59,7 +59,6 @@ class Cart extends Component {
                	  			Bert.alert(error.reason, 'danger');
                 		} else {
 							Bert.alert('Successfully Checked Out!', 'success');
-							history.push('/inventoryManagement')
 						}
 					});
 				}}
