@@ -102,6 +102,7 @@ Meteor.methods({
         Meteor.call('lots.addFormula', item._id, numUnitsProduce, lotNumber.lotNumber, new Date())
         ProductionHistory.insert({
             name: item.name,
+            lotNumber: lotNumber.lotNumber,
             unitsProduced: numUnitsProduce,
             time: new Date(),
             lotsData: lotsData

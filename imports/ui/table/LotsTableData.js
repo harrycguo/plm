@@ -147,7 +147,7 @@ export const HeaderValues = [
 	        onChange={event => onChange(event.target.value)}
 	        style={{ width: '100%', height: '100%'}}
 	        value={filter ? filter.value : ''}
-	        placeholder="Filter by name"
+	        placeholder="Filter by lot number"
 	      />
 	}, 
 	{
@@ -210,7 +210,7 @@ export const HeaderValues = [
 	        onChange={event => onChange(event.target.value)}
 	        style={{ width: '100%', height: '100%'}}
 	        value={filter ? filter.value : ''}
-	        placeholder="Filter by number of packs"
+	        placeholder="Filter by price"
 	      />
 	}, 
 	{
@@ -222,7 +222,7 @@ export const HeaderValues = [
 	        onChange={event => onChange(event.target.value)}
 	        style={{ width: '100%', height: '100%'}}
 	        value={filter ? filter.value : ''}
-	        placeholder="Filter by Num of Native Units Per Pacakge"
+	        placeholder="Filter by Time"
 	      />
 	}, 
 ];

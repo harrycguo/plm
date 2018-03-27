@@ -137,5 +137,8 @@ Meteor.methods({
     },
     'lots.increaseSystemLot'(){
         LotNumberSystem.update({ name : 'system'},{$inc : {lotNumber : 1}})
+    },
+    'lots.addToSystem'(number){
+        LotNumberSystem.insert({lot: number})
     }
 });

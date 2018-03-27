@@ -20,6 +20,18 @@ class ProductionHistoryPage extends Component {
 
     return [
       {
+        Header: 'Lot Number',
+        accessor: 'lotNumber',
+		Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by lot number"
+	      />
+      },
+      {
         Header: 'Formula Name',
         accessor: 'formulaName',
 		Filter: ({ filter, onChange }) =>
@@ -90,6 +102,7 @@ class ProductionHistoryPage extends Component {
       for (let i = 0; i < hist.length; i++){
         data.push({
           formulaName: hist[i].name,
+          lotNumber: hist[i].lotNumber,
           numUnitsProduced: hist[i].unitsProduced,
           time: new Date(hist[i].time).toString(),
           lotsData: hist[i].lotsData
@@ -111,7 +124,7 @@ class ProductionHistoryPage extends Component {
   }
     
     let tableData = []
-
+    let k = 0
     for (let i = 0; i < lotsData.length; i++){
       let name1 = ingMap.get(lotsData[i].ingredient)
       let name2 = intMap.get(lotsData[i].ingredient)
@@ -122,20 +135,22 @@ class ProductionHistoryPage extends Component {
       console.log(lots)
       for (let j = 0; j < lots.length; j++){
         tableData.push(
-          <tr>
+          <tr key={k}>
             <td>{name}</td>
             <td>{lots[j].lotNumber}</td> 
             <td>{new Date(lots[j].time).toString()}</td>
           </tr>
         )
+        k++
       }
+      k++
     }
     
     return(
       <table>
 		    		<tbody>
 		    			<tr>
-		    				<th>Ingredient</th>
+		    				<th>Ingredient Used</th>
 		    				<th>Lot Number</th>
 		    				<th>Time Lot Purchased</th>
 						</tr>

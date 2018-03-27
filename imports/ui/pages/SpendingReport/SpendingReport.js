@@ -30,8 +30,8 @@ class SpendingReport extends Component {
 		this.props.ingredients.forEach(function(ing) {
 			reportRows.push({
 				ing: ing.name,
-				total: ing.spendingInfo.totalSpending,
-				prod: ing.spendingInfo.totalProdSpending,
+				total: ing.spendingInfo.totalSpending.toFixed(2),
+				prod: ing.spendingInfo.totalProdSpending.toFixed(2),
 			})
 		});
 		return reportRows;

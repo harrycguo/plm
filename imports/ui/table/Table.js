@@ -241,26 +241,31 @@ class Table extends Component {
 			if(TableData.canEdit) {
 				TableData.toggleEditable()
 				this.forceUpdate()
-			}
+            }
+            
+            let cartButton = Roles.userIsInRole(Meteor.userId(), 'manager') ? 
+            <Button
+                bsStyle="success"
+                onClick={this.goToCart.bind(this)}
+                title= "Cart"
+                >Go To Cart({cartNum})
+                </Button>
+                :null
+
+
 			return (
-             <div>
-             <ButtonToolbar>		
-             <Button
-             bsStyle="success"
-             onClick={this.goToCart.bind(this)}
-             title= "Cart"
-             >Go To Cart({cartNum})
+                <div>
+                <ButtonToolbar>		
+                
+                {cartButton}
 
-             </Button>
-
-             </ButtonToolbar>
-             <p></p>
-             {this.renderTable(this)}
-             </div>
+                </ButtonToolbar>
+                <p></p>
+                {this.renderTable(this)}
+                </div>
              );
-		}
-
-		
+        }
+        		
 
 		return (
 			<div>
