@@ -9,17 +9,20 @@ if (Meteor.isClient) {
 
 Meteor.methods({
     'production.log': function(formulaId, qty) {
-        if (ProductionReport.find({ formula : formulaId }).fetch().length === 0) {
-            
-            
+        if (ProductionReport.find({ formula : formulaId }).fetch().length === 0) {      
             var item1 = Formulas.find({ _id : formulaId}).fetch()[0]
-            var item2 = Intermediates.findOne({_id: formulaId})
+            var item2 = Intermediates.find({_id: formulaId}).fetch()[0]
             let formula = item1 != undefined ? item1 : item2
 
             ingList = []
             costArr = []
             for (var i = 0; i < formula.ingredientsList.length; i++) {
-                var ing = IngredientsList.find({ _id : formula.ingredientsList[i].id}).fetch()[0]
+                var ingArr = IngredientsList.find({ _id : formula.ingredientsList[i].id}).fetch()
+                if (ingArr.length === 0) {
+                    ingArr = Intermediates.find({ _id : formula.ingredientsList[i].id}).fetch()
+                } 
+                var ing =ingArr[0]
+                console.log(ing)
                 ingList.push({
                     ingredient: formula.ingredientsList[i].id,
                     totalCost: Number(ing.spendingInfo.totalProdSpending).toFixed(2),
@@ -37,12 +40,16 @@ Meteor.methods({
         else {
             ProductionReport.update( {formula : formulaId}, {$inc : { totalProduced : qty}})
             var item1 = Formulas.find({ _id : formulaId}).fetch()[0]
-            var item2 = Intermediates.findOne({_id: formulaId})
+            var item2 = Intermediates.find({_id: formulaId}).fetch()[0]
             let formula = item1 != undefined ? item1 : item2
             ingList = formula.ingredientsList
             ProductionReport.update({formula:formulaId},{$set : {totalSpent : 0}})
             for (var i = 0; i < ingList.length; i++) {
-                var ing = IngredientsList.find({ _id : ingList[i].id}).fetch()[0]
+                var ingArr = IngredientsList.find({ _id : ingList[i].id}).fetch()
+                if (ingArr.length === 0) {
+                    ingArr = Intermediates.find({ _id : formula.ingredientsList[i].id}).fetch()
+                }
+                var ing = ingArr[0]
                 var rep = ProductionReport.find({formula:formulaId}).fetch()[0]
                 for (var j = 0; j < rep.ingredientsUsed.length; j++) {
                     if (rep.ingredientsUsed[j].ingredient == ingList[i].id) {
@@ -54,6 +61,7 @@ Meteor.methods({
                     }
                 }
             }
+                 
         }
         console.log(ProductionReport.find().fetch())
     },

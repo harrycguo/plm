@@ -40,6 +40,8 @@ Meteor.methods({
             Formulas.update({_id: formulaID}, {$inc: { quantity: numUnitsProduce}})
         }
         
+        let lotNumber = LotNumberSystem.findOne({name: 'system'})
+
         //Consume!!!
         for (let i = 0; i < ingList.length; i++) {
             let ing = IngredientsList.findOne({_id: ingList[i].ingredient})
@@ -64,14 +66,19 @@ Meteor.methods({
             
             if (ing != undefined) { Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, totalIngProdAmt) }
             
-            Meteor.call('lots.removeQty', ingList[i].ingredient, totalIngProdAmt)
-
+            // Meteor.call('lots.removeQty', ingList[i].ingredient, totalIngProdAmt)
+            var isIntermediate = false
+            if (formula === undefined) {
+                isIntermediate = true
+            }
+            var date = new Date()
+            date.setMilliseconds(0)
+            Meteor.call('lots.removeQty',ingList[i].ingredient,totalIngProdAmt,formulaID,numUnitsProduce,date,lotNumber.lotNumber,isIntermediate)
         }
 
-        let lotNumber = LotNumberSystem.findOne({name: 'system'})
         Meteor.call('lots.addFormula', item._id, numUnitsProduce, lotNumber.lotNumber, new Date())
         Meteor.call('systemlog.insert',"Production", "Produced", null, "Event", "");
-        //Meteor.call('production.log',formulaID,numUnitsProduce)
+        // Meteor.call('production.log',formulaID,numUnitsProduce)
     },
     'production.addToCart'(ingList) {
         if (! this.userId || !Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
