@@ -64,7 +64,7 @@ Meteor.methods({
             
             if (ing != undefined) { Meteor.call('ingredients.updateTotalProdSpending', ingList[i].ingredient, totalIngProdAmt) }
             
-            Meteor.call('lots.remove', ingList[i].ingredient, totalIngProdAmt)
+            Meteor.call('lots.removeQty', ingList[i].ingredient, totalIngProdAmt)
 
         }
 

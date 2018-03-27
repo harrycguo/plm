@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Navbar, NavItem, Nav, NavDropdown, MenuItem, Row, Col, Tabs, Tab, TabContainer, TabContent, TabPane } from 'react-bootstrap';
 import FormulaManagement from '../../pages/FormulaManagement/FormulaManagement.js'
 import AddFormula from '../../pages/AddFormula/AddFormula.js'
-import BulkImportFormulas from '../../pages/BulkImportFormulas/BulkImportFormulas.js'
+import BulkImportFormulasHome from '../../pages/BulkImportFormulas/BulkImportFormulasHome.js'
 import ProductionRun from '../../pages/ProductionRun/ProductionRun.js'
 import ProductionReportPage from '../../pages/ProductionReportPage/ProductionReportPage.js'
 import IntermediatesDatabase from '../../pages/IntermediatesDatabase/IntermediatesDatabase.js'
@@ -56,7 +56,7 @@ class FormulaManagementNavBar extends Component {
                                         <AddFormula hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="4">
-                                        <BulkImportFormulas hist={this.props.hist}/>
+                                        <BulkImportFormulasHome hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
                                         <ProductionRun hist={this.props.hist} />

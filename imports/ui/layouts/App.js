@@ -36,7 +36,7 @@ import EditFormula from '../../ui/pages/EditFormula/EditFormula.js'
 import ViewFormula from '../../ui/pages/ViewFormula/ViewFormula.js'
 import ProductionRun from '../../ui/pages/ProductionRun/ProductionRun.js'
 import ProductionReportPage from '../../ui/pages/ProductionReportPage/ProductionReportPage.js'
-import BulkImportFormulas from '../../ui/pages/BulkImportFormulas/BulkImportFormulas.js';
+
 
 
 class App extends Component {
@@ -78,7 +78,7 @@ class App extends Component {
         <Authenticated exact path='/addFormula' component={AddFormula}/>
         <Authenticated exact path='/editFormula/:formulaID' component={EditFormula}/>
         <Authenticated exact path='/viewFormula/:formulaID' component={ViewFormula}/> 
-        <Authenticated exact path='/bulkImportFormulas' component={BulkImportFormulas}/>
+    
         <Authenticated exact path='/log' component={LogTable}/>
         <Authenticated exact path='/viewLog' component={ViewLog}/>
         <Authenticated exact path='/productionRun' component={ProductionRun}/>
