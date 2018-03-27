@@ -175,7 +175,7 @@ class Table extends Component {
 		return row.original.vendors.map(vendor => (
 			<tr key={vendor.name}>
             <td>{vendor.name}</td>
-            <td>{vendor.price}</td>
+            <td>{vendor.price.toFixed(2)}</td>
             {this.renderOrderFields(row, vendor)}
             </tr>
             ));

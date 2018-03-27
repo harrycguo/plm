@@ -17,14 +17,38 @@ class ProductionReportPage extends Component {
       {
         Header: 'Formula Name',
         accessor: 'formulaName',
+        Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by name"
+	      />
       },
       {
         Header: 'Number Units Produced',
         accessor: 'numUnitsProduced',
+        Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by # Units Produced"
+	      />
       },
       {
         Header: 'Total Spending',
         accessor: 'totalSpending',
+        Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by Total Spending"
+	      />
       },
     ];
   }

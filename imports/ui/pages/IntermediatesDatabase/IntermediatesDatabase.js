@@ -103,24 +103,7 @@ class IntermediatesDatabase extends Component {
 
           return(
             <div className="side-container-zero">
-            {editQuantity}
-            <div className="container-button2">
-            <Link to={{
-            pathname: '/editIntermediateQuantity/', 
-            }
-          
-            // state: {
-            //   name: this.props.sc.name,
-            //   capacity: this.props.sc.capacity,
-            //   }
-            // }
-            }>
-              <Button bsStyle="primary">
-              View Production History
-              </Button>
-            </Link>
-            </div>
-            
+            {editQuantity}            
             </div> 
           )}}
         />

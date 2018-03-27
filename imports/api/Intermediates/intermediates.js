@@ -301,7 +301,7 @@ Meteor.methods({
   'intermediates.editTotalNumNativeUnits'(id, totalNumNativeUnits){
     
     //total native units per package must be positive
-    if (totalNumNativeUnits <= 0) {
+    if (totalNumNativeUnits < 0) {
       throw new Meteor.Error('Number of Total Native Units must be greater than 0', 'Number of Total Native Units must be greater than 0');
     }
     let intermediate = Intermediates.findOne({ _id: id });
