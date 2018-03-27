@@ -5,7 +5,7 @@ import { LotsHistorySchema } from '../Ingredients/Schemas.js';
 LotsHistory = new Mongo.Collection('lotshistory');
 
 //Attach a schema to the collection for automatic validation on insert/update operations
-LotsHistory.attachSchema(LotsHistorySchema);
+//LotsHistory.attachSchema(LotsHistorySchema);
 
 export default LotsHistory;
 

@@ -76,18 +76,20 @@ Meteor.methods({
     'lots.editLots': function(id, arr) {
         Lots.find({inventoryID : id}).fetch()
     },
-    'lots.removeQty': function(id, qty) {
+    'lots.removeQty': function(id, qty, formulaID, formulaQty, time, lotNum, intermediate) {
         var lot = Lots.find({inventoryID : id}).fetch()
         var entry = {}
         if (lot.length === 0) {
             throw new Meteor.Error('no lots exist for ingredient','no lots exist for ingredient')
         }
         var q = lot[0].queue
+       
         while (true) {
             if (qty >= q[0].qty) {
                 qty -= q[0].qty
                 Meteor.call('freshreport.updateAvgTime',id,q[0].qty)
                 Meteor.call('freshreport.updateWorstCase',id)
+                console.log(q)
                 entry = {
                     inventoryID: formulaID,
                     qty: formulaQty,
@@ -96,6 +98,7 @@ Meteor.methods({
                     intermediate: intermediate,
                     qtyConsumed: q[0].qty
                 }
+                console.log("reaching here")
                 Meteor.call('lotshistory.update',id,q[0].qty,q[0],entry)
                 q.shift()
             }
@@ -111,12 +114,13 @@ Meteor.methods({
                     intermediate: intermediate,
                     qtyConsumed: qty
                 }
+                console.log("reaching here")
                 Meteor.call('lotshistory.update',id,qty,q[0],entry)
                 break
             }
         }
         Lots.update({inventoryID : id}, {$set : {queue : q}})
-        Meteor.call('systemlog.insert', "Lot", lotNumber, 0, "Removed", qty)
+        Meteor.call('systemlog.insert', "Lot", lotNum, 0, "Removed", qty)
     },
     'lots.editLotNumber': function(id, oldLot, newLot, date) {
         date.setMilliseconds(0)
