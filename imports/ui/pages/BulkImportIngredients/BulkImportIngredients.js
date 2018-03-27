@@ -101,11 +101,6 @@ class BulkImportIngredients extends Component {
 
         let currIngName = dataFile.data[i]["INGREDIENT"];
         let currIngPackage = dataFile.data[i]["PACKAGE"].toLowerCase()
-        let currIngTotalNumNativeUnits = dataFile.data[i]["AMOUNT (NATIVE UNITS)"]
-       
-        if (currIngTotalNumNativeUnits.length == 0) {
-          currIngTotalNumNativeUnits = 0
-        } 
 
         let currIngNativeUnit = dataFile.data[i]["NATIVE UNIT"]
         let currIngNumNativeUnitsPerPackage = dataFile.data[i]["UNITS PER PACKAGE"]
@@ -125,7 +120,7 @@ class BulkImportIngredients extends Component {
 
         let ingredient = ingMap.get(currIngName)
 
-        let numPackages = Math.ceil(Number(currIngTotalNumNativeUnits) / Number(currIngNumNativeUnitsPerPackage))
+        let numPackages = Math.ceil(Number(0) / Number(currIngNumNativeUnitsPerPackage))
 
         //packaging map to reference weights
         let packagingMap = new Map();
@@ -144,7 +139,7 @@ class BulkImportIngredients extends Component {
           currIngPackage,
           numPackages,
           Number(ingredientStorage),
-          Number(currIngTotalNumNativeUnits),
+          Number(0),
           currIngNativeUnit,
           Number(currIngNumNativeUnitsPerPackage),
           vendorID,
@@ -157,7 +152,7 @@ class BulkImportIngredients extends Component {
 
         if (ingMap.has(currIngName)) {
           let existingIng = ingMap.get(currIngName)
-          let newTotalNumNativeUnits = existingIng.nativeInfo.totalQuantity + currIngTotalNumNativeUnits
+          let newTotalNumNativeUnits = existingIng.nativeInfo.totalQuantity + 0
           Meteor.call('editTotalNumNativeUnits', existingIng._id, newTotalNumNativeUnits)
         }
       }
@@ -237,13 +232,13 @@ class BulkImportIngredients extends Component {
 
 
     //Check headers
-    let headers = ["INGREDIENT", "PACKAGE", "AMOUNT (NATIVE UNITS)", "NATIVE UNIT", "UNITS PER PACKAGE", "PRICE PER PACKAGE", "VENDOR FREIGHT CODE", "TEMPERATURE"]
+    let headers = ["INGREDIENT", "PACKAGE", "NATIVE UNIT", "UNITS PER PACKAGE", "PRICE PER PACKAGE", "VENDOR FREIGHT CODE", "TEMPERATURE"]
     let headersValid = this.arraysEqual(headers, dataFile.meta.fields)
 
     if (!headersValid) {
       errors.push("Header Formatting Is Incorrect \n" +
         "Please check to make sure there are no extra white spaces and that headers match exactly \n" +
-        "[INGREDIENT, PACKAGE, AMOUNT (NATIVE UNITS), NATIVE UNIT, UNITS PER PACKAGE, PRICE PER PACKAGE, VENDOR FREIGHT CODE, TEMPERATURE].\n" +
+        "[INGREDIENT, PACKAGE, NATIVE UNIT, UNITS PER PACKAGE, PRICE PER PACKAGE, VENDOR FREIGHT CODE, TEMPERATURE].\n" +
         "After this is complete, our program will check the rest of the CSV")
 
       //return header error
@@ -262,7 +257,6 @@ class BulkImportIngredients extends Component {
 
       let currIngName = dataFile.data[i]["INGREDIENT"];
       let currIngPackage = dataFile.data[i]["PACKAGE"].toLowerCase();
-      let currIngTotalNumNativeUnits = dataFile.data[i]["AMOUNT (NATIVE UNITS)"]
       let currIngNativeUnit = dataFile.data[i]["NATIVE UNIT"];
       let currIngNumNativeUnitsPerPackage = dataFile.data[i]["UNITS PER PACKAGE"]
       let currIngPricePerPackage = dataFile.data[i]["PRICE PER PACKAGE"];
@@ -277,13 +271,6 @@ class BulkImportIngredients extends Component {
         //check for valid package type
         if (currIngPackage != existingIng.packageInfo.packageType || !packageTypes.includes(currIngPackage)) {
           errors.push("Ingredient is in the database already, but PACKAGE type is incorrect. Should be " + existingIng.packageInfo.packageType + " on Line " + Number(i + 2))
-        }
-
-        //check for valid total num native units
-        if (currIngTotalNumNativeUnits.length == 0) {
-          
-        } else if (typeof currIngTotalNumNativeUnits != 'number' || currIngTotalNumNativeUnits < 0) {
-          errors.push("Invalid AMOUNT (NATIVE UNITS) on Line " + Number(i + 2))
         }
 
         //check for valid native Unit
@@ -303,9 +290,9 @@ class BulkImportIngredients extends Component {
 
         //Update storage capacity if everything else is correct
         else {
-          if (typeof currIngTotalNumNativeUnits == 'number' && currIngNativeUnit == existingIng.nativeInfo.nativeUnit && currIngNumNativeUnitsPerPackage == existingIng.nativeInfo.numNativeUnitsPerPackage && typeof currIngNumNativeUnitsPerPackage == 'number') {
+          if (currIngNativeUnit == existingIng.nativeInfo.nativeUnit && currIngNumNativeUnitsPerPackage == existingIng.nativeInfo.numNativeUnitsPerPackage && typeof currIngNumNativeUnitsPerPackage == 'number') {
 
-            let newTotalNumNativeUnits = existingIng.nativeInfo.totalQuantity + currIngTotalNumNativeUnits
+            let newTotalNumNativeUnits = existingIng.nativeInfo.totalQuantity
             let newNumPackages = Math.ceil(Number(newTotalNumNativeUnits) / Number(currIngNumNativeUnitsPerPackage))
             let change = Number(packagingMap.get(currIngPackage) * existingIng.numPackages) - Number(packagingMap.get(currIngPackage) * newNumPackages)
 
@@ -318,14 +305,7 @@ class BulkImportIngredients extends Component {
       else {
         //check for valid package type
         if (!packageTypes.includes(currIngPackage)) {
-          errors.push("Invalid package type on Line " + Number(i + 2))
-        }
-
-        //check for valid total num native units
-        if (currIngTotalNumNativeUnits.length == 0) {
-          
-        } else if (typeof currIngTotalNumNativeUnits != 'number' || currIngTotalNumNativeUnits < 0) {
-          errors.push("Invalid AMOUNT (NATIVE UNITS) on Line " + Number(i + 2))
+          errors.push("Invalid PACKAGE on Line " + Number(i + 2))
         }
 
         //check for valid num units per package
@@ -340,9 +320,9 @@ class BulkImportIngredients extends Component {
 
         //Update storage capacity if everything else is correct
         else {
-          if (typeof currIngTotalNumNativeUnits == 'number' && typeof currIngNumNativeUnitsPerPackage == 'number') {
+          if (typeof currIngNumNativeUnitsPerPackage == 'number') {
 
-            let numPackages = Math.ceil(Number(currIngTotalNumNativeUnits) / Number(currIngNumNativeUnitsPerPackage))
+            let numPackages = Math.ceil(Number(0) / Number(currIngNumNativeUnitsPerPackage))
             let change = Number(packagingMap.get(currIngPackage) * numPackages)
             scMapUsed.set(currIngTemp, Number(scMapUsed.get(currIngTemp) + Number(change)))
           }
@@ -415,17 +395,16 @@ class BulkImportIngredients extends Component {
         <p><b>Headers:</b>
         <br></br>INGREDIENT: Name of Ingredient To Be Added (can be pre-existing)
         <br></br>PACKAGE: Type of Package from [sack, pail, drum, supersack, truckload, railcar]
-        <br></br>AMOUNT (NATIVE UNITS): Quantity of Ingredient in Native Units (If blank, will default to 0)
         <br></br>NATIVE UNIT: The native unit of the ingredient
         <br></br>UNITS PER PACKAGE: Number of native units per package
         <br></br>PRICE PER PACKAGE: Price per package of ingredient
         <br></br>VENDOR FREIGHT CODE: Freight Code of Vendor that sells ingredient (Vendor MUST be pre-existing)
-        <br></br>TEMPERATURE STATE: temperature state of ingredient from [frozen, refrigerated, room temperature]
+        <br></br>TEMPERATURE: temperature state of ingredient from [frozen, refrigerated, room temperature]
         </p>
 
         <b>Example:</b>
         <div>
-        <img src={"bulkImportIngredients.png"} width="910" height="133"/>
+        <img src={"bulkImportIngredients.png"} width="790" height="133"/>
         </div>
         
         <p></p>

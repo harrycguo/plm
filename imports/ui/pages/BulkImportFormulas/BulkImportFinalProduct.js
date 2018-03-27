@@ -7,11 +7,11 @@ import { Bert } from 'meteor/themeteorchef:bert';
 import { withTracker } from 'meteor/react-meteor-data';
 import IngredientList from '../../../api/Ingredients/IngredientList.js';
 import  Formulas  from '../../../api/Formulas/formulas.js'
+import { Intermediates } from '../../../api/Intermediates/intermediates.js'
 import { check } from 'meteor/check';
 import FormulaManagementNavBar from '../../components/FormulaManagementNavBar/FormulaManagementNavBar.js'
 
-// App component - represents the whole app
-class BulkImportFormulas extends Component {
+class BulkImportFinalProduct extends Component {
   constructor(props) {
     super(props);
     this.uploadFile = this.uploadFile.bind(this);
@@ -156,6 +156,11 @@ class BulkImportFormulas extends Component {
       ingMap.set(this.props.ingredients[i].name, this.props.ingredients[i])
     }
 
+    for (let i = 0; i < this.props.intermediates.length; i++){
+      ingMap.set(this.props.intermediates[i].name, this.props.intermediates[i])
+      formulaNameArray.push(this.props.intermediates[i].name);
+    }
+
     //Check headers
     let headers = ["NAME", "PRODUCT UNITS", "DESCRIPTION", "INGREDIENT", "INGREDIENT UNITS"]
     let headersValid = this.arraysEqual(headers, dataFile.meta.fields)
@@ -175,6 +180,7 @@ class BulkImportFormulas extends Component {
 
     let formulaNameSet = new Set()
     let formulaArray = []
+    let currFormulaName = ""
 
     //Check line by line
     for (let i = 0; i < dataFile.data.length; i++) {
@@ -186,8 +192,8 @@ class BulkImportFormulas extends Component {
       let ingredientUnits = dataFile.data[i]["INGREDIENT UNITS"]   
 
       //if formula name shows up twice on csv
-      if (formulaNameSet.has(formulaName)) {
-        errors.push("Have Duplicate In Name: " + formulaName + " on Line " + Number(i + 2) + ". Please merge into one Formula")
+      if (formulaNameSet.has(formulaName) && currFormulaName != formulaName) {
+        errors.push("Have Duplicate In NAME: " + formulaName + " on Line " + Number(i + 2) + ". Please merge into one Formula")
       } 
 
       //if formula name already exists
@@ -196,22 +202,26 @@ class BulkImportFormulas extends Component {
       }
 
       //add formula name to array
-      if (formulaName.length != 0) {
+      if (formulaName.length != 0 && currFormulaName!= formulaName) {
         formulaNameSet.add(formulaName)
         formulaArray.push(formulaName)
       }
 
       //Check product units for type and length
-      if (productUnits.length != 0){
-        if (typeof productUnits != 'number') {
+      if (productUnits.length != 0 && currFormulaName!= formulaName){
+        if (typeof productUnits != 'number' || productUnits % 1 !== 0) {
         errors.push("Invalid PRODUCT UNITS on Line " + Number(i + 2))
-      } else {
+      } 
+      else if(productUnits <= 0){
+        errors.push("Invalid PRODUCT UNITS on Line " + Number(i + 2) + ". Must be greater than 0")
+      }
+      else {
           formulaArray.push(productUnits)
         }
       }
 
       //check description length
-      if (description.length != 0){
+      if (description.length != 0 && currFormulaName!= formulaName){
         formulaArray.push(description)
       }
 
@@ -228,7 +238,10 @@ class BulkImportFormulas extends Component {
       } else {
         formulaArray.push(ingredientUnits)
       }
+      currFormulaName = formulaName
     }
+
+    console.log(formulaArray)
 
     if (errors.length > 0) {
       return {
@@ -323,7 +336,7 @@ class BulkImportFormulas extends Component {
 
         <b>Example:</b>
         <div>
-        <img src={"bulkImportFormulas.png"} width="500" height="125"/>
+        <img src={"bulkImportFormulas.png"} width="560" height="125"/>
         </div>
       
         <p></p>
@@ -349,11 +362,13 @@ class BulkImportFormulas extends Component {
 export default withTracker(() => {
   Meteor.subscribe('formulas')
   Meteor.subscribe('ingredients')
+  Meteor.subscribe('intermediates')
   return {
     formulas: Formulas.find({}).fetch(),
     ingredients: IngredientList.find({}).fetch(),
+    intermediates: Intermediates.find({}).fetch()
   };
-})(BulkImportFormulas);
+})(BulkImportFinalProduct);
 
 
 
