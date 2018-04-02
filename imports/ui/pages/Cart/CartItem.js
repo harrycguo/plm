@@ -127,7 +127,11 @@ class CartItem extends Component {
 	}
 
 	handleClose() {
-		this.setState({ show: false });
+		let message = 'WARNING: Edits are not saved until you press Submit!'
+		if(confirm(message)) {
+			this.setState({ show: false });
+		}
+		
 	}
 
 	handleShow() {

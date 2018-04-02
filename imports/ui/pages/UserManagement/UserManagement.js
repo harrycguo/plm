@@ -22,7 +22,7 @@ class UserManagement extends Component {
 
     deleteUser(row) {
         if (confirm("Delete this User?")) {
-            Meteor.call('users.deleteUser', row.original.fullUser._id)
+            Meteor.call('users.deleteUser', row.original.fullUser._id, row.original.username)
         }
     }
 
