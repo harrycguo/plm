@@ -10,6 +10,7 @@ import LoginData, { netIDusers } from './LoginData.js';
 import { Roles } from 'meteor/alanning:roles';
 import { NetIDusers } from '../../../api/Users/netIDusers.js'
 import { withTracker } from 'meteor/react-meteor-data';
+import { Route, Redirect } from 'react-router-dom';
 
 if (Meteor.isClient) {
   Meteor.subscribe('carts');
@@ -25,6 +26,7 @@ class Login extends Component {
     if (Object.keys(windowHash).length != 0) {
       this.netIDLogin(windowHash.access_token)
     }
+
   }
 
   //login with netID
@@ -174,6 +176,18 @@ class Login extends Component {
   }
 
   render() {
+
+    let user = Meteor.user()
+
+    if (user != undefined) {
+      return (
+        <Route
+          render={props => (
+              (<Redirect to="/homepage" />)
+          )}
+        />
+      )
+    } else {
     return (
       <div className="container">
         <header>
@@ -218,6 +232,7 @@ class Login extends Component {
         </form>
       </div>
     );
+  }
   }
 }
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export const HeaderValues = [
+export const IntermediateHeaderValues = [
 	{
 		Header: 'Name',
 		accessor: 'name',
@@ -116,4 +116,33 @@ export const HeaderValues = [
 	        placeholder="Filter by units"
 	      />
 	}, 	
+];
+
+export const FinalProductsHeaderValues = [
+	{
+		Header: 'Name',
+		accessor: 'name',
+		//Cell: renderEditable,
+		Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by name"
+	      />
+	}, 
+	{
+		Header: 'Quantity',
+		accessor: 'qty',
+		//Cell: renderEditable,
+		Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by quantity"
+	      />
+	},	
 ];

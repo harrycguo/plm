@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { Navbar, NavItem, Nav, NavDropdown, MenuItem, Row, Col, Tabs, Tab, TabContainer, TabContent, TabPane } from 'react-bootstrap';
 import CreateUser from '../../pages/CreateUser/CreateUser.js'
 import UserManagement from '../../pages/UserManagement/UserManagement.js'
+import { LinkContainer } from 'react-router-bootstrap'
+
 
 // App component - represents the whole app
 class UserManagementNavBar extends Component {
@@ -23,17 +25,34 @@ class UserManagementNavBar extends Component {
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Home + More" >
-                                        <MenuItem eventKey="3.1"><Link to="/homepage"> Admin Homepage </Link></MenuItem>
-                                        <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.3"><Link to="/formulaManagement"> Formula Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.6"><Link to="/viewLog"> View Global Log </Link></MenuItem>
-                                        <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
+                                    <NavDropdown eventKey="3" title="User Management" className="topTabClass">
+                                        
+
+                                        <LinkContainer to="homepage">
+                                        <MenuItem eventKey="3.1">Admin Homepage</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/inventoryManagement">
+                                        <MenuItem eventKey="3.2">Inventory Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/formulaManagement">
+                                        <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/vendorManagement">
+                                        <MenuItem eventKey="3.4">Vendor Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/viewLog">
+                                        <MenuItem eventKey="3.6">View Global Log</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/reports">
+                                        <MenuItem eventKey="3.10">View Reports</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/logout">
+                                        <MenuItem eventKey="3.7">Logout</MenuItem>
+                                    </LinkContainer>
 
 
                                     </NavDropdown>
-                                    <NavItem eventKey="first">User Management</NavItem>
+                                    <NavItem eventKey="first">Users</NavItem>
                                     <NavItem eventKey="second">Create New User</NavItem>
 
                                 </Nav>
@@ -67,17 +86,33 @@ class UserManagementNavBar extends Component {
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Home + More" >
-                                        <MenuItem eventKey="3.1"><Link to="/homepage"> Manager Homepage </Link></MenuItem>
-                                        <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.3"><Link to="/formulaManagement"> Formula Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.6"><Link to="/viewLog"> View Global Log </Link></MenuItem>
-                                        <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
+                                    <NavDropdown eventKey="3" title="User Management" className="topTabClass">
+
+                                        <LinkContainer to="homepage">
+                                        <MenuItem eventKey="3.1">Manager Homepage</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/inventoryManagement">
+                                        <MenuItem eventKey="3.2">Inventory Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/formulaManagement">
+                                        <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/vendorManagement">
+                                        <MenuItem eventKey="3.4">Vendor Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/viewLog">
+                                        <MenuItem eventKey="3.6">View Global Log</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/reports">
+                                        <MenuItem eventKey="3.10">View Reports</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/logout">
+                                        <MenuItem eventKey="3.7">Logout</MenuItem>
+                                    </LinkContainer>
 
 
                                     </NavDropdown>
-                                    <NavItem eventKey="first">User Management</NavItem>
+                                    <NavItem eventKey="first">Users</NavItem>
 
                                 </Nav>
                             </Col>
@@ -110,9 +145,17 @@ class UserManagementNavBar extends Component {
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Home + More" >
-                                        <MenuItem eventKey="3.1"><Link to="/homepage"> User Homepage </Link></MenuItem>
-                                        <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
+                                    <NavDropdown eventKey="3" title="User Management" className="topTabClass">
+
+                                        <LinkContainer to="homepage">
+                                        <MenuItem eventKey="3.1">User Homepage</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/logout">
+                                        <MenuItem eventKey="3.7">Logout</MenuItem>
+                                    </LinkContainer>
+
+
+
                                     </NavDropdown>
                                    
                                 </Nav>

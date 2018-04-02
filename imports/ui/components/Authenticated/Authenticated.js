@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
 
 class Authenticated extends Component {
-
-
   render() {
     const {
       loggingIn, authenticated, component, path, exact, ...rest

@@ -141,26 +141,59 @@ class ProductionRun extends Component {
                 ingList.push({
                     ingredient: null
                 })
-
             }
 
+            
+            
             this.setState({
                 ingList: ingList,
                 minUnits: Number(formula.productUnits),
                 stockDifference: stockDifference,
-                numUnitsToProduce: Number(numUnitsProduce)
+                numUnitsToProduce: Number(numUnitsProduce),
             })
         }
     }
 
     onChangeItem(index, component) {
-
+   
         let ingList = this.state.ingList
-
         ingList[index].ingredient = component
+      
+        let notEnough = false
+
+        for (let i = 0; i < ingList.length; i++){
+            if (ingList[i].ingredient != null) {
+                if (ingList[i].ingredient.state != null) {
+                    if (ingList[i].ingredient.state.notEnough) {
+                        console.log('err here')
+                        notEnough = true
+                        break
+                    }
+                }
+            }                 
+        }
+
+        if (component != null) {
+            if (component.state != null) {
+                if (component.state.notEnough) {
+                    console.log('err here')
+                    notEnough = true
+                }
+            }
+        }
+
+        if (this.numUnitsProduce.value == ''){
+            console.log('err here')
+            notEnough = false
+        }
+
+        console.log(ingList)
+        console.log(component)
+        console.log(notEnough)
 
         this.setState({
             ingList: ingList,
+            notEnough: notEnough
         })
     }
 
@@ -252,6 +285,13 @@ class ProductionRun extends Component {
 
     render() {
 
+        let button = true ? <Button
+        bsStyle="danger"
+        onClick={this.addToCart}>
+        Add Missing Ingredients To Cart (if applicable)
+        </Button>
+        : null
+
         return (
             <div>
 
@@ -291,7 +331,7 @@ class ProductionRun extends Component {
                     {this.renderStockDifferenceHeaders()}
 
                     {this.state.stockDifference}
-
+                    
                     <p></p>
 
                     <ButtonToolbar>
@@ -300,19 +340,7 @@ class ProductionRun extends Component {
                             Produce
                         </Button>
 
-                        <Button
-                            bsStyle="danger"
-                            onClick={this.addToCart}>
-                            Add Missing Ingredients To Cart (if applicable)
-                        </Button>
-
-                        {/* <Button
-                            bsStyle="warning" 
-                            onClick={this.goToCart}
-                        >
-                            Go To Cart
-                        </Button> */}
-
+                        {button}
 
                     </ButtonToolbar>
                 </form>
