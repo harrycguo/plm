@@ -5,7 +5,7 @@ import ReactTable from 'react-table';
 import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Button , ButtonToolbar, ControlLabel, Glyphicon } from 'react-bootstrap';
-import { Vendors } from '../../api/Vendors/vendors.js';
+import { Vendors } from '../../../api/Vendors/vendors.js';
 
 export class RecallChild extends Component {
 	constructor(props) {
@@ -16,20 +16,17 @@ export class RecallChild extends Component {
 	}
 
 	renderChild(count){
-		if(count==0){
-			return (<div>Done</div>);
-		}else {
-			return (<RecallChild count={count-1}/>)
-		}
+		return (<div> lol </div>)
 
 	}
 
 	render() {
-
+		console.log("CHILD")
+		console.log(this.props)
 		return (
 			<details>
 			<summary>Header</summary>
-			{this.renderChild(this.props.count)}
+			{this.renderChild()}
 			</details>
 		)
 	}
