@@ -20,18 +20,6 @@ class ProductionHistoryPage extends Component {
 
     return [
       {
-        Header: 'Lot Number',
-        accessor: 'lotNumber',
-		Filter: ({ filter, onChange }) =>
-	      <input
-	        type="text"
-	        onChange={event => onChange(event.target.value)}
-	        style={{ width: '100%', height: '100%'}}
-	        value={filter ? filter.value : ''}
-	        placeholder="Filter by lot number"
-	      />
-      },
-      {
         Header: 'Formula Name',
         accessor: 'formulaName',
 		Filter: ({ filter, onChange }) =>
@@ -41,6 +29,18 @@ class ProductionHistoryPage extends Component {
 	        style={{ width: '100%', height: '100%'}}
 	        value={filter ? filter.value : ''}
 	        placeholder="Filter by name"
+	      />
+      },
+      {
+        Header: 'Lot Number',
+        accessor: 'lotNumber',
+		Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by lot number"
 	      />
       },
       {
@@ -121,7 +121,7 @@ class ProductionHistoryPage extends Component {
     }
     for (let i = 0; i < this.props.intermediates.length; i++) {
       intMap.set(this.props.intermediates[i]._id, this.props.intermediates[i].name)
-  }
+    }
     
     let tableData = []
     let k = 0

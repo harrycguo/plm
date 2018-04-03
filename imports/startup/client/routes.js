@@ -32,6 +32,8 @@ import UserManagementHome from '../../ui/pages/UserManagement/UserManagementHome
 
 import ViewLogHome from '../../ui/pages/ViewLog/ViewLogHome.js';
 
+import ReportsHome from '../../ui/pages/Reports/ReportsHome.js'
+
 class App extends Component {
   constructor(props) {
     super(props);
@@ -69,6 +71,8 @@ class App extends Component {
           <Authenticated exact path="/userManagement" component={UserManagementHome} {...props}/>
 
           <Authenticated exact path='/viewLog' component={ViewLogHome} {...props}/>
+
+          <Authenticated exact path='/reports' component={ReportsHome} {...props}/>
         </Switch>
       </div>
       

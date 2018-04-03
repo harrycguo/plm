@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, NavItem, Nav, NavDropdown, MenuItem, Row, Col, Tabs, Tab, TabContainer, TabContent, TabPane } from 'react-bootstrap';
 import ViewLog from '../../pages/ViewLog/ViewLog.js'
+import { LinkContainer } from 'react-router-bootstrap'
+
 
 class LogNavBar extends Component {
     constructor(props) {
@@ -20,17 +22,33 @@ class LogNavBar extends Component {
                     <Row className="clearfix">
                         <Col sm={12}>
                             <Nav bsStyle="tabs">
-                                <NavDropdown eventKey="3" title="Home + More" >
-                                    <MenuItem eventKey="3.1"><Link to="/homepage"> Admin Homepage </Link></MenuItem>
-                                    <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
-                                    <MenuItem eventKey="3.3"><Link to="/formulaManagement"> Formula Management </Link></MenuItem>
-                                    <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
-                                    <MenuItem eventKey="3.5"><Link to="/userManagement"> User Management </Link></MenuItem>
-                                    <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
+                                <NavDropdown eventKey="3" title="View Global Log" className="topTabClass">
+                                    
+                                    <LinkContainer to="homepage">
+                                        <MenuItem eventKey="3.1">Admin Homepage</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/inventoryManagement">
+                                        <MenuItem eventKey="3.2">Inventory Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/formulaManagement">
+                                        <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/vendorManagement">
+                                        <MenuItem eventKey="3.4">Vendor Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/userManagement">
+                                        <MenuItem eventKey="3.5">User Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/reports">
+                                        <MenuItem eventKey="3.10">View Reports</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/logout">
+                                        <MenuItem eventKey="3.7">Logout</MenuItem>
+                                    </LinkContainer>
 
 
                                 </NavDropdown>
-                                <NavItem eventKey="first">View Log</NavItem>
+                                <NavItem eventKey="first">Log</NavItem>
                                
 
                             </Nav>
@@ -62,17 +80,33 @@ class LogNavBar extends Component {
                     <Row className="clearfix">
                         <Col sm={12}>
                             <Nav bsStyle="tabs">
-                                <NavDropdown eventKey="3" title="Home + More" >
-                                    <MenuItem eventKey="3.1"><Link to="/homepage"> Manager Homepage </Link></MenuItem>
-                                    <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
-                                    <MenuItem eventKey="3.3"><Link to="/formulaManagement"> Formula Management </Link></MenuItem>
-                                    <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
-                                    <MenuItem eventKey="3.5"><Link to="/userManagement"> User Management </Link></MenuItem>
-                                    <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
-
+                                <NavDropdown eventKey="3" title="View Global Log" className="topTabClass">
+                                    
+                                    <LinkContainer to="homepage">
+                                        <MenuItem eventKey="3.1">Manager Homepage</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/inventoryManagement">
+                                        <MenuItem eventKey="3.2">Inventory Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/formulaManagement">
+                                        <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/vendorManagement">
+                                        <MenuItem eventKey="3.4">Vendor Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/userManagement">
+                                        <MenuItem eventKey="3.5">User Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/reports">
+                                        <MenuItem eventKey="3.10">View Reports</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/logout">
+                                        <MenuItem eventKey="3.7">Logout</MenuItem>
+                                    </LinkContainer>
+                                    
 
                                     </NavDropdown>
-                                    <NavItem eventKey="first">View Log</NavItem>
+                                    <NavItem eventKey="first">Log</NavItem>
                                    
     
                                 </Nav>
@@ -106,9 +140,16 @@ class LogNavBar extends Component {
                     <Row className="clearfix">
                         <Col sm={12}>
                             <Nav bsStyle="tabs">
-                                <NavDropdown eventKey="3" title="Home + More" >
-                                    <MenuItem eventKey="3.1"><Link to="/homepage"> User Homepage </Link></MenuItem>
-                                    <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
+                                <NavDropdown eventKey="3" title="View Global Log" className="topTabClass">
+                                    
+                                    <LinkContainer to="homepage">
+                                        <MenuItem eventKey="3.1">User Homepage</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/logout">
+                                        <MenuItem eventKey="3.7">Logout</MenuItem>
+                                    </LinkContainer>
+
+
                                     </NavDropdown>
                                 </Nav>
                             </Col>

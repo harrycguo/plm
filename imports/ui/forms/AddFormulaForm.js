@@ -330,9 +330,10 @@ export class AddFormulaForm extends Component {
                     </Button>
 
                     <p></p>
-
+                    <hr className='divider'></hr>
+                    <p></p>
                     <Button type="submit" bsStyle="success" >
-                        Add New Final Product
+                        Submit
                     </Button>
                     </form>
         )
@@ -432,9 +433,10 @@ export class AddFormulaForm extends Component {
                     </Button>
 
                     <p></p>
-
+                    <hr className='divider'></hr>
+                    <p></p>
                     <Button type="submit" bsStyle="success" >
-                        Add New Intermediate
+                        Submit
                     </Button>
                     </form>
         )

@@ -5,8 +5,9 @@ import FormulaManagement from '../../pages/FormulaManagement/FormulaManagement.j
 import AddFormula from '../../pages/AddFormula/AddFormula.js'
 import BulkImportFormulasHome from '../../pages/BulkImportFormulas/BulkImportFormulasHome.js'
 import ProductionRun from '../../pages/ProductionRun/ProductionRun.js'
-import ProductionReportPageHome from '../../pages/ProductionReportPage/ProductionReportPageHome.js'
+import ProductionHistoryPage from '../../pages/ProductionReportPage/ProductionHistoryPage.js'
 import IntermediatesDatabase from '../../pages/IntermediatesDatabase/IntermediatesDatabase.js'
+import { LinkContainer } from 'react-router-bootstrap'
 
 class FormulaManagementNavBar extends Component {
     constructor(props) {
@@ -25,22 +26,36 @@ class FormulaManagementNavBar extends Component {
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Home + More" >
-                                        <MenuItem eventKey="3.1"><Link to="/homepage"> Admin Homepage </Link></MenuItem>
-                                        <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.5"><Link to="/userManagement"> User Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.6"><Link to="/viewLog"> View Global Log </Link></MenuItem>
-                                        <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
-
-
+                                    <NavDropdown eventKey="3" title="Formula Management" className="topTabClass">
+                                    <LinkContainer to="homepage">
+                                        <MenuItem eventKey="3.1">Admin Homepage</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/inventoryManagement">
+                                        <MenuItem eventKey="3.2">Inventory Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/vendorManagement">
+                                        <MenuItem eventKey="3.4">Vendor Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/userManagement">
+                                        <MenuItem eventKey="3.5">User Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/viewLog">
+                                        <MenuItem eventKey="3.6">View Global Log</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/reports">
+                                        <MenuItem eventKey="3.10">View Reports</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/logout">
+                                        <MenuItem eventKey="3.7">Logout</MenuItem>
+                                    </LinkContainer>
+                                    
                                     </NavDropdown>
-                                    <NavItem eventKey="1">Formula Management</NavItem>
-                                    <NavItem eventKey="7">Formula Database</NavItem>
+                                    <NavItem eventKey="1">Database</NavItem>
+                                    <NavItem eventKey="7">Inventory</NavItem>
                                     <NavItem eventKey="2">Add New Formula</NavItem>
-                                    <NavItem eventKey="4">Bulk Import Formula</NavItem>
+                                    <NavItem eventKey="4">Bulk Import</NavItem>
                                     <NavItem eventKey="5">Produce Formula</NavItem>
-                                    <NavItem eventKey="6">Reports</NavItem>
+                                    <NavItem eventKey="6">Production History</NavItem>
 
                                 </Nav>
                             </Col>
@@ -62,7 +77,7 @@ class FormulaManagementNavBar extends Component {
                                         <ProductionRun hist={this.props.hist} />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
-                                        <ProductionReportPageHome hist={this.props.hist}/>
+                                        <ProductionHistoryPage hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>
@@ -84,20 +99,36 @@ class FormulaManagementNavBar extends Component {
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Home + More" >
-                                        <MenuItem eventKey="3.1"><Link to="/homepage"> Manager Homepage </Link></MenuItem>
-                                        <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.5"><Link to="/userManagement"> User Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.6"><Link to="/viewLog"> View Global Log </Link></MenuItem>
-                                        <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
+                                    <NavDropdown eventKey="3" title="Formula Management" className="topTabClass">
+
+                                        <LinkContainer to="homepage">
+                                            <MenuItem eventKey="3.1">Manager Homepage</MenuItem>
+                                        </LinkContainer>
+                                        <LinkContainer to="/inventoryManagement">
+                                            <MenuItem eventKey="3.2">Inventory Management</MenuItem>
+                                        </LinkContainer>
+                                        <LinkContainer to="/vendorManagement">
+                                            <MenuItem eventKey="3.4">Vendor Management</MenuItem>
+                                        </LinkContainer>
+                                        <LinkContainer to="/userManagement">
+                                            <MenuItem eventKey="3.5">User Management</MenuItem>
+                                        </LinkContainer>
+                                        <LinkContainer to="/viewLog">
+                                            <MenuItem eventKey="3.6">View Global Log</MenuItem>
+                                        </LinkContainer>
+                                        <LinkContainer to="/reports">
+                                        <MenuItem eventKey="3.10">View Reports</MenuItem>
+                                    </LinkContainer>
+                                        <LinkContainer to="/logout">
+                                            <MenuItem eventKey="3.7">Logout</MenuItem>
+                                        </LinkContainer>
 
 
                                     </NavDropdown>
-                                    <NavItem eventKey="1">Formula Management</NavItem>
-                                    <NavItem eventKey="7">Formula Database</NavItem>
+                                    <NavItem eventKey="1">Database</NavItem>
+                                    <NavItem eventKey="7">Inventory</NavItem>
                                     <NavItem eventKey="5">Produce Formula</NavItem>
-                                    <NavItem eventKey="6">Reports</NavItem>
+                                    <NavItem eventKey="6">Production History</NavItem>
 
                                 </Nav>
                             </Col>
@@ -113,7 +144,7 @@ class FormulaManagementNavBar extends Component {
                                         <ProductionRun hist={this.props.hist} />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
-                                        <ProductionReportPageHome hist={this.props.hist}/>
+                                        <ProductionHistoryPage hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>
@@ -134,16 +165,29 @@ class FormulaManagementNavBar extends Component {
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Home + More" >
-                                        <MenuItem eventKey="3.1"><Link to="/homepage"> User Homepage </Link></MenuItem>
-                                        <MenuItem eventKey="3.2"><Link to="/inventoryManagement"> Inventory Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
+                                    <NavDropdown eventKey="3" title="Formula Management" className="topTabClass">
+
+                                        <LinkContainer to="homepage">
+                                            <MenuItem eventKey="3.1">User Homepage</MenuItem>
+                                        </LinkContainer>
+                                        <LinkContainer to="/inventoryManagement">
+                                            <MenuItem eventKey="3.2">Inventory Management</MenuItem>
+                                        </LinkContainer>
+                                        <LinkContainer to="/vendorManagement">
+                                            <MenuItem eventKey="3.4">Vendor Management</MenuItem>
+                                        </LinkContainer>
+                                        <LinkContainer to="/reports">
+                                        <MenuItem eventKey="3.10">View Reports</MenuItem>
+                                    </LinkContainer>
+                                        <LinkContainer to="/logout">
+                                            <MenuItem eventKey="3.7">Logout</MenuItem>
+                                        </LinkContainer>
+
 
                                     </NavDropdown>
-                                    <NavItem eventKey="1">Formula Management</NavItem>
-                                    <NavItem eventKey="7">Formula Database</NavItem>
-                                    <NavItem eventKey="6">Reports</NavItem>
+                                    <NavItem eventKey="1">Database</NavItem>
+                                    <NavItem eventKey="7">Inventory</NavItem>
+                                    <NavItem eventKey="6">Production History</NavItem>
 
                                 </Nav>
                             </Col>
@@ -156,7 +200,7 @@ class FormulaManagementNavBar extends Component {
                                         <IntermediatesDatabase hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
-                                        <ProductionReportPageHome hist={this.props.hist}/>
+                                        <ProductionHistoryPage hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>

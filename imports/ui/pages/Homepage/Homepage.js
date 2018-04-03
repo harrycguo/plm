@@ -6,14 +6,11 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Users } from '../../../api/Users/users.js'
 import { Accounts } from 'meteor/accounts-base';
 
-
- 
 class Homepage extends Component {
   constructor(props) {
-    super(props);
-    
+    super(props);   
+
   }
- 
  
   render() {
 
@@ -31,6 +28,7 @@ class Homepage extends Component {
         <li><Link to='/vendorManagement'>Vendor Management</Link></li>
         <li><Link to='/userManagement'>User Management</Link></li>
         <li><Link to='/viewLog'>View Global Log</Link></li>
+        <li><Link to='/reports'>View Reports</Link></li>
         <li><Link to='/logout'>Logout</Link></li>
 
       </div>
@@ -50,6 +48,7 @@ class Homepage extends Component {
         <li><Link to='/vendorManagement'>Vendor Management</Link></li>
         <li><Link to='/userManagement'>User Management</Link></li>
         <li><Link to='/viewLog'>View Global Log</Link></li>
+        <li><Link to='/reports'>View Reports</Link></li>
         <li><Link to='/logout'>Logout</Link></li>
       </div>
         )
@@ -69,6 +68,7 @@ class Homepage extends Component {
         <li><Link to='/inventoryManagement'>Inventory Management</Link></li>
         <li><Link to='/formulaManagement'>Formula Management</Link></li>
         <li><Link to='/vendorManagement'>Vendor Management</Link></li>
+        <li><Link to='/reports'>View Reports</Link></li>
         <li><Link to='/logout'>Logout</Link></li>
       </div>
         )

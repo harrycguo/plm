@@ -30,6 +30,7 @@
     "react-dom": "^16.2.0",
     "react-native": "^0.52.2",
     "react-router": "^4.2.0",
+    "react-router-bootstrap": "^0.24.4",
     "react-router-dom": "^4.2.2",
     "react-table": "^6.7.6",
     "reactstrap": "^4.8.0",

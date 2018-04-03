@@ -151,6 +151,11 @@ body {
     margin-bottom: -10px;
     position: relative;
   }
+
+  .topTabClass {
+    font-size: 14px;
+    font-weight: bold;
+  }
    
   .new-task input {
     box-sizing: border-box;
