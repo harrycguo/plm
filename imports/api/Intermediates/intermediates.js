@@ -13,6 +13,7 @@ export const Intermediates = new Mongo.Collection('intermediates');
 if (Meteor.isClient) {
   Meteor.subscribe('storageCapacities');
   Meteor.subscribe('lots')
+  Meteor.subscribe('lotshistory')
 }
 
 Meteor.methods({

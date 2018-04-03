@@ -12,7 +12,7 @@ class ViewLogHome extends Component {
     return (
       <div className="container">
         <header>
-            <h1>View Log</h1>
+            <h1>View Global Log</h1>
         </header>
         
         <LogNavBar />

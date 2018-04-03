@@ -343,6 +343,10 @@ ProdHistorySchema = new SimpleSchema({
     type: String,
     min: 1
   },
+  // name: {
+  //   type: String,
+  //   min: 1
+  // },
   qty: {
     type: Number,
     decimal: true,
@@ -405,6 +409,10 @@ LotsHistorySchema = new SimpleSchema({
     type: String,
     min: 1
   },
+  // name: {
+  //   type: String,
+  //   min: 1
+  // },
   queue: {
     type: [LotIngredientSchema2]
   }

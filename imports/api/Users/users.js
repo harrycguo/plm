@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Carts } from '../Cart/Cart.js'
+import { NetIDusers } from './netIDusers.js'
 
 if (Meteor.isClient) {
   Meteor.subscribe('carts');
@@ -103,12 +104,16 @@ Meteor.methods({
     Roles.setUserRoles(user, [newPermissionLevel]);
   },
 
-  'users.deleteUser'(userID) {
+  'users.deleteUser'(userID, username) {
     var myUser = Meteor.users.findOne({_id: userID})
+    var netIDuser = NetIDusers.findOne({user: username})
+
     Meteor.call('systemlog.insert',"User", myUser.username, "", "Removed", "")
     Meteor.users.remove(userID)
+    if (netIDuser != undefined){
+      NetIDusers.remove({user: username})
+    }
   }
-
 })
 
 if (Meteor.isServer) {

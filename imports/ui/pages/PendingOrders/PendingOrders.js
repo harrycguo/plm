@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import CartItem from './CartItem.js'
 import Timer from './Timer.js'
 
-class Cart extends Component {
+class PendingOrders extends Component {
 	
 	constructor(props) {
 		super(props);
@@ -136,4 +136,4 @@ export default withTracker(() => {
 		vendors: Vendors.find({}).fetch(),
 		carts: Carts.find({"user" : Meteor.userId()}).fetch()
 	};
-})(Cart);
+})(PendingOrders);

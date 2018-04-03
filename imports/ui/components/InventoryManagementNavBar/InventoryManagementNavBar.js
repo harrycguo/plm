@@ -11,8 +11,11 @@ import AddIngredient from '../../pages/AddIngredient/AddIngredient.js'
 import BulkImportIngredients from '../../pages/BulkImportIngredients/BulkImportIngredients.js'
 import SpendingReport from '../../pages/SpendingReport/SpendingReport.js'
 import FreshnessReport from '../../pages/FreshnessReport/FreshnessReport.js'
-import RecallReport from '../../pages/RecallReport/RecallReport.js'
+import RecallReportView from '../../pages/RecallReport/RecallReport.js'
+
 import Cart from '../../pages/Cart/Cart.js'
+import { LinkContainer } from 'react-router-bootstrap'
+
 
 class InventoryManagementNavBar extends Component {
     constructor(props) {
@@ -43,23 +46,37 @@ class InventoryManagementNavBar extends Component {
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Home + More" >
-                                        <MenuItem eventKey="3.1"><Link to="/homepage"> Admin Homepage </Link></MenuItem>
-                                        <MenuItem eventKey="3.3"><Link to="/formulaManagement"> Formula Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.5"><Link to="/userManagement"> User Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.6"><Link to="/viewLog"> View Global Log </Link></MenuItem>
-                                        <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
+                                    <NavDropdown eventKey="3" title="Inventory Management" className="topTabClass">
+                                      
+                                        <LinkContainer to="homepage">
+                                        <MenuItem eventKey="3.1">Admin Homepage</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/formulaManagement">
+                                        <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/vendorManagement">
+                                        <MenuItem eventKey="3.4">Vendor Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/userManagement">
+                                        <MenuItem eventKey="3.5">User Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/viewLog">
+                                        <MenuItem eventKey="3.6">View Global Log</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/reports">
+                                        <MenuItem eventKey="3.10">View Reports</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/logout">
+                                        <MenuItem eventKey="3.7">Logout</MenuItem>
+                                    </LinkContainer>
 
 
                                     </NavDropdown>
-                                    <NavItem eventKey="1">Inventory Management</NavItem>
+                                    <NavItem eventKey="1">Inventory</NavItem>
                                     <NavItem eventKey="2">Add New Ingredient</NavItem>
-                                    <NavItem eventKey="4">Bulk Import Ingredients</NavItem>
-                                    <NavItem eventKey="5">Spending Report</NavItem>
-                                    <NavItem eventKey="9">Freshness Report</NavItem>
-                                    <NavItem eventKey="10">Recall Report</NavItem>
-                                  
+                                    <NavItem eventKey="4">Bulk Import</NavItem>
+                                    <NavItem eventKey="5">Pending Orders</NavItem>
+                                                                   
                                     
 
                                 </Nav>
@@ -76,15 +93,9 @@ class InventoryManagementNavBar extends Component {
                                         <BulkImportIngredients />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
-                                        <SpendingReport />
+                                       
                                     </Tab.Pane>
-                                    <Tab.Pane eventKey="9">
-                                        <FreshnessReport />
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="10">
-                                        <RecallReport />
-                                    </Tab.Pane>
-                                   
+                                                                     
                                 </Tab.Content>
                             </Col>
                         </Row>
@@ -106,20 +117,35 @@ class InventoryManagementNavBar extends Component {
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Home + More" >
-                                        <MenuItem eventKey="3.1"><Link to="/homepage"> Manager Homepage </Link></MenuItem>
-                                        <MenuItem eventKey="3.3"><Link to="/formulaManagement"> Formula Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.5"><Link to="/userManagement"> User Management </Link></MenuItem>
-                                        <MenuItem eventKey="3.6"><Link to="/viewLog"> View Global Log </Link></MenuItem>
-                                        <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
+                                    <NavDropdown eventKey="3" title="Inventory Management" className="topTabClass">
+
+                                        <LinkContainer to="homepage">
+                                        <MenuItem eventKey="3.1">Manager Homepage</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/formulaManagement">
+                                        <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/vendorManagement">
+                                        <MenuItem eventKey="3.4">Vendor Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/userManagement">
+                                        <MenuItem eventKey="3.5">User Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/viewLog">
+                                        <MenuItem eventKey="3.6">View Global Log</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/reports">
+                                        <MenuItem eventKey="3.10">View Reports</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/logout">
+                                        <MenuItem eventKey="3.7">Logout</MenuItem>
+                                    </LinkContainer>
 
 
                                     </NavDropdown>
-                                    <NavItem eventKey="1">Inventory Management</NavItem>
-                                    <NavItem eventKey="5">Spending Report</NavItem>
-                                    <NavItem eventKey="9">Freshness Report</NavItem>
-                                    <NavItem eventKey="10">Recall Report</NavItem>
+                                    <NavItem eventKey="1">Inventory</NavItem>
+                                    <NavItem eventKey="5">Pending Orders</NavItem>
+                                   
                                   
                                 </Nav>
                             </Col>
@@ -129,14 +155,9 @@ class InventoryManagementNavBar extends Component {
                                         <InventoryManagement hist = {this.props.hist} />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
-                                        <SpendingReport />
+                                        
                                     </Tab.Pane>
-                                    <Tab.Pane eventKey="9">
-                                        <FreshnessReport />
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="10">
-                                    <RecallReport />
-                                    </Tab.Pane>
+                                   
                                    
                                 </Tab.Content>
                             </Col>
@@ -156,18 +177,28 @@ class InventoryManagementNavBar extends Component {
                     <Row className="clearfix">
                         <Col sm={12}>
                             <Nav bsStyle="tabs">
-                                <NavDropdown eventKey="3" title="Home + More" >
-                                    <MenuItem eventKey="3.1"><Link to="/homepage"> User Homepage </Link></MenuItem>
-                                    <MenuItem eventKey="3.3"><Link to="/formulaManagement"> Formula Management </Link></MenuItem>
-                                    <MenuItem eventKey="3.4"><Link to="/vendorManagement"> Vendor Management </Link></MenuItem>
-                                    <MenuItem eventKey="3.7"><Link to="/logout"> Logout</Link></MenuItem>
+                                <NavDropdown eventKey="3" title="Inventory Management" className="topTabClass">
+                      
+                                    <LinkContainer to="homepage">
+                                        <MenuItem eventKey="3.1">User Homepage</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/formulaManagement">
+                                        <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/vendorManagement">
+                                        <MenuItem eventKey="3.4">Vendor Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/reports">
+                                        <MenuItem eventKey="3.10">View Reports</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/logout">
+                                        <MenuItem eventKey="3.7">Logout</MenuItem>
+                                    </LinkContainer>
 
 
                                 </NavDropdown>
-                                <NavItem eventKey="1">Inventory Management</NavItem>
-                                <NavItem eventKey="5">Spending Report</NavItem>
-                                <NavItem eventKey="9">Freshness Report</NavItem>
-                                <NavItem eventKey="10">Recall Report</NavItem>
+                                <NavItem eventKey="1">Inventory</NavItem>
+                               
                               
                             </Nav>
                         </Col>
@@ -176,15 +207,6 @@ class InventoryManagementNavBar extends Component {
                                 <Tab.Pane eventKey="1">
                                     <InventoryManagement hist = {this.props.hist} />
                                 </Tab.Pane>
-                                <Tab.Pane eventKey="5">
-                                    <SpendingReport />
-                                </Tab.Pane>
-                                <Tab.Pane eventKey="9">
-                                        <FreshnessReport />
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="10">
-                                    <RecallReport />
-                                    </Tab.Pane>
                                
                             </Tab.Content>
                         </Col>

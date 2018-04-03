@@ -13,3 +13,6 @@ import '../../api/Log/systemlog.js'
 import '../../api/Production/production.js'
 import '../../api/Intermediates/intermediates.js'
 import '../../api/Lots/Lots.js'
+import '../../api/RecallReport/RecallReport.js'
+import '../../api/RecallReport/RecallReportApi.js'
+

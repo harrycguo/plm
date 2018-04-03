@@ -147,6 +147,12 @@ Meteor.methods({
             scMapUsed.set(storageType, Number(newStorage))
         }
 
+        ings.forEach( (ing) => {
+            if (!ing.lotsSelected){
+                throw new Meteor.Error('not all lots selected', 'Not all Lots have been selected')
+            }
+        })
+
         const temperatures = ['frozen', 'refrigerated', 'room temperature']
         const storage = ['Freezer', 'Refrigerator', 'Warehouse']
         for (let i = 0; i < temperatures.length; i++) {
@@ -158,11 +164,7 @@ Meteor.methods({
         //This is where the magic happens
         var diff;
 
-        ings.forEach( (ing) => {
-            if (!ing.lotsSelected){
-                throw new Meteor.Error('not all lots selected', 'Not all Lots have been selected')
-            }
-        })
+        
 
         ings.forEach(function(ingCartInfo){
             var ing = IngredientsList.find({ _id : ingCartInfo.ingredient}).fetch()[0]

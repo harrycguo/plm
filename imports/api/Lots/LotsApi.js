@@ -27,6 +27,9 @@ Meteor.methods({
             time: time
         }
 
+        var curTotalNativeUnits = IngredientsList.find({ _id : ingID}).fetch()[0].nativeInfo.totalQuantity
+        Meteor.call('editTotalNumNativeUnits',ingID,curTotalNativeUnits + qty)
+
         if(lot.length != 0) {
             Lots.update({inventoryID : ingID}, {$push : {queue : entry}})
         }
@@ -37,10 +40,8 @@ Meteor.methods({
             })
         }
         console.log('created: '+time)
-        var curTotalNativeUnits = IngredientsList.find({ _id : ingID}).fetch()[0].nativeInfo.totalQuantity
 
         Meteor.call('systemlog.insert', "Lot", lotNumber, 0, "Added", "")
-        Meteor.call('editTotalNumNativeUnits',ingID,curTotalNativeUnits + qty)
         Meteor.call('lotshistory.add', ingID, qty, lotNumber, vendor, price, time)
     },
     'lots.addFormula': function(id, qty, lotNumber, time) {
