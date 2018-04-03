@@ -9,9 +9,7 @@ if (Meteor.isClient) {
 
 Meteor.methods({
     'production.log': function(formulaId, qty) {
-        if (ProductionReport.find({ formula : formulaId }).fetch().length === 0) {
-            
-            console.log('first if')
+        if (ProductionReport.find({ formula : formulaId }).fetch().length === 0) {      
             var item1 = Formulas.find({ _id : formulaId}).fetch()[0]
             var item2 = Intermediates.find({_id: formulaId}).fetch()[0]
             let formula = item1 != undefined ? item1 : item2
