@@ -94,13 +94,15 @@ Meteor.methods({
                 entry = {
                     inventoryID: formulaID,
                     qty: formulaQty,
+                    qtyConsumed: q[0].qty,
                     time: time,
                     lot:lotNum,
-                    intermediate: intermediate,
-                    qtyConsumed: q[0].qty
+                    intermediate: intermediate
+                    
                 }
                 console.log("reaching here")
                 Meteor.call('lotshistory.update',id,q[0].qty,q[0],entry)
+                Meteor.call('systemlog.insert', "Lot", q[0].lot, 0, "Removed", q[0].qty)
                 q.shift()
             }
             else {
@@ -110,13 +112,14 @@ Meteor.methods({
                 entry = {
                     inventoryID: formulaID,
                     qty: formulaQty,
+                    qtyConsumed: qty,
                     time: time,
                     lot:lotNum,
-                    intermediate: intermediate,
-                    qtyConsumed: qty
+                    intermediate: intermediate
                 }
                 console.log("reaching here")
                 Meteor.call('lotshistory.update',id,qty,q[0],entry)
+                Meteor.call('systemlog.insert', "Lot", q[0].lot, 0, "Removed", qty)
                 break
             }
         }
@@ -160,7 +163,6 @@ Meteor.methods({
         if (newQty == 0) {
             q.splice(index,1)
         }
-        Lots.update({ inventoryID : id},{$set : {queue : q}})
         var curTotalNativeUnits = 0
         // console.log(lot.queue[0].vendor)
         if (lot.queue[0].vendor !== undefined) {
@@ -171,6 +173,7 @@ Meteor.methods({
             curTotalNativeUnits = Intermediates.find({ _id : id}).fetch()[0].nativeInfo.totalQuantity
             Meteor.call('intermediates.editTotalNumNativeUnits',id,curTotalNativeUnits - diff)
         }
+        Lots.update({ inventoryID : id},{$set : {queue : q}})
         Meteor.call('systemlog.insert', "Lot", lotNumber, 0, "Modified", newQty)
     },
     'lots.logProduction': function(lotID, id, qty, time, lot, intermediate) {

@@ -44,6 +44,7 @@ Meteor.methods({
         }
 
         //Consume!!!
+        let lotNumber = LotNumberSystem.findOne({name: 'system'})
         let lotsData = []
 
         for (let i = 0; i < ingList.length; i++) {
@@ -94,11 +95,15 @@ Meteor.methods({
                 lots: lots
             })
 
-            Meteor.call('lots.removeQty', ingList[i].ingredient, totalIngProdAmt)
-
+            var isIntermediate = false
+            if (formula === undefined) {
+                isIntermediate = true
+            }
+            var date = new Date()
+            date.setMilliseconds(0)
+            Meteor.call('lots.removeQty',ingList[i].ingredient,totalIngProdAmt,formulaID,numUnitsProduce,date,lotNumber.lotNumber,isIntermediate)
         }
 
-        let lotNumber = LotNumberSystem.findOne({name: 'system'})
         console.log('im here')
         console.log(lotNumber)
         
@@ -112,8 +117,6 @@ Meteor.methods({
 
         Meteor.call('systemlog.insert',"Production", "Produced", null, "Event", "");
         Meteor.call('production.log',formulaID,numUnitsProduce)
-
-
         Meteor.call('lots.addFormula', item._id, numUnitsProduce, lotNumber.lotNumber, new Date())
     },
     'production.addToCart'(ingList) {
