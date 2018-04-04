@@ -37,6 +37,9 @@ class UserManagementNavBar extends Component {
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
                                     </LinkContainer>
+                                    <LinkContainer to="/productionLineManagement">
+                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>
                                     </LinkContainer>
@@ -96,6 +99,9 @@ class UserManagementNavBar extends Component {
                                     </LinkContainer>
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/productionLineManagement">
+                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>

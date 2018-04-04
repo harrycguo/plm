@@ -7,7 +7,7 @@ import { Button, Label, Modal, ModalHeader, ModalBody, ModalTitle, OverlayTrigge
 import { Link } from 'react-router-dom';
 import validate from '../../../modules/validate.js';
 
-class CartItem extends Component {
+class PendingOrderItem extends Component {
 	constructor(props, context) {
 		super(props, context);
 
@@ -141,46 +141,93 @@ class CartItem extends Component {
 	handleSubmitModal() {
 
 		let ingredient = this.props.ingredient
-		let numPackages = this.numberOfPackages.value
+		let status = this.status.value
 		
-		if (numPackages % 1 === 0) {
+		if (status == 'arrived') {
 
+			let lotsArray = new Array()
+			let lotsSet = new Set()
 			let lotError = false
-	
+			let lotErrorReason = ''
+			let totalLots = 0
+
+			for (let i = 0; i < this.state.lotFields.length; i++) {
+				let lot = this[`lot${i}`].value
+				let lotStuff = this[`lotStuff${i}`].value
+
+				//if blank
+				if (lot == '' || lotStuff == '') {
+					lotError = true
+					lotErrorReason = 'Null entries when defining Lots'
+					break
+				} 
+
+				//lot number not integer
+				else if (lot % 1 !== 0) {
+					lotError = true
+					lotErrorReason = 'Lot number(s) not integer'
+					break
+				}
+
+				//if negative values
+				else if (lot <= 0 || lotStuff <= 0) {
+					lotError = true
+					lotErrorReason = 'Lots and Lot Numbers must be greater than 0'
+					break
+				} 
+
+				//if multiple lots same
+				else if (lotsSet.has(lot)) {
+					lotError = true
+					lotErrorReason = 'Multiple same Lot Numbers defined'
+					break
+				}
+
+				//success lot
+				else {
+					lotsSet.add(lot)
+					lotsArray.push({
+						lotNumber: lot,
+						lotStuff: lotStuff
+					})
+				}
+			}
+
+			//check if number of packages correct
+			for (let i = 0; i < this.state.lotFields.length; i++) {
+				totalLots += Number(this[`lotStuff${i}`].value)
+			}
+
+			if (totalLots != ingredient.amt) {
+				lotError = true
+				lotErrorReason = 'Number of Lot Packages not equal to above Number of Packages'
+			}
+
+			if (this.state.lotFields.length == 0) {
+				lotError = true
+				lotErrorReason = 'No Lots Selected'
+			}
+
 			if (!lotError) {
 
-				
-				//change quantity in the cart
-				Meteor.call('cart.changeQuantity',
+				Meteor.call('cart.changeLots',
 					ingredient.fullIng.ingredient,
-					this.numberOfPackages.value,
+					lotsArray,
+					ingredient.amt,
 					function (error, result) {
 						if (error) {
 							console.log("something goes wrong with the following error message " + error.reason)
 							Bert.alert(error.reason, 'danger');
 						}
-					}
-				)
+					})
 
-				//Change Vendor
-				Meteor.call('cart.changeVendor',
-					ingredient.fullIng.ingredient,
-					this.vendor.value,
-					function (error, result) {
-						if (error) {
-							console.log("something goes wrong with the following error message " + error.reason)
-							Bert.alert(error.reason, 'danger');
-						}
-					}
-				)
-				
 				this.setState({ show: false });
 				Bert.alert('Successfully Edited Cart Item!', 'success')
 			} else {
 				Bert.alert(lotErrorReason, 'danger');
 			}
 		} else {
-			Bert.alert('Number of Packages must be an Integer', 'danger');
+			Bert.alert('Must Change Status to Arrived before assigning Lot Numbers!', 'danger');
 		}
 
 	}
@@ -196,62 +243,61 @@ class CartItem extends Component {
 	}
 
 	getLotsText(ingredient) {
-		return ingredient.fullIng.lotsSelected ? <Label bsStyle="success">Yes</Label> : <Label bsStyle="danger">No</Label>
+		return ingredient.fullIng.lotsSelected ? <Label bsStyle="success">Arrived</Label> : <Label bsStyle="warning">Pending</Label>
 	}
 
-	remove() {
-		Meteor.call('removeIngredientFromCart', this.fullIng.ingredient,
-			function (error, result) {
-				if (error) {
-					console.log("something goes wrong with the following error message " + error.reason)
-					Bert.alert(error.reason, 'danger');
-				}
-			}
-		);
+
+	addField() {
+		const lotFields = this.state.lotFields;
+		let numPackages = this.props.ingredient.amt
+
+		numPackages % 1 === 0 ?
+			this.setState((prevState) => ({
+				lotFields: prevState.lotFields.concat(
+					<div className="containerSome" key={lotFields.length}>
+						<div className="side-container-zero" key={lotFields.length}>
+							<div className="side-spacingInput">
+								<input
+									type="number"
+									step="1"
+									key={`lot${lotFields.length}`}
+									ref={input => (this[`lot${lotFields.length}`] = input)}
+									className="form-control"
+								/>
+							</div>
+							<div className="side-spacingInput">
+								<input
+									type="number"
+									step="1"
+									key={`lotStuff${lotFields.length}`}
+									ref={input => (this[`lotStuff${lotFields.length}`] = input)}
+									className="form-control"
+								/>
+							</div>
+						</div>
+					</div>
+				)
+			}))
+			: Bert.alert('Number of Packages must be an Integer', 'danger');
 	}
 
-	renderVendorSelector(ingredient, vendorMap, vendorInfo) {
-		var ingredientVendors = ingredient.vendorInfo
-		let items = new Array();
-		ingredientVendors.forEach(function (possibleVendor) {
-			var newVendorId = possibleVendor.vendor
-			if (vendorMap.get(newVendorId)) {
-				var newVendorName = vendorMap.get(newVendorId).vendor
-				var oldVendorId = vendorInfo._id
-				var oldVendorName = vendorMap.get(oldVendorId).vendor
-				if (oldVendorId == newVendorId) {
-					items.push(
-						<option selected="selected" key={newVendorId} value={newVendorId}>
-							{newVendorName + ' | ' + Number(possibleVendor.price).toFixed(2)}
-						</option>)
-				} else {
-					items.push(
-						<option key={newVendorId} value={newVendorId}>
-							{newVendorName + ' | ' + Number(possibleVendor.price).toFixed(2)}
-						</option>)
-				}
-			}
-		})
+	removeField() {
 
-		return (
-			<p><select
-				name="vendor"
-				ref={vendor => (this.vendor = vendor)}
-			>
-				{items}
-			</select></p>
-		)
+		const lotFields = this.state.lotFields;
+
+		let numPackages = this.props.ingredient.amt
+
+		numPackages % 1 === 0 ?
+
+			this.setState((prevState) => ({
+				lotFields: prevState.lotFields.slice(0, -1)
+			}))
+			: Bert.alert('Number of Packages must be an Integer', 'danger');
 	}
-
 
 	renderModal() {
 
-		var vendorMap = new Map();
 		var ingMap = new Map();
-
-		this.props.vendors.forEach(function (vend) {
-			vendorMap.set(vend._id, vend);
-		});
 
 		this.props.ingredients.forEach(function (ing) {
 			ingMap.set(ing._id, ing);
@@ -267,28 +313,47 @@ class CartItem extends Component {
 				<Modal.Body>
 					<form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()} id='form'>
 
-						<FormGroup>
-							<ControlLabel>Number Of Packages:</ControlLabel>
-							<input
-								type="number"
-								step="1"
-								name="numberOfPackages"
-								placeholder="Enter # of Packages"
-								ref={numberOfPackages => (this.numberOfPackages = numberOfPackages)}
-								defaultValue={ingredient.amt}
-								className="form-control"
-							/>
-						</FormGroup>
-
-						<FormGroup>
-							<ControlLabel>Select Vendor</ControlLabel>
-							{this.renderVendorSelector(
-								ingMap.get(ingredient.fullIng.ingredient),
-								vendorMap,
-								vendorMap.get(ingredient.fullIng.vendorInfo.vendor))}
-						</FormGroup>
-
 						<p></p>
+
+						<ControlLabel>Order Status:</ControlLabel>
+						<p><select id="status"
+							ref={status => (this.status = status)}
+							name="packaging">
+							<option value="pending">Pending</option>
+							<option value="arrived">Arrived</option>
+						</select></p>
+
+						<p><b>Number of Packages Ordered:</b> {ingredient.amt}</p>
+
+						<div className="containerSome">
+							<div className="side-container-zero">
+								<div className="side-spacingInput">
+									<b>Lot Number:</b>
+
+								</div>
+								<div className="side-spacingInput">
+									<b>Number of Packages:</b>
+								</div>
+
+							</div>
+						</div>
+
+						{this.state.lotFields.map(function (lotField, index) {
+							return lotField;
+						})}
+
+						<div className="containerSome">
+							<ButtonToolbar>
+								<ButtonGroup>
+									<Button onClick={this.addField.bind(this)}>
+										+
+								</Button>
+									<Button onClick={this.removeField.bind(this)}>
+										-
+								</Button>
+								</ButtonGroup>
+							</ButtonToolbar>
+						</div>
 					</form>
 
 				</Modal.Body>
@@ -308,7 +373,7 @@ class CartItem extends Component {
 		var ingMap = new Map();
 
 		this.props.vendors.forEach(function (vend) {
-			vendorMap.set(vend._id, vend);
+			vendorMap.set(vend._id, vend.vendor);
 		});
 
 		this.props.ingredients.forEach(function (ing) {
@@ -323,30 +388,21 @@ class CartItem extends Component {
 				<td>{ingMap.get(ingredient.fullIng.ingredient).name}</td>
 				<td>{ingredient.fullIng.numPackages}</td>
 				<td>{this.getQuantityPerPackage(ingMap, ingredient)}</td>
-				<td>{vendorMap.get(ingredient.fullIng.vendorInfo.vendor).vendor}</td>
+				<td>{vendorMap.get(ingredient.fullIng.vendorInfo.vendor)}</td>
 				<td align="right">${Number(ingredient.fullIng.vendorInfo.price).toFixed(2)}</td>
 				<td>{this.getTotalQuantity(ingMap, ingredient)}</td>
 				<td align="right">${Number(ingredient.fullIng.vendorInfo.price * ingredient.fullIng.numPackages).toFixed(2)}</td>
-				
+				<td align="center">{this.getLotsText(ingredient)}</td>
 				<td>
 					<Button
 						bsStyle="info"
 						bsSize='small'
 						onClick={this.handleShow}
 						title="Edit">
-						Edit Item
+						Change Status / Select Lots
 					</Button>
 				</td>
-				<td>
-					<Button
-						bsStyle="danger"
-						bsSize='small'
-						onClick={this.remove.bind(ingredient)}
-						title="Remove">
-						Remove From Cart
-					</Button>
-				</td>
-
+		
 				{this.renderModal()}
 			</tr>
 		);
@@ -361,4 +417,4 @@ export default withTracker(() => {
 		ingredients: IngredientsList.find({}).fetch(),
 		vendors: Vendors.find({}).fetch(),
 	};
-})(CartItem);
+})(PendingOrderItem);

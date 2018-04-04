@@ -188,6 +188,7 @@ class IntermediatesDatabase extends Component {
             <ToggleButtonGroup type="radio" name="options" ref={radio => (this.radio) = radio} defaultValue={1} onChange={this.onChangeRadio.bind(this)}>
                 <ToggleButton value={1}>Final Products</ToggleButton>
                 <ToggleButton value={2}>Intermediates</ToggleButton>
+                <ToggleButton value={3}>In-Progress</ToggleButton>
             </ToggleButtonGroup>
         </ButtonToolbar>
         <p></p>

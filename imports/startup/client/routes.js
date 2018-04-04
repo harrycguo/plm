@@ -17,11 +17,15 @@ import EditCapacities from '../../ui/pages/EditCapacities/EditCapacities.js'
 import Cart from '../../ui/pages/Cart/Cart.js'
 
 import FormulaManagementHome from '../../ui/pages/FormulaManagement/FormulaManagementHome.js';
-import EditFormula from '../../ui/pages/EditFormula/EditFormula.js'
-import EditIntermediate from '../../ui/pages/EditIntermediate/EditIntermediate.js'
-import EditIntermediateQuantity from '../../ui/pages/EditIntermediate/EditIntermediateQuantity'
 import ViewFormula from '../../ui/pages/ViewFormula/ViewFormula.js'
 import ViewIntermediate from '../../ui/pages/ViewIntermediate/ViewIntermediate.js'
+import EditFormula from '../../ui/pages/EditFormula/EditFormula.js'
+import EditIntermediate from '../../ui/pages/EditIntermediate/EditIntermediate.js'
+
+import ProductionLineManagementHome from '../../ui/pages/ProductionLineManagement/ProductionLineManagementHome.js'
+import ViewProductionLine from '../../ui/pages/ViewProductionLine/ViewProductionLine.js'
+import EditProductionLine from '../../ui/pages/EditProductionLine/EditProductionLine.js'
+
 
 import FreshnessReport from '../../ui/pages/FreshnessReport/FreshnessReport.js'
 
@@ -57,11 +61,14 @@ class App extends Component {
           <Authenticated exact path="/cart" component={Cart} {...props}/>
 
           <Authenticated exact path='/formulaManagement' component={FormulaManagementHome} {...props}/>
-          <Authenticated exact path='/editFormula/:formulaID' component={EditFormula} {...props}/>
           <Authenticated exact path='/viewFormula/:formulaID' component={ViewFormula} {...props}/> 
+          <Authenticated exact path='/editFormula/:formulaID' component={EditFormula} {...props}/>
+          <Authenticated exact path='/viewIntermediate/:formulaID' component={ViewIntermediate} {...props}/>
           <Authenticated exact path='/editIntermediate/:formulaID' component={EditIntermediate} {...props}/>
-          <Authenticated exact path='/editIntermediateQuantity/:formulaID' component={EditIntermediateQuantity} {...props}/>
-          <Authenticated exact path='/viewIntermediate/:formulaID' component={ViewIntermediate} {...props}/> 
+
+          <Authenticated exact path='/productionLineManagement' component={ProductionLineManagementHome} {...props}/> 
+          <Authenticated exact path='/viewProductionLine/:productionLineID' component={ViewProductionLine} {...props}/> 
+          <Authenticated exact path='/editProductionLine/:productionLineID' component={EditProductionLine} {...props}/> 
           
           <Authenticated exact path='/freshnessReport' component={FreshnessReport} {...props}/>
 

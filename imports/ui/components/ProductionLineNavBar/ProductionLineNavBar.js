@@ -1,19 +1,39 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { withTracker } from 'meteor/react-meteor-data';
+import Carts from '../../../api/Cart/Cart.js';
+import IngredientsList from '../../../api/Ingredients/IngredientList.js';
+import { Vendors } from '../../../api/Vendors/vendors.js';
+
 import { Navbar, NavItem, Nav, NavDropdown, MenuItem, Row, Col, Tabs, Tab, TabContainer, TabContent, TabPane } from 'react-bootstrap';
-import AddVendor from '../../pages/AddVendor/AddVendor.js'
-import VendorManagement from '../../pages/VendorManagement/VendorManagement.js'
+import InventoryManagement from '../../pages/InventoryManagement/InventoryManagement.js'
+import AddIngredient from '../../pages/AddIngredient/AddIngredient.js'
+import BulkImportIngredients from '../../pages/BulkImportIngredients/BulkImportIngredients.js'
+import SpendingReport from '../../pages/SpendingReport/SpendingReport.js'
+import FreshnessReport from '../../pages/FreshnessReport/FreshnessReport.js'
+import RecallReportView from '../../pages/RecallReport/RecallReport.js'
+import PendingOrders from '../../pages/PendingOrders/PendingOrders'
+
+import Cart from '../../pages/Cart/Cart.js'
 import { LinkContainer } from 'react-router-bootstrap'
 
 
-class VendorManagementNavBar extends Component {
+class ProductionLineNavBar extends Component {
     constructor(props) {
         super(props);
     }
 
     render() {
 
-        let user = Meteor.user();
+        let user = Meteor.user()
+        let carts = this.props.carts
+        let cartNum = 0;
+
+        for (let i = 0; i < carts.length; i++){
+            if (carts[i].user == user._id){
+                cartNum = carts[i].ingredients.length
+            }
+        }
 
         //admin
         if (Roles.userIsInRole(user, ['admin'])) {
@@ -21,13 +41,12 @@ class VendorManagementNavBar extends Component {
 
                 <div>
 
-                    <Tab.Container id="tabs-with-dropdown" defaultActiveKey="first">
+                    <Tab.Container id="tabs-with-dropdown" defaultActiveKey="1">
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Vendor Management" className="topTabClass">
-                                     
-
+                                    <NavDropdown eventKey="3" title="Production Line Management" className="topTabClass">
+                                      
                                         <LinkContainer to="homepage">
                                         <MenuItem eventKey="3.1">Admin Homepage</MenuItem>
                                     </LinkContainer>
@@ -37,8 +56,8 @@ class VendorManagementNavBar extends Component {
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
                                     </LinkContainer>
-                                    <LinkContainer to="/productionLineManagement">
-                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
+                                    <LinkContainer to="/vendorManagement">
+                                        <MenuItem eventKey="3.4">Vendor Management</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/userManagement">
                                         <MenuItem eventKey="3.5">User Management</MenuItem>
@@ -55,20 +74,30 @@ class VendorManagementNavBar extends Component {
 
 
                                     </NavDropdown>
-                                    <NavItem eventKey="first">Vendors</NavItem>
-                                    <NavItem eventKey="second">Add Vendor</NavItem>
+                                    <NavItem eventKey="1">Lines</NavItem>
+                                    <NavItem eventKey="2">Add New Line</NavItem>
+                                    
+                                    
+                                                                   
+                                    
 
                                 </Nav>
                             </Col>
                             <Col sm={12}>
                                 <Tab.Content>
-                                    <Tab.Pane eventKey="first">
-                                        <VendorManagement />
+                                    <Tab.Pane eventKey="1">
+                                        <InventoryManagement hist = {this.props.hist} />
                                     </Tab.Pane>
-                                    <Tab.Pane eventKey="second">
-                                        <AddVendor />
+                                    <Tab.Pane eventKey="2">
+                                        <AddIngredient />
                                     </Tab.Pane>
-
+                                    <Tab.Pane eventKey="4">
+                                        <BulkImportIngredients />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="5">
+                                    
+                                    </Tab.Pane>
+                                                                     
                                 </Tab.Content>
                             </Col>
                         </Row>
@@ -76,6 +105,7 @@ class VendorManagementNavBar extends Component {
                 </div>
 
 
+             
             )
 
         }
@@ -83,14 +113,13 @@ class VendorManagementNavBar extends Component {
         //manager
         else if (Roles.userIsInRole(user, ['manager'])) {
             return (
-                <div>
+                 <div>
 
-                    <Tab.Container id="tabs-with-dropdown" defaultActiveKey="first">
+                    <Tab.Container id="tabs-with-dropdown" defaultActiveKey="1">
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Vendor Management" className="topTabClass">
-                                       
+                                    <NavDropdown eventKey="3" title="Production Line Management" className="topTabClass">
 
                                         <LinkContainer to="homepage">
                                         <MenuItem eventKey="3.1">Manager Homepage</MenuItem>
@@ -101,8 +130,8 @@ class VendorManagementNavBar extends Component {
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
                                     </LinkContainer>
-                                    <LinkContainer to="/productionLineManagement">
-                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
+                                    <LinkContainer to="/vendorManagement">
+                                        <MenuItem eventKey="3.4">Vendor Management</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/userManagement">
                                         <MenuItem eventKey="3.5">User Management</MenuItem>
@@ -119,18 +148,22 @@ class VendorManagementNavBar extends Component {
 
 
                                     </NavDropdown>
-                                    <NavItem eventKey="first">Vendors</NavItem>
-
-
+                                    <NavItem eventKey="1">Inventory</NavItem>
+                                    <NavItem eventKey="5">Pending Orders</NavItem>
+                                   
+                                  
                                 </Nav>
                             </Col>
                             <Col sm={12}>
                                 <Tab.Content>
-                                    <Tab.Pane eventKey="first">
-                                        <VendorManagement />
+                                    <Tab.Pane eventKey="1">
+                                        <InventoryManagement hist = {this.props.hist} />
                                     </Tab.Pane>
-
-
+                                    <Tab.Pane eventKey="5">
+                                        
+                                    </Tab.Pane>
+                                   
+                                   
                                 </Tab.Content>
                             </Col>
                         </Row>
@@ -145,13 +178,13 @@ class VendorManagementNavBar extends Component {
             return (
                 <div>
 
-                    <Tab.Container id="tabs-with-dropdown" defaultActiveKey="first">
-                        <Row className="clearfix">
-                            <Col sm={12}>
-                                <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Vendor Management" className="topTabClass">
-                                  
-                                        <LinkContainer to="homepage">
+                <Tab.Container id="tabs-with-dropdown" defaultActiveKey="1">
+                    <Row className="clearfix">
+                        <Col sm={12}>
+                            <Nav bsStyle="tabs">
+                                <NavDropdown eventKey="3" title="Production Line Management" className="topTabClass">
+                      
+                                    <LinkContainer to="homepage">
                                         <MenuItem eventKey="3.1">User Homepage</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/inventoryManagement">
@@ -160,8 +193,8 @@ class VendorManagementNavBar extends Component {
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
                                     </LinkContainer>
-                                    <LinkContainer to="/productionLineManagement">
-                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
+                                    <LinkContainer to="/vendorManagement">
+                                        <MenuItem eventKey="3.4">Vendor Management</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/reports">
                                         <MenuItem eventKey="3.10">View Reports</MenuItem>
@@ -171,31 +204,40 @@ class VendorManagementNavBar extends Component {
                                     </LinkContainer>
 
 
-                                    </NavDropdown>
-                                    <NavItem eventKey="first">Vendors</NavItem>
-
-
-                                </Nav>
-                            </Col>
-                            <Col sm={12}>
-                                <Tab.Content>
-                                    <Tab.Pane eventKey="first">
-                                        <VendorManagement />
-                                    </Tab.Pane>
-
-
-                                </Tab.Content>
-                            </Col>
-                        </Row>
-                    </Tab.Container>
-                </div>
+                                </NavDropdown>
+                                <NavItem eventKey="1">Inventory</NavItem>
+                               
+                              
+                            </Nav>
+                        </Col>
+                        <Col sm={12}>
+                            <Tab.Content>
+                                <Tab.Pane eventKey="1">
+                                    <InventoryManagement hist = {this.props.hist} />
+                                </Tab.Pane>
+                               
+                            </Tab.Content>
+                        </Col>
+                    </Row>
+                </Tab.Container>
+            </div>
             )
 
         }
+
     }
 }
 
-export default VendorManagementNavBar;
+export default withTracker(() => {
+	Meteor.subscribe('ingredients')
+	Meteor.subscribe('vendors')
+	Meteor.subscribe('carts');
+	return {
+		ingredients: IngredientsList.find({}).fetch(),
+		vendors: Vendors.find({}).fetch(),
+		carts: Carts.find({}).fetch(),
+	};
+})(ProductionLineNavBar);
 
 
 
