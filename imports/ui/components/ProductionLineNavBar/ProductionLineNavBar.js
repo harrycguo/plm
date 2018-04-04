@@ -6,13 +6,9 @@ import IngredientsList from '../../../api/Ingredients/IngredientList.js';
 import { Vendors } from '../../../api/Vendors/vendors.js';
 
 import { Navbar, NavItem, Nav, NavDropdown, MenuItem, Row, Col, Tabs, Tab, TabContainer, TabContent, TabPane } from 'react-bootstrap';
-import InventoryManagement from '../../pages/InventoryManagement/InventoryManagement.js'
-import AddIngredient from '../../pages/AddIngredient/AddIngredient.js'
-import BulkImportIngredients from '../../pages/BulkImportIngredients/BulkImportIngredients.js'
-import SpendingReport from '../../pages/SpendingReport/SpendingReport.js'
-import FreshnessReport from '../../pages/FreshnessReport/FreshnessReport.js'
-import RecallReportView from '../../pages/RecallReport/RecallReport.js'
-import PendingOrders from '../../pages/PendingOrders/PendingOrders'
+import ProductionLineManagement from '../../pages/ProductionLineManagement/ProductionLineManagement.js'
+import AddProductionLine from '../../pages/AddProductionLine/AddProductionLine.js'
+import LineStatuses from '../../pages/LineStatuses/LineStatuses.js'
 
 import Cart from '../../pages/Cart/Cart.js'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -26,14 +22,6 @@ class ProductionLineNavBar extends Component {
     render() {
 
         let user = Meteor.user()
-        let carts = this.props.carts
-        let cartNum = 0;
-
-        for (let i = 0; i < carts.length; i++){
-            if (carts[i].user == user._id){
-                cartNum = carts[i].ingredients.length
-            }
-        }
 
         //admin
         if (Roles.userIsInRole(user, ['admin'])) {
@@ -71,32 +59,26 @@ class ProductionLineNavBar extends Component {
                                     <LinkContainer to="/logout">
                                         <MenuItem eventKey="3.7">Logout</MenuItem>
                                     </LinkContainer>
-
-
                                     </NavDropdown>
-                                    <NavItem eventKey="1">Lines</NavItem>
-                                    <NavItem eventKey="2">Add New Line</NavItem>
-                                    
-                                    
-                                                                   
-                                    
 
+                                    <NavItem eventKey="1">Lines</NavItem>
+                                    <NavItem eventKey="2">Line Statuses</NavItem>
+                                    <NavItem eventKey="3">Add New Line</NavItem>
+                                    
                                 </Nav>
                             </Col>
                             <Col sm={12}>
                                 <Tab.Content>
                                     <Tab.Pane eventKey="1">
-                                        <InventoryManagement hist = {this.props.hist} />
+                                        <ProductionLineManagement/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="2">
-                                        <AddIngredient />
+                                        <LineStatuses />
                                     </Tab.Pane>
-                                    <Tab.Pane eventKey="4">
-                                        <BulkImportIngredients />
+                                    <Tab.Pane eventKey="3">
+                                        <AddProductionLine />
                                     </Tab.Pane>
-                                    <Tab.Pane eventKey="5">
                                     
-                                    </Tab.Pane>
                                                                      
                                 </Tab.Content>
                             </Col>
@@ -148,22 +130,22 @@ class ProductionLineNavBar extends Component {
 
 
                                     </NavDropdown>
-                                    <NavItem eventKey="1">Inventory</NavItem>
-                                    <NavItem eventKey="5">Pending Orders</NavItem>
+                                    <NavItem eventKey="1">Lines</NavItem>
+                                    <NavItem eventKey="2">Line Statuses</NavItem>
+                            
                                    
                                   
                                 </Nav>
                             </Col>
                             <Col sm={12}>
                                 <Tab.Content>
-                                    <Tab.Pane eventKey="1">
-                                        <InventoryManagement hist = {this.props.hist} />
-                                    </Tab.Pane>
-                                    <Tab.Pane eventKey="5">
+                                <Tab.Pane eventKey="1">
+                                    <ProductionLineManagement/>
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="2">
+                                    <LineStatuses />
+                                </Tab.Pane>
                                         
-                                    </Tab.Pane>
-                                   
-                                   
                                 </Tab.Content>
                             </Col>
                         </Row>
@@ -205,16 +187,19 @@ class ProductionLineNavBar extends Component {
 
 
                                 </NavDropdown>
-                                <NavItem eventKey="1">Inventory</NavItem>
-                               
-                              
+                                <NavItem eventKey="1">Lines</NavItem>
+                                <NavItem eventKey="2">Line Statuses</NavItem>
+
                             </Nav>
                         </Col>
                         <Col sm={12}>
                             <Tab.Content>
-                                <Tab.Pane eventKey="1">
-                                    <InventoryManagement hist = {this.props.hist} />
-                                </Tab.Pane>
+                            <Tab.Pane eventKey="1">
+                                <ProductionLineManagement/>
+                            </Tab.Pane>
+                            <Tab.Pane eventKey="2">
+                                <LineStatuses />
+                            </Tab.Pane>
                                
                             </Tab.Content>
                         </Col>

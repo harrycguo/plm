@@ -3,7 +3,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Link } from 'react-router-dom';
 import { Route, Redirect } from 'react-router-dom';
 
-class ProductionLineManagement extends Component {
+class LineStatuses extends Component {
   constructor(props) {
     super(props);
 }
@@ -13,7 +13,7 @@ class ProductionLineManagement extends Component {
       return (
         <div className="container">
           <header>
-            <h1>Production Line Management</h1>
+            <h1>Line Statuses</h1>
           </header>
           <ul>
             <li><Link to='/login'>Login</Link></li>
@@ -23,7 +23,7 @@ class ProductionLineManagement extends Component {
   }
 }
 
-export default ProductionLineManagement
+export default LineStatuses
 
 
 
