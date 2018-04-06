@@ -59,9 +59,6 @@ class ViewFormula extends Component {
     }
 
 
-
-
-
     renderHeaders() {
         return (
             <div>
