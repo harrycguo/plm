@@ -12,6 +12,7 @@ import { Intermediates } from '../Intermediates/intermediates.js'
 if (Meteor.isClient) {
     Meteor.subscribe('storageCapacities'); 
     Meteor.subscribe('lots');
+    Meteor.subscribe('lotshistory')
 }
 
 //IngredientsList API suhhhhhhhhh
