@@ -7,6 +7,7 @@ import BulkImportFormulasHome from '../../pages/BulkImportFormulas/BulkImportFor
 import ProductionRun from '../../pages/ProductionRun/ProductionRun.js'
 import ProductionHistoryPage from '../../pages/ProductionReportPage/ProductionHistoryPage.js'
 import IntermediatesDatabase from '../../pages/IntermediatesDatabase/IntermediatesDatabase.js'
+import DNIView from '../../pages/DistributorNetworkInventory/DNIView.js'
 import { LinkContainer } from 'react-router-bootstrap'
 
 class FormulaManagementNavBar extends Component {
@@ -59,6 +60,8 @@ class FormulaManagementNavBar extends Component {
                                     <NavItem eventKey="4">Bulk Import</NavItem>
                                     <NavItem eventKey="5">Produce Formula</NavItem>
                                     <NavItem eventKey="6">Production History</NavItem>
+                                    <NavItem eventKey="8">Distributor Network</NavItem>
+
 
                                 </Nav>
                             </Col>
@@ -81,6 +84,9 @@ class FormulaManagementNavBar extends Component {
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
                                         <ProductionHistoryPage hist={this.props.hist}/>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="8">
+                                        <DNIView hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>
@@ -152,6 +158,9 @@ class FormulaManagementNavBar extends Component {
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
                                         <ProductionHistoryPage hist={this.props.hist}/>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="8">
+                                        <DNIView hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>

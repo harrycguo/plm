@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { button } from 'react';
 import ReactTable from 'react-table';
 import { Button , ButtonToolbar, ControlLabel, Glyphicon } from 'react-bootstrap';
-import { RecallChild } from './RecallChild.js'
+import RecallChild from './RecallChild.js'
 import IngredientList from '../../../api/Ingredients/IngredientList.js';
 import { Intermediates } from '../../../api/Intermediates/intermediates.js'
 import LotsHistory from '../../../api/Lots/LotsHistory.js'
@@ -74,7 +74,16 @@ class RecallReportView extends Component {
 				}
 			]}
 			SubComponent={row => {
-				return (<RecallChild item = {row.original.item}/>)
+				console.log(row.original)
+				return row.original.item.queue.map(lot => (
+					<details key={lot.lot}>
+					<summary>
+					<div> Lot number {lot.lot} </div>
+					</summary>
+					Child goes here
+					</details>
+				));
+				// return (<div>break</div>)
 			}}
 
       	/>
