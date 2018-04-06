@@ -3,7 +3,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Link } from 'react-router-dom';
 import { Route, Redirect } from 'react-router-dom';
 
-class Index extends Component {
+class EditProductionLine extends Component {
   constructor(props) {
     super(props);
 }
@@ -11,16 +11,6 @@ class Index extends Component {
   render() {
 
     let user = Meteor.user()
-
-    if (user != undefined) {
-      return (
-        <Route
-          render={props => (
-              (<Redirect to="/homepage" />)
-          )}
-        />
-      )
-    } else {
       return (
         <div className="container">
           <header>
@@ -31,11 +21,10 @@ class Index extends Component {
           </ul>
         </div>
       )
-    }
   }
 }
 
-export default Index
+export default EditProductionLine
 
 
 

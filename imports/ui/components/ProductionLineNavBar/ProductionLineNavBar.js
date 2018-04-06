@@ -18,7 +18,7 @@ import Cart from '../../pages/Cart/Cart.js'
 import { LinkContainer } from 'react-router-bootstrap'
 
 
-class InventoryManagementNavBar extends Component {
+class ProductionLineNavBar extends Component {
     constructor(props) {
         super(props);
     }
@@ -45,16 +45,16 @@ class InventoryManagementNavBar extends Component {
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Inventory Management" className="topTabClass">
+                                    <NavDropdown eventKey="3" title="Production Line Management" className="topTabClass">
                                       
                                         <LinkContainer to="homepage">
                                         <MenuItem eventKey="3.1">Admin Homepage</MenuItem>
                                     </LinkContainer>
+                                    <LinkContainer to="/inventoryManagement">
+                                        <MenuItem eventKey="3.2">Inventory Management</MenuItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
-                                    </LinkContainer>
-                                    <LinkContainer to="/productionLineManagement">
-                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>
@@ -74,11 +74,12 @@ class InventoryManagementNavBar extends Component {
 
 
                                     </NavDropdown>
-                                    <NavItem eventKey="1">Inventory</NavItem>
-                                    <NavItem eventKey="2">Add New Ingredient</NavItem>
-                                    <NavItem eventKey="4">Bulk Import</NavItem>
-                                    <NavItem eventKey="5">Pending Orders</NavItem>
-
+                                    <NavItem eventKey="1">Lines</NavItem>
+                                    <NavItem eventKey="2">Add New Line</NavItem>
+                                    
+                                    
+                                                                   
+                                    
 
                                 </Nav>
                             </Col>
@@ -94,8 +95,9 @@ class InventoryManagementNavBar extends Component {
                                         <BulkImportIngredients />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
-                                       <PendingOrders />
+                                    
                                     </Tab.Pane>
+                                                                     
                                 </Tab.Content>
                             </Col>
                         </Row>
@@ -117,16 +119,16 @@ class InventoryManagementNavBar extends Component {
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Inventory Management" className="topTabClass">
+                                    <NavDropdown eventKey="3" title="Production Line Management" className="topTabClass">
 
                                         <LinkContainer to="homepage">
                                         <MenuItem eventKey="3.1">Manager Homepage</MenuItem>
                                     </LinkContainer>
+                                    <LinkContainer to="/inventoryManagement">
+                                        <MenuItem eventKey="3.2">Inventory Management</MenuItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
-                                    </LinkContainer>
-                                    <LinkContainer to="/productionLineManagement">
-                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>
@@ -158,7 +160,7 @@ class InventoryManagementNavBar extends Component {
                                         <InventoryManagement hist = {this.props.hist} />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
-                                        <PendingOrders />
+                                        
                                     </Tab.Pane>
                                    
                                    
@@ -180,16 +182,16 @@ class InventoryManagementNavBar extends Component {
                     <Row className="clearfix">
                         <Col sm={12}>
                             <Nav bsStyle="tabs">
-                                <NavDropdown eventKey="3" title="Inventory Management" className="topTabClass">
+                                <NavDropdown eventKey="3" title="Production Line Management" className="topTabClass">
                       
                                     <LinkContainer to="homepage">
                                         <MenuItem eventKey="3.1">User Homepage</MenuItem>
                                     </LinkContainer>
+                                    <LinkContainer to="/inventoryManagement">
+                                        <MenuItem eventKey="3.2">Inventory Management</MenuItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
-                                    </LinkContainer>
-                                    <LinkContainer to="/productionLineManagement">
-                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>
@@ -235,7 +237,7 @@ export default withTracker(() => {
 		vendors: Vendors.find({}).fetch(),
 		carts: Carts.find({}).fetch(),
 	};
-})(InventoryManagementNavBar);
+})(ProductionLineNavBar);
 
 
 

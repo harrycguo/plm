@@ -37,6 +37,9 @@ class VendorManagementNavBar extends Component {
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
                                     </LinkContainer>
+                                    <LinkContainer to="/productionLineManagement">
+                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/userManagement">
                                         <MenuItem eventKey="3.5">User Management</MenuItem>
                                     </LinkContainer>
@@ -98,6 +101,9 @@ class VendorManagementNavBar extends Component {
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
                                     </LinkContainer>
+                                    <LinkContainer to="/productionLineManagement">
+                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/userManagement">
                                         <MenuItem eventKey="3.5">User Management</MenuItem>
                                     </LinkContainer>
@@ -153,6 +159,9 @@ class VendorManagementNavBar extends Component {
                                     </LinkContainer>
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/productionLineManagement">
+                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/reports">
                                         <MenuItem eventKey="3.10">View Reports</MenuItem>

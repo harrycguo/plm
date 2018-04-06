@@ -92,9 +92,6 @@ class EditCapacities extends Component {
     }
 
     render() {
-        console.log('asldkjf')
-        console.log(this.props.capacities)
-
 
         let capacities = this.props.capacities
         
@@ -111,8 +108,6 @@ class EditCapacities extends Component {
                 capacitiesMap.set('Warehouse', Number(capacities[i].capacity))
             }
         }
-        
-        console.log(capacitiesMap)
 
         return (
             

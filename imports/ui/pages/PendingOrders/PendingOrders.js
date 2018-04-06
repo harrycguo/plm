@@ -6,8 +6,8 @@ import IngredientsApi from '../../../api/Ingredients/IngredientsApi.js';
 import { Vendors } from '../../../api/Vendors/vendors.js';
 import { Button , Label} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import CartItem from './CartItem.js'
-import Timer from './Timer.js'
+import Timer from '../Cart/Timer.js'
+import PendingOrderItem from './PendingOrderItem'
 
 class PendingOrders extends Component {
 	
@@ -19,22 +19,20 @@ class PendingOrders extends Component {
 		}
 	}
 
-	
-
-	renderCartItems() {
+	renderPendingOrderItems() {
 
 		var frontEndCart = Array()
 		var keyCount = 0
 		var totalCost = 0
 
-		this.props.carts.forEach(function(ingredients) {
-			//console.log(ingredients)
-			ingredients.ingredients.forEach(function(ing) {
-				//console.log(ing)
-				frontEndCart.push(
-					{key: keyCount, fullIng: ing, amt: ing.numPackages}
-				)
-				keyCount++;
+		this.props.carts.forEach(function(cart) {
+			cart.pendingOrders.forEach(function(ing) {
+				
+                    frontEndCart.push(
+                        {key: keyCount, fullIng: ing, amt: ing.numPackages}
+                    )
+                    keyCount++
+                
 				
 			})
 		});
@@ -44,7 +42,7 @@ class PendingOrders extends Component {
 		))
 
 		return frontEndCart.length > 0 ? frontEndCart.map(ingredient => (			
-			<CartItem key={ingredient.key} ingredient={ingredient} />
+            <PendingOrderItem key={ingredient.key} ingredient={ingredient} />
 		)) : null;
 	}
 
@@ -53,17 +51,17 @@ class PendingOrders extends Component {
 		return (<Button
 				bsStyle="success"
 				onClick={e => {
-					Meteor.call('checkoutIngredients', function(error, result) {
+					Meteor.call('pendingOrders.addToInventory', function(error, result) {
 						if(error){
                    			console.log("something goes wrong with the following error message " + error.reason )
                	  			Bert.alert(error.reason, 'danger');
                 		} else {
-							Bert.alert('Successfully Checked Out!', 'success');
+							Bert.alert('Successfully Updated Pending Orders', 'success');
 						}
 					});
 				}}
 				title="Checkout"
-				>Checkout Cart</Button>
+				>Update Pending Orders</Button>
 		);
 	}
 
@@ -73,8 +71,8 @@ class PendingOrders extends Component {
 		var keyCount = 0
 		var totalCost = 0
 
-		this.props.carts.forEach(function(ingredients) {
-			ingredients.ingredients.forEach(function(ing) {
+		this.props.carts.forEach(function(cart) {
+			cart.pendingOrders.forEach(function(ing) {
 				frontEndCart.push(
 					{key: keyCount, fullIng: ing, amt: ing.numPackages}
 				)
@@ -87,11 +85,7 @@ class PendingOrders extends Component {
 		))
 
 		return (
-			<div className="container">
-
-			<header>
-          		<h1>Cart</h1>
-        	</header>
+			<div>
 			<p></p>
 		    	<table>
 		    		<tbody>
@@ -103,24 +97,17 @@ class PendingOrders extends Component {
 		    				<th>Price per Package</th>
 							<th>Total Quantity</th>
 							<th>Total Price</th>
-							<th>Lots Selected?</th>
+							<th>Order Status</th>
 						</tr>
-	    				{this.renderCartItems()}
+	    				{this.renderPendingOrderItems()}
 	    			</tbody>
 	       		</table>
 				   
-				   <p></p>
-				   <p><b>Total Cost: </b> ${totalCost.toFixed(2)}</p>
+				   
 				   <p></p>
 				   <Timer />
 				   {this.checkoutButton()}
 
-				   <div className="container-keepLeft">
-                    <Link to='/inventoryManagement'>Return to Inventory Management</Link>
-                </div>
-				<div className="container-keepLeft">
-                    <Link to='/formulaManagement'>Return to Formula Management</Link>
-                </div>
 			</div>
 		)
 	}

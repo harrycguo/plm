@@ -27,7 +27,8 @@ class ReportsNavBar extends Component {
 
         let user = Meteor.user()
 
-        // all users can see reports
+        //admin
+        if (Roles.userIsInRole(user, ['admin', ]) || Roles.userIsInRole(user, ['manager']) ) {
        
             return (
 
@@ -47,6 +48,9 @@ class ReportsNavBar extends Component {
                                     </LinkContainer>
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/productionLineManagement">
+                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>
@@ -104,9 +108,77 @@ class ReportsNavBar extends Component {
                     </Tab.Container>
                 </div>
 
+            )}
+            else {
+                return (
+                    <div>
+    
+                        <Tab.Container id="tabs-with-dropdown" defaultActiveKey="1">
+                            <Row className="clearfix">
+                                <Col sm={12}>
+                                    <Nav bsStyle="tabs">
+                                        <NavDropdown eventKey="3" title="View Reports" className="topTabClass">
+    
+                                            <LinkContainer to="homepage">
+                                                <MenuItem eventKey="3.1">User Homepage</MenuItem>
+                                            </LinkContainer>
+                                            <LinkContainer to="/inventoryManagement">
+                                                <MenuItem eventKey="3.2">Inventory Management</MenuItem>
+                                            </LinkContainer>
+                                            <LinkContainer to="/productionLineManagement">
+                                            <MenuItem eventKey="3.11">Production Line Management</MenuItem>
+                                        </LinkContainer>
+                                            <LinkContainer to="/vendorManagement">
+                                                <MenuItem eventKey="3.4">Vendor Management</MenuItem>
+                                            </LinkContainer>
 
-             
-            )
+                                            <LinkContainer to="/logout">
+                                                <MenuItem eventKey="3.7">Logout</MenuItem>
+                                            </LinkContainer>
+    
+    
+                                        </NavDropdown>
+                                        <NavItem eventKey="1">Spending</NavItem>
+                                    <NavItem eventKey="2">Production</NavItem>
+                                    <NavItem eventKey="3">Recall</NavItem>
+                                    <NavItem eventKey="4">Ingredient Freshness</NavItem>
+                                    <NavItem eventKey="5">Final Product Freshness</NavItem>   
+                                    <NavItem eventKey="6">Production Efficiency</NavItem>   
+                                    <NavItem eventKey="7">Profitability</NavItem>  
+    
+                                    </Nav>
+                                </Col>
+                                <Col sm={12}>
+                                    <Tab.Content>
+                                    <Tab.Pane eventKey="1">
+                                    <SpendingReport />
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="2">
+                                   <ProductionReportPage />
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="3">
+                                    Recall report goes here
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="4">
+                                    <FreshnessReport />
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="5">
+                                 
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="6">
+                                  
+                                </Tab.Pane>
+                                <Tab.Pane eventKey="7">
+                                   
+                                </Tab.Pane>
+                                    </Tab.Content>
+                                </Col>
+                            </Row>
+                        </Tab.Container>
+                    </div>
+                )
+    
+            }
 
         
 

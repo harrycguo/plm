@@ -25,6 +25,7 @@ class Homepage extends Component {
         </header>
         <li><Link to='/inventoryManagement'>Inventory Management</Link></li>
         <li><Link to='/formulaManagement'>Formula Management</Link></li>
+        <li><Link to='/productionLineManagement'>Production Line Management</Link></li>
         <li><Link to='/vendorManagement'>Vendor Management</Link></li>
         <li><Link to='/userManagement'>User Management</Link></li>
         <li><Link to='/viewLog'>View Global Log</Link></li>
@@ -45,6 +46,7 @@ class Homepage extends Component {
         </header>
         <li><Link to='/inventoryManagement'>Inventory Management</Link></li>
         <li><Link to='/formulaManagement'>Formula Management</Link></li>
+        <li><Link to='/productionLineManagement'>Production Line Management</Link></li>
         <li><Link to='/vendorManagement'>Vendor Management</Link></li>
         <li><Link to='/userManagement'>User Management</Link></li>
         <li><Link to='/viewLog'>View Global Log</Link></li>
@@ -67,6 +69,7 @@ class Homepage extends Component {
 
         <li><Link to='/inventoryManagement'>Inventory Management</Link></li>
         <li><Link to='/formulaManagement'>Formula Management</Link></li>
+        <li><Link to='/productionLineManagement'>Production Line Management</Link></li>
         <li><Link to='/vendorManagement'>Vendor Management</Link></li>
         <li><Link to='/reports'>View Reports</Link></li>
         <li><Link to='/logout'>Logout</Link></li>

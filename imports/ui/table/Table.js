@@ -228,14 +228,16 @@ class Table extends Component {
 	}
 	render() {
 		let user = Meteor.user()
-		let carts = this.props.carts
+        let carts = this.props.carts
 		let cartNum = 0;
 
 		for (let i = 0; i < carts.length; i++){
 			if (carts[i].user == user._id){
-				cartNum = carts[i].ingredients.length
+                cartNum = carts[i].ingredients.length
 			}
-		}
+        }
+        
+        
 		
 		if (!Meteor.user() || !Roles.userIsInRole(Meteor.user()._id, 'admin')) {
 			if(TableData.canEdit) {
