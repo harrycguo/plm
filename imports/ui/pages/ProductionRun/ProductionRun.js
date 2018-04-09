@@ -59,6 +59,7 @@ class ProductionRun extends Component {
             items.push(<option key={j} value={this.props.formulas[i]._id}>{this.props.formulas[i].name}</option>);
             j++
         }
+        j++
         items.push(<option key={-2} disabled value> -- select an intermediate -- </option>)
         for (i = 0; i < this.props.intermediates.length; i++) {
             items.push(<option key={j} value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);

@@ -36,7 +36,7 @@ Meteor.methods({
       if (!set.has(formulasList[i].id)) {
         set.add(formulasList[i].id)
       } else {
-        throw new Meteor.Error('multiple same ingredients added', 'Formulas(s) shows up twice for this line');
+        throw new Meteor.Error('multiple same ingredients added', 'Formulas(s) shows up twice for this Production Line');
       }
     }
 
@@ -48,7 +48,52 @@ Meteor.methods({
       busy: false
     })    
   },
-  'productionLines.remove'(plID) {
+  'productionLines.edit'(id, name, description, formulasList){
+
+    // Make sure the user is logged in before inserting a task
+    if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+      throw new Meteor.Error('not-authorized', 'not-authorized');
+    }
+
+    let existingPL = ProductionLines.findOne({ _id: id})
+
+    if (existingPL.busy){
+      throw new Meteor.Error('pl busy', 'Production Line Busy! Cannot Edit at this time. Please wait until Production is complete on this line before editing');
+    }
+
+    //Production Line name must be unique
+    if ( ProductionLines.find({ name: name.trim() }).count() > 0 && !(existingPL.name == name)) {
+      throw new Meteor.Error('pl already in system', 'Production Line Name Must Be Unique');
+    }
+
+    //any null entries
+    for (let i = 0; i < formulasList.length; i++) {
+      if (formulasList[i].id == null) {
+        throw new Meteor.Error('Null Entries', 'Null Entries in Formula Selection');
+      }
+    }
+
+    //Check to see that ingredients aren't showing up twice when passed in
+    let set = new Set()
+
+    for (let i = 0; i < formulasList.length; i++) {
+      if (!set.has(formulasList[i].id)) {
+        set.add(formulasList[i].id)
+      } else {
+        throw new Meteor.Error('multiple same ingredients added', 'Formulas(s) shows up twice for this Production Line');
+      }
+    }
+
+    ProductionLines.update({ _id: id }, {
+      $set: {
+        name: name,
+        description: description,
+        formulasList: formulasList
+      }
+    })
+
+  },
+  'productionLines.delete'(plID) {
 
     if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('not-authorized', 'not-authorized');

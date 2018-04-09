@@ -23,25 +23,25 @@ class AddProductionLine extends Component {
 
     const component = this;
 
-    validate(component.form, {
-        rules: {
-            plName: {
-                required: true,
-            },
-            plDescription: {
-                required: false,
-            },
+        validate(component.form, {
+            rules: {
+                plName: {
+                    required: true,
+                },
+                plDescription: {
+                    required: false,
+                },
 
-        },
-        messages: {
-            plName: {
-                required: 'Specify Production Line Name',
             },
-      
-        },
-        submitHandler() { 
-            component.handleSubmit(); },
-    });
+            messages: {
+                plName: {
+                    required: 'Specify Production Line Name',
+                },
+        
+            },
+            submitHandler() { 
+                component.handleSubmit(); },
+        });
     }
 
     add() {
@@ -83,7 +83,6 @@ class AddProductionLine extends Component {
             inputs: inputs,
             formulaList: formulaList,
         })
-
     }
 
 
