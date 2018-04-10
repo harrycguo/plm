@@ -16,7 +16,7 @@ class IntermediatesDatabase extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      radioState: true
+      radioState: 1
     };
 }
 
@@ -133,11 +133,15 @@ class IntermediatesDatabase extends Component {
               columns={IntermediatesDatabaseData.FinalProductsHeaderValues}
               noDataText="Loading..."
               SubComponent={row => {
+                if (row.original.lotsData == undefined) {
+                  return <div></div>
+                } else {
                 return (
                   <div>
                     {this.renderSubComponent(row.original.lotsData)}
                     </div>
-                )
+                )}
+                
               }}
               
             />
@@ -173,19 +177,32 @@ class IntermediatesDatabase extends Component {
   
   }
 
-  onChangeRadio(){
+  onChangeRadio(e){
  
-    this.setState((prevState) => ({
-        radioState: !prevState.radioState
-    }))
+    this.setState({
+        radioState: e
+    })
   }
 
   render() {
+
+    let view = null
+    let radioState = this.state.radioState
+
+    if (radioState == 1){
+      view = this.renderFinalProductsTable()
+    } else if (radioState == 2) {
+      view = this.renderIntermediatesTable()
+    } else if (radioState == 3) {
+      view = <p>In progress view</p>
+    }
+
+
     return (
       <div>
         <p></p>
         <ButtonToolbar>
-            <ToggleButtonGroup type="radio" name="options" ref={radio => (this.radio) = radio} defaultValue={1} onChange={this.onChangeRadio.bind(this)}>
+            <ToggleButtonGroup type="radio" name="options"  value = {this.state.radioState} onChange={this.onChangeRadio.bind(this)}>
                 <ToggleButton value={1}>Final Products</ToggleButton>
                 <ToggleButton value={2}>Intermediates</ToggleButton>
                 <ToggleButton value={3}>In-Progress</ToggleButton>
@@ -193,7 +210,7 @@ class IntermediatesDatabase extends Component {
         </ButtonToolbar>
         <p></p>
         <StorageCapacityWrapper hist = {this.props.hist}/>
-        {this.state.radioState ? this.renderFinalProductsTable() : this.renderIntermediatesTable()}
+        {view}
       </div>
     );
   }

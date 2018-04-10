@@ -69,6 +69,10 @@ class ProductionRun extends Component {
         return items;
     }
 
+    renderProductionLines() {
+        
+    }
+
     renderMinFormulaUnits() {
         return (
             <p><b>Minimum Units of Production: </b>{this.state.minUnits}</p>
@@ -154,6 +158,8 @@ class ProductionRun extends Component {
             })
         }
     }
+
+
 
     onChangeItem(index, component) {
    
@@ -304,7 +310,6 @@ class ProductionRun extends Component {
                             <select
                                 ref={formula => (this.formula = formula)}
                                 name="formula"
-                                //style={{ width: '100%', height: '100%' }}
                                 onChange={this.setFormulaInfo}
                                 id='select'
                             >
@@ -321,12 +326,24 @@ class ProductionRun extends Component {
                             step="1"
                             ref={numUnitsProduce => (this.numUnitsProduce = numUnitsProduce)}
                             onChange={this.setFormulaInfo}
-                            //defaultValue={this.state.minUnits}
                             name="numUnitsProduce"
                             placeholder={this.state.minUnits}
                             className="form-control"
                             id='input'
                         /></p>
+                    </FormGroup>
+
+                    <FormGroup>
+                        <ControlLabel>Production Line:</ControlLabel>
+                        <p>
+                            <select
+                                name="productionLine"
+                                ref={productionLine => (this.productionLine = productionLine)}
+                                id='select'
+                            >
+                                {this.renderProductionLines()}
+                            </select>
+                        </p>
                     </FormGroup>
 
                     {this.renderStockDifferenceHeaders()}
