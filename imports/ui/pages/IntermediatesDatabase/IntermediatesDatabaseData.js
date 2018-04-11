@@ -145,4 +145,46 @@ export const FinalProductsHeaderValues = [
 	        placeholder="Filter by quantity"
 	      />
 	},	
-];
+]
+
+export const InProgressHeaderValues = [
+	{
+		Header: 'Formula Name',
+		accessor: 'formula',
+		//Cell: renderEditable,
+		Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by name"
+	      />
+	}, 
+	{
+		Header: 'Quantity',
+		accessor: 'qty',
+		//Cell: renderEditable,
+		Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by quantity"
+	      />
+	},	
+	{
+		Header: 'Production Line',
+		accessor: 'productionLine',
+		//Cell: renderEditable,
+		Filter: ({ filter, onChange }) =>
+	      <input
+	        type="text"
+	        onChange={event => onChange(event.target.value)}
+	        style={{ width: '100%', height: '100%'}}
+	        value={filter ? filter.value : ''}
+	        placeholder="Filter by production line"
+	      />
+	}, 
+]

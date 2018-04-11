@@ -6,33 +6,12 @@ import { ProductionLines } from '../../../api/ProductionLines/productionLines.js
 import  Formulas  from '../../../api/Formulas/formulas.js'
 import { Intermediates } from '../../../api/Intermediates/intermediates.js'
 import { Button, Label, Modal, ModalHeader, ModalBody, ModalTitle, OverlayTrigger, Popover, Tooltip, Row, Col, FormGroup, ControlLabel, ButtonGroup, ButtonToolbar } from 'react-bootstrap';
-
-
+import Timer from '../Cart/Timer.js'
 
 class LineStatuses extends Component {
   constructor(props) {
     super(props);
 
-}
-
-renderHeaders() {
-  return (
-      <div>
-          <div className="side-container-zero">
-              <div className="side-spacingInput">
-                  <b>Production Line</b>
-              </div>
-              <div className="side-spacingInput">
-                  <b>Status</b>
-              </div>
-
-              <div className="side-spacingInput">
-                  <b>Formula In Production</b>
-              </div>
-
-          </div>
-      </div>
-  )
 }
 
 renderLinesInfo(){
@@ -45,39 +24,137 @@ renderLinesInfo(){
     formulaMap.set(this.props.intermediates[i]._id, this.props.intermediates[i].name)
   }
 
-
   let lines = this.props.productionLines
   let linesArr = []
 
   for (let i = 0; i < lines.length; i++){
-    linesArr.push(
-      <div key={i}>
-          <div className="side-container-zero">
-              <div className="side-spacingInput">
-                  {lines[i].name}
-              </div>
-              <div className="side-spacingInput">
-                {lines[i].busy ? <Label bsStyle="warning">Busy</Label> : <Label bsStyle="success">Free</Label>}
-              </div>
 
-              <div className="side-spacingInput">
-                {lines[i].busy ? formulasMap.get(lines[i].currentFormula) : '(none)'}
-              </div>
-          </div>
-      </div>
+
+    let user = Meteor.user()
+    let changeStatus = null
+    if (Roles.userIsInRole(user, ['admin', 'manager'])) {
+      changeStatus = <td align="center">
+      {lines[i].busy ? 
+        
+        <select
+              ref={input => (this[`input${i}`] = input)}
+              name="status"
+              style={{ width: '100%', height: '100%' }}
+
+          >
+              <option value='inProgress'> In Progress </option>
+              <option value='complete'> Complete </option>
+          </select>
+        : 'N/A'}
+    </td>
+    }
+
+    linesArr.push(
+      <tr key={i}>
+         
+              <td>
+                  {lines[i].name}
+              </td>
+              <td align="center">
+                {lines[i].busy ? <Label bsStyle="warning">Busy</Label> : <Label bsStyle="success">Free</Label>}
+              </td>
+
+              <td>
+                {lines[i].busy ? formulaMap.get(lines[i].currentFormula) : '(none)'}
+              </td>
+
+              <td>
+                {lines[i].busy ? lines[i].quantity : 'N/A'}
+              </td>
+
+              {changeStatus}
+
+              
+
+          </tr>
+ 
     )
   }
   return linesArr
 }
 
+updateStatus() {
+  console.log('updating status')
+  let lines = this.props.productionLines
+  let linesArr = new Array()
+
+  for (let i = 0; i < lines.length; i++){
+    let value = this[`input${i}`] != undefined ? this[`input${i}`].value : 'none'
+    linesArr.push({
+      line: lines[i]._id,
+      status: value
+    })
+  }
+
+  console.log(linesArr)
+
+  Meteor.call('productionLines.endProduction', 
+            linesArr,
+            function(error, result) {
+              if (error) {
+                Bert.alert(error.reason, 'danger')
+              } else {
+                Bert.alert("Successfully updated production Lines!", 'success')
+              }
+            })
+
+
+}
   render() {
+
+    let user = Meteor.user()
+    let changeStatus = null
+    let updateButton = null
+    if (Roles.userIsInRole(user, ['admin', 'manager'])) {
+      changeStatus = <th><b>Change Status</b></th>
+      updateButton = <div><hr className='divider'></hr><p></p>
+      <Timer />
+      <p></p>
+
+
+      <Button type="submit" bsStyle="success" onClick={this.updateStatus.bind(this)} >
+          Update
+      </Button></div>
+    }
 
       return (
         <div>
           <p></p>
-          {this.renderHeaders()}
-          {this.renderLinesInfo()}
+          <table>
+            <tbody>
+            <tr>
+              <th>
+                  <b>Production Line</b>
+              </th>
+              <th>
+                  <b>Status</b>
+              </th>
 
+              <th>
+                  <b>Formula In Production</b>
+              </th>
+
+              <th>
+                  <b>Quantity</b>
+              </th>
+
+              {changeStatus}
+              
+
+            </tr>
+              {this.renderLinesInfo()}
+              </tbody>
+          </table>
+
+          <p></p>
+          
+          {updateButton}
+                    
         </div>
       )
   }

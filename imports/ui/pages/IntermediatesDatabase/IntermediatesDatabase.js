@@ -10,6 +10,8 @@ import  Formulas  from '../../../api/Formulas/formulas'
 import LotsTable from '../../table/LotsTable.js'
 import TableData from '../../table/TableData.js'
 import Lots from '../../../api/Lots/Lots'
+import { ProductionLines } from '../../../api/ProductionLines/productionLines.js'
+
 
 
 class IntermediatesDatabase extends Component {
@@ -148,6 +150,47 @@ class IntermediatesDatabase extends Component {
     )
   }
 
+  renderInProgressTable() {
+
+    let data = new Array()
+    let lines = this.props.productionLines
+    let formulas = this.props.formulas
+    let intermediates = this.props.intermediates
+
+    let formulaNameMap = new Map()
+
+    for (let i = 0; i < formulas.length; i++) {
+      formulaNameMap.set(formulas[i]._id, formulas[i].name)
+    }
+
+    for (let i = 0; i < intermediates.length; i++) {
+      formulaNameMap.set(intermediates[i]._id, intermediates[i].name)
+    }
+
+    for (let i = 0; i < lines.length; i++) {
+      let line = lines[i]
+
+      if (line.busy) {
+        data.push({
+          productionLine: line.name,
+          formula: formulaNameMap.get(line.currentFormula),
+          qty: line.quantity,
+          fullProductionLine: line,
+        })
+      }
+    }
+
+    return (
+
+      <ReactTable
+              data={data}
+              filterable
+              columns={IntermediatesDatabaseData.InProgressHeaderValues}
+              noDataText="Loading..."
+            />
+    )
+  }
+
   renderSubComponent(lotsData){
  
     let tableData = []
@@ -194,9 +237,8 @@ class IntermediatesDatabase extends Component {
     } else if (radioState == 2) {
       view = this.renderIntermediatesTable()
     } else if (radioState == 3) {
-      view = <p>In progress view</p>
+      view = this.renderInProgressTable()
     }
-
 
     return (
       <div>
@@ -220,11 +262,13 @@ export default withTracker(() => {
     const subscription = Meteor.subscribe('intermediates')
     Meteor.subscribe('formulas')
     Meteor.subscribe('lots')
+    Meteor.subscribe('productionLines')
     return {
         loading: subscription.ready(),
         intermediates: Intermediates.find({}).fetch(),
         formulas: Formulas.find({}).fetch(),
-        lots: Lots.find({}).fetch()
+        lots: Lots.find({}).fetch(),
+        productionLines: ProductionLines.find({}).fetch(),
     };
 })(IntermediatesDatabase);
 

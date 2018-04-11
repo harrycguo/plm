@@ -6,6 +6,11 @@ import IngredientsList from '../Ingredients/IngredientList.js';
 import { IngredientFormulaSchema, FormulaSchema } from '../Ingredients/Schemas.js';
 import ProductionReport from '../ProductionReport/ProductionReport.js';
 import { Intermediates } from '../Intermediates/intermediates'
+import  Formulas  from '../Formulas/formulas.js'
+import '../ProductionReport/ProductionReportApi.js';
+import { LotNumberSystem } from '../../api/Lots/LotNumberSystem'
+import Lots from '../../api/Lots/Lots.js'
+import { ProductionHistory } from '../Production/production.js'
 
 export const ProductionLines = new Mongo.Collection('productionLines');
 
@@ -44,14 +49,16 @@ Meteor.methods({
       name: name,
       description: description,
       formulasList: formulasList,
+      busy: false,
       currentFormula: null,
-      busy: false
+      quantity: 0,
+      lotsData: null,
     })    
   },
   'productionLines.edit'(id, name, description, formulasList){
 
     // Make sure the user is logged in before inserting a task
-    if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
+    if (!this.userId || !Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
       throw new Meteor.Error('not-authorized', 'not-authorized');
     }
 
@@ -107,7 +114,76 @@ Meteor.methods({
     ProductionLines.remove(plID)
     
   },
+  'productionLines.startProduction'(plID, formulaID, quantity, lotsData){
 
+    if (! this.userId || !Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
+      throw new Meteor.Error('not-authorized', 'not-authorized');
+    }
+
+    let line = ProductionLines.findOne({ _id: plID })
+
+      ProductionLines.update({ _id: plID }, {
+        $set: {
+          busy: true,
+          currentFormula: formulaID,
+          quantity: quantity,
+          lotsData: lotsData,
+        }
+      })
+  },
+  'productionLines.endProduction'(plArray){
+
+    if (! this.userId || !Roles.userIsInRole(this.userId, ['admin', 'manager'])) {
+      throw new Meteor.Error('not-authorized', 'not-authorized');
+    }
+
+    console.log(plArray)
+
+    for (let i = 0; i < plArray.length; i++){
+      if (plArray[i].status == 'complete') {
+
+        let line = ProductionLines.findOne({ _id: plArray[i].line })
+        let formulaID = line.currentFormula
+        let numUnitsProduce = line.quantity
+        let lotsData = line.lotsData
+
+        let formula = Formulas.findOne({_id: formulaID})
+        let intermediate = Intermediates.findOne({_id: formulaID})
+
+        let item = formula != undefined ? formula : intermediate
+
+        if (intermediate != undefined){
+          let newTotal = numUnitsProduce + intermediate.nativeInfo.totalQuantity
+          Meteor.call('intermediates.editTotalNumNativeUnits', formulaID, newTotal)
+        } else {
+          Formulas.update({_id: formulaID}, {$inc: { quantity: numUnitsProduce}})
+        }
+
+        let lotNumber = LotNumberSystem.findOne({name: 'system'})
+        
+        ProductionHistory.insert({
+            name: item.name,
+            lotNumber: lotNumber.lotNumber,
+            unitsProduced: numUnitsProduce,
+            time: new Date(),
+            lotsData: lotsData
+        })
+
+        Meteor.call('systemlog.insert',"Production", "Produced", null, "Event", "");
+        Meteor.call('production.log',formulaID,numUnitsProduce)
+        Meteor.call('lots.addFormula', item._id, numUnitsProduce, lotNumber.lotNumber, new Date())
+
+        ProductionLines.update({ _id: plArray[i].line  }, {
+          $set: {
+            busy: false,
+            currentFormula: null,
+            quantity: 0,
+            lotsData: null,
+          }
+        })
+      }
+    }
+  }
 
 })
 

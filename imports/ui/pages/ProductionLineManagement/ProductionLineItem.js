@@ -10,9 +10,16 @@ class ProductionLineItem extends Component {
   }
 
   deleteThisProductionLine() {
-    if(confirm('Delete the Production Line?')) {
-      Meteor.call('productionLines.delete', this.props.productionLine._id)
-    };
+    if (confirm('Delete the Production Line?')) {
+      Meteor.call('productionLines.delete', this.props.productionLine._id,
+        function (error, result) {
+          if (error) {
+            Bert.alert(error.reason, 'danger');
+          } else {
+            Bert.alert('Successfully Deleted Line!', 'success')
+          }
+        })
+    }
   }
 
 
@@ -20,31 +27,38 @@ class ProductionLineItem extends Component {
 
     let user = Meteor.user()
 
+    let editButton = null
+    let deleteButton = null
+
     if (Roles.userIsInRole(user, ['admin'])) {
+      deleteButton = <button className="delete" onClick={this.deleteThisProductionLine.bind(this)}>
+        &times;
+        Delete Production Line</button>
+    }
+    else {
+      deleteButton = <div className="containerNone"></div>
+    }
+
+    if (Roles.userIsInRole(user, ['admin', 'manager'])) {
       editButton = < Link to={{
-        pathname: '/editProductionLine/'+this.props.productionLine._id, 
+        pathname: '/editProductionLine/' + this.props.productionLine._id,
         state: {
           productionLine: this.props.productionLine
-        }}}>
-          <Button
+        }
+      }}>
+        <Button
           bsStyle="info"
         >
           Edit Production Line
       </Button>
-        </Link>
+      </Link>
 
-      deleteButton = <button className="delete" onClick={this.deleteThisProductionLine.bind(this)}>
-          &times;
-        Delete Production Line</button>
-          
-    } 
-    
+    }
     else {
       editButton = <div className="containerNone"></div>;
-      deleteButton = <div className="containerNone"></div>
     }
 
-    return (     
+    return (
       <li>
         {deleteButton}
 
@@ -52,24 +66,25 @@ class ProductionLineItem extends Component {
         <p> <b>Description:</b> {this.props.productionLine.description}</p>
         <div className="side-container-zero">
 
-        <div className="container-button">
-        <Link to={{
-            pathname: '/viewProductionLine/'+this.props.productionLine._id, 
-            state: {
+          <div className="container-button">
+            <Link to={{
+              pathname: '/viewProductionLine/' + this.props.productionLine._id,
+              state: {
                 productionLine: this.props.productionLine
-            }}}>
+              }
+            }}>
               <Button
-              
-            >
-              View Production Line
+
+              >
+                View Production Line
           </Button>
             </Link>
-            </div>
+          </div>
 
-          
-            <div className="container-button">
-        {editButton}
-        </div></div>
+
+          <div className="container-button">
+            {editButton}
+          </div></div>
       </li>
     );
   }

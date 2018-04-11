@@ -52,7 +52,7 @@ Meteor.methods({
 
         // console.log(entry)
 
-        Meteor.call('lots.increaseSystemLot')
+        
 
         if(lot.length != 0) {
             LotsHistory.update({inventoryID : id}, {$push : {queue : entry}})

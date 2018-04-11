@@ -29,12 +29,10 @@ renderTableData(){
     let item1 = formulasMap.get(formulas[i].id)
     let item2 = intermediatesMap.get(formulas[i].id)
 
-    item1 != undefined ? items.push(<p key={i}>{item1}</p>) : items.push(<p key={i}>{item2}</p>)
+    item1 != undefined ? items.push(<div key={i}>{item1}</div>) : items.push(<div key={i}>{item2}</div>)
   }
 
-  return (
-    items
-  )
+  return items
 }
 
   render() {
@@ -51,10 +49,11 @@ renderTableData(){
           <p> <b>Description:</b> {this.props.location.state.productionLine.description}</p>
           <p></p>
 
-          <p><b>Producible Formulas:</b></p>
-          <p></p>
+          <b>Producible Formulas:</b>
           {this.renderTableData()}
 
+          <p></p>
+          <hr className='divider'></hr>
           <p></p>
           <p><Link to='/productionLineManagement'>Return to Production Line Management</Link></p>
         </div>
