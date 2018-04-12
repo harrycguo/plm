@@ -62,14 +62,16 @@ class ProductionRun extends Component {
 
     renderFormulas() {
         let items = [];
-        items.push(<option key={-1} disabled selected value='undefined'> -- select a formula -- </option>)
-        j = 0
+        let j = 0
+        items.push(<option key={j} disabled selected value='undefined'> -- select a final product -- </option>)
+        j++
         for (let i = 0; i < this.props.formulas.length; i++) {
             items.push(<option key={j} value={this.props.formulas[i]._id}>{this.props.formulas[i].name}</option>);
             j++
         }
         j++
-        items.push(<option key={-2} disabled value> -- select an intermediate -- </option>)
+        items.push(<option key={j} disabled value> -- select an intermediate -- </option>)
+        j++
         for (i = 0; i < this.props.intermediates.length; i++) {
             items.push(<option key={j} value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);
             j++

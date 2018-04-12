@@ -21,22 +21,9 @@ class ProductionLineInput extends Component {
         let j = 0
 
         let defaultFormula = this.props.defaultFormula != undefined ? this.props.defaultFormula : '0'
-    
-        
-        items.push(<option disabled value selected> -- select an intermediate -- </option>)
-        for (i = 0; i < this.props.intermediates.length; i++) {
-            if (defaultFormula != this.props.intermediates[i]._id){
-                items.push(<option key={j} value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);
-            } else {
-                items.push(<option key={j} selected value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);
-            }
-            j++
-        }
-        j++
 
         items.push(<option key={j} disabled value> -- select a final product -- </option>)
         j++
-        
         for (i = 0; i < this.props.formulas.length; i++) {
             if (defaultFormula != this.props.formulas[i]._id){
                 items.push(<option key={j} value={this.props.formulas[i]._id}>{this.props.formulas[i].name}</option>);
@@ -45,6 +32,19 @@ class ProductionLineInput extends Component {
             }
             j++
         }
+        j++
+        items.push(<option disabled value selected> -- select an intermediate -- </option>)
+        j++
+        for (i = 0; i < this.props.intermediates.length; i++) {
+            if (defaultFormula != this.props.intermediates[i]._id){
+                items.push(<option key={j} value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);
+            } else {
+                items.push(<option key={j} selected value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);
+            }
+            j++
+        }
+
+        
        
         return items;
     }

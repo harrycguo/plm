@@ -100,6 +100,14 @@ class ViewFormula extends Component {
 
 
     render() {
+
+        let text = null
+
+        let user = Meteor.user() 
+        if (Roles.userIsInRole(user, ['admin', 'manager'])) {
+            text = <p>*To Modify Compatible Production Lines, please go to Production Line Management</p>
+        }
+
         return (
             <div className="container">
                 <header>
@@ -120,7 +128,7 @@ class ViewFormula extends Component {
                 <b>Compatible Production Lines:</b>
                 {this.renderProductionLines()}
                 <br></br>
-                <p>*To Modify Compatible Production Lines, please go to Production Line Management</p>
+                {text}
 
 
                 <p></p>

@@ -102,6 +102,12 @@ class ViewIntermediate extends Component {
         let tempState = this.props.location.state.formula.temperatureState.charAt(0).toUpperCase().concat(this.props.location.state.formula.temperatureState.substr(1))
         let packaging = this.props.location.state.formula.packageInfo.packageType.charAt(0).toUpperCase().concat(this.props.location.state.formula.packageInfo.packageType.substr(1))
 
+        let text = null
+
+        let user = Meteor.user() 
+        if (Roles.userIsInRole(user, ['admin', 'manager'])) {
+            text = <p>*To Modify Compatible Production Lines, please go to Production Line Management</p>
+        }
 
         return (
             <div className="container">
@@ -127,7 +133,7 @@ class ViewIntermediate extends Component {
                 <b>Compatible Production Lines:</b>
                 {this.renderProductionLines()}
                 <br></br>
-                <p>*To Modify Compatible Production Lines, please go to Production Line Management</p>
+                {text}
 
                 <p></p>
                 <hr className='divider'></hr>
