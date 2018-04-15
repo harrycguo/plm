@@ -107,6 +107,9 @@ class Cart extends Component {
 				   <p><b>Total Cost: </b> ${totalCost.toFixed(2)}</p>
 				   <p></p>
 				   {this.checkoutButton()}
+					<p></p>
+				   <hr className='divider'></hr>
+          			<p></p>
 
 				   <div className="container-keepLeft">
                     <Link to='/inventoryManagement'>Return to Inventory Management</Link>

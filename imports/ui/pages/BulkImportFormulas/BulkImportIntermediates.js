@@ -370,7 +370,8 @@ class BulkImportIntermediates extends Component {
         <br></br>TEMPERATURE: temperature state of ingredient from [frozen, refrigerated, room temperature]
         <br></br>INGREDIENT: name of ingredient used for formula
         <br></br>INGREDIENT UNITS: Number of ingredient native units used in the formula
-        <br></br>*NAME, PRODUCT UNITS, DESCRIPTION are only specified once per formula. Also, no duplicates within a single file*
+        <br></br>*NAME, PRODUCT UNITS, DESCRIPTION are only specified once per formula. Also, no duplicates within a single file
+        <br></br>*Production Lines are added by managers in Production Line Management
         </p>
 
                 <b>Example:</b>

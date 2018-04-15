@@ -9,6 +9,8 @@ import ProductionHistoryPage from '../../pages/ProductionReportPage/ProductionHi
 import IntermediatesDatabase from '../../pages/IntermediatesDatabase/IntermediatesDatabase.js'
 import DNIView from '../../pages/DistributorNetworkInventory/DNIView.js'
 import { LinkContainer } from 'react-router-bootstrap'
+import LineStatuses from '../../pages/LineStatuses/LineStatuses.js'
+
 
 class FormulaManagementNavBar extends Component {
     constructor(props) {
@@ -59,6 +61,7 @@ class FormulaManagementNavBar extends Component {
                                     <NavItem eventKey="2">Add New Formula</NavItem>
                                     <NavItem eventKey="4">Bulk Import</NavItem>
                                     <NavItem eventKey="5">Produce Formula</NavItem>
+                                    <NavItem eventKey="9">Line Statuses</NavItem>
                                     <NavItem eventKey="6">Production History</NavItem>
                                     <NavItem eventKey="8">Distributor Network</NavItem>
 
@@ -87,6 +90,9 @@ class FormulaManagementNavBar extends Component {
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="8">
                                         <DNIView hist={this.props.hist}/>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="9">
+                                        <LineStatuses hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>
@@ -141,6 +147,7 @@ class FormulaManagementNavBar extends Component {
                                     <NavItem eventKey="1">Database</NavItem>
                                     <NavItem eventKey="7">Inventory</NavItem>
                                     <NavItem eventKey="5">Produce Formula</NavItem>
+                                    <NavItem eventKey="9">Line Statuses</NavItem>
                                     <NavItem eventKey="6">Production History</NavItem>
 
                                 </Nav>
@@ -161,6 +168,9 @@ class FormulaManagementNavBar extends Component {
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="8">
                                         <DNIView hist={this.props.hist}/>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="9">
+                                        <LineStatuses hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>
@@ -206,6 +216,7 @@ class FormulaManagementNavBar extends Component {
                                     </NavDropdown>
                                     <NavItem eventKey="1">Database</NavItem>
                                     <NavItem eventKey="7">Inventory</NavItem>
+                                    <NavItem eventKey="9">Line Statuses</NavItem>
                                     <NavItem eventKey="6">Production History</NavItem>
 
                                 </Nav>
@@ -220,6 +231,9 @@ class FormulaManagementNavBar extends Component {
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
                                         <ProductionHistoryPage hist={this.props.hist}/>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="9">
+                                        <LineStatuses hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>

@@ -111,6 +111,46 @@ Meteor.methods({
         let cart = Carts.find({ user : Meteor.userId()}).fetch()[0];
         let ings = cart.ingredients
 
+        if (ings.length <= 0){
+            throw new Meteor.Error("Cart is empty", "Cart is Empty")
+        }
+
+        //see if it will exceed capacity
+        let packagingMap = new Map();
+		packagingMap.set('sack', 0.5);
+		packagingMap.set('pail', 1.5);
+		packagingMap.set('drum', 3);
+		packagingMap.set('supersack', 16);
+		packagingMap.set('truckload', 0);
+        packagingMap.set('railcar', 0);
+
+        let scMapUsed = new Map();
+        let scMapTotal = new Map();
+
+        let storageCapacities = StorageCapacities.find({}).fetch()
+
+        for (let i = 0; i < storageCapacities.length; i++) {
+            scMapUsed.set(storageCapacities[i].type, Number(storageCapacities[i].used))
+            scMapTotal.set(storageCapacities[i].type, Number(storageCapacities[i].capacity))
+        }
+
+        for (let i = 0; i < ings.length; i++){
+            let existingIng = IngredientsList.findOne({ _id: ings[i].ingredient })
+            let packageType = existingIng.packageInfo.packageType
+            let numPackages = ings[i].numPackages
+            let storageType = existingIng.temperatureState
+            let newStorage = Number(packagingMap.get(packageType)) * Number(numPackages) + Number(scMapUsed.get(storageType))
+            scMapUsed.set(storageType, Number(newStorage))
+        }
+
+        const temperatures = ['frozen', 'refrigerated', 'room temperature']
+        const storage = ['Freezer', 'Refrigerator', 'Warehouse']
+        for (let i = 0; i < temperatures.length; i++) {
+            if (Number(scMapUsed.get(temperatures[i])) > Number(scMapTotal.get(temperatures[i]))) {
+                throw new Meteor.Error("Exceeding Capacity", "Exceeding Capacity for temperature state: " + storage[i] + " with this order")
+            }
+        }
+
         for (let i = 0; i < ings.length; i++){
             let ing = ings[i]
             Carts.update({ user : Meteor.userId()}, {$push : { pendingOrders : {
@@ -165,7 +205,7 @@ Meteor.methods({
         const storage = ['Freezer', 'Refrigerator', 'Warehouse']
         for (let i = 0; i < temperatures.length; i++) {
             if (Number(scMapUsed.get(temperatures[i])) > Number(scMapTotal.get(temperatures[i]))) {
-                throw new Meteor.Error("Exceeding Capacity", "Exceeding Capacity for temperature state: " + storage[i] + " with this checkout")
+                throw new Meteor.Error("Exceeding Capacity", "Exceeding Capacity for temperature state: " + storage[i] + " with adding this order to inventory")
             }
         }
 

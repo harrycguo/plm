@@ -222,7 +222,7 @@ class PendingOrderItem extends Component {
 					})
 
 				this.setState({ show: false });
-				Bert.alert('Successfully Edited Cart Item!', 'success')
+				Bert.alert('Successfully Updated Pending Order!', 'success')
 			} else {
 				Bert.alert(lotErrorReason, 'danger');
 			}
@@ -308,12 +308,10 @@ class PendingOrderItem extends Component {
 		return (
 			<Modal show={this.state.show} onHide={this.handleClose} ref={modal => (this.modal) = modal}>
 				<Modal.Header>
-					<Modal.Title><b>Editing Cart Item</b>: {ingMap.get(ingredient.fullIng.ingredient).name}</Modal.Title>
+					<Modal.Title><b>Update Pending Order</b>: {ingMap.get(ingredient.fullIng.ingredient).name}</Modal.Title>
 				</Modal.Header>
 				<Modal.Body>
 					<form ref={form => (this.form = form)} onSubmit={event => event.preventDefault()} id='form'>
-
-						<p></p>
 
 						<ControlLabel>Order Status:</ControlLabel>
 						<p><select id="status"
