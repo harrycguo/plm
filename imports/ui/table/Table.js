@@ -17,7 +17,6 @@ import Carts from '../../api/Cart/Cart.js';
 import Lots from '../../api/Lots/Lots.js'
 import LotsApi from '../../api/Lots/LotsApi.js'
 import LotsTable from './LotsTable.js'
-import {RecallChild} from '../recall/RecallChild.js'
 
 class Table extends Component {
 	

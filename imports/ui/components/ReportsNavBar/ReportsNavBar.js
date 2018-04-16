@@ -87,7 +87,7 @@ class ReportsNavBar extends Component {
                                        <ProductionReportPage />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="3">
-                                        Recall report goes here
+                                        <RecallReportView />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="4">
                                         <FreshnessReport />

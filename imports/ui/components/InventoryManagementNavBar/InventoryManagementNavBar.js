@@ -78,9 +78,7 @@ class InventoryManagementNavBar extends Component {
                                     <NavItem eventKey="2">Add New Ingredient</NavItem>
                                     <NavItem eventKey="4">Bulk Import</NavItem>
                                     <NavItem eventKey="5">Pending Orders</NavItem>
-                                    
-                                                                   
-                                    
+
 
                                 </Nav>
                             </Col>
@@ -98,7 +96,6 @@ class InventoryManagementNavBar extends Component {
                                     <Tab.Pane eventKey="5">
                                        <PendingOrders />
                                     </Tab.Pane>
-                                                                     
                                 </Tab.Content>
                             </Col>
                         </Row>
