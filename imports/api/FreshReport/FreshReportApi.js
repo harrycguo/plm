@@ -19,6 +19,12 @@ Meteor.methods({
         })
         // FreshReport.simpleSchema.clean()
     },
+    'freshreport.insertFinalProduct': function(id) {
+        FreshReport.insert({
+            inventoryID: id,
+            finalProduct: true
+        })
+    },
     'freshreport.updateAvgTime': function(id, qtyConsumed) {
         var repArr = FreshReport.find({ inventoryID : id}).fetch()
         if (repArr.length === 0) {
