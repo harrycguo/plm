@@ -521,36 +521,25 @@ ProfitabilityReportSchema = new SimpleSchema({
     defaultValue: 0,
     decimal: true
   },
-  wholesaleRevenue: {
-    type: Number,
-    min: 0,
-    defaultValue: 0,
-    decimal: true
-  },
   totalCost: {
     type: Number,
     min: 0,
     defaultValue: 0,
     decimal: true
   },
-  totalProfit: {
+  totalPrice: {
     type: Number,
-    min: 0,
+    decimal: true,
     defaultValue: 0,
-    decimal: true
-  },
-  perUnitProfit: {
-    type: Number,
-    min: 0,
-    defaultValue: 0,
-    decimal: true
-  },
-  profitMargin: {
-    type: Number,
-    min: 0,
-    defaultValue: 0,
-    decimal: true
+    min: 0
   }
 })
 
-export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema, FreshReportSchema, FreshTotalSchema, LotsHistorySchema, ProfitabilityReportSchema };
+ProdEfficiencySchema = new SimpleSchema({
+  id: {
+    type: String,
+    min: 1    
+  }
+})
+
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema, FreshReportSchema, FreshTotalSchema, LotsHistorySchema, ProfitabilityReportSchema, ProdEfficiencySchema };

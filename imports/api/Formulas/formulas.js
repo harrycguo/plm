@@ -6,6 +6,8 @@ import IngredientsList from '../Ingredients/IngredientList.js';
 import { IngredientFormulaSchema, FormulaSchema } from '../Ingredients/Schemas.js';
 import ProductionReport from '../ProductionReport/ProductionReport.js';
 import { Intermediates } from '../Intermediates/intermediates'
+import '../ProfitabilityReport/ProfReportApi.js'
+import '../FreshReport/FreshReportApi.js'
 
 Formulas = new Mongo.Collection('formulas');
 // Formulas.attachSchema(FormulaSchema)
@@ -88,6 +90,9 @@ Meteor.methods({
         }
       })
 
+      let formula = Formula.find({name : name}).fetch()[0]
+      Meteor.call('profreport.insert',formula._id)
+      Meteor.call('freshreport.insertFinalProduct', formulaID)
       Meteor.call('systemlog.insert', "Formula", name, 0, "Added", "")
     
   },
