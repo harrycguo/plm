@@ -105,7 +105,6 @@ Meteor.methods({
         let int = Intermediates.findOne({_id: ingID})
         
         if (ing != undefined){
-          console.log('attaching ID to ing')
           let newFormulaInfo = ing.formulaInfo.concat(result)
 
           IngredientsList.update({ _id: ingID }, {
@@ -114,7 +113,6 @@ Meteor.methods({
             }
           })
         } else {
-          console.log('attaching ID to formula')
           let newFormulaInfo = int.formulaInfo.concat(result)
 
           Intermediates.update({ _id: ingID }, {
@@ -243,26 +241,22 @@ Meteor.methods({
     //truck or rail to physical, put in inventory
     if ((existingInt.packageInfo.packageType == 'truckload' || existingInt.packageInfo.packageType == 'railcar') &&
         !(newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar')) {
-        console.log("rail/truck to phyiscal: put in storage")
         newUsed = Number(container.used) + Number(newStorage)
     } 
     
     // truck to rail or vice versa, no change
     else if ((existingInt.packageInfo.packageType == 'truckload' || existingInt.packageInfo.packageType == 'railcar') &&
         (newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar')) {
-        console.log('rail/truck to rail/car: nothing')
     }
     
     //going to truckload, take out of inventory
     else if (newPackage.toLowerCase() == 'truckload' || newPackage.toLowerCase() == 'railcar') {
         newUsed = Number(container.used) - Number(existingInt.storage)
-        console.log("physical to rail/truck")
     } 
     
     //regular 
     else {
         newUsed = Number(container.used) - Number(existingInt.storage) + Number(newStorage)
-        console.log("physical to physical")
     }
 
     Meteor.call('sc.editUsed', container._id, Number(newUsed))
@@ -441,6 +435,7 @@ Meteor.methods({
       throw new Meteor.Error('Intermediate used in a formulas', 'Cannot delete, Intermediate used in Formula(s): ' + formulasError);
     }
     Meteor.call('production.remove', id)
+    Meteor.call('productionLines.removeFormula', id)
     Intermediates.remove({ _id: id });
     Lots.remove({ inventoryID : id});
   },

@@ -12,7 +12,6 @@ IngredientsList.attachSchema(IngredientSchema);
 var cursor = Vendors.find();
 const handle = cursor.observeChanges({
     'removed': function(id) {
-       //console.log('removing: '+id);
        IngredientsList.update({ }, {$pull : { "vendorInfo.vendor" : id}} , {multi : true})
     }
 });

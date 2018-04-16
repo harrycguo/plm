@@ -97,8 +97,6 @@ class ProductionRun extends Component {
             }
         }
 
-        console.log(items)
-
         return items
     }
 
@@ -247,7 +245,6 @@ class ProductionRun extends Component {
     }
 
     addToCart = () => {
-        console.log("adding to cart")
 
         const { history } = this.props.hist;
 
@@ -264,8 +261,6 @@ class ProductionRun extends Component {
                 notEnough: state.notEnough
             })
         }
-
-        console.log(ingListArray)
 
         Meteor.call('production.addToCart',
             ingListArray,

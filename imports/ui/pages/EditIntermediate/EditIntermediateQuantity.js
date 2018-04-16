@@ -91,7 +91,6 @@ class EditIntermediateQuantity extends Component {
 	}
 
 	handleSubmit() {
-		console.log('new lots yay!')
 
 		let numPackages = this.numberOfPackages.value
 		let intermediate = this.props.location.state.intermediate
@@ -164,17 +163,12 @@ class EditIntermediateQuantity extends Component {
 
 			if (!lotError) {
 
-				console.log('made it here without error')
-
-				console.log(lotsArray)
-
 				//edit number of units
 				Meteor.call('intermediates.editTotalNumNativeUnits',
 					intermediate._id,
 					numPackages,
 					function (error, result) {
 						if (error) {
-							console.log("something goes wrong with the following error message " + error.reason)
 							Bert.alert(error.reason, 'danger');
 						}
 					})
@@ -249,12 +243,10 @@ class EditIntermediateQuantity extends Component {
 			message += startArr[i].toString() + ", "
 		}
 		message = message.substring(0, message.length - 2)
-		console.log(message)
 		return message
 	}
 
 	render() {
-		console.log(this.state)
 
 		let intermediate = this.props.location.state.intermediate
 

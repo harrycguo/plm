@@ -219,7 +219,6 @@ Meteor.methods({
                 // Meteor.call('editTotalNumNativeUnits',ingCartInfo.ingredient,Number(newAmount));
                 Meteor.call('ingredients.updateTotalSpending',ingCartInfo.ingredient,ingCartInfo.vendorInfo.vendor,ingCartInfo.numPackages)
                 ingCartInfo.lots.forEach(function(lotInfo) {
-                    console.log("Lot number: "+lotInfo.lotNumber)
                     Meteor.call('lots.add',ingCartInfo.ingredient, lotInfo.lotStuff * ing.nativeInfo.numNativeUnitsPerPackage, lotInfo.lotNumber, ingCartInfo.vendorInfo.vendor, ingCartInfo.vendorInfo.price, new Date())
                 })
                 Carts.update({ user : Meteor.userId()} , {$pull : { pendingOrders : { ingredient : ingCartInfo.ingredient, lotsSelected: true}}})

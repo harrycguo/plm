@@ -16,7 +16,6 @@ class EditFormula extends Component {
     constructor(props) {
         super(props);
         this.handleSubmit = this.handleSubmit.bind(this);
-        console.log(this.props.location.state.formula)
 
         this.state = {
             inputs: [],
@@ -90,7 +89,6 @@ class EditFormula extends Component {
 
 
     handleSubmit() {
-        console.log("Editing Formula Now")
         const { history } = this.props
 
         let name = this.formulaName.value
@@ -98,8 +96,6 @@ class EditFormula extends Component {
         let productUnits = this.foodProductUnits.value
         let ingList = this.state.ingList
 
-        console.log("ingredient list below")
-        console.log(ingList)
 
         let ingListArray = new Array()
 
@@ -110,7 +106,6 @@ class EditFormula extends Component {
 
         for (let i = 0; i < ingList.length; i++) {
 
-            console.log(ingList[i].ingredient.ingredient)
             let objIng = ingList[i].ingredient.ingredient
         
             if (ingList[i].ingredient.valid) {
@@ -137,9 +132,6 @@ class EditFormula extends Component {
                 }
             }
         }
-
-        console.log('ingListArray')
-        console.log(ingListArray)
 
         Meteor.call('formulas.edit',
             this.props.location.state.formula._id,

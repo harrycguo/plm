@@ -93,6 +93,10 @@ class ViewIntermediate extends Component {
                 }
             
         }
+
+        if (items.length == 0){
+            return <p>(none)</p>
+        }
         
         return items
     }
@@ -132,8 +136,8 @@ class ViewIntermediate extends Component {
                 <p></p>
                 <b>Compatible Production Lines:</b>
                 {this.renderProductionLines()}
-                <br></br>
-                {text}
+                
+                <p>{text}</p>
 
                 <p></p>
                 <hr className='divider'></hr>

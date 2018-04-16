@@ -76,7 +76,6 @@ Meteor.methods({
         },
       });
       if (user) {
-        console.log('success')
         Meteor.call('systemlog.insert',
         "User", username, Meteor.users.findOne({username: username})._id, 
           "Added", username);
@@ -84,7 +83,6 @@ Meteor.methods({
       }
     
     } catch (err) {
-      console.log('fail')
       return err
     }
   },
@@ -94,7 +92,6 @@ Meteor.methods({
     if (!this.userId || !Roles.userIsInRole(this.userId, 'admin')) {
       throw new Meteor.Error('not-authorized', 'not-authorized');
     }
-    console.log(user)
     Meteor.call('systemlog.insert',"User", user.username, 
       user._id, 
       "Modified", 

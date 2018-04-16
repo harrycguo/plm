@@ -110,7 +110,6 @@ class Table extends Component {
 			vendor,
 			function(error,result){
 				if(error){
-					console.log("something goes wrong with the following error message " + error.reason )
 					Bert.alert(error.reason, 'danger');
 				} else {
 					Bert.alert('Successfully Removed Vendor', 'success');
@@ -151,7 +150,6 @@ class Table extends Component {
                    vendor,
                    function(error,result){
                       if(error){
-                         console.log("something goes wrong with the following error message " + error.reason )
                          Bert.alert(error.reason, 'danger');
                      }
                  }
