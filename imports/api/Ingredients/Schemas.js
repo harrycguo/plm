@@ -460,6 +460,10 @@ FreshReportSchema = new SimpleSchema({
     min: 0,
     defaultValue: 0,
     decimal: true
+  },
+  finalProduct: {
+    type: Boolean,
+    defaultValue: false
   }
 })
 
@@ -500,4 +504,53 @@ FreshTotalSchema = new SimpleSchema({
   }
 })
 
-export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema, FreshReportSchema, FreshTotalSchema, LotsHistorySchema };
+ProfitabilityReportSchema = new SimpleSchema({
+  id: {
+    type: String,
+    min: 1    
+  },
+  unitsSold: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  avgWholesalePrice: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  wholesaleRevenue: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  totalCost: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  totalProfit: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  perUnitProfit: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  profitMargin: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  }
+})
+
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema, FreshReportSchema, FreshTotalSchema, LotsHistorySchema, ProfitabilityReportSchema };
