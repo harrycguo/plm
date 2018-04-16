@@ -68,7 +68,7 @@ Meteor.methods({
           let int = Intermediates.findOne({_id: ingID})
           
           if (ing != undefined){
-            console.log('attaching ID to ing')
+  
             let newFormulaInfo = ing.formulaInfo.concat(result)
 
             IngredientsList.update({ _id: ingID }, {
@@ -77,7 +77,6 @@ Meteor.methods({
               }
             })
           } else {
-            console.log('attaching ID to formula')
             let newFormulaInfo = int.formulaInfo.concat(result)
 
             Intermediates.update({ _id: ingID }, {
@@ -134,7 +133,10 @@ Meteor.methods({
     }
     Meteor.call('systemlog.insert', "Formula", existingFormula.name, formulaID, "Removed", "")
     Meteor.call('production.remove',formulaID)
+    Meteor.call('productionLines.removeFormula', formulaID)
     Formulas.remove(formulaID);
+
+    
 
   },
 

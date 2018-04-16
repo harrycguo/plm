@@ -52,8 +52,6 @@ Meteor.methods({
             time: time
         }
 
-        // console.log(entry)
-
         Meteor.call('lots.increaseSystemLot')
 
         if(lot.length != 0) {

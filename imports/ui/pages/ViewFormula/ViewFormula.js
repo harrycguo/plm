@@ -94,6 +94,10 @@ class ViewFormula extends Component {
                 }
             
         }
+
+        if (items.length == 0){
+            return <p>(none)</p>
+        }
         
         return items
     }
@@ -125,11 +129,10 @@ class ViewFormula extends Component {
 
                 {this.renderIngredientsList()}
                 <p></p>
-                <b>Compatible Production Lines:</b>
+                <p><b>Compatible Production Lines:</b></p>
                 {this.renderProductionLines()}
-                <br></br>
-                {text}
-
+              
+               <p>{text}</p>
 
                 <p></p>
                 <hr className='divider'></hr>

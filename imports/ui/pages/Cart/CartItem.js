@@ -120,7 +120,6 @@ class CartItem extends Component {
 
 				},
 				submitHandler() { 
-					console.log('sdflj')
 					component.handleSubmitModal(); },
 			})
 		 
@@ -156,7 +155,6 @@ class CartItem extends Component {
 					this.numberOfPackages.value,
 					function (error, result) {
 						if (error) {
-							console.log("something goes wrong with the following error message " + error.reason)
 							Bert.alert(error.reason, 'danger');
 						}
 					}
@@ -168,7 +166,6 @@ class CartItem extends Component {
 					this.vendor.value,
 					function (error, result) {
 						if (error) {
-							console.log("something goes wrong with the following error message " + error.reason)
 							Bert.alert(error.reason, 'danger');
 						}
 					}
@@ -203,7 +200,6 @@ class CartItem extends Component {
 		Meteor.call('removeIngredientFromCart', this.fullIng.ingredient,
 			function (error, result) {
 				if (error) {
-					console.log("something goes wrong with the following error message " + error.reason)
 					Bert.alert(error.reason, 'danger');
 				}
 			}

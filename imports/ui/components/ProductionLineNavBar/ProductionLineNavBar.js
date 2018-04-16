@@ -9,6 +9,8 @@ import { Navbar, NavItem, Nav, NavDropdown, MenuItem, Row, Col, Tabs, Tab, TabCo
 import ProductionLineManagement from '../../pages/ProductionLineManagement/ProductionLineManagement.js'
 import AddProductionLine from '../../pages/AddProductionLine/AddProductionLine.js'
 import LineStatuses from '../../pages/LineStatuses/LineStatuses.js'
+import ProductionRun from '../../pages/ProductionRun/ProductionRun.js'
+
 
 import Cart from '../../pages/Cart/Cart.js'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -62,8 +64,9 @@ class ProductionLineNavBar extends Component {
                                     </NavDropdown>
 
                                     <NavItem eventKey="1">Lines</NavItem>
-                                    <NavItem eventKey="2">Line Statuses</NavItem>
                                     <NavItem eventKey="3">Add New Line</NavItem>
+                                    <NavItem eventKey="2">Line Statuses</NavItem>
+                                    <NavItem eventKey="5">Produce Formula</NavItem>
                                     
                                 </Nav>
                             </Col>
@@ -77,6 +80,9 @@ class ProductionLineNavBar extends Component {
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="3">
                                         <AddProductionLine />
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="5">
+                                        <ProductionRun hist={this.props.hist} />
                                     </Tab.Pane>
                                     
                                                                      
@@ -132,6 +138,7 @@ class ProductionLineNavBar extends Component {
                                     </NavDropdown>
                                     <NavItem eventKey="1">Lines</NavItem>
                                     <NavItem eventKey="2">Line Statuses</NavItem>
+                                    <NavItem eventKey="5">Produce Formula</NavItem>
                             
                                    
                                   
@@ -145,6 +152,9 @@ class ProductionLineNavBar extends Component {
                                 <Tab.Pane eventKey="2">
                                     <LineStatuses />
                                 </Tab.Pane>
+                                <Tab.Pane eventKey="5">
+                                        <ProductionRun hist={this.props.hist} />
+                                    </Tab.Pane>
                                         
                                 </Tab.Content>
                             </Col>

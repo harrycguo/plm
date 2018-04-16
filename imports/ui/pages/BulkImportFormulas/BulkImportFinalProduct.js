@@ -80,7 +80,6 @@ class BulkImportFinalProduct extends Component {
     // Success!!
     else {
 
-      console.log('time to Bulk Import Formula!')
 
       let dataFile = data;
       let formulas = this.checkFileForErrors(data).formulaArray

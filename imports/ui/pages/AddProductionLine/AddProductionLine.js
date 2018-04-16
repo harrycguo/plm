@@ -109,8 +109,6 @@ class AddProductionLine extends Component {
                 }
             }
         }
-
-        console.log(formulaListArray)
    
         Meteor.call('productionLines.insert',
             name,

@@ -53,7 +53,6 @@ class AddVendor extends Component {
         const { history } = this.props;
         
         if (Meteor.isServer){
-         console.log("server side");
          
         } else if (Meteor.isClient){
 

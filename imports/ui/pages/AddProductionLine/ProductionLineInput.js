@@ -22,7 +22,7 @@ class ProductionLineInput extends Component {
 
         let defaultFormula = this.props.defaultFormula != undefined ? this.props.defaultFormula : '0'
 
-        items.push(<option key={j} disabled value> -- select a final product -- </option>)
+        items.push(<option key={j} disabled value selected> -- select a final product -- </option>)
         j++
         for (i = 0; i < this.props.formulas.length; i++) {
             if (defaultFormula != this.props.formulas[i]._id){
@@ -33,7 +33,7 @@ class ProductionLineInput extends Component {
             j++
         }
         j++
-        items.push(<option disabled value selected> -- select an intermediate -- </option>)
+        items.push(<option disabled value> -- select an intermediate -- </option>)
         j++
         for (i = 0; i < this.props.intermediates.length; i++) {
             if (defaultFormula != this.props.intermediates[i]._id){

@@ -72,9 +72,6 @@ class CreateUser extends Component {
     event.preventDefault()
     
 
-    console.log('handling submit!!!')
-    console.log(this.form)
-
     const { history } = this.props;
 
       Meteor.call('createUserFromAdmin',

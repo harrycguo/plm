@@ -185,8 +185,6 @@ Meteor.methods({
         }
 
         let lotNumber = LotNumberSystem.findOne({name: 'system'})
-        console.log('im here')
-        console.log(lotNumber)
         
         ProductionHistory.insert({
             name: item.name,

@@ -144,7 +144,6 @@ handleSubmit(){
         }
     }
 
-    console.log(formulaListArray)
 
     Meteor.call('productionLines.edit',
             this.props.location.state.productionLine._id,
