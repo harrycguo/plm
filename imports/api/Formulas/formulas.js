@@ -54,7 +54,7 @@ Meteor.methods({
       }
     }
 
-    Formulas.insert({
+    var x = Formulas.insert({
       name: name,
       description: description,
       productUnits: Number(productUnits),
@@ -87,8 +87,7 @@ Meteor.methods({
           }          
         }
       })
-
-      Meteor.call('systemlog.insert', "Formula", name, 0, "Added", "")
+      Meteor.call('systemlog.insert', "Formula", name, x, "Added", "")
     
   },
 

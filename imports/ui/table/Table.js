@@ -181,9 +181,9 @@ class Table extends Component {
 
 
 	////////////////////////////////////////////////
-	///											 ///
-	/// Render 									 ///
-	///											 ///
+	///											                     ///
+	/// Render 									                 ///
+	///											                     ///
 	////////////////////////////////////////////////
 	renderTable(_this) {
 		return ( 
@@ -191,6 +191,9 @@ class Table extends Component {
 			<ReactTable
 			data={_this.renderRows(_this)}
 			filterable
+      defaultFiltered = {[{id:'name', 
+      value: _this.props.hist.location.state ? 
+      _this.props.hist.location.state.name : ''}]}
 			defaultFilterMethod={ (filter, row) => 
 				String(row[filter.id]).toLowerCase().includes(filter.value.toLowerCase())
 			}
