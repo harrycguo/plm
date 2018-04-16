@@ -94,12 +94,24 @@ class ViewFormula extends Component {
                 }
             
         }
+
+        if (items.length == 0){
+            return <p>(none)</p>
+        }
         
         return items
     }
 
 
     render() {
+
+        let text = null
+
+        let user = Meteor.user() 
+        if (Roles.userIsInRole(user, ['admin', 'manager'])) {
+            text = <p>*To Modify Compatible Production Lines, please go to Production Line Management</p>
+        }
+
         return (
             <div className="container">
                 <header>
@@ -117,11 +129,10 @@ class ViewFormula extends Component {
 
                 {this.renderIngredientsList()}
                 <p></p>
-                <b>Compatible Production Lines:</b>
+                <p><b>Compatible Production Lines:</b></p>
                 {this.renderProductionLines()}
-                <br></br>
-                <p>*To Modify Compatible Production Lines, please go to Production Line Management</p>
-
+              
+               <p>{text}</p>
 
                 <p></p>
                 <hr className='divider'></hr>

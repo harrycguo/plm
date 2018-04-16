@@ -29,7 +29,6 @@ export const packageStringMap = new Map([
 // 	    packageAsNum = 280000;
 // 	    break;
 // 	  default:
-// 	    console.log('no conversion found');
 // 	}
 // 	return packageAsNum;
 // }

@@ -90,7 +90,6 @@ class EditIntermediate extends Component {
 
 
     handleSubmit() {
-        console.log("Editing Intermediate Now")
         const { history } = this.props
 
         let name = this.formulaName.value

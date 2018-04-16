@@ -191,8 +191,7 @@ Meteor.methods({
             Meteor.call('lots.removeQty',ingList[i].ingredient,totalIngProdAmt,formulaID,numUnitsProduce,date,lotNumber.lotNumber,isIntermediate)
         }
 
-        console.log('im here')
-        console.log(lotNumber)
+        let lotNumber = LotNumberSystem.findOne({name: 'system'})
         
         ProductionHistory.insert({
             name: item.name,

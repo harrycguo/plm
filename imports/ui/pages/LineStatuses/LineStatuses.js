@@ -12,6 +12,10 @@ class LineStatuses extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      text: ""
+    }
+
 }
 
 renderLinesInfo(){
@@ -79,7 +83,7 @@ renderLinesInfo(){
 }
 
 updateStatus() {
-  console.log('updating status')
+
   let lines = this.props.productionLines
   let linesArr = new Array()
 
@@ -91,8 +95,6 @@ updateStatus() {
     })
   }
 
-  console.log(linesArr)
-
   Meteor.call('productionLines.endProduction', 
             linesArr,
             function(error, result) {
@@ -100,8 +102,28 @@ updateStatus() {
                 Bert.alert(error.reason, 'danger')
               } else {
                 Bert.alert("Successfully updated production Lines!", 'success')
+
+                let text = []
+                for (let i = 0; i < result.length; i++){
+                  text.push(
+                    <tr key={i}>
+         
+                      <td align="left">
+                          {result[i].name}
+                      </td>
+                      <td align="left">
+                        {result[i].lotNumber}
+                      </td>
+                      
+                  </tr>
+                  )
+                }
+                
+                this.setState({
+                  text: text
+                })
               }
-            })
+            }.bind(this))
 
 
 }
@@ -154,6 +176,25 @@ updateStatus() {
           <p></p>
           
           {updateButton}
+          <p></p>
+          <p><b>Update Results: </b></p>
+          <p></p>
+
+
+          <table width="500">
+            <tbody>
+            <tr >
+              <th>
+                  <b>Product</b>
+              </th>
+              <th>
+                  <b>Lot Number</b>
+              </th>
+            </tr>
+            {this.state.text}
+              </tbody>
+          </table>
+          
                     
         </div>
       )

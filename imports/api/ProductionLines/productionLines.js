@@ -137,7 +137,7 @@ Meteor.methods({
       throw new Meteor.Error('not-authorized', 'not-authorized');
     }
 
-    console.log(plArray)
+    resArray = []
 
     for (let i = 0; i < plArray.length; i++){
       if (plArray[i].status == 'complete') {
@@ -160,7 +160,11 @@ Meteor.methods({
         }
 
         let lotNumber = LotNumberSystem.findOne({name: 'system'})
-        
+        resArray.push({
+          name: item.name,
+          lotNumber: lotNumber.lotNumber
+        })
+
         ProductionHistory.insert({
             name: item.name,
             lotNumber: lotNumber.lotNumber,
@@ -183,6 +187,11 @@ Meteor.methods({
         })
       }
     }
+
+    return resArray
+  },
+  'productionLines.removeFormula'(formulaID){
+    ProductionLines.update({}, { $pull : { formulasList : { id : formulaID }}}, { multi: true})
   }
 
 })
