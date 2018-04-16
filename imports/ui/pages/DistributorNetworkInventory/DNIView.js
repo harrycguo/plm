@@ -75,6 +75,7 @@ class DNIView extends Component {
               data={data}
               columns={DNIData.FinalProductsHeaderValues}
               noDataText="Loading..."
+              sortable={false}
               SubComponent={row => {
                 return (
                   <div>
@@ -125,7 +126,26 @@ class DNIView extends Component {
       <Button 
         bsStyle="success"
         onClick={e=>{
-          console.log(this.state)
+          var shouldConfirm = false
+          var prompt = "Confirm sale: \nName | Quantity | Price\n"
+          this.state.map.forEach(function(item, name) {
+            console.log(name)
+            console.log(item)
+            var price = Number(item.price)
+            var qty = Number(item.qty)
+            console.log(price)
+            console.log(qty)
+            console.log(isNaN(price))
+            console.log(isNaN(qty))
+            if(!isNaN(price) && !isNaN(qty) && price >= 0 && qty > 0) {
+                console.log("Attempting to concat")
+                shouldConfirm=true
+                prompt = prompt.concat(name).concat(" | ").concat(item.qty).concat(" | $").concat(item.price).concat("\n")
+            }
+          })
+          if(shouldConfirm && confirm(prompt)) {
+            console.log("Use up the stuff")
+          }
         }}>
         Sell Items
       </Button>
