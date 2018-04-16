@@ -19,29 +19,22 @@ class Cart extends Component {
 		}
 	}
 
-	
-
 	renderCartItems() {
 
 		var frontEndCart = Array()
 		var keyCount = 0
-		var totalCost = 0
 
 		this.props.carts.forEach(function(ingredients) {
-			//console.log(ingredients)
 			ingredients.ingredients.forEach(function(ing) {
-				//console.log(ing)
-				frontEndCart.push(
-					{key: keyCount, fullIng: ing, amt: ing.numPackages}
-				)
-				keyCount++;
+			
+					frontEndCart.push(
+						{key: keyCount, fullIng: ing, amt: ing.numPackages}
+					)
+					keyCount++;
 				
 			})
 		});
 
-		frontEndCart.map(ingredient => (
-			totalCost+= Number(ingredient.fullIng.vendorInfo.price * ingredient.fullIng.numPackages)
-		))
 
 		return frontEndCart.length > 0 ? frontEndCart.map(ingredient => (			
 			<CartItem key={ingredient.key} ingredient={ingredient} />
@@ -53,7 +46,7 @@ class Cart extends Component {
 		return (<Button
 				bsStyle="success"
 				onClick={e => {
-					Meteor.call('checkoutIngredients', function(error, result) {
+					Meteor.call('cart.checkout', function(error, result) {
 						if(error){
                    			console.log("something goes wrong with the following error message " + error.reason )
                	  			Bert.alert(error.reason, 'danger');
@@ -75,10 +68,12 @@ class Cart extends Component {
 
 		this.props.carts.forEach(function(ingredients) {
 			ingredients.ingredients.forEach(function(ing) {
-				frontEndCart.push(
-					{key: keyCount, fullIng: ing, amt: ing.numPackages}
-				)
-				keyCount++;
+				
+					frontEndCart.push(
+						{key: keyCount, fullIng: ing, amt: ing.numPackages}
+					)
+					keyCount++;
+				
 			})
 		});
 
@@ -103,7 +98,6 @@ class Cart extends Component {
 		    				<th>Price per Package</th>
 							<th>Total Quantity</th>
 							<th>Total Price</th>
-							<th>Lots Selected?</th>
 						</tr>
 	    				{this.renderCartItems()}
 	    			</tbody>
@@ -112,8 +106,10 @@ class Cart extends Component {
 				   <p></p>
 				   <p><b>Total Cost: </b> ${totalCost.toFixed(2)}</p>
 				   <p></p>
-				   <Timer />
 				   {this.checkoutButton()}
+					<p></p>
+				   <hr className='divider'></hr>
+          			<p></p>
 
 				   <div className="container-keepLeft">
                     <Link to='/inventoryManagement'>Return to Inventory Management</Link>

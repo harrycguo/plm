@@ -3,7 +3,6 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Link } from 'react-router-dom';
 import { Route, Redirect } from 'react-router-dom';
 
-
 class Index extends Component {
   constructor(props) {
     super(props);
@@ -33,12 +32,10 @@ class Index extends Component {
         </div>
       )
     }
-
-    
   }
 }
 
-export default Index;
+export default Index
 
 
 

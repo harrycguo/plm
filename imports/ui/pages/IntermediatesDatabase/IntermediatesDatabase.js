@@ -10,13 +10,15 @@ import  Formulas  from '../../../api/Formulas/formulas'
 import LotsTable from '../../table/LotsTable.js'
 import TableData from '../../table/TableData.js'
 import Lots from '../../../api/Lots/Lots'
+import { ProductionLines } from '../../../api/ProductionLines/productionLines.js'
+
 
 
 class IntermediatesDatabase extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      radioState: true
+      radioState: 1
     };
 }
 
@@ -133,13 +135,58 @@ class IntermediatesDatabase extends Component {
               columns={IntermediatesDatabaseData.FinalProductsHeaderValues}
               noDataText="Loading..."
               SubComponent={row => {
+                if (row.original.lotsData == undefined) {
+                  return <div></div>
+                } else {
                 return (
                   <div>
                     {this.renderSubComponent(row.original.lotsData)}
                     </div>
-                )
+                )}
+                
               }}
               
+            />
+    )
+  }
+
+  renderInProgressTable() {
+
+    let data = new Array()
+    let lines = this.props.productionLines
+    let formulas = this.props.formulas
+    let intermediates = this.props.intermediates
+
+    let formulaNameMap = new Map()
+
+    for (let i = 0; i < formulas.length; i++) {
+      formulaNameMap.set(formulas[i]._id, formulas[i].name)
+    }
+
+    for (let i = 0; i < intermediates.length; i++) {
+      formulaNameMap.set(intermediates[i]._id, intermediates[i].name)
+    }
+
+    for (let i = 0; i < lines.length; i++) {
+      let line = lines[i]
+
+      if (line.busy) {
+        data.push({
+          productionLine: line.name,
+          formula: formulaNameMap.get(line.currentFormula),
+          qty: line.quantity,
+          fullProductionLine: line,
+        })
+      }
+    }
+
+    return (
+
+      <ReactTable
+              data={data}
+              filterable
+              columns={IntermediatesDatabaseData.InProgressHeaderValues}
+              noDataText="Loading..."
             />
     )
   }
@@ -173,26 +220,39 @@ class IntermediatesDatabase extends Component {
   
   }
 
-  onChangeRadio(){
+  onChangeRadio(e){
  
-    this.setState((prevState) => ({
-        radioState: !prevState.radioState
-    }))
+    this.setState({
+        radioState: e
+    })
   }
 
   render() {
+
+    let view = null
+    let radioState = this.state.radioState
+
+    if (radioState == 1){
+      view = this.renderFinalProductsTable()
+    } else if (radioState == 2) {
+      view = this.renderIntermediatesTable()
+    } else if (radioState == 3) {
+      view = this.renderInProgressTable()
+    }
+
     return (
       <div>
         <p></p>
         <ButtonToolbar>
-            <ToggleButtonGroup type="radio" name="options" ref={radio => (this.radio) = radio} defaultValue={1} onChange={this.onChangeRadio.bind(this)}>
+            <ToggleButtonGroup type="radio" name="options"  value = {this.state.radioState} onChange={this.onChangeRadio.bind(this)}>
                 <ToggleButton value={1}>Final Products</ToggleButton>
                 <ToggleButton value={2}>Intermediates</ToggleButton>
+                <ToggleButton value={3}>In-Progress</ToggleButton>
             </ToggleButtonGroup>
         </ButtonToolbar>
         <p></p>
         <StorageCapacityWrapper hist = {this.props.hist}/>
-        {this.state.radioState ? this.renderFinalProductsTable() : this.renderIntermediatesTable()}
+        {view}
       </div>
     );
   }
@@ -202,11 +262,13 @@ export default withTracker(() => {
     const subscription = Meteor.subscribe('intermediates')
     Meteor.subscribe('formulas')
     Meteor.subscribe('lots')
+    Meteor.subscribe('productionLines')
     return {
         loading: subscription.ready(),
         intermediates: Intermediates.find({}).fetch(),
         formulas: Formulas.find({}).fetch(),
-        lots: Lots.find({}).fetch()
+        lots: Lots.find({}).fetch(),
+        productionLines: ProductionLines.find({}).fetch(),
     };
 })(IntermediatesDatabase);
 

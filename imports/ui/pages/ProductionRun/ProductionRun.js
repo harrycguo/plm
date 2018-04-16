@@ -8,6 +8,8 @@ import FormulaManagementNavBar from '../../components/FormulaManagementNavBar/Fo
 import ProductionRunItem from '../../components/ProductionRunItem/ProductionRunItem.js'
 import { Vendors } from '../../../api/Vendors/vendors.js'
 import { Intermediates } from '../../../api/Intermediates/intermediates.js';
+import { ProductionLines } from '../../../api/ProductionLines/productionLines.js'
+
 
 class ProductionRun extends Component {
     constructor(props) {
@@ -18,7 +20,8 @@ class ProductionRun extends Component {
             minUnits: Number(0),
             numUnitsToProduce: Number(0),
             stockDifference: null,
-            notEnough: false
+            notEnough: false,
+            productionLineInputs: <option key={-1} disabled selected value='undefined'> -- select a production line -- </option>
         }
 
     }
@@ -36,6 +39,9 @@ class ProductionRun extends Component {
                     required: true,
                     number: true
                 },
+                productionLine: {
+                    required: true,
+                }
 
             },
             messages: {
@@ -45,6 +51,9 @@ class ProductionRun extends Component {
                 numUnitsProduce: {
                     required: 'Specify Number of Food Product Units',
                     number: 'Must be a number',
+                },
+                productionLine: {
+                    required: 'Specify Production Line',
                 },
             },
             submitHandler() { component.handleSubmit(); },
@@ -59,6 +68,7 @@ class ProductionRun extends Component {
             items.push(<option key={j} value={this.props.formulas[i]._id}>{this.props.formulas[i].name}</option>);
             j++
         }
+        j++
         items.push(<option key={-2} disabled value> -- select an intermediate -- </option>)
         for (i = 0; i < this.props.intermediates.length; i++) {
             items.push(<option key={j} value={this.props.intermediates[i]._id}>{this.props.intermediates[i].name}</option>);
@@ -66,6 +76,28 @@ class ProductionRun extends Component {
         }
 
         return items;
+    }
+
+    renderProductionLines() {
+        let items = []
+        let lines = this.props.productionLines
+
+        if (this.formula == undefined){
+            items.push(<option key={-1} disabled selected value='undefined'> -- select a production line -- </option>)
+        } else {
+            let formulaID = this.formula.value
+
+            for (let i = 0; i < lines.length; i++){
+                let formulaList = lines[i].formulasList
+                if (formulaList.includes(formulaID)){
+                    items.push(<option key={i} value={lines[i]._id}>{lines[i].name}</option>);
+                }
+            }
+        }
+
+        console.log(items)
+
+        return items
     }
 
     renderMinFormulaUnits() {
@@ -143,16 +175,38 @@ class ProductionRun extends Component {
                 })
             }
 
-            
-            
+            let items = []
+            let lines = this.props.productionLines
+          
+            items.push(<option key={-1} disabled selected value='none'> -- select a production line -- </option>)
+
+            for (let i = 0; i < lines.length; i++){
+                let formulaList = lines[i].formulasList
+
+                if (!lines[i].busy) {
+                    for (let j = 0; j < formulaList.length; j++){
+                        if (formulaList[j].id == formulaID){
+                            items.push(<option key={i} value={lines[i]._id}>{lines[i].name}</option>)
+                        }
+                    }
+                }
+            }
+
+            if (items.length == 1){
+                Bert.alert("Error: No Production Lines currently available to make this formula. Free compatible line or add line compatibility", 'danger')
+            }
+
             this.setState({
                 ingList: ingList,
                 minUnits: Number(formula.productUnits),
                 stockDifference: stockDifference,
                 numUnitsToProduce: Number(numUnitsProduce),
+                productionLineInputs: items
             })
         }
     }
+
+
 
     onChangeItem(index, component) {
    
@@ -165,7 +219,6 @@ class ProductionRun extends Component {
             if (ingList[i].ingredient != null) {
                 if (ingList[i].ingredient.state != null) {
                     if (ingList[i].ingredient.state.notEnough) {
-                        console.log('err here')
                         notEnough = true
                         break
                     }
@@ -176,20 +229,14 @@ class ProductionRun extends Component {
         if (component != null) {
             if (component.state != null) {
                 if (component.state.notEnough) {
-                    console.log('err here')
                     notEnough = true
                 }
             }
         }
 
         if (this.numUnitsProduce.value == ''){
-            console.log('err here')
             notEnough = false
         }
-
-        console.log(ingList)
-        console.log(component)
-        console.log(notEnough)
 
         this.setState({
             ingList: ingList,
@@ -242,6 +289,7 @@ class ProductionRun extends Component {
         const { history } = this.props
 
         let formulaID = this.formula.value
+        let productionLineID = this.productionLine.value
         let formula = null
 
         let ingList = this.state.ingList
@@ -259,24 +307,27 @@ class ProductionRun extends Component {
             })
         }
 
-        Meteor.call('production.produce',
+        Meteor.call('production.initialize',
             formulaID,
             numUnitsProduce,
             ingListArray,
+            productionLineID,
             function (error, result) {
                 if (error) {
                     Bert.alert(error.reason, 'danger')
                 } else {
-                    Bert.alert("Successfully Produced Formula!", 'success')
+                    Bert.alert("Successfully started Formula Production!", 'success')
                     document.getElementById("form").reset();
                     document.getElementById("input").value = "";
                     document.getElementById("select").value = 'undefined';
+                    document.getElementById("productionLine").value = 'none';
                     this.setState({
                         ingList: [],
                         minUnits: Number(0),
                         numUnitsToProduce: Number(0),
                         stockDifference: null,
-                        notEnough: false
+                        notEnough: false,
+                        productionLineInputs: <option key={-1} disabled selected value='undefined'> -- select a production line -- </option>
                     })
                 }
             }.bind(this))
@@ -303,7 +354,6 @@ class ProductionRun extends Component {
                             <select
                                 ref={formula => (this.formula = formula)}
                                 name="formula"
-                                //style={{ width: '100%', height: '100%' }}
                                 onChange={this.setFormulaInfo}
                                 id='select'
                             >
@@ -320,12 +370,24 @@ class ProductionRun extends Component {
                             step="1"
                             ref={numUnitsProduce => (this.numUnitsProduce = numUnitsProduce)}
                             onChange={this.setFormulaInfo}
-                            //defaultValue={this.state.minUnits}
                             name="numUnitsProduce"
                             placeholder={this.state.minUnits}
                             className="form-control"
                             id='input'
                         /></p>
+                    </FormGroup>
+
+                    <FormGroup>
+                        <ControlLabel>Production Line (Compatible and Free):</ControlLabel>
+                        <p>
+                            <select
+                                name="productionLine"
+                                ref={productionLine => (this.productionLine = productionLine)}
+                                id='productionLine'
+                            >
+                                {this.state.productionLineInputs}
+                            </select>
+                        </p>
                     </FormGroup>
 
                     {this.renderStockDifferenceHeaders()}
@@ -354,10 +416,12 @@ export default withTracker(() => {
     Meteor.subscribe('formulas');
     Meteor.subscribe('vendors');
     Meteor.subscribe('intermediates')
+    Meteor.subscribe('productionLines')
     return {
         formulas: Formulas.find({}).fetch(),
         vendors: Vendors.find({}).fetch(),
         intermediates: Intermediates.find({}).fetch(),
+        productionLines: ProductionLines.find({}).fetch(),
     };
 })(ProductionRun);
 

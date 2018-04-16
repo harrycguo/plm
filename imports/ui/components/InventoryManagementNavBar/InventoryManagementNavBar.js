@@ -12,6 +12,7 @@ import BulkImportIngredients from '../../pages/BulkImportIngredients/BulkImportI
 import SpendingReport from '../../pages/SpendingReport/SpendingReport.js'
 import FreshnessReport from '../../pages/FreshnessReport/FreshnessReport.js'
 import RecallReportView from '../../pages/RecallReport/RecallReport.js'
+import PendingOrders from '../../pages/PendingOrders/PendingOrders'
 
 import Cart from '../../pages/Cart/Cart.js'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -34,8 +35,6 @@ class InventoryManagementNavBar extends Component {
             }
         }
 
-
-
         //admin
         if (Roles.userIsInRole(user, ['admin'])) {
             return (
@@ -53,6 +52,9 @@ class InventoryManagementNavBar extends Component {
                                     </LinkContainer>
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/productionLineManagement">
+                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>
@@ -76,6 +78,7 @@ class InventoryManagementNavBar extends Component {
                                     <NavItem eventKey="2">Add New Ingredient</NavItem>
                                     <NavItem eventKey="4">Bulk Import</NavItem>
                                     <NavItem eventKey="5">Pending Orders</NavItem>
+                                    
                                                                    
                                     
 
@@ -93,7 +96,7 @@ class InventoryManagementNavBar extends Component {
                                         <BulkImportIngredients />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
-                                       
+                                       <PendingOrders />
                                     </Tab.Pane>
                                                                      
                                 </Tab.Content>
@@ -125,6 +128,9 @@ class InventoryManagementNavBar extends Component {
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
                                     </LinkContainer>
+                                    <LinkContainer to="/productionLineManagement">
+                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>
                                     </LinkContainer>
@@ -155,7 +161,7 @@ class InventoryManagementNavBar extends Component {
                                         <InventoryManagement hist = {this.props.hist} />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
-                                        
+                                        <PendingOrders />
                                     </Tab.Pane>
                                    
                                    
@@ -184,6 +190,9 @@ class InventoryManagementNavBar extends Component {
                                     </LinkContainer>
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
+                                    <LinkContainer to="/productionLineManagement">
+                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>

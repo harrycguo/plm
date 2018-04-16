@@ -218,6 +218,10 @@ CartSchema = new SimpleSchema({
 	ingredients: {
 		type: [CartIngredientSchema],
     optional: true
+  },
+  pendingOrders: {
+		type: [CartIngredientSchema],
+    optional: true
 	}
 })
 

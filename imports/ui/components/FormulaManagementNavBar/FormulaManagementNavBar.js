@@ -8,6 +8,8 @@ import ProductionRun from '../../pages/ProductionRun/ProductionRun.js'
 import ProductionHistoryPage from '../../pages/ProductionReportPage/ProductionHistoryPage.js'
 import IntermediatesDatabase from '../../pages/IntermediatesDatabase/IntermediatesDatabase.js'
 import { LinkContainer } from 'react-router-bootstrap'
+import LineStatuses from '../../pages/LineStatuses/LineStatuses.js'
+
 
 class FormulaManagementNavBar extends Component {
     constructor(props) {
@@ -33,6 +35,9 @@ class FormulaManagementNavBar extends Component {
                                     <LinkContainer to="/inventoryManagement">
                                         <MenuItem eventKey="3.2">Inventory Management</MenuItem>
                                     </LinkContainer>
+                                    <LinkContainer to="/productionLineManagement">
+                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>
                                     </LinkContainer>
@@ -55,6 +60,7 @@ class FormulaManagementNavBar extends Component {
                                     <NavItem eventKey="2">Add New Formula</NavItem>
                                     <NavItem eventKey="4">Bulk Import</NavItem>
                                     <NavItem eventKey="5">Produce Formula</NavItem>
+                                    <NavItem eventKey="9">Line Statuses</NavItem>
                                     <NavItem eventKey="6">Production History</NavItem>
 
                                 </Nav>
@@ -79,6 +85,10 @@ class FormulaManagementNavBar extends Component {
                                     <Tab.Pane eventKey="6">
                                         <ProductionHistoryPage hist={this.props.hist}/>
                                     </Tab.Pane>
+                                    <Tab.Pane eventKey="9">
+                                        <LineStatuses hist={this.props.hist}/>
+                                    </Tab.Pane>
+
                                 </Tab.Content>
                             </Col>
                         </Row>
@@ -107,9 +117,13 @@ class FormulaManagementNavBar extends Component {
                                         <LinkContainer to="/inventoryManagement">
                                             <MenuItem eventKey="3.2">Inventory Management</MenuItem>
                                         </LinkContainer>
+                                        <LinkContainer to="/productionLineManagement">
+                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
+                                    </LinkContainer>
                                         <LinkContainer to="/vendorManagement">
                                             <MenuItem eventKey="3.4">Vendor Management</MenuItem>
                                         </LinkContainer>
+                                        
                                         <LinkContainer to="/userManagement">
                                             <MenuItem eventKey="3.5">User Management</MenuItem>
                                         </LinkContainer>
@@ -128,6 +142,7 @@ class FormulaManagementNavBar extends Component {
                                     <NavItem eventKey="1">Database</NavItem>
                                     <NavItem eventKey="7">Inventory</NavItem>
                                     <NavItem eventKey="5">Produce Formula</NavItem>
+                                    <NavItem eventKey="9">Line Statuses</NavItem>
                                     <NavItem eventKey="6">Production History</NavItem>
 
                                 </Nav>
@@ -145,6 +160,9 @@ class FormulaManagementNavBar extends Component {
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
                                         <ProductionHistoryPage hist={this.props.hist}/>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="9">
+                                        <LineStatuses hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>
@@ -173,6 +191,9 @@ class FormulaManagementNavBar extends Component {
                                         <LinkContainer to="/inventoryManagement">
                                             <MenuItem eventKey="3.2">Inventory Management</MenuItem>
                                         </LinkContainer>
+                                        <LinkContainer to="/productionLineManagement">
+                                        <MenuItem eventKey="3.11">Production Line Management</MenuItem>
+                                    </LinkContainer>
                                         <LinkContainer to="/vendorManagement">
                                             <MenuItem eventKey="3.4">Vendor Management</MenuItem>
                                         </LinkContainer>
@@ -187,6 +208,7 @@ class FormulaManagementNavBar extends Component {
                                     </NavDropdown>
                                     <NavItem eventKey="1">Database</NavItem>
                                     <NavItem eventKey="7">Inventory</NavItem>
+                                    <NavItem eventKey="9">Line Statuses</NavItem>
                                     <NavItem eventKey="6">Production History</NavItem>
 
                                 </Nav>
@@ -201,6 +223,9 @@ class FormulaManagementNavBar extends Component {
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
                                         <ProductionHistoryPage hist={this.props.hist}/>
+                                    </Tab.Pane>
+                                    <Tab.Pane eventKey="9">
+                                        <LineStatuses hist={this.props.hist}/>
                                     </Tab.Pane>
                                 </Tab.Content>
                             </Col>

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Intermediates } from '../../../api/Intermediates/intermediates' 
+import { ProductionLines } from '../../../api/ProductionLines/productionLines.js'
+
 
 class ViewIntermediate extends Component {
     constructor(props) {
@@ -76,6 +78,25 @@ class ViewIntermediate extends Component {
         )
     }
 
+    renderProductionLines() {
+        let items = []
+        let lines = this.props.productionLines
+        let formulaID = this.props.location.state.formula._id
+
+        for (let i = 0; i < lines.length; i++){
+            let formulaList = lines[i].formulasList
+
+                for (let j = 0; j < formulaList.length; j++){
+                    if (formulaList[j].id == formulaID){
+                        items.push(<div key={i}>{lines[i].name}</div>)
+                    }
+                }
+            
+        }
+        
+        return items
+    }
+
     render() {
         
         let tempState = this.props.location.state.formula.temperatureState.charAt(0).toUpperCase().concat(this.props.location.state.formula.temperatureState.substr(1))
@@ -102,8 +123,15 @@ class ViewIntermediate extends Component {
                 {this.renderHeaders()}
 
                 {this.renderIngredientsList()}
+                <p></p>
+                <b>Compatible Production Lines:</b>
+                {this.renderProductionLines()}
+                <br></br>
+                <p>*To Modify Compatible Production Lines, please go to Production Line Management</p>
 
                 <p></p>
+                <hr className='divider'></hr>
+          <p></p>
 				<p><Link to='/formulaManagement'>Return to Formula Management</Link></p>
 
             </div>
@@ -112,11 +140,13 @@ class ViewIntermediate extends Component {
 }
 
 export default withTracker(() => {
-    Meteor.subscribe('ingredients');
+    Meteor.subscribe('ingredients')
     Meteor.subscribe('intermediates')
+    Meteor.subscribe('productionLines');
     return {
         ingredients: IngredientsList.find({}).fetch(),
-        intermediates: Intermediates.find({}).fetch()
+        intermediates: Intermediates.find({}).fetch(),
+        productionLines: ProductionLines.find({}).fetch(),
     };
 })(ViewIntermediate);
 

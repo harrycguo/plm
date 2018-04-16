@@ -27,6 +27,7 @@ class FormulaIngredientInput extends Component {
             items.push(<option key={j} value={this.props.ingredients[i]._id}>{this.props.ingredients[i].name}</option>);
             j++
         }
+        j++
         items.push(<option disabled value> -- select an intermediate -- </option>)
         for (i = 0; i < this.props.intermediates.length; i++) {
             if (defaultFormula != this.props.intermediates[i]._id){

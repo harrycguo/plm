@@ -66,6 +66,7 @@ class FormulaIngredientInputWithDefault extends Component {
             j++
         }
         items.push(<option disabled value> -- select an intermediate -- </option>)
+        j++
         for (i = 0; i < this.props.intermediates.length; i++) {
 
             if (this.props.intermediates[i]._id == this.props.defaultIngredient) {
