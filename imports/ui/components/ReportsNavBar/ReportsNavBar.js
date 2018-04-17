@@ -74,7 +74,6 @@ class ReportsNavBar extends Component {
                                     </NavDropdown>
                                     <NavItem eventKey="1">Spending</NavItem>
                                     <NavItem eventKey="2">Production</NavItem>
-                                    <NavItem eventKey="3">Recall</NavItem>
                                     <NavItem eventKey="4">Ingredient Freshness</NavItem>
                                     <NavItem eventKey="5">Final Product Freshness</NavItem>   
                                     <NavItem eventKey="7">Profitability</NavItem>                                  
@@ -91,7 +90,6 @@ class ReportsNavBar extends Component {
                                        <ProductionReportPage />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="3">
-                                        <RecallReportView />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="4">
                                         <FreshnessReport />
@@ -144,7 +142,6 @@ class ReportsNavBar extends Component {
                                         </NavDropdown>
                                         <NavItem eventKey="1">Spending</NavItem>
                                     <NavItem eventKey="2">Production</NavItem>
-                                    <NavItem eventKey="3">Recall</NavItem>
                                     <NavItem eventKey="4">Ingredient Freshness</NavItem>
                                     <NavItem eventKey="5">Final Product Freshness</NavItem>   
                                     <NavItem eventKey="7">Profitability</NavItem>  
@@ -160,7 +157,6 @@ class ReportsNavBar extends Component {
                                    <ProductionReportPage />
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="3">
-                                    <RecallReportView />
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="4">
                                     <FreshnessReport />
