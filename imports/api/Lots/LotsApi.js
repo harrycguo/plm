@@ -133,6 +133,15 @@ Meteor.methods({
         }
         var q = lot[0].queue
        
+        sum = 0
+        q.forEach(function(lotEntry) {
+            sum += lotEntry.qty
+        })
+
+        if (qty > sum) {
+            throw new Meteor.Error('not enough inventory for sale','not enough inventory for sale')
+        }
+
         while (true) {
             if (qty >= q[0].qty) {
                 qty -= q[0].qty
@@ -149,7 +158,7 @@ Meteor.methods({
         }
         Lots.update({inventoryID : id}, {$set : {queue : q}})
         Meteor.call('profreport.updateAvgWholesalePrice',id, price, qty)
-        Meteor.call('systemlog.insert', "Lot", lotNum, 0, "Removed", qty)
+        // Meteor.call('systemlog.insert', "Lot", lotNum, 0, "Removed", qty)
     },
     'lots.editLotNumber': function(id, oldLot, newLot, date) {
         date.setMilliseconds(0)
