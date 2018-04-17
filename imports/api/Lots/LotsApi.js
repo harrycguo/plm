@@ -6,6 +6,7 @@ import '../FreshReport/FreshReportApi.js'
 import { Intermediates } from '../Intermediates/intermediates.js'
 import './LotsHistoryApi.js'
 import '../ProfitabilityReport/ProfReportApi.js'
+import '../Formulas/formulas.js'
 
 if (Meteor.isClient) {
     Meteor.subscribe('lots')
@@ -157,6 +158,7 @@ Meteor.methods({
             }
         }
         Lots.update({inventoryID : id}, {$set : {queue : q}})
+        // Meteor.call('formulas.edit')
         Meteor.call('profreport.updateAvgWholesalePrice',id, price, qty)
         // Meteor.call('systemlog.insert', "Lot", lotNum, 0, "Removed", qty)
     },
