@@ -14,7 +14,7 @@ Meteor.methods({
         FreshTotal.insert({})
         // FreshReport.simpleSchema.clean()
     },
-    'freshtotal.updateAvgTime': function(qtyConsumed, time) {
+    'freshtotal.updateAvgTime': function(qtyConsumed, time, finalProduct) {
         var repArr = FreshTotal.find().fetch()
         if (repArr.length === 0) {
             Meteor.call('freshtotal.insert')
@@ -24,12 +24,12 @@ Meteor.methods({
         // console.log(rep)
         var newAvgTime = (time * qtyConsumed + rep.totalTime)/(rep.totalConsumed + qtyConsumed)
         // console.log(rep.totalConsumed)
-        FreshTotal.update({},{$set : {avgTime : newAvgTime}})
-        FreshTotal.update({},{$inc : {totalTime : time}})
-        FreshTotal.update({},{$inc : {totalConsumed : qtyConsumed}})
-        FreshTotal.update({},{$set : {avgTimeString: conversions.dhm(newAvgTime)}})
+        FreshTotal.update({finalProduct : finalProduct},{$set : {avgTime : newAvgTime}})
+        FreshTotal.update({finalProduct : finalProduct},{$inc : {totalTime : time}})
+        FreshTotal.update({finalProduct : finalProduct},{$inc : {totalConsumed : qtyConsumed}})
+        FreshTotal.update({finalProduct : finalProduct},{$set : {avgTimeString: conversions.dhm(newAvgTime)}})
     },
-    'freshtotal.updateWorstCase': function(time) {
+    'freshtotal.updateWorstCase': function(time, finalProduct) {
         var repArr = FreshTotal.find().fetch()
         if (repArr.length === 0) {
             Meteor.call('freshtotal.insert')
@@ -37,8 +37,8 @@ Meteor.methods({
         }
         var rep = repArr[0]
         if (time > rep.worstCase) {
-            FreshTotal.update({},{$set : {worstCase: time}})
-            FreshTotal.update({},{$set : {worstCaseString: conversions.dhm(time)}})
+            FreshTotal.update({finalProduct : finalProduct},{$set : {worstCase: time}})
+            FreshTotal.update({finalProduct : finalProduct},{$set : {worstCaseString: conversions.dhm(time)}})
         }
     }
 });
