@@ -4,6 +4,8 @@ import { withTracker } from 'meteor/react-meteor-data';
 import ReactTable from 'react-table';
 import ReactDOM from 'react-dom';
 import Formulas from '../../../api/Formulas/formulas.js'
+import ProfReport from '../../../api/ProfitabilityReport/ProfReport.js'
+import ProfReportTotal from '../../../api/ProfitabilityReport/ProfReportTotal.js'
 
 class Profits extends Component {
 	constructor(props) {
@@ -18,34 +20,36 @@ class Profits extends Component {
 		//console.log("Child: render Rows: ")
 		//console.log(lots)
 		var items = new Array();
-		// this.props.formulas.forEach(function(item) {
-		// 	items.push({
-		// 		name: Formulas.findOne({_id: item.inventoryID}), 
-		// 		sold: item.unitsSold,
-		// 		price: item.avgWholesalePrice,
-		// 		rev: item.wholesaleRevenue,
-		// 		cost: item.totalCost,
-		// 		tprof: item.totalProfit,
-		// 		puprof: item.perUnitProfit,
-		// 		marg: item.profitMargin,
-		// 	})
-		// })
+		this.props.profreport.forEach(function(item) {
+			items.push({
+				name: Formulas.findOne({_id: item.id}).name, 
+				sold: item.unitsSold,
+				price: item.avgWholesalePrice,
+				rev: item.wholesaleRevenue,
+				cost: item.totalCost,
+				tprof: item.totalProfit,
+				puprof: item.perUnitProfit,
+				marg: item.profitMargin,
+			})
+		})
 		return items;
 	}
 
 	renderTable(){
+		console.log(this.props.profreporttotal.length)
+
 		return (
 			<div>
 			<p></p>
-			<p><b>Total Units Sold</b>: {""}</p>
+			<p><b>Total Units Sold</b>: {this.props.profreporttotal[0] ? this.props.profreporttotal[0].unitsSold : ""}</p>
 			<p></p>
-			<p><b>Average Wholesale Price</b>: {""}</p>
+			<p><b>Average Wholesale Price</b>: {this.props.profreporttotal[0] ? this.props.profreporttotal[0].avgWholesalePrice : "" }</p>
 			<p></p>
-			<p><b>Wholesale Revenue</b>: {""}</p>
+			<p><b>Wholesale Revenue</b>: {this.props.profreporttotal[0] ? this.props.profreporttotal[0].wholesaleRevenue : ""}</p>
 			<p></p>
-			<p><b>Total Cost</b>: {""}</p>
+			<p><b>Total Cost</b>: {this.props.profreporttotal[0] ? this.props.profreporttotal[0].totalCost : "" }</p>
 			<p></p>
-			<p><b>Total Profit</b>: {""}</p>
+			<p><b>Total Profit</b>: {this.props.profreporttotal[0] ? this.props.profreporttotal[0].totalProfit : ""}</p>
 			<p></p>
 			
 		<div>
@@ -106,8 +110,12 @@ class Profits extends Component {
 export default withTracker(() => {
 
 	Meteor.subscribe('formulas')
+	Meteor.subscribe('profreport')
+	Meteor.subscribe('profreporttotal')
 
 	return {
 		formulas: Formulas.find({}).fetch(),
+		profreport: ProfReport.find({}).fetch(),
+		profreporttotal: ProfReportTotal.find({}).fetch(),
 	};
 })(Profits);
