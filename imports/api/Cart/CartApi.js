@@ -61,7 +61,8 @@ Meteor.methods({
         Meteor.call('systemlog.insert', "Cart", selectedIngredient.name,  selectedIngredient._id, "Added", "");
     },
     'removeIngredientFromCart': function(selectedIngredient) {
-    	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { ingredient : selectedIngredient}}});
+        Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { ingredient : selectedIngredient}}});
+        Carts.update({ user : Meteor.userId()},{$pull : {pendingOrders : { ingredient : selectedIngredient}}});
         
         Meteor.call('systemlog.insert', 
             "Cart", 
