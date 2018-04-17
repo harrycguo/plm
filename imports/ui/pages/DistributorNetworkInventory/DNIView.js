@@ -163,7 +163,7 @@ class DNIView extends Component {
 
               // 'profreport.updateAvgWholesalePrice': function(id, price, quantity) {
               //  -- Formula id 
-
+              this.forceUpdate()
 
             }
           }}>
