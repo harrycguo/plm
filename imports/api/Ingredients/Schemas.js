@@ -501,6 +501,10 @@ FreshTotalSchema = new SimpleSchema({
     decimal: true,
     min: 0,
     defaultValue: 0 
+  },
+  finalProduct: {
+    type: Boolean,
+    defaultValue: false
   }
 })
 
@@ -532,6 +536,75 @@ ProfitabilityReportSchema = new SimpleSchema({
     decimal: true,
     defaultValue: 0,
     min: 0
+  },
+  wholesaleRevenue: {
+    type: Number,
+    decimal: true,
+    defaultValue: 0,
+    min: 0
+  },
+  totalProfit: {
+    type: Number,
+    decimal: true,
+    defaultValue: 0
+  },
+  perUnitProfit: {
+    type: Number,
+    decimal: true,
+    defaultValue: 0
+  },
+  profitMargin: {
+    type: Number,
+    decimal: true,
+    defaultValue: 0
+  }
+})
+
+FinalProductSchema = new SimpleSchema({
+  id : {
+    type: String,
+    min: 1  
+  }
+})
+
+ProfReportTotalSchema = new SimpleSchema({
+  unitsSold: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  avgWholesalePrice: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  totalCost: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  totalPrice: {
+    type: Number,
+    decimal: true,
+    defaultValue: 0,
+    min: 0
+  },
+  wholesaleRevenue: {
+    type: Number,
+    decimal: true,
+    defaultValue: 0,
+    min: 0
+  },
+  totalProfit: {
+    type: Number,
+    decimal: true,
+    defaultValue: 0
+  },
+  totalCostArr: {
+    type: [FinalProductSchema]
   }
 })
 
@@ -556,4 +629,4 @@ ProdEfficiencySchema = new SimpleSchema({
 
 
 
-export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema, FreshReportSchema, FreshTotalSchema, LotsHistorySchema, ProfitabilityReportSchema, ProdEfficiencySchema };
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema, FreshReportSchema, FreshTotalSchema, LotsHistorySchema, ProfitabilityReportSchema, ProdEfficiencySchema, ProfReportTotalSchema, FinalProductSchema };
