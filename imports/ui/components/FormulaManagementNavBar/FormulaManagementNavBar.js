@@ -66,7 +66,7 @@ class FormulaManagementNavBar extends Component {
                                     <NavItem eventKey="5">Produce Formula</NavItem>
                                     <NavItem eventKey="9">Line Statuses</NavItem>
                                     <NavItem eventKey="6">Production History</NavItem>
-                                    <NavItem eventKey="8">Distributor Network</NavItem>
+                                  
 
 
                                 </Nav>

@@ -142,8 +142,6 @@ class PendingOrderItem extends Component {
 
 		let ingredient = this.props.ingredient
 		let status = this.status.value
-		
-		if (status == 'arrived') {
 
 			let lotsArray = new Array()
 			let lotsSet = new Set()
@@ -210,10 +208,13 @@ class PendingOrderItem extends Component {
 
 			if (!lotError) {
 
+				let lotsArrived = status == 'arrived' ? true : false
+
 				Meteor.call('cart.changeLots',
 					ingredient.fullIng.ingredient,
 					lotsArray,
-					ingredient.amt,
+					ingredient.fullIng.numPackages,
+					lotsArrived,
 					function (error, result) {
 						if (error) {
 							console.log("something goes wrong with the following error message " + error.reason)
@@ -226,9 +227,7 @@ class PendingOrderItem extends Component {
 			} else {
 				Bert.alert(lotErrorReason, 'danger');
 			}
-		} else {
-			Bert.alert('Must Change Status to Arrived before assigning Lot Numbers!', 'danger');
-		}
+
 
 	}
 
@@ -316,7 +315,9 @@ class PendingOrderItem extends Component {
 						<ControlLabel>Order Status:</ControlLabel>
 						<p><select id="status"
 							ref={status => (this.status = status)}
-							name="packaging">
+							name="packaging"
+							defaultValue= {ingredient.fullIng.lotsSelected ? "arrived" : "pending"}>
+							
 							<option value="pending">Pending</option>
 							<option value="arrived">Arrived</option>
 						</select></p>
@@ -356,7 +357,7 @@ class PendingOrderItem extends Component {
 
 				</Modal.Body>
 				<Modal.Footer>
-					<Button type="submit" bsStyle="success" onClick={this.handleSubmitModal.bind(this)}>Submit Edits</Button>
+					<Button type="submit" bsStyle="success" onClick={this.handleSubmitModal.bind(this)}>Submit</Button>
 				</Modal.Footer>
 
 

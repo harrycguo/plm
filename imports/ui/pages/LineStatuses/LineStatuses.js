@@ -101,7 +101,7 @@ updateStatus() {
               if (error) {
                 Bert.alert(error.reason, 'danger')
               } else {
-                Bert.alert("Successfully updated production Lines!", 'success')
+                Bert.alert("Successfully Updated Production Lines!", 'success')
 
                 let text = []
                 for (let i = 0; i < result.length; i++){
