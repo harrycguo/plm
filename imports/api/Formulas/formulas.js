@@ -91,8 +91,6 @@ Meteor.methods({
       })
 
       let formula = Formula.find({name : name}).fetch()[0]
-      Meteor.call('profreport.insert',formula._id)
-      Meteor.call('freshreport.insertFinalProduct', formulaID)
       Meteor.call('systemlog.insert', "Formula", name, 0, "Added", "")
     
   },
