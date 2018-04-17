@@ -25,10 +25,15 @@ Meteor.methods({
             finalProduct: true
         })
     },
-    'freshreport.updateAvgTime': function(id, qtyConsumed) {
+    'freshreport.updateAvgTime': function(id, qtyConsumed, finalProduct) {
         var repArr = FreshReport.find({ inventoryID : id}).fetch()
         if (repArr.length === 0) {
-            Meteor.call('freshreport.insert',id)
+            if (finalProduct == false) {
+                Meteor.call('freshreport.insert',id)
+            }
+            else {
+                Meteor.call('freshreport.insertFinalProduct',id)
+            }
             repArr = FreshReport.find({ inventoryID : id}).fetch()
         }
         var rep = repArr[0]
@@ -45,6 +50,7 @@ Meteor.methods({
         FreshReport.update({ inventoryID : id},{$inc : {totalQtyConsumed : qtyConsumed}})
         FreshReport.update({ inventoryID : id},{$set : {avgTimeString: conversions.dhm(newAvgTime)}})
         Meteor.call('freshtotal.updateAvgTime',qtyConsumed,millisecondsDiff)
+        Meteor.call('freshreport.updateWorstCase',id)
     },
     'freshreport.updateWorstCase': function(id) {
         var repArr = FreshReport.find({ inventoryID : id}).fetch()

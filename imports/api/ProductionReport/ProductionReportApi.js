@@ -2,6 +2,7 @@ import { Mongo } from 'meteor/mongo';
 import ProductionReport from './ProductionReport.js';
 import  Formulas  from '../Formulas/formulas.js';
 import { Intermediates } from '../Intermediates/intermediates'
+import '../ProfitabilityReport/ProfReportApi.js'
 
 if (Meteor.isClient) {
     Meteor.subscribe('prodReport')
@@ -37,7 +38,11 @@ Meteor.methods({
               totalProduced: qty,
               ingredientsUsed: ingList,
               totalSpent: Number(costArr.reduce(function(a,b,) {return a + b;},0)).toFixed(2)
-            });  
+            }); 
+
+            if (item1 != undefined) {
+                Meteor.call('profreport.updateTotalCost',formulaId)
+            }
         }
         else {
             console.log('second if')
@@ -63,6 +68,9 @@ Meteor.methods({
                         ProductionReport.update({formula:formulaId},{$inc : {totalSpent : Number(costTotal).toFixed(2)}})
                     }
                 }
+            }
+            if (item1 != undefined) {
+                Meteor.call('profreport.updateTotalCost',formulaId)
             }
                  
         }

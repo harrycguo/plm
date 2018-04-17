@@ -15,7 +15,12 @@ Meteor.methods({
 		ProfReport.insert({id : id})
 	},
 	'profreport.updateAvgWholesalePrice': function(id, price, quantity) {
-		let rep = ProfReport.find({ id : id}).fetch()[0]
+		let repArr = ProfReport.find({ id : id}).fetch()
+		if (repArr.length === 0) {
+			Meteor.call('profreport.insert',id)
+			repArr = ProfReport.find({ id : id}).fetch()
+		}
+		let rep = repArr[0]
 		let history = rep.saleHistory
 		let totalUnits = rep.unitsSold + quantity
 		let numerator = price + rep.totalPrice
@@ -30,6 +35,10 @@ Meteor.methods({
 		ProfReport.update({id : id}, {$inc : {unitsSold : qty}})
 	},
 	'profreport.updateTotalCost': function(id) {
+		let profRepArr = ProfReport.find({ id : id}).fetch()
+		if (profRepArr.length === 0) {
+			Meteor.call('profreport.insert',id)
+		}
 		let rep = ProductionReport.find({formula:id}).fetch()[0]
 		console.log(rep)
 		ProfReport.update({id : id},{$set : {totalCost : rep.totalSpent}})

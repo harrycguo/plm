@@ -5,6 +5,7 @@ import { LotNumberSystem } from './LotNumberSystem.js'
 import '../FreshReport/FreshReportApi.js'
 import { Intermediates } from '../Intermediates/intermediates.js'
 import './LotsHistoryApi.js'
+import '../ProfitabilityReport/ProfReportApi.js'
 
 if (Meteor.isClient) {
     Meteor.subscribe('lots')
@@ -87,8 +88,7 @@ Meteor.methods({
         while (true) {
             if (qty >= q[0].qty) {
                 qty -= q[0].qty
-                Meteor.call('freshreport.updateAvgTime',id,q[0].qty)
-                Meteor.call('freshreport.updateWorstCase',id)
+                Meteor.call('freshreport.updateAvgTime',id,q[0].qty, false)
                 console.log(q)
                 entry = {
                     inventoryID: formulaID,
@@ -106,8 +106,7 @@ Meteor.methods({
             }
             else {
                 q[0].qty = q[0].qty - qty
-                Meteor.call('freshreport.updateAvgTime',id,qty)
-                Meteor.call('freshreport.updateWorstCase',id)
+                Meteor.call('freshreport.updateAvgTime',id,qty,false)
                 entry = {
                     inventoryID: formulaID,
                     qty: formulaQty,
@@ -123,6 +122,33 @@ Meteor.methods({
             }
         }
         Lots.update({inventoryID : id}, {$set : {queue : q}})
+        Meteor.call('systemlog.insert', "Lot", lotNum, 0, "Removed", qty)
+    },
+    //To be called only when final products are sold
+    'lots.removeQtyFinalProduct': function(id, qty, price) {
+        var lot = Lots.find({inventoryID : id}).fetch()
+        var entry = {}
+        if (lot.length === 0) {
+            throw new Meteor.Error('no lots exist for ingredient','no lots exist for ingredient')
+        }
+        var q = lot[0].queue
+       
+        while (true) {
+            if (qty >= q[0].qty) {
+                qty -= q[0].qty
+                Meteor.call('freshreport.updateAvgTime',id,q[0].qty, true)
+                Meteor.call('systemlog.insert', "Lot", q[0].lot, 0, "Removed", q[0].qty)
+                q.shift()
+            }
+            else {
+                q[0].qty = q[0].qty - qty
+                Meteor.call('freshreport.updateAvgTime',id,qty, true)
+                Meteor.call('systemlog.insert', "Lot", q[0].lot, 0, "Removed", qty)
+                break
+            }
+        }
+        Lots.update({inventoryID : id}, {$set : {queue : q}})
+        Meteor.call('profreport.updateAvgWholesalePrice',id, price, qty)
         Meteor.call('systemlog.insert', "Lot", lotNum, 0, "Removed", qty)
     },
     'lots.editLotNumber': function(id, oldLot, newLot, date) {

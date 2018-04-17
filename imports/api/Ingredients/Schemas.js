@@ -539,7 +539,21 @@ ProdEfficiencySchema = new SimpleSchema({
   id: {
     type: String,
     min: 1    
+  },
+  timeBusy: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  timeExisted: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
   }
 })
+
+
 
 export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema, FreshReportSchema, FreshTotalSchema, LotsHistorySchema, ProfitabilityReportSchema, ProdEfficiencySchema };
