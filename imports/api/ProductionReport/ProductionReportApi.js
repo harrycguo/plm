@@ -40,9 +40,9 @@ Meteor.methods({
               totalSpent: Number(costArr.reduce(function(a,b,) {return a + b;},0)).toFixed(2)
             }); 
 
-            if (item1 != undefined) {
-                Meteor.call('profreport.updateTotalCost',formulaId)
-            }
+            // if (item1 != undefined) {
+            //     Meteor.call('profreport.updateTotalCost',formulaId)
+            // }
         }
         else {
             console.log('second if')
@@ -69,9 +69,9 @@ Meteor.methods({
                     }
                 }
             }
-            if (item1 != undefined) {
-                Meteor.call('profreport.updateTotalCost',formulaId)
-            }
+            // if (item1 != undefined) {
+            //     Meteor.call('profreport.updateTotalCost',formulaId)
+            // }
                  
         }
         console.log(ProductionReport.find().fetch())

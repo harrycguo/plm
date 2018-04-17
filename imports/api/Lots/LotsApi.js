@@ -6,6 +6,7 @@ import '../FreshReport/FreshReportApi.js'
 import { Intermediates } from '../Intermediates/intermediates.js'
 import './LotsHistoryApi.js'
 import '../ProfitabilityReport/ProfReportApi.js'
+import Formulas from '../Formulas/formulas.js'
 import '../Formulas/formulas.js'
 
 if (Meteor.isClient) {
@@ -14,6 +15,7 @@ if (Meteor.isClient) {
     Meteor.subscribe('intermediates')
     Meteor.subscribe('freshreport')
     Meteor.subscribe('lotshistory')
+    Meteor.subscribe('formulas')
 }
 
 Meteor.methods({
@@ -133,6 +135,7 @@ Meteor.methods({
             throw new Meteor.Error('no lots exist for ingredient','no lots exist for ingredient')
         }
         var q = lot[0].queue
+        let startingQty = qty
        
         sum = 0
         q.forEach(function(lotEntry) {
@@ -156,9 +159,13 @@ Meteor.methods({
                 Meteor.call('systemlog.insert', "Lot", q[0].lot, 0, "Removed", qty)
                 break
             }
+            if (q.length == 0) {
+                break
+            }
         }
         Lots.update({inventoryID : id}, {$set : {queue : q}})
-        // Meteor.call('formulas.edit')
+        // let formula = Formulas.find({ _id : id}).fetch()[0]
+        Formulas.update({ _id : id},{$inc : {quantity : -startingQty}})
         Meteor.call('profreport.updateAvgWholesalePrice',id, price, qty)
         // Meteor.call('systemlog.insert', "Lot", lotNum, 0, "Removed", qty)
     },
