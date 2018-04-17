@@ -10,6 +10,7 @@ import { Intermediates } from '../../../api/Intermediates/intermediates.js'
 import LotsHistory from '../../../api/Lots/LotsHistory.js'
 import Formulas from '../../../api/Formulas/formulas.js'
 import Vendors from '../../../api/Vendors/vendors.js'
+import { ProductionHistory } from '../../../api/Production/production.js'
 
 class RecallChild extends Component {
 	constructor(props) {
@@ -153,12 +154,14 @@ export default withTracker(() => {
 	Meteor.subscribe('intermediates')
 	Meteor.subscribe('formulas')
 	Meteor.subscribe('lotshistory')
+	Meteor.subscribe('productionHistory')
 	// Meteor.subscribe('vendors')
 	return {
 		ingredients: IngredientList.find({}).fetch(),
 		intermediates: Intermediates.find({}).fetch(),
 		formulas: Formulas.find({}).fetch(),
 		lotshistory: LotsHistory.find({}).fetch(),
+		productionHistory: ProductionHistory.find({}).fetch(),
 		// vendors: Vendors.find({}).fetch(),
 	};
 })(RecallChild);

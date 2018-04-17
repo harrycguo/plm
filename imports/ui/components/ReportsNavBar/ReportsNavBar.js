@@ -11,6 +11,7 @@ import AddIngredient from '../../pages/AddIngredient/AddIngredient.js'
 import BulkImportIngredients from '../../pages/BulkImportIngredients/BulkImportIngredients.js'
 import SpendingReport from '../../pages/SpendingReport/SpendingReport.js'
 import ProductionReportPage from '../../pages/ProductionReportPage/ProductionReportPage.js'
+import Profits from '../../pages/ProfitabilityReport/Profits.js'
 
 import FreshnessReport from '../../pages/FreshnessReport/FreshnessReport.js'
 import FinalFreshnessReport from '../../pages/FreshnessReport/FinalFreshnessReport.js'
@@ -73,7 +74,6 @@ class ReportsNavBar extends Component {
                                     <NavItem eventKey="3">Recall</NavItem>
                                     <NavItem eventKey="4">Ingredient Freshness</NavItem>
                                     <NavItem eventKey="5">Final Product Freshness</NavItem>   
-                                    <NavItem eventKey="6">Production Efficiency</NavItem>   
                                     <NavItem eventKey="7">Profitability</NavItem>                                  
                                     
 
@@ -96,11 +96,8 @@ class ReportsNavBar extends Component {
                                     <Tab.Pane eventKey="5">
                                         <FinalFreshnessReport />
                                     </Tab.Pane>
-                                    <Tab.Pane eventKey="6">
-                                      
-                                    </Tab.Pane>
                                     <Tab.Pane eventKey="7">
-                                       
+                                        <Profits />
                                     </Tab.Pane>
                                                      
                                 </Tab.Content>
@@ -144,7 +141,6 @@ class ReportsNavBar extends Component {
                                     <NavItem eventKey="3">Recall</NavItem>
                                     <NavItem eventKey="4">Ingredient Freshness</NavItem>
                                     <NavItem eventKey="5">Final Product Freshness</NavItem>   
-                                    <NavItem eventKey="6">Production Efficiency</NavItem>   
                                     <NavItem eventKey="7">Profitability</NavItem>  
     
                                     </Nav>
@@ -164,13 +160,10 @@ class ReportsNavBar extends Component {
                                     <FreshnessReport />
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="5">
-                                 
-                                </Tab.Pane>
-                                <Tab.Pane eventKey="6">
-                                  
+                                    <FinalFreshnessReport />
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="7">
-                                   
+                                    <Profits />
                                 </Tab.Pane>
                                     </Tab.Content>
                                 </Col>
