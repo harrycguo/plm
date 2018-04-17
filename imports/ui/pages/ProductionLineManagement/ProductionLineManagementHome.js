@@ -17,7 +17,7 @@ class ProductionLineManagementHome extends Component {
           <header>
             <h1>Production Line Management</h1>
           </header>
-          <ProductionLineNavBar />
+          <ProductionLineNavBar hist={this.props}/>
          
         </div>
       )

@@ -13,7 +13,7 @@ class LineStatuses extends Component {
     super(props);
 
     this.state = {
-      text: ""
+      text: null
     }
 
 }
@@ -101,17 +101,17 @@ updateStatus() {
               if (error) {
                 Bert.alert(error.reason, 'danger')
               } else {
-                Bert.alert("Successfully updated production Lines!", 'success')
+                Bert.alert("Successfully Updated Production Lines!", 'success')
 
                 let text = []
                 for (let i = 0; i < result.length; i++){
                   text.push(
-                    <tr key={i}>
+                    <tr key={i+7}>
          
-                      <td align="left">
+                      <td>
                           {result[i].name}
                       </td>
-                      <td align="left">
+                      <td>
                         {result[i].lotNumber}
                       </td>
                       

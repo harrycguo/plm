@@ -61,7 +61,8 @@ Meteor.methods({
         Meteor.call('systemlog.insert', "Cart", selectedIngredient.name,  selectedIngredient._id, "Added", "");
     },
     'removeIngredientFromCart': function(selectedIngredient) {
-    	Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { ingredient : selectedIngredient}}});
+        Carts.update({ user : Meteor.userId()},{$pull : {ingredients : { ingredient : selectedIngredient}}});
+        Carts.update({ user : Meteor.userId()},{$pull : {pendingOrders : { ingredient : selectedIngredient}}});
         
         Meteor.call('systemlog.insert', 
             "Cart", 
@@ -102,10 +103,27 @@ Meteor.methods({
         );
         Carts.update({ user : Meteor.userId(), 'ingredients.ingredient' : selectedIngredient}, {$set : { 'ingredients.$.vendorInfo' : vendorInfo }});
     },
-    'cart.changeLots': function(selectedIngredient, lots, amount){
-       
-        Carts.update({ user : Meteor.userId(), 'pendingOrders.ingredient' : selectedIngredient, 'pendingOrders.numPackages' : amount}, {$set : { 'pendingOrders.$.lots' : lots }});
-        Carts.update({ user : Meteor.userId(), 'pendingOrders.ingredient' : selectedIngredient, 'pendingOrders.numPackages' : amount}, {$set : { 'pendingOrders.$.lotsSelected' : true }});
+    'cart.changeLots': function(selectedIngredient, lots, amount, lotsArrived){
+
+        Carts.update(
+            {
+              user: Meteor.userId(),
+              pendingOrders: { $elemMatch: { ingredient: selectedIngredient, numPackages: amount } }
+            },
+            { $set: { "pendingOrders.$.lotsSelected" : lotsArrived } },
+            {multi : false}
+         )
+
+         Carts.update(
+            {
+              user: Meteor.userId(),
+              pendingOrders: { $elemMatch: { ingredient: selectedIngredient, numPackages: amount } }
+            },
+            { $set: { 'pendingOrders.$.lots' : lots } },
+            {multi : false}
+         )
+    
+    
     },
     'cart.checkout'(){
         let cart = Carts.find({ user : Meteor.userId()}).fetch()[0];

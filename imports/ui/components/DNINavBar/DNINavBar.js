@@ -12,7 +12,7 @@ import { LinkContainer } from 'react-router-bootstrap'
 import LineStatuses from '../../pages/LineStatuses/LineStatuses.js'
 
 
-class FormulaManagementNavBar extends Component {
+class DNINavBar extends Component {
     constructor(props) {
         super(props);
     }
@@ -29,18 +29,18 @@ class FormulaManagementNavBar extends Component {
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Formula Management" className="topTabClass">
+                                    <NavDropdown eventKey="3" title="Distributor Network Inventory" className="topTabClass">
                                     <LinkContainer to="homepage">
                                         <MenuItem eventKey="3.1">Admin Homepage</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/inventoryManagement">
                                         <MenuItem eventKey="3.2">Inventory Management</MenuItem>
                                     </LinkContainer>
+                                    <LinkContainer to="/formulaManagement">
+                                        <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/productionLineManagement">
                                         <MenuItem eventKey="3.11">Production Line Management</MenuItem>
-                                    </LinkContainer>
-                                    <LinkContainer to="/dni">
-                                        <MenuItem eventKey="3.12">Distributor Network Inventory</MenuItem>
                                     </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>
@@ -59,14 +59,8 @@ class FormulaManagementNavBar extends Component {
                                     </LinkContainer>
                                     
                                     </NavDropdown>
-                                    <NavItem eventKey="1">Database</NavItem>
-                                    <NavItem eventKey="7">Inventory</NavItem>
-                                    <NavItem eventKey="2">Add New Formula</NavItem>
-                                    <NavItem eventKey="4">Bulk Import</NavItem>
-                                    <NavItem eventKey="5">Produce Formula</NavItem>
-                                    <NavItem eventKey="9">Line Statuses</NavItem>
-                                    <NavItem eventKey="6">Production History</NavItem>
-                                  
+                                    <NavItem eventKey="1">Inventory</NavItem>
+
 
 
                                 </Nav>
@@ -74,7 +68,7 @@ class FormulaManagementNavBar extends Component {
                             <Col sm={12}>
                                 <Tab.Content>
                                     <Tab.Pane eventKey="1">
-                                        <FormulaManagement hist={this.props.hist}/>
+                                    <DNIView hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="7">
                                         <IntermediatesDatabase hist={this.props.hist}/>
@@ -117,7 +111,7 @@ class FormulaManagementNavBar extends Component {
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Formula Management" className="topTabClass">
+                                    <NavDropdown eventKey="3" title="Distributor Network Inventory" className="topTabClass">
 
                                         <LinkContainer to="homepage">
                                             <MenuItem eventKey="3.1">Manager Homepage</MenuItem>
@@ -125,11 +119,11 @@ class FormulaManagementNavBar extends Component {
                                         <LinkContainer to="/inventoryManagement">
                                             <MenuItem eventKey="3.2">Inventory Management</MenuItem>
                                         </LinkContainer>
+                                        <LinkContainer to="/formulaManagement">
+                                        <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
                                         <LinkContainer to="/productionLineManagement">
                                         <MenuItem eventKey="3.11">Production Line Management</MenuItem>
-                                    </LinkContainer>
-                                    <LinkContainer to="/dni">
-                                        <MenuItem eventKey="3.12">Distributor Network Inventory</MenuItem>
                                     </LinkContainer>
                                         <LinkContainer to="/vendorManagement">
                                             <MenuItem eventKey="3.4">Vendor Management</MenuItem>
@@ -150,18 +144,15 @@ class FormulaManagementNavBar extends Component {
 
 
                                     </NavDropdown>
-                                    <NavItem eventKey="1">Database</NavItem>
-                                    <NavItem eventKey="7">Inventory</NavItem>
-                                    <NavItem eventKey="5">Produce Formula</NavItem>
-                                    <NavItem eventKey="9">Line Statuses</NavItem>
-                                    <NavItem eventKey="6">Production History</NavItem>
+                                    <NavItem eventKey="1">Inventory</NavItem>
+                             
 
                                 </Nav>
                             </Col>
                             <Col sm={12}>
                                 <Tab.Content>
                                     <Tab.Pane eventKey="1">
-                                        <FormulaManagement hist={this.props.hist}/>
+                                        <DNIView hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="7">
                                         <IntermediatesDatabase hist={this.props.hist}/>
@@ -197,7 +188,7 @@ class FormulaManagementNavBar extends Component {
                         <Row className="clearfix">
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
-                                    <NavDropdown eventKey="3" title="Formula Management" className="topTabClass">
+                                    <NavDropdown eventKey="3" title="Distributor Network Inventory" className="topTabClass">
 
                                         <LinkContainer to="homepage">
                                             <MenuItem eventKey="3.1">User Homepage</MenuItem>
@@ -205,11 +196,11 @@ class FormulaManagementNavBar extends Component {
                                         <LinkContainer to="/inventoryManagement">
                                             <MenuItem eventKey="3.2">Inventory Management</MenuItem>
                                         </LinkContainer>
+                                        <LinkContainer to="/formulaManagement">
+                                        <MenuItem eventKey="3.3">Formula Management</MenuItem>
+                                    </LinkContainer>
                                         <LinkContainer to="/productionLineManagement">
                                         <MenuItem eventKey="3.11">Production Line Management</MenuItem>
-                                    </LinkContainer>
-                                    <LinkContainer to="/dni">
-                                        <MenuItem eventKey="3.12">Distributor Network Inventory</MenuItem>
                                     </LinkContainer>
                                         <LinkContainer to="/vendorManagement">
                                             <MenuItem eventKey="3.4">Vendor Management</MenuItem>
@@ -223,17 +214,15 @@ class FormulaManagementNavBar extends Component {
 
 
                                     </NavDropdown>
-                                    <NavItem eventKey="1">Database</NavItem>
-                                    <NavItem eventKey="7">Inventory</NavItem>
-                                    <NavItem eventKey="9">Line Statuses</NavItem>
-                                    <NavItem eventKey="6">Production History</NavItem>
+                                    <NavItem eventKey="1">Inventory</NavItem>
+
 
                                 </Nav>
                             </Col>
                             <Col sm={12}>
                                 <Tab.Content>
                                     <Tab.Pane eventKey="1">
-                                        <FormulaManagement hist={this.props.hist}/>
+                                    <DNIView hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="7">
                                         <IntermediatesDatabase hist={this.props.hist}/>
@@ -255,7 +244,7 @@ class FormulaManagementNavBar extends Component {
     }
 }
 
-export default FormulaManagementNavBar;
+export default DNINavBar;
 
 
 

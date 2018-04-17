@@ -337,7 +337,6 @@ Meteor.methods({
         //check to see if it's in cart
         Meteor.call('removeIngredientFromCart', selectedIngredient)
 
-
         IngredientsList.remove({ _id: selectedIngredient });
         Lots.remove({ inventoryID : selectedIngredient});
         Meteor.call('systemlog.insert',

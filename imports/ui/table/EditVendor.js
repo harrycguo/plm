@@ -31,7 +31,7 @@ export class EditVendor extends Component {
 			(
 				<td> 
 					<input type="number"  
-					defaultValue={this.props.vendor.price}
+					defaultValue={Number(this.props.vendor.price).toFixed(2)}
 					onChange = {e=> {
 						this.state.boxLock = false;
 					}}

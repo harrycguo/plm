@@ -46,6 +46,9 @@ class ProductionLineNavBar extends Component {
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
                                     </LinkContainer>
+                                    <LinkContainer to="/dni">
+                                        <MenuItem eventKey="3.12">Distributor Network Inventory</MenuItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>
                                     </LinkContainer>
@@ -73,13 +76,13 @@ class ProductionLineNavBar extends Component {
                             <Col sm={12}>
                                 <Tab.Content>
                                     <Tab.Pane eventKey="1">
-                                        <ProductionLineManagement/>
+                                        <ProductionLineManagement hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="2">
-                                        <LineStatuses />
+                                        <LineStatuses hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="3">
-                                        <AddProductionLine />
+                                        <AddProductionLine hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
                                         <ProductionRun hist={this.props.hist} />
@@ -118,6 +121,9 @@ class ProductionLineNavBar extends Component {
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
                                     </LinkContainer>
+                                    <LinkContainer to="/dni">
+                                        <MenuItem eventKey="3.12">Distributor Network Inventory</MenuItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>
                                     </LinkContainer>
@@ -147,10 +153,10 @@ class ProductionLineNavBar extends Component {
                             <Col sm={12}>
                                 <Tab.Content>
                                 <Tab.Pane eventKey="1">
-                                    <ProductionLineManagement/>
+                                    <ProductionLineManagement hist={this.props.hist}/>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="2">
-                                    <LineStatuses />
+                                    <LineStatuses hist={this.props.hist} />
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="5">
                                         <ProductionRun hist={this.props.hist} />
@@ -185,6 +191,9 @@ class ProductionLineNavBar extends Component {
                                     <LinkContainer to="/formulaManagement">
                                         <MenuItem eventKey="3.3">Formula Management</MenuItem>
                                     </LinkContainer>
+                                    <LinkContainer to="/dni">
+                                        <MenuItem eventKey="3.12">Distributor Network Inventory</MenuItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>
                                     </LinkContainer>
@@ -205,10 +214,10 @@ class ProductionLineNavBar extends Component {
                         <Col sm={12}>
                             <Tab.Content>
                             <Tab.Pane eventKey="1">
-                                <ProductionLineManagement/>
+                                <ProductionLineManagement hist={this.props.hist}/>
                             </Tab.Pane>
                             <Tab.Pane eventKey="2">
-                                <LineStatuses />
+                                <LineStatuses hist={this.props.hist}/>
                             </Tab.Pane>
                                
                             </Tab.Content>

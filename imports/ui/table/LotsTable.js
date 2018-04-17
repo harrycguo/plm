@@ -225,7 +225,8 @@ class LotsTable extends Component {
 			}
 			SubComponent={row => {
             	return TableData.canEdit ? (
-            		<div>
+            		<div className="container-nav">
+						<ButtonToolbar>
 				<Button
 				bsStyle="danger"
 				//onClick={this.remove.bind(row)}
@@ -248,6 +249,7 @@ class LotsTable extends Component {
 					
 				}}
 				>Remove Lot</Button> 
+				</ButtonToolbar>
 				</div>
 
             	) : null
