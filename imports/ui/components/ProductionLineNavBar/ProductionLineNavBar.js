@@ -76,13 +76,13 @@ class ProductionLineNavBar extends Component {
                             <Col sm={12}>
                                 <Tab.Content>
                                     <Tab.Pane eventKey="1">
-                                        <ProductionLineManagement/>
+                                        <ProductionLineManagement hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="2">
-                                        <LineStatuses />
+                                        <LineStatuses hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="3">
-                                        <AddProductionLine />
+                                        <AddProductionLine hist={this.props.hist}/>
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
                                         <ProductionRun hist={this.props.hist} />
@@ -153,10 +153,10 @@ class ProductionLineNavBar extends Component {
                             <Col sm={12}>
                                 <Tab.Content>
                                 <Tab.Pane eventKey="1">
-                                    <ProductionLineManagement/>
+                                    <ProductionLineManagement hist={this.props.hist}/>
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="2">
-                                    <LineStatuses />
+                                    <LineStatuses hist={this.props.hist} />
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="5">
                                         <ProductionRun hist={this.props.hist} />
@@ -214,10 +214,10 @@ class ProductionLineNavBar extends Component {
                         <Col sm={12}>
                             <Tab.Content>
                             <Tab.Pane eventKey="1">
-                                <ProductionLineManagement/>
+                                <ProductionLineManagement hist={this.props.hist}/>
                             </Tab.Pane>
                             <Tab.Pane eventKey="2">
-                                <LineStatuses />
+                                <LineStatuses hist={this.props.hist}/>
                             </Tab.Pane>
                                
                             </Tab.Content>
