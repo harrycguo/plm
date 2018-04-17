@@ -5,6 +5,7 @@ import FreshReport from '../../../api/FreshReport/FreshReport.js';
 import FreshTotal from '../../../api/FreshReport/FreshTotal.js'
 import IngredientList from '../../../api/Ingredients/IngredientList.js';
 import { Intermediates } from '../../../api/Intermediates/intermediates.js'
+import  Formulas  from '../../../api/Formulas/formulas'
 import { Link } from 'react-router-dom';
 import ReactTable from 'react-table';
 import InventoryManagementNavBar from '../../components/InventoryManagementNavBar/InventoryManagementNavBar.js'
@@ -57,6 +58,7 @@ class FinalFreshnessReport extends Component {
 		var reportRows = new Array()
 
 		this.props.freshreport.forEach(function(item){
+			var final = Formulas.find({_id: item.inventoryID}).fetch()[0]
 			var form = Intermediates.find({_id: item.inventoryID}).fetch()[0]
 			var ing = IngredientList.find({_id: item.inventoryID}).fetch()[0]
 			var name = undefined
@@ -66,11 +68,16 @@ class FinalFreshnessReport extends Component {
 			} else if(ing){
 				name = ing.name
 			}
-			reportRows.push({
-				name: name,
-				avgTime: item.avgTimeString,
-				wcTime: item.worstCaseString,
-			})
+			else if(final) {
+				name = final.name
+			}
+			if(item.finalProduct){
+				reportRows.push({
+					name: name,
+					avgTime: item.avgTimeString,
+					wcTime: item.worstCaseString,
+				})
+			}
 		})
 		return reportRows;
 
@@ -115,11 +122,13 @@ export default withTracker(() => {
 	Meteor.subscribe('freshtotal')
 	Meteor.subscribe('ingredients')
 	Meteor.subscribe('intermediates')
+	Meteor.subscribe('formulas')
 	return {
 		freshreport: FreshReport.find({}).fetch(),
 		freshtotal: FreshTotal.find({}).fetch(),
 		ingredients: IngredientList.find({}).fetch(),
 		intermediates: Intermediates.find({}).fetch(),
+        formulas: Formulas.find({}).fetch(),
 
 		// intermediates: Intermediates.find({}).fetch()
 	};

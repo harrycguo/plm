@@ -24,9 +24,10 @@ class RecallChild extends Component {
 		//console.log("Child: render Rows: ")
 		//console.log(lots)
 		var items = new Array();
-
+		console.log(this.props)
 		this.props.item.productionHistory.forEach(function(item) {
 			var name = 'asdf';
+			console.log(item)
 			if(item.intermediate) {
 				// Intermediate
 				name = Intermediates.findOne({_id: item.inventoryID}).name
@@ -151,6 +152,7 @@ export default withTracker(() => {
 	Meteor.subscribe('ingredients')
 	Meteor.subscribe('intermediates')
 	Meteor.subscribe('formulas')
+	Meteor.subscribe('lotshistory')
 	// Meteor.subscribe('vendors')
 	return {
 		ingredients: IngredientList.find({}).fetch(),

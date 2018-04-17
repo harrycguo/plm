@@ -46,7 +46,7 @@ Meteor.methods({
         throw new Meteor.Error('multiple same ingredients added', 'Formulas(s) shows up twice for this Production Line');
       }
     }
-
+    Meteor.call('systemlog.insert',"Production Line", "Added", null, "Event", "");
     ProductionLines.insert({
       name: name,
       description: description,

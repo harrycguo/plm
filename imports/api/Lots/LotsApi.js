@@ -143,6 +143,7 @@ Meteor.methods({
         }
 
         while (true) {
+            console.log(q)
             if (qty >= q[0].qty) {
                 qty -= q[0].qty
                 Meteor.call('freshreport.updateAvgTime',id,q[0].qty, true)
