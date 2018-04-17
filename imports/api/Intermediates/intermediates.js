@@ -83,10 +83,9 @@ Meteor.methods({
       numNativeUnitsPerPackage: Number(numNativeUnitsPerPackage),
     }
 
-    Meteor.call('systemlog.insert', "Intermediate", name, 0, "Added", "")
     //    'systemlog.insert'(type, name, _id, change, to)
 
-    Intermediates.insert({
+    var x = Intermediates.insert({
       name: name,
       description: description,
       productUnits: Number(productUnits),
@@ -123,6 +122,7 @@ Meteor.methods({
         }          
       }
     })
+      Meteor.call('systemlog.insert', "Intermediate", name, x, "Added", "")
 
   },
   'intermediates.edit'(id, name, description, productUnits, ingredientsList, temperatureState, packageType, numPackages, ingStorage, totalNumNativeUnits, nativeUnit, numNativeUnitsPerPackage) {
@@ -132,7 +132,7 @@ Meteor.methods({
       throw new Meteor.Error('not-authorized', 'not-authorized');
     }
 
-    Meteor.call('systemlog.insert', "Intermediate", name, 0, "Modified", "")
+    Meteor.call('systemlog.insert', "Intermediate", name, id, "Modified", "")
 
     Meteor.call('intermediates.editName', id, name)
     Meteor.call('intermediates.editDescription', id, description)
@@ -157,7 +157,7 @@ Meteor.methods({
       throw new Meteor.Error('formula already in system', 'Formula Name Must Be Unique');
     }
 
-    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, 0, "Modified", name)
+    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, id, "Modified", name)
 
 
     Intermediates.update({ _id: id }, {
@@ -168,7 +168,7 @@ Meteor.methods({
   },
   'intermediates.editDescription'(id, description) {
     let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
-    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, 0, "Modified", "")
+    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, id, "Modified", "")
 
     Intermediates.update({ _id: id }, {
       $set: {
@@ -182,7 +182,7 @@ Meteor.methods({
       throw new Meteor.Error('Product Units must be greater than 0', 'Product Units must be greater than 0')
     }
     let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
-    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, 0, "Modified", "")
+    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, id, "Modified", "")
 
 
     Intermediates.update({ _id: id }, {
@@ -210,7 +210,7 @@ Meteor.methods({
     }
 
     let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
-    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, 0, "Modified", "")
+    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, id, "Modified", "")
 
     Intermediates.update({ _id: id }, {
       $set: {
@@ -261,7 +261,7 @@ Meteor.methods({
 
     Meteor.call('sc.editUsed', container._id, Number(newUsed))
     let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
-    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, 0, "Modified", "")
+    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, id, "Modified", "")
 
 
     Intermediates.update({ _id: id}, { $set: { storage:  Number(newStorage)} });  
@@ -288,7 +288,7 @@ Meteor.methods({
     packagingMap.set('railcar', 0);
 
     let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
-    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, 0, "Modified", "")
+    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, id, "Modified", "")
 
     let newStorage = numPackages * packagingMap.get(existingInt.packageInfo.packageType)
     Meteor.call('intermediates.editStorage', id, Number(newStorage))
@@ -313,7 +313,7 @@ Meteor.methods({
     Meteor.call('intermediates.editNumPackages', id, Number(remainingPackages))
     
     let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
-    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, 0, "Modified", "")
+    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, id, "Modified", "")
     
     Intermediates.update({ _id: id }, {
       $set: {
@@ -346,7 +346,7 @@ Meteor.methods({
     Meteor.call('intermediates.editNumPackages', id, Number(remainingPackages))
 
     let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
-    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, 0, "Modified", "")
+    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, id, "Modified", "")
 
     Intermediates.update({ _id: id }, {
       $set: {
@@ -365,13 +365,13 @@ Meteor.methods({
     }
   
     let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
-    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, 0, "Modified", "")
+    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, id, "Modified", "")
 
     Intermediates.update({ _id: id }, { $set: { storage : Number(storage) } });
   },
   'intermediates.editNativeUnit'(id, nativeUnit) {
     let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
-    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, 0, "Modified", "")
+    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, id, "Modified", "")
 
     Intermediates.update({ _id: id }, {
       $set: {
@@ -421,7 +421,7 @@ Meteor.methods({
       }
 
       let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
-      Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, 0, "Removed", "")
+      Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, id, "Removed", "")
       
       Intermediates.update({ _id: id }, {
         $set: {
@@ -481,7 +481,7 @@ Meteor.methods({
       }
     }
     let existingFormula = Formulas.findOne({ _id: id }) != undefined ? Formulas.findOne({ _id: id }) : Intermediates.findOne({ _id: id })
-    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, 0, "Modified", "")
+    Meteor.call('systemlog.insert', "Intermediate", existingFormula.name, id, "Modified", "")
     Intermediates.update({ _id: id }, {
       $set: {
         ingredientsList: ingredientsList
