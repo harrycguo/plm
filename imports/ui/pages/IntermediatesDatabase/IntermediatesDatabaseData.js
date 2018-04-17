@@ -144,6 +144,30 @@ export const IntermediateHeaderValues = [
 
 export const FinalProductsHeaderValues = [
 	{
+		Header: "Expand",
+		columns: [
+			{
+          expander: row => { return false },
+          Header: () => <strong>More</strong>,
+          width: 65,
+          Expander: ({ isExpanded, ...rest }) =>
+            <div>
+              {isExpanded
+                ? <span>&#x2299;</span>
+                : <span>&#x2295;</span>}
+            </div>,
+          style: {
+            cursor: "pointer",
+            fontSize: 25,
+            padding: "0",
+            textAlign: "center",
+            userSelect: "none"
+          },
+          Footer: () => <span>&hearts;</span>
+        }
+      ]
+	},
+	{
 		Header: 'Name',
 		accessor: 'name',
 		//Cell: renderEditable,
@@ -172,6 +196,30 @@ export const FinalProductsHeaderValues = [
 ]
 
 export const InProgressHeaderValues = [
+	{
+		Header: "Expand",
+		columns: [
+			{
+          expander: row => { return false },
+          Header: () => <strong>More</strong>,
+          width: 65,
+          Expander: ({ isExpanded, ...rest }) =>
+            <div>
+              {isExpanded
+                ? <span>&#x2299;</span>
+                : <span>&#x2295;</span>}
+            </div>,
+          style: {
+            cursor: "pointer",
+            fontSize: 25,
+            padding: "0",
+            textAlign: "center",
+            userSelect: "none"
+          },
+          Footer: () => <span>&hearts;</span>
+        }
+      ]
+	},
 	{
 		Header: 'Formula Name',
 		accessor: 'formula',

@@ -81,7 +81,12 @@ Meteor.methods({
         }
         console.log(lotEntry)
         prodHist.push(entry)
-        
+        if(lot.length == 0) {
+            LotsHistory.insert({
+                inventoryID: id,
+                queue: [entry]
+            })
+        }
         LotsHistory.update({ inventoryID : id, 'queue.time': time},{$set : {'queue.$.productionHistory' : prodHist}})
     },
     'lotshistory.updateNameTopLevel': function(id,intermediate) {
