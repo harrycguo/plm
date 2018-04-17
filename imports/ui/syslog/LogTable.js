@@ -73,11 +73,10 @@ class LogTable extends Component {
 		        	}}}>Detail Page</Link></li>)
         	}
         	return null
-		}else if(cellInfo.original.type == "Ingredient") {
-			var url = '/inventoryManagement/'
+		} else if(cellInfo.original.type == "Ingredient") {
 			return(
 				<li><Link to={{
-        		pathname: '/inventoryManagement/',
+        		pathname: '/inventoryManagement',
         		state: {
             		name: cellInfo.original.name,
         		}}}>Detail Page</Link></li>)
@@ -123,6 +122,8 @@ class LogTable extends Component {
 			        <option value="Intermediate">Intermediate</option>
 			        <option value="Formula">Formula</option>
 					<option value="Vendor">Vendor</option>
+					<option value="Production">Production</option>
+					<option value="Production Line">Production Line</option>
 			        <option value="Storage Capacities">Storage Capacities</option>
 					<option value="Cart">Cart</option>
 					<option value="User">User</option>

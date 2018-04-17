@@ -90,7 +90,7 @@ Meteor.methods({
         }
       })
 
-      let formula = Formula.find({name : name}).fetch()[0]
+      let formula = Formulas.find({name : name}).fetch()[0]
 
       Meteor.call('systemlog.insert', "Formula", name, x, "Added", "")
     
