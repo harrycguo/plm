@@ -26,8 +26,9 @@ import ProductionLineManagementHome from '../../ui/pages/ProductionLineManagemen
 import ViewProductionLine from '../../ui/pages/ViewProductionLine/ViewProductionLine.js'
 import EditProductionLine from '../../ui/pages/EditProductionLine/EditProductionLine.js'
 
+import FreshnessReport from '../../ui/pages/FreshnessReport/FreshnessReport'
 
-import FreshnessReport from '../../ui/pages/FreshnessReport/FreshnessReport.js'
+import DNIHome from '../../ui/pages/DistributorNetworkInventory/DNIHome.js'
 
 import VendorManagementHome from '../../ui/pages/VendorManagement/VendorManagementHome.js'
 import EditVendor from '../../ui/pages/EditVendor/EditVendor.js';
@@ -69,6 +70,8 @@ class App extends Component {
           <Authenticated exact path='/productionLineManagement' component={ProductionLineManagementHome} {...props}/> 
           <Authenticated exact path='/viewProductionLine/:productionLineID' component={ViewProductionLine} {...props}/> 
           <Authenticated exact path='/editProductionLine/:productionLineID' component={EditProductionLine} {...props}/> 
+
+          <Authenticated exact path='/dni' component={DNIHome} {...props}/> 
           
           <Authenticated exact path='/freshnessReport' component={FreshnessReport} {...props}/>
 

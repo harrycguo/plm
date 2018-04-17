@@ -13,7 +13,7 @@ class LineStatuses extends Component {
     super(props);
 
     this.state = {
-      text: ""
+      text: null
     }
 
 }
@@ -106,12 +106,12 @@ updateStatus() {
                 let text = []
                 for (let i = 0; i < result.length; i++){
                   text.push(
-                    <tr key={i}>
+                    <tr key={i+7}>
          
-                      <td align="left">
+                      <td>
                           {result[i].name}
                       </td>
-                      <td align="left">
+                      <td>
                         {result[i].lotNumber}
                       </td>
                       

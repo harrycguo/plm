@@ -53,6 +53,9 @@ class ReportsNavBar extends Component {
                                     <LinkContainer to="/productionLineManagement">
                                         <MenuItem eventKey="3.11">Production Line Management</MenuItem>
                                     </LinkContainer>
+                                    <LinkContainer to="/dni">
+                                        <MenuItem eventKey="3.12">Distributor Network Inventory</MenuItem>
+                                    </LinkContainer>
                                     <LinkContainer to="/vendorManagement">
                                         <MenuItem eventKey="3.4">Vendor Management</MenuItem>
                                     </LinkContainer>
@@ -129,6 +132,9 @@ class ReportsNavBar extends Component {
                                             <LinkContainer to="/productionLineManagement">
                                             <MenuItem eventKey="3.11">Production Line Management</MenuItem>
                                         </LinkContainer>
+                                        <LinkContainer to="/dni">
+                                        <MenuItem eventKey="3.12">Distributor Network Inventory</MenuItem>
+                                    </LinkContainer>
                                             <LinkContainer to="/vendorManagement">
                                                 <MenuItem eventKey="3.4">Vendor Management</MenuItem>
                                             </LinkContainer>
