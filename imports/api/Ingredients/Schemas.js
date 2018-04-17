@@ -347,6 +347,10 @@ ProdHistorySchema = new SimpleSchema({
     type: String,
     min: 1
   },
+  // name: {
+  //   type: String,
+  //   min: 1
+  // },
   qty: {
     type: Number,
     decimal: true,
@@ -409,6 +413,10 @@ LotsHistorySchema = new SimpleSchema({
     type: String,
     min: 1
   },
+  // name: {
+  //   type: String,
+  //   min: 1
+  // },
   queue: {
     type: [LotIngredientSchema2]
   }
@@ -452,6 +460,10 @@ FreshReportSchema = new SimpleSchema({
     min: 0,
     defaultValue: 0,
     decimal: true
+  },
+  finalProduct: {
+    type: Boolean,
+    defaultValue: false
   }
 })
 
@@ -492,4 +504,56 @@ FreshTotalSchema = new SimpleSchema({
   }
 })
 
-export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema, FreshReportSchema, FreshTotalSchema, LotsHistorySchema };
+ProfitabilityReportSchema = new SimpleSchema({
+  id: {
+    type: String,
+    min: 1    
+  },
+  unitsSold: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  avgWholesalePrice: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  totalCost: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  totalPrice: {
+    type: Number,
+    decimal: true,
+    defaultValue: 0,
+    min: 0
+  }
+})
+
+ProdEfficiencySchema = new SimpleSchema({
+  id: {
+    type: String,
+    min: 1    
+  },
+  timeBusy: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  },
+  timeExisted: {
+    type: Number,
+    min: 0,
+    defaultValue: 0,
+    decimal: true
+  }
+})
+
+
+
+export { IngredientSchema, VendorInfoSchema, CartSchema, CartIngredientSchema, ReportSchema, SpendingSchema, PackageInfoSchema, NativeInfoSchema, FormulaInfoSchema, ProdReportSchema, IngredientProdInfoSchema, SpendingInfoSchema, LotIngredientSchema, LotsSchema, FreshReportSchema, FreshTotalSchema, LotsHistorySchema, ProfitabilityReportSchema, ProdEfficiencySchema };

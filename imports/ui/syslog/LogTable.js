@@ -6,6 +6,9 @@ import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 import { Button } from 'react-bootstrap';
 import { SystemLog } from '../../api/Log/systemlog.js';
+import { Intermediates } from '../../api/Intermediates/intermediates.js';
+import Formulas  from '../../api/Formulas/formulas'
+
 import Datetime from 'react-datetime'
 class LogTable extends Component {
 	
@@ -17,7 +20,7 @@ class LogTable extends Component {
 	
 	constructor(props) {
 		super(props);
-
+		console.log(this)
 		this.state = {
 			filterlow: -1,
 			filterhigh: -1,
@@ -46,17 +49,38 @@ class LogTable extends Component {
 			user: logItem.user,
 			time: timeString,
 			truetime: logItem.time,
-			_id: logItem._id,
+			_id: logItem.id,
 		}
 	}
 	displayLink(cellInfo) {
-		return null
-		if(cellInfo.original.type == "Formula") {
-			var url = '/editFormula/'
-			url = url.concat(cellInfo.original._id)
+		if(cellInfo.original.type == "Formula" || cellInfo.original.type == "Intermediate") {
+			console.log(cellInfo.original)
+			var final = Formulas.findOne({_id: cellInfo.original._id})
+			var int = Intermediates.findOne({_id: cellInfo.original._id})
+			console.log(final)
+			console.log(int)
+			if(int) {
+				return (<li><Link to={{
+			        pathname: '/viewIntermediate/'+int._id, 
+			        state: {
+			            formula: int,
+			        }}}>Detail Page</Link></li>)
+        	} else if(final) {
+        		return (<li><Link to={{
+		        	pathname: '/viewFormula/'+final._id, 
+		        	state: {
+		          		formula: final,
+		        	}}}>Detail Page</Link></li>)
+        	}
+        	return null
+		}else if(cellInfo.original.type == "Ingredient") {
+			var url = '/inventoryManagement/'
 			return(
-				<li><Link to={url}>Detail Page</Link></li>
-			)
+				<li><Link to={{
+        		pathname: '/inventoryManagement/',
+        		state: {
+            		name: cellInfo.original.name,
+        		}}}>Detail Page</Link></li>)
 		}
 		else {
 			return null
@@ -233,8 +257,12 @@ class LogTable extends Component {
 }
 
 export default withTracker(() => {
+	const subscription = Meteor.subscribe('intermediates')
 	Meteor.subscribe('log')
+	Meteor.subscribe('formulas')
 	return {
 		log: SystemLog.find({}).fetch(),
+		intermediates: Intermediates.find({}).fetch(),
+        formulas: Formulas.find({}).fetch(), 
 	};
 })(LogTable);

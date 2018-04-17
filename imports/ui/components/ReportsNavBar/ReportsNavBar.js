@@ -13,6 +13,8 @@ import SpendingReport from '../../pages/SpendingReport/SpendingReport.js'
 import ProductionReportPage from '../../pages/ProductionReportPage/ProductionReportPage.js'
 
 import FreshnessReport from '../../pages/FreshnessReport/FreshnessReport.js'
+import FinalFreshnessReport from '../../pages/FreshnessReport/FinalFreshnessReport.js'
+
 import RecallReportView from '../../pages/RecallReport/RecallReport.js'
 import Cart from '../../pages/Cart/Cart.js'
 import { LinkContainer } from 'react-router-bootstrap'
@@ -39,7 +41,6 @@ class ReportsNavBar extends Component {
                             <Col sm={12}>
                                 <Nav bsStyle="tabs">
                                     <NavDropdown eventKey="3" title="View Reports" className="topTabClass">
-                                      
                                         <LinkContainer to="homepage">
                                         <MenuItem eventKey="3.1">Admin Homepage</MenuItem>
                                     </LinkContainer>
@@ -87,13 +88,13 @@ class ReportsNavBar extends Component {
                                        <ProductionReportPage />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="3">
-                                        Recall report goes here
+                                        <RecallReportView />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="4">
                                         <FreshnessReport />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="5">
-                                     
+                                        <FinalFreshnessReport />
                                     </Tab.Pane>
                                     <Tab.Pane eventKey="6">
                                       
@@ -157,7 +158,7 @@ class ReportsNavBar extends Component {
                                    <ProductionReportPage />
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="3">
-                                    Recall report goes here
+                                    <RecallReportView />
                                 </Tab.Pane>
                                 <Tab.Pane eventKey="4">
                                     <FreshnessReport />

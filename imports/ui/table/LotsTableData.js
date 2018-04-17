@@ -134,7 +134,31 @@ function renderEditable(cellInfo) {
 		/>);
 	}
 }
-export const HeaderValues = [
+export const HeaderValues = [ 
+	{
+		Header: "Expand",
+		columns: [
+			{
+          expander: row => { return false },
+          Header: () => <strong>More</strong>,
+          width: 65,
+          Expander: ({ isExpanded, ...rest }) =>
+            <div>
+              {isExpanded
+                ? <span>&#x2299;</span>
+                : <span>&#x2295;</span>}
+            </div>,
+          style: {
+            cursor: "pointer",
+            fontSize: 25,
+            padding: "0",
+            textAlign: "center",
+            userSelect: "none"
+          },
+          Footer: () => <span>&hearts;</span>
+        }
+      ]
+	},
 	{
 		Header: 'Lot Number',
 		accessor: 'num',

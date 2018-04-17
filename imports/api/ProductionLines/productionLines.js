@@ -11,6 +11,8 @@ import '../ProductionReport/ProductionReportApi.js';
 import { LotNumberSystem } from '../../api/Lots/LotNumberSystem'
 import Lots from '../../api/Lots/Lots.js'
 import { ProductionHistory } from '../Production/production.js'
+import '../FreshReport/FreshReportApi.js'
+import '../ProfitabilityReport/ProfReportApi.js'
 
 export const ProductionLines = new Mongo.Collection('productionLines');
 
