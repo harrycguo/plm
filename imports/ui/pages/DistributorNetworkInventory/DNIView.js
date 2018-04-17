@@ -8,6 +8,7 @@ import DNIData from './DNIData.js'
 import { Intermediates } from '../../../api/Intermediates/intermediates.js';
 import  Formulas  from '../../../api/Formulas/formulas'
 import Lots from '../../../api/Lots/Lots'
+import IntermediatesDatabase from '../../pages/IntermediatesDatabase/IntermediatesDatabase.js'
 
 
 class DNIView extends Component {
@@ -123,55 +124,59 @@ class DNIView extends Component {
   }
 
   render() {
-    return (
-      <div>
-      <p></p> 
-      <Button 
-        bsStyle="success"
-        onClick={e=>{
-          var shouldConfirm = false
-          var prompt = "Confirm sale: \nName | Quantity | Price\n"
-          this.state.map.forEach(function(item, name) {
-            var price = Number(item.price)
-            var qty = Number(item.qty)
-            if(!isNaN(price) && !isNaN(qty) && price >= 0 && qty > 0) {
-                shouldConfirm=true
-                prompt = prompt.concat(name).concat(" | ").concat(item.qty).concat(" | $").concat(item.price).concat("\n")
-            }
-          })
-          if(shouldConfirm && confirm(prompt)) {
-            console.log("Use up the stuff")
+    if (!this.userId || (!Roles.userIsInRole(this.userId, 'admin') && !Roles.userIsInRole(this.userId, 'manager'))) {
+      return (
+        <div>
+        <p></p> 
+        <Button 
+          bsStyle="success"
+          onClick={e=>{
+            var shouldConfirm = false
+            var prompt = "Confirm sale: \nName | Quantity | Price\n"
             this.state.map.forEach(function(item, name) {
-              console.log(name)
-              console.log(item.id)
-              console.log(item.price)
-              console.log(item.qty)
               var price = Number(item.price)
               var qty = Number(item.qty)
               if(!isNaN(price) && !isNaN(qty) && price >= 0 && qty > 0) {
-                Meteor.call('lots.removeQtyFinalProduct', item.id, qty, price, 
-                  function(error, result){
-                       if (error) {
-                          Bert.alert(error.reason, 'danger')
-                      } 
-                  }
-                )
+                  shouldConfirm=true
+                  prompt = prompt.concat(name).concat(" | ").concat(item.qty).concat(" | $").concat(item.price).concat("\n")
               }
-              })
+            })
+            if(shouldConfirm && confirm(prompt)) {
+              console.log("Use up the stuff")
+              this.state.map.forEach(function(item, name) {
+                console.log(name)
+                console.log(item.id)
+                console.log(item.price)
+                console.log(item.qty)
+                var price = Number(item.price)
+                var qty = Number(item.qty)
+                if(!isNaN(price) && !isNaN(qty) && price >= 0 && qty > 0) {
+                  Meteor.call('lots.removeQtyFinalProduct', item.id, qty, price, 
+                    function(error, result){
+                         if (error) {
+                            Bert.alert(error.reason, 'danger')
+                        } 
+                    }
+                  )
+                }
+                })
 
-            // 'profreport.updateAvgWholesalePrice': function(id, price, quantity) {
-            //  -- Formula id 
+              // 'profreport.updateAvgWholesalePrice': function(id, price, quantity) {
+              //  -- Formula id 
 
 
-          }
-        }}>
-        Sell Items
-      </Button>
-      <p></p>
-      {this.renderFinalProductsTable()}
-      <p></p>
-      </div>
-    );
+            }
+          }}>
+          Sell Items
+        </Button>
+        <p></p>
+        {this.renderFinalProductsTable()}
+        <p></p>
+        </div>
+      );
+    } else {
+      return (<IntermediatesDatabase />)
+    }
   }
 }
 

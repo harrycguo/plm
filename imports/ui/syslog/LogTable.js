@@ -74,10 +74,9 @@ class LogTable extends Component {
         	}
         	return null
 		}else if(cellInfo.original.type == "Ingredient") {
-			var url = '/inventoryManagement/'
 			return(
 				<li><Link to={{
-        		pathname: '/inventoryManagement/',
+        		pathname: '/inventoryManagement',
         		state: {
             		name: cellInfo.original.name,
         		}}}>Detail Page</Link></li>)
