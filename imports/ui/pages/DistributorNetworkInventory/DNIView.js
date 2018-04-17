@@ -37,6 +37,7 @@ class DNIView extends Component {
       this.state.map.set(formula.name, {
         price: -1,
         qty: -1,
+        id: formula._id,
       })
       data.push({
         name: formula.name,
@@ -48,7 +49,8 @@ class DNIView extends Component {
             var oldStruct = this.state.map.get(formula.name)
             var newStruct = {
               price: oldStruct.price,
-              qty: e.target.value
+              qty: e.target.value,
+              id: oldStruct.id
             }
             this.state.map.set(formula.name, newStruct)
           }}
@@ -59,7 +61,8 @@ class DNIView extends Component {
             var oldStruct = this.state.map.get(formula.name)
             var newStruct = {
               price: e.target.value,
-              qty: oldStruct.qty
+              qty: oldStruct.qty,
+              id: oldStruct.id
             }
 
             this.state.map.set(formula.name, newStruct)
@@ -129,22 +132,37 @@ class DNIView extends Component {
           var shouldConfirm = false
           var prompt = "Confirm sale: \nName | Quantity | Price\n"
           this.state.map.forEach(function(item, name) {
-            console.log(name)
-            console.log(item)
             var price = Number(item.price)
             var qty = Number(item.qty)
-            console.log(price)
-            console.log(qty)
-            console.log(isNaN(price))
-            console.log(isNaN(qty))
             if(!isNaN(price) && !isNaN(qty) && price >= 0 && qty > 0) {
-                console.log("Attempting to concat")
                 shouldConfirm=true
                 prompt = prompt.concat(name).concat(" | ").concat(item.qty).concat(" | $").concat(item.price).concat("\n")
             }
           })
           if(shouldConfirm && confirm(prompt)) {
             console.log("Use up the stuff")
+            this.state.map.forEach(function(item, name) {
+              console.log(name)
+              console.log(item.id)
+              console.log(item.price)
+              console.log(item.qty)
+              var price = Number(item.price)
+              var qty = Number(item.qty)
+              if(!isNaN(price) && !isNaN(qty) && price >= 0 && qty > 0) {
+                Meteor.call('lots.removeQtyFinalProduct', item.id, qty, price, 
+                  function(error, result){
+                       if (error) {
+                          Bert.alert(error.reason, 'danger')
+                      } 
+                  }
+                )
+              }
+              })
+
+            // 'profreport.updateAvgWholesalePrice': function(id, price, quantity) {
+            //  -- Formula id 
+
+
           }
         }}>
         Sell Items
